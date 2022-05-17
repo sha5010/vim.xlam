@@ -1,0 +1,29 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+*.bas       text    eol=lf
+*.cls       text    eol=lf
+*.frm       text    eol=lf
+*.frx       binary  eol=lf
+*.dcm       text    eol=lf
+*.vbaproj   text    eol=lf
+
+*.wsf       text    eol=lf
+*.bat       text    eol=lf
+
+*.cls linguist-language=VBA
+*.dcm linguist-language=VBA
+*.vbaproj linguist-language=INI
+
+# file encording
+*.bas working-tree-encoding=sjis
+*.dcm working-tree-encoding=sjis
+*.frm working-tree-encoding=sjis
+
+*.bas diff=sjis
+*.dcm diff=sjis
+*.frm diff=sjis
+
+*.bas encoding=sjis
+*.dcm encoding=sjis
+*.frm encoding=sjis
