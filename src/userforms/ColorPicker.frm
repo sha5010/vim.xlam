@@ -139,10 +139,10 @@ Private Sub checkCmd()
         colorCode = Mid(cmdBuf, 2)
         
         If Len(colorCode) = 3 Then
-            resultLabel.ForeColor = Val("&H" & Mid(colorCode, 1, 1) & Mid(colorCode, 1, 1) & _
-                Mid(colorCode, 2, 1) & Mid(colorCode, 2, 1) & Mid(colorCode, 3, 1) & Mid(colorCode, 3, 1))
+            resultLabel.ForeColor = Val("&H" & Mid(colorCode, 3, 1) & Mid(colorCode, 3, 1) & _
+                Mid(colorCode, 2, 1) & Mid(colorCode, 2, 1) & Mid(colorCode, 1, 1) & Mid(colorCode, 1, 1) & "&")
         ElseIf Len(colorCode) = 6 Then
-            resultLabel.ForeColor = Val("&H" & colorCode)
+            resultLabel.ForeColor = Val("&H" & Mid(colorCode, 5, 2) & Mid(colorCode, 3, 2) & Mid(colorCode, 1, 2) & "&")
         Else
             resultLabel.ForeColor = Me.BackColor
         End If
