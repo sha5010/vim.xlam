@@ -160,6 +160,17 @@ Function reReplace(ByVal str As String, ByVal Pattern As String, ByVal replaceSt
     Set re = Nothing
 End Function
 
+Function getWorkbookIndex(ByVal targetWorkbook As Workbook) As Integer
+    Dim i As Integer
+
+    For i = 1 To Workbooks.Count
+        If Workbooks(i).FullName = targetWorkbook.FullName Then
+            getWorkbookIndex = i
+            Exit For
+        End If
+    Next i
+End Function
+
 '#####################################################################################'
 ' Source: https://mohayonao.hatenadiary.org/entry/20080617/1213712469                 '
 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv'
