@@ -62,16 +62,6 @@ Function previousFoundCell()
 End Function
 
 Function showReplaceWindow()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyE, 0, 0, 0
-    keybd_event vbKeyE, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyE, 0, 0, 0
-    keybd_event vbKeyE, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + E_, E_)
 End Function
 

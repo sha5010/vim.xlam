@@ -48,15 +48,7 @@ Function reopenActiveWorkbook()
 End Function
 
 Function undo_CtrlZ()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-    
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyZ, 0, 0, 0
-    keybd_event vbKeyZ, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl_ + Z_)
 End Function
 
 Function repeat_F4()

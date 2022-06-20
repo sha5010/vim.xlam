@@ -35,6 +35,204 @@ Public Const RMENU = &HA5  'Right Alt
 Public Const KANJI = &H19  'Kanji
 Public Const APPS = &H5D   'Application Keys
 
+Public Enum vKey
+    BackSpace_ = 8
+    Tab_ = 9
+    Enter_ = 13
+    Pause_ = 19
+    CapsLock_ = 20
+    Kanji_ = 25
+    Escape_ = 27
+    Henkan_ = 28
+    Muhenkan_ = 29
+    Space_ = 32
+    PageUp_
+    PageDown_
+    End_
+    Home_
+    Left_
+    Up_
+    Down_
+    Right_
+    Select_
+    Print_
+    Execute_
+    PrintScreen_
+    Insert_
+    Delete_
+    Help_
+    k0_
+    k1_
+    k2_
+    k3_
+    k4_
+    k5_
+    k6_
+    k7_
+    k8_
+    k9_
+    A_ = 65
+    B_
+    C_
+    D_
+    E_
+    F_
+    G_
+    H_
+    I_
+    J_
+    K_
+    L_
+    M_
+    N_
+    O_
+    P_
+    Q_
+    R_
+    S_
+    T_
+    U_
+    V_
+    W_
+    X_
+    Y_
+    Z_
+    WinLeft_
+    WinRight_
+    Application_
+    Numpad0_ = 96
+    Numpad1_
+    Numpad2_
+    Numpad3_
+    Numpad4_
+    Numpad5_
+    Numpad6_
+    Numpad7_
+    Numpad8_
+    Numpad9_
+    NumpadMultiply_     'テンキーの *
+    NumpadAdd_          'テンキーの +
+    NumpadEnter_        'テンキーの Enter
+    NumpadSubstract_    'テンキーの -
+    NumpadDecimal_      'テンキーの .
+    NumpadDivide_       'テンキーの /
+    F1_
+    F2_
+    F3_
+    F4_
+    F5_
+    F6_
+    F7_
+    F8_
+    F9_
+    F10_
+    F11_
+    F12_
+    F13_
+    F14_
+    F15_
+    F16_
+    NumLock_ = 144
+    ScrollLock_
+
+    ShiftLeft_ = 160       'Left Shift
+    ShiftRight_            'Right Shift
+    CtrlLeft_              'Left Ctrl
+    CtrlRight_             'Right Ctrl
+    AltLeft_               'Left Alt
+    AltRight_              'Right Alt
+
+    'Shift_JIS 配列
+    Coron_ = 186                ' :  (Shift: *)
+    Semicoron_                  ' ;  (Shift: +)
+    Comma_                      ' ,  (Shift: <)
+    Minus_                      ' -  (Shift: =)
+    Period_                     ' .  (Shift: >)
+    Slash_                      ' /  (Shift: ?)
+    AtMark_                     ' @  (Shift: `)
+    OpeningSquareBracket_ = 219 ' [  (Shift: {)
+    Backslash_                  ' ¥  (Shift: |)  上側の ¥
+    ClosingSquareBracket_       ' ]  (Shift: })
+    Caret_                      ' ^  (Shift: ‾)
+    Underscore_ = 226           ' ¥  (Shift: _)  下側の ¥
+    Eisu_ = 240                 ' Caps Lock
+    Katakana_ = 242             ' カタカナ ひらがな
+    HankakuZenkaku_             ' 半角/全角
+
+    Ctrl_ = 512
+    Shift_ = 1024
+    Alt_ = 2048
+End Enum
+
+Private Function keystrokeAPI(ByVal key As Integer)
+    Dim Ctrl As Boolean
+    Dim Shift As Boolean
+    Dim Alt As Boolean
+
+    Ctrl = ((key ¥ Ctrl_) And 1) = 1
+    Shift = ((key ¥ Shift_) And 1) = 1
+    Alt = ((key ¥ Alt_) And 1) = 1
+
+    key = key And &HFF
+
+    If Ctrl Then keybd_event vbKeyControl, 0, 0, 0
+    If Shift Then keybd_event vbKeyShift, 0, 0, 0
+    If Alt Then keybd_event vbKeyMenu, 0, 0, 0
+
+    keybd_event key, 0, 0, 0
+    keybd_event key, 0, KEYUP, 0
+
+    If Alt Then keybd_event vbKeyMenu, 0, KEYUP, 0
+    If Shift Then keybd_event vbKeyShift, 0, KEYUP, 0
+    If Ctrl Then keybd_event vbKeyControl, 0, KEYUP, 0
+End Function
+
+' /**
+'  * 指定されたキーを順番に押す
+'  * (Ctrlキーなどの解放はしない。手動でやったときに使う)
+'  *
+'  * Alt + H を押した後 I を押す
+'  *     Call keystrokeWithoutKeyup(Alt_ + H_, I_)
+'  */
+Function keystrokeWithoutKeyup(ParamArray keys() As Variant)
+    Dim i As Integer
+    Dim u As Integer
+
+    u = UBound(keys)
+
+    For i = LBound(keys) To u
+        Call keystrokeAPI(keys(i))
+    Next i
+End Function
+
+' /**
+'  * 指定されたキーを順番に押す。なお遅くなるので長押しするようなキーには不向き
+'  * (Ctrlキーなどを解放する。)
+'  *
+'  * @param releaseShiftKey: Shiftキーの解放をする(True)/しない(False)
+'  *
+'  * Alt + H を押した後 I を押す
+'  *     Call keystroke(True, Alt_ + H_, I_)
+'  */
+Function keystroke(ByVal releaseShiftKey As Boolean, ParamArray keys() As Variant)
+    Dim i As Integer
+    Dim u As Integer
+
+    Call keyupControlKeys
+
+    If releaseShiftKey Then
+        Call releaseShiftKeys
+    End If
+
+    u = UBound(keys)
+
+    For i = LBound(keys) To u
+        Call keystrokeAPI(keys(i))
+    Next i
+
+    Call unkeyupControlKeys
+End Function
+
 Function releaseShiftKeys()
     If GetKeyState(LSHIFT) > 0 Then
         keybd_event LSHIFT, 0, KEYUP, 0

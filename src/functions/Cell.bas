@@ -3,15 +3,7 @@ Option Explicit
 Option Private Module
 
 Function cutCell()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyX, 0, 0, 0
-    keybd_event vbKeyX, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl_ + X_)
 
     If TypeName(Selection) = "Range" Then
         Set gLastYanked = Selection
@@ -19,15 +11,7 @@ Function cutCell()
 End Function
 
 Function yankCell()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyC, 0, 0, 0
-    keybd_event vbKeyC, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl_ + C_)
 
     If TypeName(Selection) = "Range" Then
         Set gLastYanked = Selection
@@ -35,75 +19,19 @@ Function yankCell()
 End Function
 
 Function yankFromUpCell()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyD, 0, 0, 0
-    keybd_event vbKeyD, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, F_, I_, D_)
 End Function
 
 Function yankFromDownCell()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyU, 0, 0, 0
-    keybd_event vbKeyU, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, F_, I_, U_)
 End Function
 
 Function yankFromLeftCell()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyR, 0, 0, 0
-    keybd_event vbKeyR, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, F_, I_, R_)
 End Function
 
 Function yankFromRightCell()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyL, 0, 0, 0
-    keybd_event vbKeyL, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, F_, I_, L_)
 End Function
 
 Function incrementText()
@@ -113,12 +41,7 @@ Function incrementText()
     Call releaseShiftKeys
 
     For i = 1 To gCount
-        keybd_event vbKeyMenu, 0, 0, 0
-        keybd_event vbKeyH, 0, 0, 0
-        keybd_event vbKeyH, 0, KEYUP, 0
-        keybd_event vbKeyMenu, 0, KEYUP, 0
-        keybd_event vbKey6, 0, 0, 0
-        keybd_event vbKey6, 0, KEYUP, 0
+        Call keystrokeWithoutKeyup(Alt_ + H_, k6_)
     Next i
 
     Call unkeyupControlKeys
@@ -131,12 +54,7 @@ Function decrementText()
     Call releaseShiftKeys
 
     For i = 1 To gCount
-        keybd_event vbKeyMenu, 0, 0, 0
-        keybd_event vbKeyH, 0, 0, 0
-        keybd_event vbKeyH, 0, KEYUP, 0
-        keybd_event vbKeyMenu, 0, KEYUP, 0
-        keybd_event vbKey5, 0, 0, 0
-        keybd_event vbKey5, 0, KEYUP, 0
+        Call keystrokeWithoutKeyup(Alt_ + H_, k5_)
     Next i
 
     Call unkeyupControlKeys
@@ -149,12 +67,7 @@ Function increaseDecimal()
     Call releaseShiftKeys
 
     For i = 1 To gCount
-        keybd_event vbKeyMenu, 0, 0, 0
-        keybd_event vbKeyH, 0, 0, 0
-        keybd_event vbKeyH, 0, KEYUP, 0
-        keybd_event vbKeyMenu, 0, KEYUP, 0
-        keybd_event vbKey0, 0, 0, 0
-        keybd_event vbKey0, 0, KEYUP, 0
+        Call keystrokeWithoutKeyup(Alt_ + H_, k0_)
     Next i
 
     Call unkeyupControlKeys
@@ -167,12 +80,7 @@ Function decreaseDecimal()
     Call releaseShiftKeys
 
     For i = 1 To gCount
-        keybd_event vbKeyMenu, 0, 0, 0
-        keybd_event vbKeyH, 0, 0, 0
-        keybd_event vbKeyH, 0, KEYUP, 0
-        keybd_event vbKeyMenu, 0, KEYUP, 0
-        keybd_event vbKey9, 0, 0, 0
-        keybd_event vbKey9, 0, KEYUP, 0
+        Call keystrokeWithoutKeyup(Alt_ + H_, k9_)
     Next i
 
     Call unkeyupControlKeys
@@ -187,22 +95,9 @@ Function insertCellsUp()
         Selection.Resize(gCount, Selection.Columns.Count).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyShift, 0, 0, 0
-    keybd_event &HBB, 0, 0, 0
-    keybd_event &HBB, 0, KEYUP, 0
-    keybd_event vbKeyShift, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    keybd_event vbKeyD, 0, 0, 0
-    keybd_event vbKeyD, 0, KEYUP, 0
-    keybd_event vbKeyReturn, 0, 0, 0
-    keybd_event vbKeyReturn, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, D_, Enter_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
@@ -218,22 +113,9 @@ Function insertCellsDown()
         Selection.Resize(gCount, Selection.Columns.Count).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyShift, 0, 0, 0
-    keybd_event &HBB, 0, 0, 0
-    keybd_event &HBB, 0, KEYUP, 0
-    keybd_event vbKeyShift, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    keybd_event vbKeyD, 0, 0, 0
-    keybd_event vbKeyD, 0, KEYUP, 0
-    keybd_event vbKeyReturn, 0, 0, 0
-    keybd_event vbKeyReturn, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, D_, Enter_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
@@ -245,22 +127,9 @@ Function insertCellsLeft()
         Selection.Resize(Selection.Rows.Count, gCount).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyShift, 0, 0, 0
-    keybd_event &HBB, 0, 0, 0
-    keybd_event &HBB, 0, KEYUP, 0
-    keybd_event vbKeyShift, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyReturn, 0, 0, 0
-    keybd_event vbKeyReturn, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, I_, Enter_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
@@ -276,33 +145,14 @@ Function insertCellsRight()
         Selection.Resize(Selection.Rows.Count, gCount).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyShift, 0, 0, 0
-    keybd_event &HBB, 0, 0, 0
-    keybd_event &HBB, 0, KEYUP, 0
-    keybd_event vbKeyShift, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyReturn, 0, 0, 0
-    keybd_event vbKeyReturn, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, I_, Enter_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
 Function deleteValue()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyDelete, 0, 0, 0
-    keybd_event vbKeyDelete, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Delete_)
 End Function
 
 Function deleteToUp()
@@ -313,20 +163,9 @@ Function deleteToUp()
         Selection.Resize(gCount, Selection.Columns.Count).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeySubtract, 0, 0, 0
-    keybd_event vbKeySubtract, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    keybd_event vbKeyU, 0, 0, 0
-    keybd_event vbKeyU, 0, KEYUP, 0
-    keybd_event vbKeyReturn, 0, 0, 0
-    keybd_event vbKeyReturn, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Minus_, U_, Enter_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
@@ -336,35 +175,14 @@ Function deleteToLeft()
         Selection.Resize(Selection.Rows.Count, gCount).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeySubtract, 0, 0, 0
-    keybd_event vbKeySubtract, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    keybd_event vbKeyL, 0, 0, 0
-    keybd_event vbKeyL, 0, KEYUP, 0
-    keybd_event vbKeyReturn, 0, 0, 0
-    keybd_event vbKeyReturn, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Minus_, L_, Enter_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
 Function toggleWrapText()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyW, 0, 0, 0
-    keybd_event vbKeyW, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, W_)
 End Function
 
 Function toggleMergeCells()
@@ -373,25 +191,11 @@ Function toggleMergeCells()
             Exit Function
         End If
 
-        Call keyupControlKeys
-        Call releaseShiftKeys
-
-        keybd_event vbKeyMenu, 0, 0, 0
-        keybd_event vbKeyH, 0, 0, 0
-        keybd_event vbKeyH, 0, KEYUP, 0
-        keybd_event vbKeyMenu, 0, KEYUP, 0
-        keybd_event vbKeyM, 0, 0, 0
-        keybd_event vbKeyM, 0, KEYUP, 0
-
         If ActiveCell.MergeCells Then
-            keybd_event vbKeyU, 0, 0, 0
-            keybd_event vbKeyU, 0, KEYUP, 0
+            Call keystroke(True, Alt_ + H_, M_, U_)
         Else
-            keybd_event vbKeyM, 0, 0, 0
-            keybd_event vbKeyM, 0, KEYUP, 0
+            Call keystroke(True, Alt_ + H_, M_, M_)
         End If
-
-        Call unkeyupControlKeys
     End If
 End Function
 

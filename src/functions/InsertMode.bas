@@ -3,140 +3,57 @@ Option Explicit
 Option Private Module
 
 Function insertWithIME()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        keybd_event vbKeyReturn, 0, 0, 0
-        keybd_event vbKeyReturn, 0, KEYUP, 0
+        Call keystroke(True, Space_, BackSpace_, Ctrl_ + Home_, Kanji_)
     Else
-        keybd_event vbKeyF2, 0, 0, 0
-        keybd_event vbKeyF2, 0, KEYUP, 0
+        Call keystroke(True, F2_, Ctrl_ + Home_, Kanji_)
     End If
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyHome, 0, EXTENDED_KEY Or 0, 0
-    keybd_event vbKeyHome, 0, EXTENDED_KEY Or KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-    keybd_event KANJI, 0, 0, 0
-    keybd_event KANJI, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
 End Function
 
 Function insertWithoutIME()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        keybd_event vbKeyReturn, 0, 0, 0
-        keybd_event vbKeyReturn, 0, KEYUP, 0
+        Call keystroke(True, Space_, BackSpace_, Ctrl_ + Home_)
     Else
-        keybd_event vbKeyF2, 0, 0, 0
-        keybd_event vbKeyF2, 0, KEYUP, 0
+        Call keystroke(True, F2_, Ctrl_ + Home_)
     End If
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyHome, 0, EXTENDED_KEY Or 0, 0
-    keybd_event vbKeyHome, 0, EXTENDED_KEY Or KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
 End Function
 
 Function appendWithIME()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        keybd_event vbKeyReturn, 0, 0, 0
-        keybd_event vbKeyReturn, 0, KEYUP, 0
-        keybd_event vbKeyRight, 0, 0, 0
-        keybd_event vbKeyRight, 0, KEYUP, 0
+        Call keystroke(True, Space_, BackSpace_, Ctrl_ + End_, Kanji_)
     Else
-        keybd_event vbKeyF2, 0, 0, 0
-        keybd_event vbKeyF2, 0, KEYUP, 0
+        Call keystroke(True, F2_, Kanji_)
     End If
-
-    keybd_event KANJI, 0, 0, 0
-    keybd_event KANJI, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
 End Function
 
 Function appendWithoutIME()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        keybd_event vbKeyReturn, 0, 0, 0
-        keybd_event vbKeyReturn, 0, KEYUP, 0
-        keybd_event vbKeyRight, 0, 0, 0
-        keybd_event vbKeyRight, 0, KEYUP, 0
+        Call keystroke(True, Space_, BackSpace_, Ctrl_ + End_)
     Else
-        keybd_event vbKeyF2, 0, 0, 0
-        keybd_event vbKeyF2, 0, KEYUP, 0
+        Call keystroke(True, F2_)
     End If
-
-    Call unkeyupControlKeys
 End Function
 
 Function substituteWithIME()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        keybd_event vbKeyReturn, 0, 0, 0
-        keybd_event vbKeyReturn, 0, KEYUP, 0
+        Call keystroke(True, Enter_, Delete_, Kanji_)
     Else
-        keybd_event vbKeyF2, 0, 0, 0
-        keybd_event vbKeyF2, 0, KEYUP, 0
-        keybd_event vbKeyShift, 0, 0, 0
-        keybd_event vbKeyControl, 0, 0, 0
-        keybd_event vbKeyHome, 0, EXTENDED_KEY Or 0, 0
-        keybd_event vbKeyHome, 0, EXTENDED_KEY Or KEYUP, 0
-        keybd_event vbKeyControl, 0, KEYUP, 0
-        keybd_event vbKeyShift, 0, KEYUP, 0
+        Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_ + Kanji_)
     End If
-
-    keybd_event vbKeyDelete, 0, EXTENDED_KEY Or 0, 0
-    keybd_event vbKeyDelete, 0, EXTENDED_KEY Or KEYUP, 0
-    keybd_event KANJI, 0, 0, 0
-    keybd_event KANJI, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
 End Function
 
 Function substituteWithoutIME()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        keybd_event vbKeyReturn, 0, 0, 0
-        keybd_event vbKeyReturn, 0, KEYUP, 0
+        Call keystroke(True, Enter_, Delete_)
     Else
-        keybd_event vbKeyF2, 0, 0, 0
-        keybd_event vbKeyF2, 0, KEYUP, 0
-        keybd_event vbKeyShift, 0, 0, 0
-        keybd_event vbKeyControl, 0, 0, 0
-        keybd_event vbKeyHome, 0, EXTENDED_KEY Or 0, 0
-        keybd_event vbKeyHome, 0, EXTENDED_KEY Or KEYUP, 0
-        keybd_event vbKeyControl, 0, KEYUP, 0
-        keybd_event vbKeyShift, 0, KEYUP, 0
+        Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_)
     End If
-
-    keybd_event vbKeyDelete, 0, EXTENDED_KEY Or 0, 0
-    keybd_event vbKeyDelete, 0, EXTENDED_KEY Or KEYUP, 0
-
-    Call unkeyupControlKeys
-
 End Function
 
 Function insertFollowLangMode()

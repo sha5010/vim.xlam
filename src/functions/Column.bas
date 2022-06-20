@@ -40,18 +40,9 @@ Function insertColumns()
         Selection.EntireColumn.Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyC, 0, 0, 0
-    keybd_event vbKeyC, 0, KEYUP, 0
+    Call keystroke(True, Alt_ + I_, C_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
@@ -69,18 +60,9 @@ Function appendColumns()
         Selection.EntireColumn.Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyC, 0, 0, 0
-    keybd_event vbKeyC, 0, KEYUP, 0
+    Call keystroke(True, Alt_ + I_, C_)
 
 Catch:
-    Call unkeyupControlKeys
     Application.ScreenUpdating = True
 End Function
 
@@ -102,16 +84,9 @@ Function deleteColumns()
         End If
     End With
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeySubtract, 0, 0, 0
-    keybd_event vbKeySubtract, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-    Call unkeyupControlKeys
 
     t.Activate
     Set t = Nothing
@@ -126,16 +101,9 @@ Function deleteToLeftEndColumns()
         .Range(.Columns(1), .Columns(ActiveCell.Columns)).Select
     End With
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeySubtract, 0, 0, 0
-    keybd_event vbKeySubtract, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 Function deleteToRightEndColumns()
@@ -149,16 +117,9 @@ Function deleteToRightEndColumns()
         .Range(.Columns(ActiveCell.Column), .Columns(.UsedRange.Item(.UsedRange.Count).Column)).Select
     End With
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeySubtract, 0, 0, 0
-    keybd_event vbKeySubtract, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 Function deleteToLeftOfCurrentRegionColumns()
@@ -168,16 +129,9 @@ Function deleteToLeftOfCurrentRegionColumns()
         .Range(.Columns(ActiveCell.CurrentRegion.Item(1).Column), .Columns(ActiveCell.Column)).Select
     End With
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeySubtract, 0, 0, 0
-    keybd_event vbKeySubtract, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 Function deleteToRightOfCurrentRegionColumns()
@@ -187,16 +141,9 @@ Function deleteToRightOfCurrentRegionColumns()
         .Range(.Columns(ActiveCell.Column), .Columns(ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Column)).Select
     End With
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeySubtract, 0, 0, 0
-    keybd_event vbKeySubtract, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 Function yankColumns()
@@ -394,16 +341,9 @@ Function hideColumns()
         Selection.Resize(Selection.Rows.Count, gCount).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKey0, 0, 0, 0
-    keybd_event vbKey0, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + k0_)
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 
@@ -414,16 +354,8 @@ Function unhideColumns()
         Selection.Resize(Selection.Rows.Count, gCount).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
     'ref: https://excel.nj-clucker.com/ctrl-shift-0-not-working/
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyShift, 0, 0, 0
-    keybd_event vbKey0, 0, 0, 0
-    keybd_event vbKey0, 0, KEYUP, 0
-    keybd_event vbKeyShift, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
+    Call keystroke(True, Ctrl_ + Shift_ + k0_)
 
 '    keybd_event vbKeyMenu, 0, 0, 0
 '    keybd_event vbKeyH, 0, 0, 0
@@ -437,7 +369,6 @@ Function unhideColumns()
 '    keybd_event vbKeyMenu, 0, KEYUP, 0
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 Function groupColumns()
@@ -459,19 +390,9 @@ Function groupColumns()
         End If
     End With
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyShift, 0, 0, 0
-    keybd_event vbKeyRight, 0, 0, 0
-    keybd_event vbKeyRight, 0, KEYUP, 0
-    keybd_event vbKeyShift, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
+    Call keystroke(True, Alt_ + Shift_ + Right_)
 
 Catch:
-    Call unkeyupControlKeys
-
     t.Activate
     Set t = Nothing
 
@@ -497,18 +418,8 @@ Function ungroupColumns()
         End If
     End With
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyShift, 0, 0, 0
-    keybd_event vbKeyLeft, 0, 0, 0
-    keybd_event vbKeyLeft, 0, KEYUP, 0
-    keybd_event vbKeyShift, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-
+    Call keystroke(True, Alt_ + Shift_ + Left_)
 Catch:
-    Call unkeyupControlKeys
 
     t.Activate
     Set t = Nothing
@@ -558,20 +469,9 @@ Function adjustColumnsWidth()
         Selection.Resize(Selection.Rows.Count, gCount).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyO, 0, 0, 0
-    keybd_event vbKeyO, 0, KEYUP, 0
-    keybd_event vbKeyI, 0, 0, 0
-    keybd_event vbKeyI, 0, KEYUP, 0
+    Call keystroke(True, Alt_ + H_, O_, I_)
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 Function setColumnsWidth()
@@ -581,20 +481,9 @@ Function setColumnsWidth()
         Selection.Resize(Selection.Rows.Count, gCount).Select
     End If
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyO, 0, 0, 0
-    keybd_event vbKeyO, 0, KEYUP, 0
-    keybd_event vbKeyW, 0, 0, 0
-    keybd_event vbKeyW, 0, KEYUP, 0
+    Call keystroke(True, Alt_ + H_, O_, W_)
 
 Catch:
-    Call unkeyupControlKeys
 End Function
 
 
