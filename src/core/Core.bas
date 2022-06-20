@@ -138,6 +138,11 @@ Sub resumeVim()
     Call setStatusBarTemporarily("再開しました。", 1)
 
     Set X.TempApp = Nothing
+    gVimMode = True
+
+    If IMEStatus <> vbIMEModeOff Then
+        SendKeys "{kanji}"
+    End If
 
     If VarType(Selection) = vbObject Then
         Call keyupControlKeys
