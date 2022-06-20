@@ -21,15 +21,7 @@ Function pasteSmart()
 End Function
 
 Function paste_CtrlV()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKeyV, 0, 0, 0
-    keybd_event vbKeyV, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl_ + V_)
 End Function
 
 Function pasteRows()
@@ -50,15 +42,7 @@ Function pasteRows()
             .Range(.Rows(startRow), .Rows(endRow)).Select
         End If
 
-        Call keyupControlKeys
-        Call releaseShiftKeys
-
-        keybd_event vbKeyControl, 0, 0, 0
-        keybd_event vbKeyAdd, 0, 0, 0
-        keybd_event vbKeyAdd, 0, KEYUP, 0
-        keybd_event vbKeyControl, 0, KEYUP, 0
-
-        Call unkeyupControlKeys
+        Call keystroke(True, Ctrl_ + NumpadAdd_)
     End With
 
     gLastYanked.Copy
@@ -82,15 +66,7 @@ Function pasteColumns()
             .Range(.Columns(startColumn), .Columns(endColumn)).Select
         End If
 
-        Call keyupControlKeys
-        Call releaseShiftKeys
-
-        keybd_event vbKeyControl, 0, 0, 0
-        keybd_event vbKeyAdd, 0, 0, 0
-        keybd_event vbKeyAdd, 0, KEYUP, 0
-        keybd_event vbKeyControl, 0, KEYUP, 0
-
-        Call unkeyupControlKeys
+        Call keystroke(True, Ctrl_ + NumpadAdd_)
     End With
     gLastYanked.Copy
 End Function
@@ -106,30 +82,15 @@ Function pasteValue()
     End If
     cbType = cb(2)
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
     If Application.CutCopyMode > 0 Then 'Cells
-        keybd_event vbKeyMenu, 0, 0, 0
-        keybd_event vbKeyH, 0, 0, 0
-        keybd_event vbKeyH, 0, KEYUP, 0
-        keybd_event vbKeyMenu, 0, KEYUP, 0
-        keybd_event vbKeyV, 0, 0, 0
-        keybd_event vbKeyV, 0, KEYUP, 0
-        keybd_event vbKeyT, 0, 0, 0
-        keybd_event vbKeyT, 0, KEYUP, 0
+        Call keystroke(True, Alt_ + H_, V_ + T_)
 
     ElseIf cbType = xlClipboardFormatText Then
-        keybd_event vbKeyControl, 0, 0, 0
-        keybd_event vbKeyV, 0, 0, 0
-        keybd_event vbKeyV, 0, KEYUP, 0
-        keybd_event vbKeyControl, 0, KEYUP, 0
+        Call keystroke(True, Ctrl_ + V_)
 
     Else
         Call debugPrint("Unknown ClipboardType: " & cbType, "pasteValue")
     End If
-
-    Call unkeyupControlKeys
 End Function
 
 Function pasteSpecial()

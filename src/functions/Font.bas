@@ -3,217 +3,59 @@ Option Explicit
 Option Private Module
 
 Function increaseFontSize()
-    On Error GoTo Catch
-'    Selection.Font.Size = Selection.Font.Size + 1
-    Call keyupControlKeys
-    'Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyG, 0, 0, 0
-    keybd_event vbKeyG, 0, KEYUP, 0
-
-Catch:
-    Call unkeyupControlKeys
+    Call keystroke(False, Alt_ + H_, F_, G_)
 End Function
 
 Function decreaseFontSize()
-    On Error GoTo Catch
-'    Selection.Font.Size = Selection.Font.Size - 1
-    Call keyupControlKeys
-    'Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyK, 0, 0, 0
-    keybd_event vbKeyK, 0, KEYUP, 0
-
-Catch:
-    Call unkeyupControlKeys
+    Call keystroke(False, Alt_ + H_, F_, K_)
 End Function
 
 Function changeFontName()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, F_, F_)
 End Function
 
 Function changeFontSize()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyF, 0, 0, 0
-    keybd_event vbKeyF, 0, KEYUP, 0
-    keybd_event vbKeyS, 0, 0, 0
-    keybd_event vbKeyS, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, F_, S_)
 End Function
 
 Function alignLeft()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyA, 0, 0, 0
-    keybd_event vbKeyA, 0, KEYUP, 0
-    keybd_event vbKeyL, 0, 0, 0
-    keybd_event vbKeyL, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, A_, L_)
 End Function
 
 Function alignCenter()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyA, 0, 0, 0
-    keybd_event vbKeyA, 0, KEYUP, 0
-    keybd_event vbKeyC, 0, 0, 0
-    keybd_event vbKeyC, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, A_, C_)
 End Function
 
 Function alignRight()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyA, 0, 0, 0
-    keybd_event vbKeyA, 0, KEYUP, 0
-    keybd_event vbKeyR, 0, 0, 0
-    keybd_event vbKeyR, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, A_, R_)
 End Function
 
 Function alignTop()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyA, 0, 0, 0
-    keybd_event vbKeyA, 0, KEYUP, 0
-    keybd_event vbKeyT, 0, 0, 0
-    keybd_event vbKeyT, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, A_, T_)
 End Function
 
 Function alignMiddle()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyA, 0, 0, 0
-    keybd_event vbKeyA, 0, KEYUP, 0
-    keybd_event vbKeyM, 0, 0, 0
-    keybd_event vbKeyM, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, A_, M_)
 End Function
 
 Function alignBottom()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyMenu, 0, 0, 0
-    keybd_event vbKeyH, 0, 0, 0
-    keybd_event vbKeyH, 0, KEYUP, 0
-    keybd_event vbKeyMenu, 0, KEYUP, 0
-    keybd_event vbKeyA, 0, 0, 0
-    keybd_event vbKeyA, 0, KEYUP, 0
-    keybd_event vbKeyB, 0, 0, 0
-    keybd_event vbKeyB, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Alt_ + H_, A_, B_)
 End Function
 
 Function toggleBold()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKey2, 0, 0, 0
-    keybd_event vbKey2, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl + k2_)
 End Function
 
 Function toggleItalic()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKey3, 0, 0, 0
-    keybd_event vbKey3, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl + k3_)
 End Function
 
 Function toggleUnderline()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKey4, 0, 0, 0
-    keybd_event vbKey4, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl + k4_)
 End Function
 
 Function showFontDialog()
-    Call keyupControlKeys
-    Call releaseShiftKeys
-
-    keybd_event vbKeyControl, 0, 0, 0
-    keybd_event vbKey1, 0, 0, 0
-    keybd_event vbKey1, 0, KEYUP, 0
-    keybd_event vbKeyControl, 0, KEYUP, 0
-
-    Call unkeyupControlKeys
+    Call keystroke(True, Ctrl + k1_)
 End Function
 
 Function changeFontColor()

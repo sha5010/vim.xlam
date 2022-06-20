@@ -145,13 +145,7 @@ Sub resumeVim()
     End If
 
     If VarType(Selection) = vbObject Then
-        Call keyupControlKeys
-        Call releaseShiftKeys
-
-        keybd_event vbKeyEscape, 0, 0, 0
-        keybd_event vbKeyEscape, 0, KEYUP, 0
-
-        Call unkeyupControlKeys
+        Call keystroke(True, Escape_)
     End If
 End Sub
 
