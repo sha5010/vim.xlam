@@ -267,3 +267,16 @@ Function exceptSelectCells()
     End If
 End Function
 
+Function followHyperlinkOfActiveCell()
+    On Error Resume Next
+
+    If TypeName(Selection) <> "Range" Then
+        Exit Function
+    End If
+
+    If ActiveCell.Hyperlinks.Count > 0 Then
+        ActiveCell.Hyperlinks(1).Follow
+    ElseIf InStr(UCase(ActiveCell.Formula), "=HYPERLINK(") > 0 Then
+        ActiveWorkbook.followHyperlink Split(ActiveCell.Formula, """")(1)
+    End If
+End Function
