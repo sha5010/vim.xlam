@@ -336,6 +336,25 @@ Sub initMapping()
     Call map("b", "c", "changeShapeBorderColor", requireArguments:=True)
 
 
+    'Comment
+    Call map("C", "i", "editCellComment")
+    Call map("C", "c", "editCellComment")
+    Call map("C", "e", "deleteCellComment")
+    Call map("C", "x", "deleteCellComment")
+    Call map("C", "d", "deleteCellComment")
+    Call map("C", "E", "deleteCellCommentAll")
+    Call map("C", "D", "deleteCellCommentAll")
+    Call map("C", "a", "toggleCellComment")
+    Call map("C", "r", "showCellComment")
+    Call map("C", "m", "hideCellComment")
+    Call map("C", "A", "toggleCellCommentAll")
+    Call map("C", "R", "showCellCommentAll")
+    Call map("C", "M", "hideCellCommentAll")
+    Call map("C", "H", "hideCellCommentIndicator")
+    Call map("C", "n", "nextCommentedCell")
+    Call map("C", "p", "prevCommentedCell")
+
+
     'Find & Replace
     Call map("/", "", "showFindFollowLang")
     Call map("?", "", "showFindNotFollowLang")
