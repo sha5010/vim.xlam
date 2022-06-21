@@ -43,19 +43,19 @@ Function alignBottom()
 End Function
 
 Function toggleBold()
-    Call keystroke(True, Ctrl + k2_)
+    Call keystroke(True, Ctrl_ + k2_)
 End Function
 
 Function toggleItalic()
-    Call keystroke(True, Ctrl + k3_)
+    Call keystroke(True, Ctrl_ + k3_)
 End Function
 
 Function toggleUnderline()
-    Call keystroke(True, Ctrl + k4_)
+    Call keystroke(True, Ctrl_ + k4_)
 End Function
 
 Function showFontDialog()
-    Call keystroke(True, Ctrl + k1_)
+    Call keystroke(True, Ctrl_ + k1_)
 End Function
 
 Function changeFontColor()
