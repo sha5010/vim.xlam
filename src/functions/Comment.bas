@@ -23,7 +23,7 @@ Function deleteCellCommentAll()
     End If
 
     '確認メッセージ
-    If MsgBox("アクティブシート上のすべてのコメントを削除します。よろしいですか?" & _
+    If MsgBox("アクティブシート上のすべてのコメントを削除します。よろしいですか?" & vbLf & _
               "　※この操作は取り消せません。", vbExclamation + vbYesNo + vbDefaultButton2) = vbNo Then
         Exit Function
     End If
