@@ -15,7 +15,13 @@ Function closeWithSaving()
 End Function
 
 Function saveWorkbook()
-    ActiveWorkbook.Save
+    If ActiveWorkbook.Path = "" Then
+        Application.CommandBars.ExecuteMso "FileSaveAs"
+    ElseIf ActiveWorkbook.ReadOnly Then
+        Application.CommandBars.ExecuteMso "FileSaveAs"
+    Else
+        ActiveWorkbook.Save
+    End If
 End Function
 
 Function openWorkbook()
