@@ -234,28 +234,30 @@ End Function
 
 Function nextWorkbook()
     Dim i As Integer
+    Dim idx As Integer
 
-    i = getWorkbookIndex(ActiveWorkbook) - 1
-    Do
-        i = ((i + 1) Mod Workbooks.Count) + 1
-        If Windows(Workbooks(i).Name).Visible Then
-            Workbooks(i).Activate
+    idx = getWorkbookIndex(ActiveWorkbook)
+    For i = 1 To Workbooks.Count
+        idx = (idx Mod Workbooks.Count) + 1
+        If Windows(Workbooks(idx).Name).Visible Then
+            Workbooks(idx).Activate
             Exit Function
         End If
-    Loop
+    Next i
 End Function
 
 Function previousWorkbook()
     Dim i As Integer
+    Dim idx As Integer
 
-    i = getWorkbookIndex(ActiveWorkbook) - 1
-    Do
-        i = ((i - 1 + Workbooks.Count) Mod Workbooks.Count) + 1
-        If Windows(Workbooks(i).Name).Visible Then
-            Workbooks(i).Activate
+    idx = getWorkbookIndex(ActiveWorkbook)
+    For i = 1 To Workbooks.Count
+        idx = ((idx - 2 + Workbooks.Count) Mod Workbooks.Count) + 1
+        If Windows(Workbooks(idx).Name).Visible Then
+            Workbooks(idx).Activate
             Exit Function
         End If
-    Loop
+    Next i
 End Function
 
 Function toggleReadOnly()

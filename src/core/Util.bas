@@ -163,6 +163,11 @@ End Function
 Function getWorkbookIndex(ByVal targetWorkbook As Workbook) As Integer
     Dim i As Integer
 
+    If targetWorkbook Is Nothing Then
+        getWorkbookIndex = 0
+        Exit Function
+    End If
+
     For i = 1 To Workbooks.Count
         If Workbooks(i).FullName = targetWorkbook.FullName Then
             getWorkbookIndex = i
