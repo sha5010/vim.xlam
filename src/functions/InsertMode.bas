@@ -43,7 +43,7 @@ Function substituteWithIME()
         Call temporarilyDisableVim
         Call keystroke(True, Enter_, Delete_, Kanji_)
     Else
-        Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_ + Kanji_)
+        Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_, Kanji_)
     End If
 End Function
 
