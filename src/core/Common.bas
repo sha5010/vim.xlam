@@ -52,8 +52,8 @@ Public Enum vKey
     Home_
     Left_
     Up_
-    Down_
     Right_
+    Down_
     Select_
     Print_
     Execute_
