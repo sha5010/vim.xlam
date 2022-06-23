@@ -62,7 +62,7 @@ Function changeFontColor()
     Dim resultColor As cls_FontColor
     Dim colorTable As Variant
 
-    If TypeName(Selection) Is Nothing Then
+    If TypeName(Selection) = "Nothing" Then
         Exit Function
     End If
 
