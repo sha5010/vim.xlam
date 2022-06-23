@@ -76,7 +76,10 @@ Sub setStatusBar(Optional ByVal str As String = "", _
     End If
 End Sub
 
-Sub setStatusBarTemporarily(ByVal str As String, ByVal seconds As Byte)
+Sub setStatusBarTemporarily(ByVal str As String, _
+                            ByVal seconds As Byte, _
+                   Optional ByVal disablePrefix As Boolean = False)
+
     Dim i As Integer
     Dim startDate As Date
     Static lastRegisterTime As Double
@@ -89,7 +92,11 @@ Sub setStatusBarTemporarily(ByVal str As String, ByVal seconds As Byte)
 
     lastRegisterTime = CDbl(startDate) + (Timer + seconds) / 86400
 
-    Call setStatusBar(STATUS_PREFIX & str)
+    If disablePrefix Then
+        Call setStatusBar(str)
+    Else
+        Call setStatusBar(STATUS_PREFIX & str)
+    End If
     Call Application.OnTime(lastRegisterTime, "setStatusBar")
 End Sub
 

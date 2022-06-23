@@ -361,6 +361,8 @@ Sub initMapping()
     Call map("n", "", "nextFoundCell")
     Call map("N", "", "previousFoundCell")
     Call map("R", "", "showReplaceWindow")
+    Call map("*", "", "findActiveValueNext")
+    Call map("#", "", "findActiveValuePrev")
 
 
     'Scrolling

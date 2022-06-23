@@ -65,3 +65,61 @@ Function showReplaceWindow()
     Call keystroke(True, Alt_ + E_, E_)
 End Function
 
+Function findActiveValueNext()
+    Dim t As Range
+    Dim findText As String
+
+    If ActiveCell Is Nothing Then
+        Exit Function
+    End If
+
+    findText = ActiveCell.Value
+
+    If findText = "" Then
+        Exit Function
+    End If
+
+    Set t = ActiveSheet.Cells.Find(What:=findText, _
+                                   After:=ActiveCell, _
+                                   LookIn:=xlValues, _
+                                   LookAt:=xlPart, _
+                                   SearchOrder:=xlByColumns, _
+                                   MatchByte:=False)
+
+    If Not t Is Nothing Then
+        ActiveWorkbook.ActiveSheet.Activate
+        t.Activate
+    End If
+
+    Call setStatusBarTemporarily("/" & findText, 2, disablePrefix:=True)
+End Function
+
+Function findActiveValuePrev()
+    Dim t As Range
+    Dim findText As String
+
+    If ActiveCell Is Nothing Then
+        Exit Function
+    End If
+
+    findText = ActiveCell.Value
+
+    If findText = "" Then
+        Exit Function
+    End If
+
+    Set t = ActiveSheet.Cells.Find(What:=findText, _
+                                   After:=ActiveCell, _
+                                   LookIn:=xlValues, _
+                                   LookAt:=xlPart, _
+                                   SearchOrder:=xlByColumns, _
+                                   MatchByte:=False)
+
+    If Not t Is Nothing Then
+        ActiveWorkbook.ActiveSheet.Activate
+        Set t = Cells.FindPrevious(After:=ActiveCell)
+        t.Activate
+    End If
+
+    Call setStatusBarTemporarily("?" & findText, 2, disablePrefix:=True)
+End Function
