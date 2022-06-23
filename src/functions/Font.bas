@@ -62,6 +62,10 @@ Function changeFontColor()
     Dim resultColor As cls_FontColor
     Dim colorTable As Variant
 
+    If TypeName(Selection) Is Nothing Then
+        Exit Function
+    End If
+
     colorTable = Array(2, 1, 4, 3, 5, 6, 7, 8, 9, 10)
     Set resultColor = UF_ColorPicker.showColorPicker()
 
