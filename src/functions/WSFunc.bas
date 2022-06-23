@@ -224,3 +224,28 @@ End Function
 Function showSheetPicker()
     UF_SheetPicker.Show
 End Function
+
+Function changeWorksheetTabColor()
+    Dim resultColor As cls_FontColor
+    Dim colorTable As Variant
+
+    If ActiveSheet Is Nothing Then
+        Exit Function
+    End If
+
+    colorTable = Array(2, 1, 4, 3, 5, 6, 7, 8, 9, 10)
+    Set resultColor = UF_ColorPicker.showColorPicker()
+
+    If Not resultColor Is Nothing Then
+        With ActiveSheet.Tab
+            If resultColor.IsNull Then
+                .ColorIndex = xlNone
+            ElseIf resultColor.IsThemeColor Then
+                .ThemeColor = colorTable(resultColor.ThemeColor - 1)
+                .TintAndShade = resultColor.TintAndShade
+            Else
+                .Color = resultColor.Color
+            End If
+        End With
+    End If
+End Function
