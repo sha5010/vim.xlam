@@ -425,6 +425,8 @@ Sub initMapping()
     Call map(":", "bn", "nextWorkbook", returnOnly:=True)
     Call map(":", "bp", "previousWorkbook", returnOnly:=True)
 
+    Call map(":", "debug", "toggleDebugMode", returnOnly:=True)
+
 
     'Atmark Command
     Call map("@", "w", "toggleFreezePanes")

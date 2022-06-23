@@ -162,3 +162,12 @@ Sub toggleLang()
         Call setStatusBarTemporarily("Switched to English mode.", 2)
     End If
 End Sub
+
+Sub toggleDebugMode()
+    gDebugMode = Not gDebugMode
+    If gDebugMode Then
+        Call setStatusBarTemporarily("デバッグモードを有効化しました。", 2)
+    Else
+        Call setStatusBarTemporarily("デバッグモードを無効化しました。", 2)
+    End If
+End Sub

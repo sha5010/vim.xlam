@@ -500,5 +500,7 @@ End Function
 
 
 Function dummy()
-
+    If gDebugMode Then
+        Call setStatusBarTemporarily("No allocation", 1)
+    End If
 End Function
