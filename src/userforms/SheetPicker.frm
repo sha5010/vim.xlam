@@ -138,7 +138,7 @@ End Sub
 
 Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     '変数宣言
-    Const CTRL As Integer = -96
+    Const CTRL_OFFSET As Integer = -96
     Dim idx As Byte
     
     'Escキーを押されたらアンロード
@@ -171,7 +171,7 @@ Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
                     .ListIndex = .ListIndex - 1
                 End If
                 
-            Case CTRL + Asc("j")
+            Case CTRL_OFFSET + Asc("j")
                 If .ListIndex = .ListCount - 1 Then
                     .ListIndex = 0
                 ElseIf .ListIndex + AMOUNT >= .ListCount Then
@@ -180,7 +180,7 @@ Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
                     .ListIndex = .ListIndex + AMOUNT
                 End If
                 
-            Case CTRL + Asc("k")
+            Case CTRL_OFFSET + Asc("k")
                 If .ListIndex = 0 Then
                     .ListIndex = .ListCount - 1
                 ElseIf .ListIndex - AMOUNT < 0 Then
@@ -192,7 +192,7 @@ Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
             Case Asc("g")
                 .ListIndex = 0
                 
-            Case CTRL + Asc("g")
+            Case CTRL_OFFSET + Asc("g")
                 .ListIndex = .ListCount - 1
                 
             Case Asc("G")

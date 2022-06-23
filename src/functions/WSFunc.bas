@@ -35,15 +35,15 @@ End Function
 Function renameWorksheet()
     Dim ret As String
     Dim beforeName As String
-    
+
     With ActiveWorkbook
         beforeName = .ActiveSheet.Name
         ret = InputBox("新しいシート名を入力してください。", "シート名の変更", beforeName)
-        
+
         If ret <> "" Then
             On Error GoTo Catch
             .Worksheets(.ActiveSheet.Index).Name = ret
-            
+
             Call setStatusBarTemporarily("シート名を変更しました： """ & _
                 beforeName & """ → """ & ret & """", 3)
         End If
@@ -60,7 +60,7 @@ Function moveWorksheetForward()
     Dim n As Integer
     Dim i As Integer
     Dim warpFlag As Boolean
-    
+
     With ActiveWorkbook
         idx = .ActiveSheet.Index
         cnt = gCount
@@ -73,11 +73,11 @@ Function moveWorksheetForward()
             ElseIf i = idx Then
                 warpFlag = False
             End If
-            
+
             If .Worksheets(i).Visible = xlSheetVisible Then
                 cnt = cnt - 1
             End If
-            
+
             If cnt = 0 Then
                 If warpFlag Then
                     .Worksheets(idx).Move Before:=.Worksheets(i)
@@ -96,7 +96,7 @@ Function moveWorksheetBack()
     Dim n As Integer
     Dim i As Integer
     Dim warpFlag As Boolean
-    
+
     With ActiveWorkbook
         idx = .ActiveSheet.Index
         cnt = gCount
@@ -110,11 +110,11 @@ Function moveWorksheetBack()
             ElseIf i = idx Then
                 warpFlag = False
             End If
-            
+
             If .Worksheets(i).Visible = xlSheetVisible Then
                 cnt = cnt - 1
             End If
-            
+
             If cnt = 0 Then
                 If warpFlag Then
                     .Worksheets(idx).Move After:=.Worksheets(i)
@@ -145,38 +145,38 @@ End Function
 
 Function activateWorksheet(ByVal n As String) As Boolean
     Dim idx As Integer
-    
+
     On Error GoTo Catch
-    
+
     If Not IsNumeric(n) Or InStr(n, ".") > 0 Then
         Exit Function
     End If
-    
+
     idx = CInt(n)
-    
+
     With ActiveWorkbook
         If idx < 1 Or .Worksheets.Count < idx Then
             Exit Function
         End If
-        
+
         If .Worksheets(idx).Visible <> xlSheetVisible Then
             .Worksheets(idx).Visible = xlSheetVisible
         End If
-        
+
         .Worksheets(idx).Select
         activateWorksheet = True
     End With
     Exit Function
-    
+
 Catch:
     Call debugPrint("Cannot activate worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "activateWorksheet")
 End Function
 
 Function activateFirstWorksheet()
     Dim i As Integer
-    
+
     On Error GoTo Catch
-    
+
     With ActiveWorkbook
         For i = 1 To .Worksheets.Count
             If .Worksheets(i).Visible = xlSheetVisible Then
@@ -186,16 +186,16 @@ Function activateFirstWorksheet()
         Next i
     End With
     Exit Function
-    
+
 Catch:
     Call debugPrint("Cannot activate worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "activateFirstWorksheet")
 End Function
 
 Function activateLastWorksheet()
     Dim i As Integer
-    
+
     On Error GoTo Catch
-    
+
     With ActiveWorkbook
         For i = .Worksheets.Count To 1 Step -1
             If .Worksheets(i).Visible = xlSheetVisible Then
@@ -205,18 +205,18 @@ Function activateLastWorksheet()
         Next i
     End With
     Exit Function
-    
+
 Catch:
     Call debugPrint("Cannot activate worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "activateLastWorksheet")
 End Function
 
 Function cloneWorksheet()
     On Error GoTo Catch
-    
+
     ActiveSheet.Copy After:=ActiveSheet
-    
+
     Exit Function
-    
+
 Catch:
     Call debugPrint("Cannot clone worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "cloneWorksheet")
 End Function
