@@ -333,8 +333,12 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
         addChar = LCase(Chr(KeyAscii))
 
         If Len(cmdBuf) = 0 Then
-            If addChar = "#" Or InStr(KEY_LIST1 & KEY_LIST2 & KEY_NULL, addChar) > 0 Then
-                cmdBuf = cmdBuf & addChar
+            If addChar = " " Or addChar = "#" Or InStr(KEY_LIST1 & KEY_LIST2 & KEY_NULL, addChar) > 0 Then
+                If addChar = " " Then
+                    cmdBuf = cmdBuf & "#"
+                Else
+                    cmdBuf = cmdBuf & addChar
+                End If
                 textLabel.Caption = TEXT_PREFIX & cmdBuf
 
                 Call checkCmd
