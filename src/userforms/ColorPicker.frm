@@ -30,6 +30,7 @@ Private Const TEXT_PREFIX As String = " "
 Private Const IDX_LIST1 As Integer = 19
 Private Const IDX_LIST2 As Integer = 3
 Private Const IDX_LIST_TOP As Integer = 4
+Private Const PLACEHOLDER As String = "* Type "" "" or # to use color code"
 
 Private colorTable As Collection
 Private colorObject As Collection
@@ -292,6 +293,7 @@ Private Sub UserForm_Initialize()
     Set textLabel = Me.Controls(PutLabel(1, 25, Caption:=TEXT_PREFIX))
     textLabel.Width = BOX_SIZE * 11 + BOX_GAP * 10
     textLabel.TextAlign = fmTextAlignLeft
+    textLabel.Caption = PLACEHOLDER
 
     Me.Width = BOX_SIZE * 13 + BOX_GAP * 13
     Me.Height = 36 + BOX_SIZE * 13 + BOX_SIZE / 50 * BOX_SIZE
@@ -304,13 +306,18 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     Dim addChar As String
 
     If KeyAscii = 27 Then 'Escape
-        textLabel.Caption = TEXT_PREFIX
+        textLabel.Caption = PLACEHOLDER
         Me.Hide
 
     ElseIf KeyAscii = 8 Then 'BackSpace
         If cmdBuf <> "" Then
             cmdBuf = Left(cmdBuf, Len(cmdBuf) - 1)
-            textLabel.Caption = TEXT_PREFIX & cmdBuf
+
+            If cmdBuf = "" Then
+                textLabel.Caption = PLACEHOLDER
+            Else
+                textLabel.Caption = TEXT_PREFIX & cmdBuf
+            End If
         End If
 
         Call checkCmd
@@ -318,10 +325,9 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     ElseIf KeyAscii = 13 Then  'Enter
         If resultLabel.ForeColor <> Me.BackColor Or cmdBuf = KEY_NULL Then
             isSuccess = True
+            textLabel.Caption = PLACEHOLDER
+            Me.Hide
         End If
-
-        textLabel.Caption = TEXT_PREFIX
-        Me.Hide
 
     ElseIf KeyAscii > 31 Then
         addChar = LCase(Chr(KeyAscii))
