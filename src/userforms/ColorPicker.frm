@@ -129,22 +129,34 @@ Private Sub ChangeSpecific(ByVal Enabled As Boolean, _
     Next Label
 End Sub
 
+Private Function hexColorCodeToLong(ByVal colorCode As String) As Long
+    If Len(colorCode) = 3 Then
+        hexColorCodeToLong = Val("&H" & Mid(colorCode, 3, 1) & Mid(colorCode, 3, 1) & _
+            Mid(colorCode, 2, 1) & Mid(colorCode, 2, 1) & Mid(colorCode, 1, 1) & Mid(colorCode, 1, 1) & "&")
+    ElseIf Len(colorCode) = 6 Then
+        hexColorCodeToLong = Val("&H" & Mid(colorCode, 5, 2) & Mid(colorCode, 3, 2) & Mid(colorCode, 1, 2) & "&")
+    Else
+        hexColorCodeToLong = -1
+    End If
+End Function
+
+
 Private Sub checkCmd()
     Dim colorCode As String
-    
+    Dim colorValue As Long
+
     If InStr(cmdBuf, "#") = 1 Then
         If cmdBuf = "#" Then
             Call ChangeAll(False)
         End If
+
         colorCode = Mid(cmdBuf, 2)
-        
-        If Len(colorCode) = 3 Then
-            resultLabel.ForeColor = Val("&H" & Mid(colorCode, 3, 1) & Mid(colorCode, 3, 1) & _
-                Mid(colorCode, 2, 1) & Mid(colorCode, 2, 1) & Mid(colorCode, 1, 1) & Mid(colorCode, 1, 1) & "&")
-        ElseIf Len(colorCode) = 6 Then
-            resultLabel.ForeColor = Val("&H" & Mid(colorCode, 5, 2) & Mid(colorCode, 3, 2) & Mid(colorCode, 1, 2) & "&")
-        Else
+        colorValue = hexColorCodeToLong(colorCode)
+
+        If colorValue < 0 Then
             resultLabel.ForeColor = Me.BackColor
+        Else
+            resultLabel.ForeColor = colorValue
         End If
 
         Exit Sub
@@ -339,6 +351,9 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
 End Sub
 
 Public Function showColorPicker() As cls_FontColor
+    Dim colorCode As String
+    Dim colorValue As Long
+
     UF_Cmd.Hide
     Me.Show
     If isSuccess Then
@@ -346,6 +361,12 @@ Public Function showColorPicker() As cls_FontColor
             Set showColorPicker = New cls_FontColor
             Call showColorPicker.Setup(colorCode:=0)  'dummy
             showColorPicker.IsNull = True
+        ElseIf InStr(cmdBuf, "#") = 1 Then
+            colorCode = Mid(cmdBuf, 2)
+            colorValue = hexColorCodeToLong(colorCode)
+
+            Set showColorPicker = New cls_FontColor
+            Call showColorPicker.Setup(colorCode:=colorValue)
         Else
             Set showColorPicker = colorObject(GetLabelTitle(X, Y))
         End If
