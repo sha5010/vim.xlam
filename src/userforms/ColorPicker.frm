@@ -22,7 +22,6 @@ Private Const LUMINANCES_GRAY As String = "0;-10;-25;-50;-75;-90"
 
 Private Const BOX_SIZE As Byte = 12
 Private Const BOX_GAP As Byte = 3
-Private Const BOX_FONT_SIZE As Double = 9
 Private Const KEY_LIST1 As String = "asdfghjkl;"
 Private Const KEY_LIST2 As String = "qwertyuiop"
 Private Const KEY_DETAIL As String = "12345"
@@ -58,7 +57,7 @@ Private Function PutLabel(ByVal X As Integer, ByVal Y As Integer, _
     Set genLabel = Me.Controls.Add("Forms.Label.1", PutLabel, True)
 
     With genLabel
-        .Left = 3 + X * (BOX_SIZE + BOX_GAP)
+        .Left = (BOX_SIZE / 3) + X * (BOX_SIZE + BOX_GAP)
         .Top = 3 + (BOX_SIZE / 2) * Y
         .Height = BOX_SIZE
         .Width = BOX_SIZE
@@ -74,14 +73,14 @@ Private Function PutLabel(ByVal X As Integer, ByVal Y As Integer, _
             '.BackColor = BackColor
             .ForeColor = BackColor
             .Caption = ChrW(&H2588)
-            .Font.Size = BOX_FONT_SIZE * 3
+            .Font.Size = BOX_SIZE * 2
             '.TextAlign = fmTextAlignCenter
         Else
             .Caption = Caption
             .TextAlign = fmTextAlignCenter
             .Font.Name = "Consolas"
             .BackStyle = fmBackStyleTransparent
-            .Font.Size = BOX_FONT_SIZE
+            .Font.Size = BOX_SIZE / 4 * 3
         End If
     End With
 
@@ -295,7 +294,7 @@ Private Sub UserForm_Initialize()
     textLabel.TextAlign = fmTextAlignLeft
 
     Me.Width = BOX_SIZE * 13 + BOX_GAP * 13
-    Me.Height = BOX_SIZE * 16
+    Me.Height = 36 + BOX_SIZE * 13 + BOX_SIZE / 50 * BOX_SIZE
 
     Set Color = Nothing
 End Sub
