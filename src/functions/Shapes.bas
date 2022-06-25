@@ -2,17 +2,19 @@ Attribute VB_Name = "F_Shapes"
 Option Explicit
 Option Private Module
 
-Function changeShapeFillColor()
+Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
     Dim shp As ShapeRange
-    Dim resultColor As cls_FontColor
 
     If VarType(Selection) <> vbObject Then
         Exit Function
     End If
-    
+
     Set shp = Selection.ShapeRange
-    Set resultColor = UF_ColorPicker.showColorPicker()
-    
+
+    If resultColor Is Nothing Then
+        Set resultColor = UF_ColorPicker.showColorPicker()
+    End If
+
     If Not resultColor Is Nothing Then
         With shp.Fill
             If resultColor.IsNull Then
@@ -25,23 +27,27 @@ Function changeShapeFillColor()
                 .Visible = msoTrue
                 .ForeColor.RGB = resultColor.Color
             End If
+
+            Call repeatRegister("changeShapeFillColor", resultColor)
         End With
     End If
-    
+
     Set shp = Nothing
 End Function
 
-Function changeShapeFontColor()
+Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
     Dim shp As ShapeRange
-    Dim resultColor As cls_FontColor
-    
+
     If VarType(Selection) <> vbObject Then
         Exit Function
     End If
-    
+
     Set shp = Selection.ShapeRange
-    Set resultColor = UF_ColorPicker.showColorPicker()
-    
+
+    If resultColor Is Nothing Then
+        Set resultColor = UF_ColorPicker.showColorPicker()
+    End If
+
     If Not resultColor Is Nothing Then
         With shp.TextFrame2.TextRange.Font.Fill.ForeColor
             If resultColor.IsNull Then
@@ -52,23 +58,28 @@ Function changeShapeFontColor()
             Else
                 .RGB = resultColor.Color
             End If
+
+            Call repeatRegister("changeShapeFontColor", resultColor)
         End With
     End If
-    
+
     Set shp = Nothing
 End Function
 
-Function changeShapeBorderColor(Optional garbage As String) As Boolean
+Function changeShapeBorderColor(Optional garbage As String, _
+                                Optional ByVal resultColor As cls_FontColor) As Boolean
     Dim shp As ShapeRange
-    Dim resultColor As cls_FontColor
 
     If VarType(Selection) <> vbObject Then
         Exit Function
     End If
-    
+
     Set shp = Selection.ShapeRange
-    Set resultColor = UF_ColorPicker.showColorPicker()
-    
+
+    If resultColor Is Nothing Then
+        Set resultColor = UF_ColorPicker.showColorPicker()
+    End If
+
     If Not resultColor Is Nothing Then
         With shp.Line
             If resultColor.IsNull Then
@@ -81,9 +92,11 @@ Function changeShapeBorderColor(Optional garbage As String) As Boolean
                 .Visible = msoTrue
                 .ForeColor.RGB = resultColor.Color
             End If
+
+            Call repeatRegister("changeShapeBorderColor", "", resultColor)
         End With
     End If
-    
+
     Set shp = Nothing
     changeShapeBorderColor = True
 End Function

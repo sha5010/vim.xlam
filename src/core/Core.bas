@@ -15,6 +15,7 @@ Public gExtendRange As Range            '複数選択機能で選択したセル
 Public gRegisteredKeys As Dictionary    '登録済みのキーリストを保持
 
 Public JumpList As cls_MainArena        '編集したセルを格納するジャンプリスト
+Public Repeater As cls_Repeater         'コマンドの繰り返しを保持するためのクラス
 
 Public Const KEY_NORMAL As String = "N"
 Public Const KEY_RETURNONLY As String = "RO"
@@ -44,6 +45,10 @@ Sub startVim()
     If JumpList Is Nothing Then
         Set JumpList = New cls_MainArena
         Call JumpList.SetMax(MAX_HISTORIES)
+    End If
+
+    If Repeater Is Nothing Then
+        Set Repeater = New cls_Repeater
     End If
 
     If IMEStatus <> vbIMEModeOff Then

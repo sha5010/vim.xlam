@@ -405,6 +405,7 @@ Sub initMapping()
     'Useful Command
     Call map("u", "", "undo_CtrlZ")
     Call map("^r", "", "redoExecute")
+    Call map(".", "", "repeatAction")
     Call map("m", "", "zoomIn")
     Call map("M", "", "zoomOut")
     Call map(":", "e", "openWorkbook", returnOnly:=True)

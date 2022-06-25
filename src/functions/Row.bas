@@ -31,6 +31,8 @@ Function selectRows()
 End Function
 
 Function insertRows()
+    Call repeatRegister("insertRows")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -47,6 +49,8 @@ Catch:
 End Function
 
 Function appendRows()
+    Call repeatRegister("appendRows")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -67,6 +71,8 @@ Catch:
 End Function
 
 Function deleteRows()
+    Call repeatRegister("deleteRows")
+
     Dim t As Range
     On Error GoTo Catch
 
@@ -95,6 +101,8 @@ Catch:
 End Function
 
 Function deleteToTopRows()
+    Call repeatRegister("deleteToTopRows")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -107,6 +115,8 @@ Catch:
 End Function
 
 Function deleteToBottomRows()
+    Call repeatRegister("deleteToBottomRows")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -123,6 +133,8 @@ Catch:
 End Function
 
 Function deleteToTopOfCurrentRegionRows()
+    Call repeatRegister("deleteToTopOfCurrentRegionRows")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -135,6 +147,8 @@ Catch:
 End Function
 
 Function deleteToBottomOfCurrentRegionRows()
+    Call repeatRegister("deleteToBottomOfCurrentRegionRows")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -335,6 +349,8 @@ Catch:
 End Function
 
 Function hideRows()
+    Call repeatRegister("hideRows")
+
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -348,6 +364,8 @@ End Function
 
 
 Function unhideRows()
+    Call repeatRegister("unhideRows")
+
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -360,6 +378,8 @@ Catch:
 End Function
 
 Function groupRows()
+    Call repeatRegister("groupRows")
+
     Dim t As Range
     On Error GoTo Catch
 
@@ -388,6 +408,8 @@ Catch:
 End Function
 
 Function ungroupRows()
+    Call repeatRegister("ungroupRows")
+
     Dim t As Range
     On Error GoTo Catch
 
@@ -416,6 +438,8 @@ Catch:
 End Function
 
 Function foldRowsGroup()
+    Call repeatRegister("foldRowsGroup")
+
     Dim targetRow As Long
     Dim i As Integer
 
@@ -433,6 +457,8 @@ End Function
 
 
 Function spreadRowsGroup()
+    Call repeatRegister("spreadRowsGroup")
+
     Dim targetRow As Long
     Dim i As Integer
 
@@ -449,6 +475,8 @@ Catch:
 End Function
 
 Function adjustRowsHeight()
+    Call repeatRegister("adjustRowsHeight")
+
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -473,6 +501,8 @@ Catch:
 End Function
 
 Function narrowRowsHeight()
+    Call repeatRegister("narrowRowsHeight")
+
     On Error GoTo Catch
 
     Dim currentHeight As Double
@@ -503,6 +533,8 @@ Catch:
 End Function
 
 Function wideRowsHeight()
+    Call repeatRegister("wideRowsHeight")
+
     On Error GoTo Catch
 
     Dim currentHeight As Double

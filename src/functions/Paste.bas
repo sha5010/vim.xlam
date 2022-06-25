@@ -2,6 +2,8 @@ Attribute VB_Name = "F_Paste"
 Option Explicit
 
 Function pasteSmart()
+    Call repeatRegister("pasteSmart")
+
     If Application.CutCopyMode = 0 Then 'Empty
         Set gLastYanked = Nothing
     End If
@@ -73,6 +75,8 @@ Private Function pasteColumns()
 End Function
 
 Function pasteValue()
+    Call repeatRegister("pasteValue")
+
     Dim cb As Variant
     Dim cbType As Integer
 

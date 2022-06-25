@@ -3,12 +3,16 @@ Option Explicit
 Option Private Module
 
 Function editCellComment()
+    Call repeatRegister("editCellComment")
+
     If TypeName(Selection) = "Range" Then
         Call keystroke(True, Shift_ + F2_)
     End If
 End Function
 
 Function deleteCellComment()
+    Call repeatRegister("deleteCellComment")
+
     If Not ActiveCell.Comment Is Nothing Then
         Call keystroke(True, Alt_ + R_, D_)
     End If
@@ -35,18 +39,24 @@ Function deleteCellCommentAll()
 End Function
 
 Function toggleCellComment()
+    Call repeatRegister("toggleCellComment")
+
     If Not ActiveCell.Comment Is Nothing Then
         Application.CommandBars.ExecuteMso "ReviewShowOrHideComment"
     End If
 End Function
 
 Function hideCellComment()
+    Call repeatRegister("hideCellComment")
+
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = False
     End If
 End Function
 
 Function showCellComment()
+    Call repeatRegister("showCellComment")
+
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = True
     End If

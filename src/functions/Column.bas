@@ -31,6 +31,8 @@ Function selectColumns()
 End Function
 
 Function insertColumns()
+    Call repeatRegister("insertColumns")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -47,6 +49,8 @@ Catch:
 End Function
 
 Function appendColumns()
+    Call repeatRegister("appendColumns")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -67,6 +71,8 @@ Catch:
 End Function
 
 Function deleteColumns()
+    Call repeatRegister("deleteColumns")
+
     Dim t As Range
     On Error GoTo Catch
 
@@ -74,6 +80,7 @@ Function deleteColumns()
     If TypeName(Selection) <> "Range" Then
         ActiveCell.Select
     End If
+
     Set t = ActiveCell
 
     With ActiveSheet
@@ -94,6 +101,8 @@ Catch:
 End Function
 
 Function deleteToLeftEndColumns()
+    Call repeatRegister("deleteToLeftEndColumns")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -106,6 +115,8 @@ Catch:
 End Function
 
 Function deleteToRightEndColumns()
+    Call repeatRegister("deleteToRightEndColumns")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -122,6 +133,8 @@ Catch:
 End Function
 
 Function deleteToLeftOfCurrentRegionColumns()
+    Call repeatRegister("deleteToLeftOfCurrentRegionColumns")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -134,6 +147,8 @@ Catch:
 End Function
 
 Function deleteToRightOfCurrentRegionColumns()
+    Call repeatRegister("deleteToRightOfCurrentRegionColumns")
+
     On Error GoTo Catch
 
     With ActiveSheet
@@ -198,6 +213,7 @@ Function yankToRightEndColumns()
         .Range(.Columns(startColumn), .Columns(endColumn)).Copy
         Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
     End With
+    Exit Function
 
 Catch:
 End Function
@@ -332,8 +348,9 @@ Function cutToRightOfCurrentRegionColumns()
 Catch:
 End Function
 
-
 Function hideColumns()
+    Call repeatRegister("hideColumns")
+
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -347,6 +364,8 @@ End Function
 
 
 Function unhideColumns()
+    Call repeatRegister("unhideColumns")
+
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -360,6 +379,8 @@ Catch:
 End Function
 
 Function groupColumns()
+    Call repeatRegister("groupColumns")
+
     Dim t As Range
     On Error GoTo Catch
 
@@ -388,6 +409,8 @@ Catch:
 End Function
 
 Function ungroupColumns()
+    Call repeatRegister("ungroupColumns")
+
     Dim t As Range
     On Error GoTo Catch
 
@@ -416,6 +439,8 @@ Catch:
 End Function
 
 Function foldColumnsGroup()
+    Call repeatRegister("foldColumnsGroup")
+
     Dim targetColumn As Long
     Dim i As Integer
 
@@ -433,6 +458,8 @@ End Function
 
 
 Function spreadColumnsGroup()
+    Call repeatRegister("spreadColumnsGroup")
+
     Dim targetColumn As Long
     Dim i As Integer
 
@@ -449,6 +476,8 @@ Catch:
 End Function
 
 Function adjustColumnsWidth()
+    Call repeatRegister("adjustColumnsWidth")
+
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -474,6 +503,8 @@ End Function
 
 
 Function narrowColumnsWidth()
+    Call repeatRegister("narrowColumnsWidth")
+
     On Error GoTo Catch
 
     Dim currentWidth As Double
@@ -504,6 +535,8 @@ Catch:
 End Function
 
 Function wideColumnsWidth()
+    Call repeatRegister("wideColumnsWidth")
+
     On Error GoTo Catch
 
     Dim currentWidth As Double

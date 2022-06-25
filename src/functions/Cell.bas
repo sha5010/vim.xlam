@@ -19,22 +19,28 @@ Function yankCell()
 End Function
 
 Function yankFromUpCell()
+    Call repeatRegister("yankFromUpCell")
     Call keystroke(True, Alt_ + H_, F_, I_, D_)
 End Function
 
 Function yankFromDownCell()
+    Call repeatRegister("yankFromDownCell")
     Call keystroke(True, Alt_ + H_, F_, I_, U_)
 End Function
 
 Function yankFromLeftCell()
+    Call repeatRegister("yankFromLeftCell")
     Call keystroke(True, Alt_ + H_, F_, I_, R_)
 End Function
 
 Function yankFromRightCell()
+    Call repeatRegister("yankFromRightCell")
     Call keystroke(True, Alt_ + H_, F_, I_, L_)
 End Function
 
 Function incrementText()
+    Call repeatRegister("incrementText")
+
     Dim i As Integer
 
     Call keyupControlKeys
@@ -48,6 +54,8 @@ Function incrementText()
 End Function
 
 Function decrementText()
+    Call repeatRegister("decrementText")
+
     Dim i As Integer
 
     Call keyupControlKeys
@@ -61,6 +69,8 @@ Function decrementText()
 End Function
 
 Function increaseDecimal()
+    Call repeatRegister("increaseDecimal")
+
     Dim i As Integer
 
     Call keyupControlKeys
@@ -74,6 +84,8 @@ Function increaseDecimal()
 End Function
 
 Function decreaseDecimal()
+    Call repeatRegister("decreaseDecimal")
+
     Dim i As Integer
 
     Call keyupControlKeys
@@ -88,6 +100,8 @@ End Function
 
 
 Function insertCellsUp()
+    Call repeatRegister("insertCellsUp")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -102,6 +116,8 @@ Catch:
 End Function
 
 Function insertCellsDown()
+    Call repeatRegister("insertCellsDown")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -120,6 +136,8 @@ Catch:
 End Function
 
 Function insertCellsLeft()
+    Call repeatRegister("insertCellsLeft")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -134,6 +152,8 @@ Catch:
 End Function
 
 Function insertCellsRight()
+    Call repeatRegister("insertCellsRight")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -152,10 +172,13 @@ Catch:
 End Function
 
 Function deleteValue()
+    Call repeatRegister("deleteValue")
     Call keystroke(True, Delete_)
 End Function
 
 Function deleteToUp()
+    Call repeatRegister("deleteToUp")
+
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
@@ -170,6 +193,10 @@ Catch:
 End Function
 
 Function deleteToLeft()
+    Call repeatRegister("deleteToLeft")
+
+    On Error GoTo Catch
+
     Application.ScreenUpdating = False
     If gCount > 1 Then
         Selection.Resize(Selection.Rows.Count, gCount).Select
@@ -186,6 +213,8 @@ Function toggleWrapText()
 End Function
 
 Function toggleMergeCells()
+    Call repeatRegister("toggleMergeCells")
+
     If TypeName(Selection) = "Range" Then
         If Not ActiveCell.MergeCells And Selection.Count = 1 Then
             Exit Function
@@ -199,8 +228,7 @@ Function toggleMergeCells()
     End If
 End Function
 
-Function changeInteriorColor()
-    Dim resultColor As cls_FontColor
+Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
     Dim colorTable As Variant
 
     If TypeName(Selection) <> "Range" Then
@@ -208,7 +236,10 @@ Function changeInteriorColor()
     End If
 
     colorTable = Array(2, 1, 4, 3, 5, 6, 7, 8, 9, 10)
-    Set resultColor = UF_ColorPicker.showColorPicker()
+
+    If resultColor Is Nothing Then
+        Set resultColor = UF_ColorPicker.showColorPicker()
+    End If
 
     If Not resultColor Is Nothing Then
         With Selection.Interior
@@ -221,6 +252,8 @@ Function changeInteriorColor()
                 .Color = resultColor.Color
             End If
         End With
+
+        Call repeatRegister("changeInteriorColor", resultColor)
     End If
 End Function
 
