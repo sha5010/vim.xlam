@@ -20,11 +20,11 @@ Function pasteSmart()
     End If
 End Function
 
-Function paste_CtrlV()
+Private Function paste_CtrlV()
     Call keystroke(True, Ctrl_ + V_)
 End Function
 
-Function pasteRows()
+Private Function pasteRows()
     Dim yankedRows As Long
     Dim startRow As Long
     Dim endRow As Long
@@ -48,7 +48,7 @@ Function pasteRows()
     gLastYanked.Copy
 End Function
 
-Function pasteColumns()
+Private Function pasteColumns()
     Dim yankedColumns As Long
     Dim startColumn As Long
     Dim endColumn As Long
