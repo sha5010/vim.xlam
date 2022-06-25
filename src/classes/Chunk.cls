@@ -47,5 +47,3 @@ End Property
 Public Property Set Content(ByRef Content As Variant)
     Set Content_ = Content
 End Property
-
-

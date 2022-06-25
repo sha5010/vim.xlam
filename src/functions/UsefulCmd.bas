@@ -60,13 +60,13 @@ Function jumpPrev()
     Dim t As Range
     Dim wb As Workbook
     Dim ws As Worksheet
-    
+
     If Not JumpList Is Nothing Then
         Set t = JumpList.Back
         If Not t Is Nothing Then
             Set wb = t.Parent.Parent
             Set ws = t.Parent
-            
+
             wb.Activate
             ws.Activate
             t.Select
@@ -80,13 +80,13 @@ Function jumpNext()
     Dim t As Range
     Dim wb As Workbook
     Dim ws As Worksheet
-    
+
     If Not JumpList Is Nothing Then
         Set t = JumpList.Forward
         If Not t Is Nothing Then
             Set wb = t.Parent.Parent
             Set ws = t.Parent
-            
+
             wb.Activate
             ws.Activate
             t.Select

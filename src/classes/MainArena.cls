@@ -93,12 +93,6 @@ Public Sub Add(ByRef Content As Object)
     Set newChunk = New cls_Chunk
     Set newChunk.Content = Content
 
-    'If CurrentChunk Is Nothing Then
-    '    Set CurrentChunk = MainArena.Bk
-    'Else
-    '    Call UnlinkAllFd(CurrentChunk)
-    'End If
-
     If Count_ > 0 And Count_ >= StoreMax Then
         Call CleanUp
 
@@ -106,9 +100,6 @@ Public Sub Add(ByRef Content As Object)
             Call Unlink(MainArena.Fd)  'Unlink oldest chunk
         Wend
     End If
-
-    'Set CurrentChunk.Fd = newChunk
-    'Set newChunk.Bk = CurrentChunk
 
     Set latestChunk = MainArena.Bk
     Set latestChunk.Fd = newChunk
@@ -120,8 +111,6 @@ Public Sub Add(ByRef Content As Object)
     Set CurrentChunk = MainArena
 
     Count_ = Count_ + 1
-
-    'Call DescribeArena
 End Sub
 
 Public Sub ClearAll()
@@ -276,4 +265,3 @@ Private Sub DescribeArena()
 
     Call debugPrint(ret, "MainArena")
 End Sub
-
