@@ -14,6 +14,8 @@ Attribute App.VB_VarHelpID = -1
 Public WithEvents TempApp As Application
 Attribute TempApp.VB_VarHelpID = -1
 
+Private EditFlag As Boolean
+
 Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     If gVimMode Then
         If IMEStatus <> vbIMEModeOff Then
@@ -21,6 +23,10 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
         End If
 
         Call recordToJumpList(Target)
+
+        If EditFlag Then
+            Call repeatRegister("changeSelectedCells", Target.Item(1).Value)  'Note: Undo command will no longer be available.
+        End If
     End If
 End Sub
 
@@ -42,4 +48,12 @@ End Sub
 
 Private Sub TempApp_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
     Call resumeVim
+End Sub
+
+Public Sub StartEditing()
+    EditFlag = True
+End Sub
+
+Public Sub StopEditing()
+    EditFlag = False
 End Sub

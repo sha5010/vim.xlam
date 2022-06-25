@@ -312,3 +312,11 @@ Function followHyperlinkOfActiveCell()
         ActiveWorkbook.followHyperlink Split(ActiveCell.Formula, """")(1)
     End If
 End Function
+
+Function changeSelectedCells(ByVal Value As String)
+    If TypeName(Selection) = "Range" Then
+        Selection.Value = Value
+    ElseIf Not ActiveCell Is Nothing Then
+        ActiveCell.Value = Value
+    End If
+End Function

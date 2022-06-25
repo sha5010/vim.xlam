@@ -25,7 +25,7 @@ Public Sub Run()
     gCount = savedCount
 
     '引数なしの場合
-    If LBound(savedArgs) = -1 Then
+    If UBound(savedArgs) = -1 Then
         Application.Run savedFuncName
         GoTo Finally
     End If

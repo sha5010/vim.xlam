@@ -8,6 +8,7 @@ Function insertWithIME()
         Call keystroke(True, Space_, BackSpace_, Ctrl_ + Home_, Kanji_)
     Else
         Call keystroke(True, F2_, Ctrl_ + Home_, Kanji_)
+        Call StartEditing
     End If
 End Function
 
@@ -17,6 +18,7 @@ Function insertWithoutIME()
         Call keystroke(True, Space_, BackSpace_, Ctrl_ + Home_)
     Else
         Call keystroke(True, F2_, Ctrl_ + Home_)
+        Call StartEditing
     End If
 End Function
 
@@ -26,6 +28,7 @@ Function appendWithIME()
         Call keystroke(True, Space_, BackSpace_, Ctrl_ + End_, Kanji_)
     Else
         Call keystroke(True, F2_, Kanji_)
+        Call StartEditing
     End If
 End Function
 
@@ -35,6 +38,7 @@ Function appendWithoutIME()
         Call keystroke(True, Space_, BackSpace_, Ctrl_ + End_)
     Else
         Call keystroke(True, F2_)
+        Call StartEditing
     End If
 End Function
 
@@ -44,6 +48,7 @@ Function substituteWithIME()
         Call keystroke(True, Enter_, Delete_, Kanji_)
     Else
         Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_, Kanji_)
+        Call StartEditing
     End If
 End Function
 
@@ -53,6 +58,7 @@ Function substituteWithoutIME()
         Call keystroke(True, Enter_, Delete_)
     Else
         Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_)
+        Call StartEditing
     End If
 End Function
 
@@ -103,3 +109,12 @@ Function substituteNotFollowLangMode()
         Call substituteWithoutIME
     End If
 End Function
+
+Sub StartEditing()
+    Call X.StartEditing
+    Application.OnTime Now + (1 / 86400) * 0.1, "StopEditing"
+End Sub
+
+Sub StopEditing()
+    Call X.StopEditing
+End Sub
