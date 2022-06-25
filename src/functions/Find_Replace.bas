@@ -20,6 +20,8 @@ Function nextFoundCell()
         Application.ScreenUpdating = False
     End If
 
+    Call recordToJumpList
+
     For i = gCount To 1 Step -1
         If gCount = 1 Then
             Application.ScreenUpdating = True
@@ -43,6 +45,8 @@ Function previousFoundCell()
     If gCount > 1 Then
         Application.ScreenUpdating = False
     End If
+
+    Call recordToJumpList
 
     For i = gCount To 1 Step -1
         If i = 1 Then
@@ -86,6 +90,8 @@ Function findActiveValueNext()
                                    MatchByte:=False)
 
     If Not t Is Nothing Then
+        Call recordToJumpList
+
         ActiveWorkbook.ActiveSheet.Activate
         t.Activate
     End If
@@ -115,6 +121,8 @@ Function findActiveValuePrev()
                                    MatchByte:=False)
 
     If Not t Is Nothing Then
+        Call recordToJumpList
+
         ActiveWorkbook.ActiveSheet.Activate
         Set t = Cells.FindPrevious(After:=ActiveCell)
         t.Activate

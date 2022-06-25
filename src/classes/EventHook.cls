@@ -20,17 +20,7 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
             SendKeys "{kanji}"
         End If
 
-        If Not JumpList Is Nothing Then
-            If JumpList.Latest Is Nothing Then
-                Call JumpList.Add(Target)
-            ElseIf Target.Address <> JumpList.Latest.Address Then
-                Call JumpList.Add(Target)
-            ElseIf Target.Parent.Name <> JumpList.Latest.Parent.Name Then
-                Call JumpList.Add(Target)
-            ElseIf Target.Parent.Parent.FullName <> JumpList.Latest.Parent.Parent.FullName Then
-                Call JumpList.Add(Target)
-            End If
-        End If
+        Call recordToJumpList(Target)
     End If
 End Sub
 

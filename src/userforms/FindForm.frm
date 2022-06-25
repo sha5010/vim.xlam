@@ -36,6 +36,8 @@ Private Sub Button_Find_Click()
                                        SearchOrder:=xlByColumns, _
                                        MatchByte:=False)
         If Not t Is Nothing Then
+            Call recordToJumpList
+
             ActiveWorkbook.ActiveSheet.Activate
             t.Activate
         End If

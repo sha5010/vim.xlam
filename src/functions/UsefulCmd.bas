@@ -103,6 +103,35 @@ Function clearJumps()
     End If
 End Function
 
+Function recordToJumpList(Optional Target As Range)
+    'JumpList が利用できるか検証
+    If JumpList Is Nothing Then
+        Exit Function
+    End If
+
+    'Target が未指定の場合は選択中のセル
+    If Target Is Nothing Then
+        If TypeName(Selection) = "Range" Then
+            Set Target = Selection
+        ElseIf Not ActiveCell Is Nothing Then
+            Set Target = ActiveCell
+        Else
+            Exit Function
+        End If
+    End If
+
+    '最新の記録と完全に一致しないなら記録する
+    If JumpList.Latest Is Nothing Then
+        Call JumpList.Add(Target)
+    ElseIf Target.Address <> JumpList.Latest.Address Then
+        Call JumpList.Add(Target)
+    ElseIf Target.Parent.Name <> JumpList.Latest.Parent.Name Then
+        Call JumpList.Add(Target)
+    ElseIf Target.Parent.Parent.FullName <> JumpList.Latest.Parent.Parent.FullName Then
+        Call JumpList.Add(Target)
+    End If
+End Function
+
 Function smartFillColor()
     If TypeName(Selection) = "Range" Then
         Call changeInteriorColor
