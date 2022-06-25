@@ -1,5 +1,5 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UF_Cmd 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UF_Cmd
    Caption         =   "Command"
    ClientHeight    =   408
    ClientLeft      =   42
@@ -66,7 +66,7 @@ Private Function getCmd(Optional ByVal countFirstOnly As Boolean = False) As Str
     Dim char As Integer
     Dim cmd As String
     Dim numFlag As Boolean
-    
+
     If countFirstOnly Then
         For i = 1 To Len(gCmdBuf)
             char = Asc(Mid(gCmdBuf, i, 1))
@@ -85,10 +85,10 @@ Private Function getCmd(Optional ByVal countFirstOnly As Boolean = False) As Str
     Else
         i = 1
     End If
-                
+
     For i = i To Len(gCmdBuf)
         char = Asc(Mid(gCmdBuf, i, 1))
-        
+
         If (Not countFirstOnly) And 47 < char And char < 58 Then  '0-9
             If numFlag Then
                 gCount = gCount * 10 + (char - 48)
@@ -109,7 +109,7 @@ Private Function checkCmd() As String
     Dim cmd As String
     Dim buf As String
     Dim i As Integer
-    
+
     cmd = getCmd(countFirstOnly:=True)
     If gKeyMap(KEY_NORMAL).Exists(cmd) Then
         If gKeyMap(KEY_NORMAL)(cmd) <> "showCmdForm" Then
@@ -117,7 +117,7 @@ Private Function checkCmd() As String
             Exit Function
         End If
     End If
-    
+
     cmd = getCmd()
     If gKeyMap(KEY_NORMAL).Exists(cmd) Then
         If gKeyMap(KEY_NORMAL)(cmd) <> "showCmdForm" Then
@@ -125,7 +125,7 @@ Private Function checkCmd() As String
             Exit Function
         End If
     End If
-    
+
     For i = Len(gCmdBuf) To 1 Step -1
         buf = Mid(gCmdBuf, 1, i)
         If gKeyMap(KEY_NORMAL_ARG).Exists(buf) Then
@@ -139,19 +139,19 @@ Private Function enterCmd() As String
     Dim cmd As String
     Dim buf As String
     Dim i As Integer
-    
+
     cmd = getCmd(countFirstOnly:=True)
     If gKeyMap(KEY_RETURNONLY).Exists(cmd) Then
         enterCmd = cmd
         Exit Function
     End If
-    
+
     cmd = getCmd()
     If gKeyMap(KEY_RETURNONLY).Exists(cmd) Then
         enterCmd = cmd
         Exit Function
     End If
-    
+
     For i = Len(gCmdBuf) To 1 Step -1
         buf = Mid(gCmdBuf, 1, i)
         If gKeyMap(KEY_RETURNONLY_ARG).Exists(buf) Then
@@ -165,10 +165,10 @@ Private Function runCmd(ByVal cmd As String, Optional ByVal returnOnly As Boolea
     Dim hasArgs As Boolean
     Dim buf As Variant
     Dim ret As Variant
-    
+
     hasArgs = InStr(cmd, " ") > 0
     buf = Split(cmd, " ", 2)
-    
+
     If returnOnly Then
         Me.Hide
         If hasArgs Then
@@ -179,7 +179,7 @@ Private Function runCmd(ByVal cmd As String, Optional ByVal returnOnly As Boolea
     Else
         If hasArgs Then
             ret = Application.Run(gKeyMap(KEY_NORMAL_ARG)(buf(0)), Trim(buf(1)))
-            
+
             'コマンドが完了していない場合はフォームを閉じない
             If TypeName(ret) = "Boolean" Then
                 If ret = True Then
@@ -192,9 +192,9 @@ Private Function runCmd(ByVal cmd As String, Optional ByVal returnOnly As Boolea
             Me.Hide
             ret = Application.Run(gKeyMap(KEY_NORMAL)(buf(0)))
         End If
-        
+
     End If
-            
+
     gCmdBuf = ""
     gCount = 1
 End Function
