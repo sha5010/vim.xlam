@@ -5,10 +5,10 @@
 </p>
 
 <p align="center">
-  <a href="/sha5010/vim.xlam/releases/latest">
+  <a href="https://github.com/sha5010/vim.xlam/releases/latest">
     <img alt="release" src="https://img.shields.io/github/v/release/sha5010/vim.xlam">
   </a>
-  <a href="/sha5010/vim.xlam/blob/main/LICENSE">
+  <a href="./LICENSE">
     <img alt="license" src="https://img.shields.io/github/license/sha5010/vim.xlam">
   </a>
   <a href="https://twitter.com/sha_5010">
