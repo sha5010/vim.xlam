@@ -126,7 +126,7 @@ Function moveToSpecifiedCell(ByVal Address As String) As Boolean
         ActiveSheet.Range(Address & ActiveCell.Row).Select
         moveToSpecifiedCell = True
 
-    ElseIf reMatch(Address, "^[a-z]+[0-9]+(:[a-z]+[0-9])?$", IgnoreCase:=True) Then
+    ElseIf reMatch(Address, "^[a-z]{1,3}[0-9]{1,7}(:[a-z]{1,3}[0-9]{1,7})?$", IgnoreCase:=True) Then
         ActiveSheet.Range(Address).Select
         moveToSpecifiedCell = True
 
