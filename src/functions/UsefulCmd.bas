@@ -6,9 +6,9 @@ Function undo_CtrlZ()
     Call keystroke(True, Ctrl_ + Z_)
 End Function
 
-Function repeat_F4()
+Function redoExecute()
     On Error Resume Next
-    Application.Repeat
+    Application.CommandBars.ExecuteMso "Redo"
     On Error GoTo 0
 End Function
 
