@@ -15,11 +15,18 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Const LONG_MAX As Long = 2147483647
+
 Private Sub UserForm_Initialize()
     With Me
         .StartUpPosition = 0
         .Top = 0
         .Left = 0
+    End With
+
+    With Me.Label_Text
+        .WordWrap = False
+        .AutoSize = True
     End With
 End Sub
 
@@ -49,7 +56,7 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
         If gCmdBuf = "" Then
             Me.Hide
         End If
-    ElseIf Len(gCmdBuf) < 10 Then
+    Else
         gCmdBuf = gCmdBuf + ChrW(KeyAscii)
         cmd = checkCmd()
         If cmd <> "" Then
@@ -59,6 +66,7 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
     End If
 
     Me.Label_Text = gCmdBuf
+    Me.Width = Me.Label_Text.Left + Me.Label_Text.Width + 12
 End Sub
 
 Private Function getCmd(Optional ByVal countFirstOnly As Boolean = False) As String
@@ -91,7 +99,11 @@ Private Function getCmd(Optional ByVal countFirstOnly As Boolean = False) As Str
 
         If (Not countFirstOnly) And 47 < char And char < 58 Then  '0-9
             If numFlag Then
-                gCount = gCount * 10 + (char - 48)
+                If gCount < LONG_MAX / 10 - 1 Then
+                    gCount = gCount * 10 + (char - 48)
+                Else
+                    gCount = LONG_MAX
+                End If
             Else
                 gCount = (char - 48)
             End If
