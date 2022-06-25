@@ -57,8 +57,8 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
         End If
         gCount = 1
     End If
-    Me.Label_Text = gCmdBuf
 
+    Me.Label_Text = gCmdBuf
 End Sub
 
 Private Function getCmd(Optional ByVal countFirstOnly As Boolean = False) As String

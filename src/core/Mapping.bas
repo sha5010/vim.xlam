@@ -49,7 +49,6 @@ Function map(ByVal key As String, ByVal subKey As String, ByVal funcName As Stri
     '2文字以上のマッピング
     Call registerOnKey(key, "'showCmdForm """ & key & """'")
     Call registerKeyMap(key & subKey, funcNameWithArg, returnOnly, requireArguments)
-
 End Function
 
 Private Function parseArg(ByVal arg As Variant) As String
@@ -155,7 +154,6 @@ Function primitiveKeyMapping(ByVal KeyCode As Byte)
     keybd_event KeyCode, 0, KEYUP, 0
 
     Call unkeyupControlKeys
-
 End Function
 
 Function prepareMapping()
@@ -171,7 +169,6 @@ Function prepareMapping()
 
     '主要なキーを無効化
     Call mapToAllDummy
-
 End Function
 
 Function mapToAllDummy()
@@ -280,7 +277,6 @@ Function mapToAllDummy()
     registerOnKey "_", "dummy"
     registerOnKey "+ ", "dummy"
 End Function
-
 
 Function mapResetAll()
     Set gKeyMap = Nothing
@@ -497,7 +493,6 @@ Function mapResetAll()
         .OnKey "^_"
     End With
 End Function
-
 
 Function dummy()
     If gDebugMode Then

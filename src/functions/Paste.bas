@@ -68,6 +68,7 @@ Function pasteColumns()
 
         Call keystroke(True, Ctrl_ + NumpadAdd_)
     End With
+
     gLastYanked.Copy
 End Function
 

@@ -103,4 +103,3 @@ Function substituteNotFollowLangMode()
         Call substituteWithoutIME
     End If
 End Function
-

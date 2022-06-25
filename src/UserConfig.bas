@@ -1,6 +1,6 @@
 Attribute VB_Name = "A_UserConfig"
 ' ==================================================   vim.xlam   ==================================================
-' Author: SHA-5010 (@sha5010)
+' Author: SHA-5010 (@sha_5010)
 '
 ' [Description]
 ' vim.xlam は Excel上でVimエディタの操作感を実現するための Excelアドインソフトウェアです。
@@ -395,7 +395,6 @@ Sub initMapping()
     Call map("w", "i", "insertWorksheet")
     Call map("w", "a", "appendWorksheet")
     Call map("w", "d", "deleteWorksheet")
-    'Call map("w", "1", "activateFirstWorksheet")
     Call map("w", "0", "activateLastWorksheet")
     Call map("w", "$", "activateLastWorksheet")
     Call map("w", "c", "changeWorksheetTabColor")
@@ -454,5 +453,4 @@ Sub initMapping()
 
     'KeyMapping
     Call map("^{[}", "", "primitiveKeyMapping", vbKeyEscape)
-
 End Sub

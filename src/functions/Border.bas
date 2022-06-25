@@ -93,7 +93,6 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
             End If
         End With
     Next i
-
 End Function
 
 Private Function BorderColorAPI(Optional ByVal Index As Variant = 0)
@@ -141,7 +140,7 @@ Function toggleBorderBottom(Optional ByVal LineStyle As XlLineStyle = xlContinuo
 End Function
 
 Function toggleBorderRight(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                          Optional ByVal Weight As XlBorderWeight = xlThin)
+                           Optional ByVal Weight As XlBorderWeight = xlThin)
     Call BorderAPI(APItoggleBorder, xlEdgeRight, LineStyle, Weight)
 End Function
 
@@ -262,6 +261,3 @@ Function setBorderColorAll()
         xlEdgeLeft, xlEdgeTop, xlEdgeBottom, xlEdgeRight, _
         xlInsideHorizontal, xlInsideVertical))
 End Function
-
-
-

@@ -74,7 +74,6 @@ Function scrollCurrentTop()
     targetRow = WorksheetFunction.Max(ActiveCell.Row - SCROLL_OFFSET, 1)
     
     ActiveWindow.SmallScroll Down:=targetRow - topRowVisible
-        
 End Function
 
 Function scrollCurrentBottom()
@@ -85,7 +84,6 @@ Function scrollCurrentBottom()
     targetRow = WorksheetFunction.Max(ActiveCell.Row + SCROLL_OFFSET + 1, 1)
     
     ActiveWindow.SmallScroll Up:=bottomRowVisible - targetRow
-        
 End Function
 
 Function scrollCurrentMiddle()
@@ -100,7 +98,6 @@ Function scrollCurrentMiddle()
     ElseIf middleRowVisible < targetRow Then
         ActiveWindow.SmallScroll Down:=targetRow - middleRowVisible
     End If
-    
 End Function
 
 Function scrollCurrentLeft()
@@ -111,7 +108,6 @@ Function scrollCurrentLeft()
     targetColumn = ActiveCell.Column
     
     ActiveWindow.SmallScroll ToRight:=targetColumn - leftColumnVisible
-        
 End Function
 
 Function scrollCurrentRight()
@@ -122,7 +118,6 @@ Function scrollCurrentRight()
     targetColumn = ActiveCell.Column
     
     ActiveWindow.SmallScroll ToLeft:=rightColumnVisible - targetColumn
-        
 End Function
 
 Function scrollCurrentCenter()
@@ -137,6 +132,4 @@ Function scrollCurrentCenter()
     ElseIf centerColumnVisible < targetColumn Then
         ActiveWindow.SmallScroll ToRight:=targetColumn - centerColumnVisible
     End If
-    
 End Function
-

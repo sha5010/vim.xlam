@@ -150,5 +150,6 @@ Function moveToSpecifiedRow(ByVal n As String) As Boolean
         ActiveSheet.Cells(CLng(n), ActiveCell.Column).Select
         moveToSpecifiedRow = True
     End If
+
 Catch:
 End Function

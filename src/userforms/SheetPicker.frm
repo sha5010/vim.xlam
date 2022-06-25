@@ -34,7 +34,6 @@ Private Function Activate_Nth_sheet(ByVal n As Integer) As Boolean
     
     ActiveWorkbook.Worksheets(n).Activate
     Activate_Nth_sheet = True
-    
 End Function
 
 Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
@@ -66,7 +65,6 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
     End With
     
     List_Sheets.List(idx, 1) = sheetName
-    
 End Sub
 
 Private Sub Rename_Sheet(ByVal n As Integer)
@@ -127,7 +125,6 @@ Private Sub List_Sheets_Change()
             Call Activate_Nth_sheet(idx)
         End If
     End If
-    
 End Sub
 
 Private Sub List_Sheets_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
@@ -293,4 +290,3 @@ Private Sub UserForm_Initialize()
         Next
     End With
 End Sub
-

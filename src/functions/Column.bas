@@ -87,7 +87,6 @@ Function deleteColumns()
     Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-
     t.Activate
     Set t = Nothing
 
@@ -357,17 +356,6 @@ Function unhideColumns()
     'ref: https://excel.nj-clucker.com/ctrl-shift-0-not-working/
     Call keystroke(True, Ctrl_ + Shift_ + k0_)
 
-'    keybd_event vbKeyMenu, 0, 0, 0
-'    keybd_event vbKeyH, 0, 0, 0
-'    keybd_event vbKeyH, 0, KEYUP, 0
-'    keybd_event vbKeyO, 0, 0, 0
-'    keybd_event vbKeyO, 0, KEYUP, 0
-'    keybd_event vbKeyU, 0, 0, 0
-'    keybd_event vbKeyU, 0, KEYUP, 0
-'    keybd_event vbKeyL, 0, 0, 0
-'    keybd_event vbKeyL, 0, KEYUP, 0
-'    keybd_event vbKeyMenu, 0, KEYUP, 0
-
 Catch:
 End Function
 
@@ -419,8 +407,8 @@ Function ungroupColumns()
     End With
 
     Call keystroke(True, Alt_ + Shift_ + Left_)
-Catch:
 
+Catch:
     t.Activate
     Set t = Nothing
 
@@ -441,7 +429,6 @@ Function foldColumnsGroup()
     Exit Function
 
 Catch:
-
 End Function
 
 
@@ -459,7 +446,6 @@ Function spreadColumnsGroup()
     Exit Function
 
 Catch:
-
 End Function
 
 Function adjustColumnsWidth()

@@ -91,7 +91,6 @@ Private Function PutLabel(ByVal X As Integer, ByVal Y As Integer, _
     Else
         labelTable.Add genLabel, PutLabel
     End If
-
 End Function
 
 Private Sub ChangeAll(ByVal Enabled As Boolean, _

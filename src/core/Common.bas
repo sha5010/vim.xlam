@@ -279,4 +279,3 @@ Function unkeyupControlKeys()
         keybd_event vbKeyMenu, 0, KEYUP, 0
     End If
 End Function
-

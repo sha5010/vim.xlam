@@ -429,7 +429,6 @@ Function foldRowsGroup()
     Exit Function
 
 Catch:
-
 End Function
 
 
@@ -447,7 +446,6 @@ Function spreadRowsGroup()
     Exit Function
 
 Catch:
-
 End Function
 
 Function adjustRowsHeight()
@@ -533,4 +531,3 @@ Function wideRowsHeight()
 
 Catch:
 End Function
-

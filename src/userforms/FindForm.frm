@@ -53,7 +53,6 @@ Private Sub TextBox1_Change()
     If InStr(TextBox1.Value, Chr(9)) > 0 Then
         TextBox1.Value = Replace(TextBox1.Value, Chr(9), "")
     End If
-    
 End Sub
 
 Private Sub TextBox1_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)

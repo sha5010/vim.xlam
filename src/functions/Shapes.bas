@@ -87,4 +87,3 @@ Function changeShapeBorderColor(Optional garbage As String) As Boolean
     Set shp = Nothing
     changeShapeBorderColor = True
 End Function
-

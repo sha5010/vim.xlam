@@ -12,7 +12,6 @@ Function showFindNotFollowLang()
     gLangJa = Not gLangJa
 End Function
 
-
 Function nextFoundCell()
     Dim t As Range
     Dim i As Integer

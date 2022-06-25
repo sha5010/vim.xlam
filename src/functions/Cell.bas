@@ -263,7 +263,6 @@ Function exceptSelectCells()
         Else
             Call setStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2)
         End If
-
     End If
 End Function
 
