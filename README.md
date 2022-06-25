@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="/sha5010/vim.xlam/releases/latest">
-    <img alt="vim xlam_banner" src="https://user-images.githubusercontent.com/95682647/175554011-5f9b5a37-a08d-47f7-ac63-b162620cc99d.png" width="600">
-  </a>
+  <img alt="vim xlam_banner" src="https://user-images.githubusercontent.com/95682647/175554011-5f9b5a37-a08d-47f7-ac63-b162620cc99d.png" width="600">
 </p>
 
 <p align="center">
