@@ -192,7 +192,7 @@ Public Sub SetMax(ByVal Max As Long)
     If StoreMax = 0 Then
         StoreMax = Max
     Else
-        Err.Raise 50000, Description:="�i�[�ő吔�̕ύX�͂ł��܂���B"
+        Err.Raise 50000, Description:="格納最大数の変更はできません。"
     End If
 End Sub
 

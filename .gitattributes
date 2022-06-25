@@ -19,11 +19,14 @@
 *.bas working-tree-encoding=sjis
 *.dcm working-tree-encoding=sjis
 *.frm working-tree-encoding=sjis
+*.cls working-tree-encoding=sjis
 
 *.bas diff=sjis
 *.dcm diff=sjis
 *.frm diff=sjis
+*.cls diff=sjis
 
 *.bas encoding=sjis
 *.dcm encoding=sjis
 *.frm encoding=sjis
+*.cls encoding=sjis

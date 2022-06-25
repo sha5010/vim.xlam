@@ -48,7 +48,7 @@ End Sub
 
 Public Sub Setup(Optional ByVal msoThemeColorIndex As Integer = xlNone, Optional ByVal colorCode As Long = xlNone)
     If msoThemeColorIndex = xlNone And colorCode = xlNone Then
-        Err.Raise 50001, Description:="msoThemeColorIndex ‚© colorCode ‚Ì‚Ç‚¿‚ç‚©‚ğw’è‚µ‚È‚¯‚ê‚Î‚È‚è‚Ü‚¹‚ñB"
+        Err.Raise 50001, Description:="msoThemeColorIndex ã‹ colorCode ã®ã©ã¡ã‚‰ã‹ã‚’æŒ‡å®šã—ãªã‘ã‚Œã°ãªã‚Šã¾ã›ã‚“ã€‚"
         Exit Sub
     End If
 
@@ -65,7 +65,7 @@ End Sub
 
 Private Sub CheckSetup()
     If Not IsSetup Then
-        Err.Raise 50000, Description:="ƒZƒbƒgƒAƒbƒv‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB"
+        Err.Raise 50000, Description:="ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚"
         End
     End If
 End Sub
