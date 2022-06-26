@@ -67,6 +67,9 @@ Sub initMapping()
 
     'Core
     Call map("^p", "", "toggleLang")
+    Call map(":", "r", "reloadVim", returnOnly:=True)
+    Call map(":", "r!", "reloadVim", True, returnOnly:=True)
+    Call map(":", "debug", "toggleDebugMode", returnOnly:=True)
 
 
     'InsertMode
@@ -402,12 +405,7 @@ Sub initMapping()
     Call map("w", "", "activateWorksheet", requireArguments:=True)
 
 
-    'Useful Command
-    Call map("u", "", "undo_CtrlZ")
-    Call map("^r", "", "redoExecute")
-    Call map(".", "", "repeatAction")
-    Call map("m", "", "zoomIn")
-    Call map("M", "", "zoomOut")
+    'Workbook Function
     Call map(":", "e", "openWorkbook", returnOnly:=True)
     Call map(":", "e!", "reopenActiveWorkbook", returnOnly:=True)
     Call map(":", "w", "saveWorkbook", returnOnly:=True)
@@ -415,18 +413,25 @@ Sub initMapping()
     Call map(":", "q!", "closeWithoutSaving", returnOnly:=True)
     Call map(":", "wq", "closeWithSaving", returnOnly:=True)
     Call map(":", "x", "closeWithSaving", returnOnly:=True)
-    Call map(":", "r", "reloadVim", returnOnly:=True)
-    Call map(":", "r!", "reloadVim", True, returnOnly:=True)
-
-    Call map("^i", "", "jumpNext")
-    Call map("^o", "", "jumpPrev")
-    Call map(":", "cle", "clearJumps", returnOnly:=True)
-
     Call map(":", "b", "activateWorkbook", returnOnly:=True, requireArguments:=True)
     Call map(":", "bn", "nextWorkbook", returnOnly:=True)
     Call map(":", "bp", "previousWorkbook", returnOnly:=True)
 
-    Call map(":", "debug", "toggleDebugMode", returnOnly:=True)
+    Call map("@", "a", "toggleReadOnly")
+    Call map("@", "n", "nextWorkbook")
+    Call map("@", "N", "previousWorkbook")
+
+
+    'Useful Command
+    Call map("u", "", "undo_CtrlZ")
+    Call map("^r", "", "redoExecute")
+    Call map(".", "", "repeatAction")
+    Call map("m", "", "zoomIn")
+    Call map("M", "", "zoomOut")
+
+    Call map("^i", "", "jumpNext")
+    Call map("^o", "", "jumpPrev")
+    Call map(":", "cle", "clearJumps", returnOnly:=True)
 
 
     'Atmark Command
@@ -435,9 +440,6 @@ Sub initMapping()
     Call map("@", "m", "toggleMergeCells")
     Call map("@", "x", "toggleFormulaBar")
     Call map("@", "s", "showSummaryInfo")
-    Call map("@", "a", "toggleReadOnly")
-    Call map("@", "n", "nextWorkbook")
-    Call map("@", "N", "previousWorkbook")
 
 
     'Count
