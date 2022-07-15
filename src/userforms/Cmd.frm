@@ -65,6 +65,7 @@ Private Sub UserForm_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
         gCount = 1
     End If
 
+    On Error Resume Next
     Me.Label_Text = gCmdBuf
     Me.Width = Me.Label_Text.Left + Me.Label_Text.Width + 12
 End Sub
