@@ -88,13 +88,19 @@ Function pasteValue()
     cbType = cb(2)
 
     If Application.CutCopyMode > 0 Then 'Cells
-        Call keystroke(True, Alt_ + H_, V_ + T_)
-
-    ElseIf cbType = xlClipboardFormatText Then
-        Call keystroke(True, Ctrl_ + V_)
+        Call keystroke(True, Alt_ + H_, V_, V_)
 
     Else
-        Call debugPrint("Unknown ClipboardType: " & cbType, "pasteValue")
+        Select Case cbType
+            Case xlClipboardFormatText
+                Call keystroke(True, Ctrl_ + V_)
+            Case xlClipboardFormatRTF
+                Call keystroke(True, Alt_ + H_, V_, T_)
+            Case xlHtml
+                Call keystroke(True, Alt_ + H_, V_, S_, End_, Enter_)
+            Case Else
+                Call debugPrint("Unknown ClipboardType: " & cbType, "pasteValue")
+        End Select
     End If
 End Function
 
