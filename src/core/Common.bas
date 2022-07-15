@@ -279,3 +279,9 @@ Function unkeyupControlKeys()
         keybd_event vbKeyMenu, 0, KEYUP, 0
     End If
 End Function
+
+Function disableIME()
+    If IMEStatus <> vbIMEOff Then
+        Call keystroke(True, Kanji_)
+    End If
+End Function

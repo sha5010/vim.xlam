@@ -10,6 +10,7 @@ Function insertWithIME()
         Call keystroke(True, F2_, Ctrl_ + Home_, Kanji_)
         Call StartEditing
     End If
+    Application.OnTime Now + 0.1 / 86400, "disableIME"
 End Function
 
 Function insertWithoutIME()
@@ -20,6 +21,7 @@ Function insertWithoutIME()
         Call keystroke(True, F2_, Ctrl_ + Home_)
         Call StartEditing
     End If
+    Application.OnTime Now + 0.1 / 86400, "disableIME"
 End Function
 
 Function appendWithIME()
@@ -30,6 +32,7 @@ Function appendWithIME()
         Call keystroke(True, F2_, Kanji_)
         Call StartEditing
     End If
+    Application.OnTime Now + 0.1 / 86400, "disableIME"
 End Function
 
 Function appendWithoutIME()
@@ -40,6 +43,7 @@ Function appendWithoutIME()
         Call keystroke(True, F2_)
         Call StartEditing
     End If
+    Application.OnTime Now + 0.1 / 86400, "disableIME"
 End Function
 
 Function substituteWithIME()
@@ -50,6 +54,7 @@ Function substituteWithIME()
         Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_, Kanji_)
         Call StartEditing
     End If
+    Application.OnTime Now + 0.1 / 86400, "disableIME"
 End Function
 
 Function substituteWithoutIME()
@@ -60,6 +65,7 @@ Function substituteWithoutIME()
         Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_)
         Call StartEditing
     End If
+    Application.OnTime Now + 0.1 / 86400, "disableIME"
 End Function
 
 Function insertFollowLangMode()

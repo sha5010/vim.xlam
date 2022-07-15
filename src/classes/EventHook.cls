@@ -18,10 +18,7 @@ Private EditFlag As Boolean
 
 Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     If gVimMode Then
-        If IMEStatus <> vbIMEModeOff Then
-            SendKeys "{kanji}"
-        End If
-
+        Call disableIME
         Call recordToJumpList(Target)
 
         If EditFlag Then
