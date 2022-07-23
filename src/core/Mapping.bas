@@ -224,6 +224,7 @@ Function mapToAllDummy()
     registerOnKey "/", "dummy"
     registerOnKey "¥", "dummy"
     registerOnKey " ", "dummy"
+    registerOnKey "{226}", "dummy"
 
     registerOnKey "+a", "dummy"
     registerOnKey "+b", "dummy"
@@ -334,6 +335,7 @@ Function mapResetAll()
         .OnKey "/"
         .OnKey "¥"
         .OnKey " "
+        .OnKey "{226}"
 
         'Shift
         .OnKey "+a"
