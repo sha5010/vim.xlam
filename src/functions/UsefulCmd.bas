@@ -161,3 +161,8 @@ Function repeatAction()
         Call Repeater.Run
     End If
 End Function
+
+Function showContextMenu()
+    'Send Shift+F10
+    Call keystroke(True, Shift_ + F10_)
+End Function
