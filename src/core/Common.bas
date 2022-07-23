@@ -285,3 +285,17 @@ Function disableIME()
         Call keystroke(True, Kanji_)
     End If
 End Function
+
+Function repeatRegister(ByVal funcName As String, ParamArray args() As Variant)
+    If Repeater Is Nothing Then
+        Set Repeater = New cls_Repeater
+    End If
+
+    Call Repeater.Register(funcName, gCount, args)
+End Function
+
+Function repeatAction()
+    If Not Repeater Is Nothing Then
+        Call Repeater.Run
+    End If
+End Function
