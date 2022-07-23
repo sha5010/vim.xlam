@@ -67,69 +67,75 @@ Function scrollDown1Row()
 End Function
 
 Function scrollCurrentTop()
-    Dim topRowVisible As Long
-    Dim targetRow As Long
+    With ActiveWindow
+        .ScrollIntoView _
+            Left:=.VisibleRange.Left * 3, _
+            Top:=(ActiveCell.Top - SCROLL_OFFSET) * 3, _
+            Width:=0, Height:=0
 
-    topRowVisible = ActiveWindow.VisibleRange.Row
-    targetRow = WorksheetFunction.Max(ActiveCell.Row - SCROLL_OFFSET, 1)
-
-    ActiveWindow.SmallScroll Down:=targetRow - topRowVisible
+        While ActiveCell.Top - SCROLL_OFFSET > .VisibleRange.Top
+            .SmallScroll Down:=1
+        Wend
+    End With
 End Function
 
 Function scrollCurrentBottom()
-    Dim bottomRowVisible As Long
-    Dim targetRow As Long
+    With ActiveWindow
+        .ScrollIntoView _
+            Left:=.VisibleRange.Left * 3, _
+            Top:=(ActiveCell.Top - .UsableHeight + 18 + SCROLL_OFFSET + ActiveCell.Height) * 3, _
+            Width:=0, Height:=0
 
-    bottomRowVisible = ActiveWindow.VisibleRange.Row + ActiveWindow.VisibleRange.Rows.Count
-    targetRow = WorksheetFunction.Max(ActiveCell.Row + SCROLL_OFFSET + 1, 1)
-
-    ActiveWindow.SmallScroll Up:=bottomRowVisible - targetRow
+        While ActiveCell.Top + ActiveCell.Height > .VisibleRange.Top + .UsableHeight - 18
+            .SmallScroll Down:=1
+        Wend
+    End With
 End Function
 
 Function scrollCurrentMiddle()
-    Dim middleRowVisible As Long
-    Dim targetRow As Long
+    With ActiveWindow
+        .ScrollIntoView _
+            Left:=.VisibleRange.Left * 3, _
+            Top:=(ActiveCell.Top + ActiveCell.Height / 2 - (.UsableHeight - 18) / 2) * 3, _
+            Width:=0, Height:=0
 
-    middleRowVisible = ActiveWindow.VisibleRange.Row + ActiveWindow.VisibleRange.Rows.Count / 2 - 1
-    targetRow = ActiveCell.Row
-
-    If middleRowVisible > targetRow Then
-        ActiveWindow.SmallScroll Up:=middleRowVisible - targetRow
-    ElseIf middleRowVisible < targetRow Then
-        ActiveWindow.SmallScroll Down:=targetRow - middleRowVisible
-    End If
+        While (ActiveCell.Top - .VisibleRange.Top + ActiveCell.Height / 2) - ((.UsableHeight - 18) / 2) > .VisibleRange.Rows(1).Height / 2
+            .SmallScroll Down:=1
+        Wend
+    End With
 End Function
 
 Function scrollCurrentLeft()
-    Dim leftColumnVisible As Long
-    Dim targetColumn As Long
-
-    leftColumnVisible = ActiveWindow.VisibleRange.Column
-    targetColumn = ActiveCell.Column
-
-    ActiveWindow.SmallScroll ToRight:=targetColumn - leftColumnVisible
+    With ActiveWindow
+        .ScrollIntoView _
+            Left:=ActiveCell.Left * 3, _
+            Top:=.VisibleRange.Top * 3, _
+            Width:=0, Height:=0
+    End With
 End Function
 
 Function scrollCurrentRight()
-    Dim rightColumnVisible As Long
-    Dim targetColumn As Long
+    With ActiveWindow
+        .ScrollIntoView _
+            Left:=(ActiveCell.Left - .UsableWidth + 22 + ActiveCell.Width) * 3, _
+            Top:=.VisibleRange.Top * 3, _
+            Width:=0, Height:=0
 
-    rightColumnVisible = ActiveWindow.VisibleRange.Column + ActiveWindow.VisibleRange.Columns.Count - 1
-    targetColumn = ActiveCell.Column
-
-    ActiveWindow.SmallScroll ToLeft:=rightColumnVisible - targetColumn
+        While ActiveCell.Left + ActiveCell.Width > .VisibleRange.Left + .UsableWidth - 22
+            .SmallScroll ToRight:=1
+        Wend
+    End With
 End Function
 
 Function scrollCurrentCenter()
-    Dim centerColumnVisible As Long
-    Dim targetColumn As Long
+    With ActiveWindow
+        .ScrollIntoView _
+            Left:=(ActiveCell.Left + ActiveCell.Width / 2 - (.UsableWidth - 22) / 2) * 3, _
+            Top:=.VisibleRange.Top * 3, _
+            Width:=0, Height:=0
 
-    centerColumnVisible = ActiveWindow.VisibleRange.Column + ActiveWindow.VisibleRange.Columns.Count / 2 - 1
-    targetColumn = ActiveCell.Column
-
-    If centerColumnVisible > targetColumn Then
-        ActiveWindow.SmallScroll ToLeft:=centerColumnVisible - targetColumn
-    ElseIf centerColumnVisible < targetColumn Then
-        ActiveWindow.SmallScroll ToRight:=targetColumn - centerColumnVisible
-    End If
+        While (ActiveCell.Left - .VisibleRange.Left + ActiveCell.Width / 2) - ((.UsableWidth - 22) / 2) > .VisibleRange.Columns(1).Width / 2
+            .SmallScroll ToRight:=1
+        Wend
+    End With
 End Function

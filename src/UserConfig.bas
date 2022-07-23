@@ -56,7 +56,7 @@ Option Private Module
 
 Public Const VIM_TOOGLE_KEY As String = "^m"    'Vimモードを切り替えるショートカット (default: Ctrl + m)
 
-Public Const SCROLL_OFFSET As Byte = 3          'scrollCurrentTop, scrollCurrentBottom N行分空ける
+Public Const SCROLL_OFFSET As Double = 54       'scrollCurrentTop, scrollCurrentBottom で N pt分空ける
 Public Const MAX_HISTORIES As Integer = 100     'ジャンプリストに格納する最大数
 Public Const DEFAULT_LANG_JA As Boolean = True  'デフォルト言語設定を日本語にする (True: Japanese / False: English)
 
