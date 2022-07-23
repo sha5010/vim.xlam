@@ -152,3 +152,8 @@ Function showContextMenu()
     'Send Shift+F10
     Call keystroke(True, Shift_ + F10_)
 End Function
+
+Function showMacroDialog()
+    'Send Alt+F8
+    Call keystroke(True, Alt_ + F8_, Tab_)
+End Function

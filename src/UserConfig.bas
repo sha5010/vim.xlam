@@ -441,6 +441,7 @@ Sub initMapping()
     Call map("@", "m", "toggleMergeCells")
     Call map("@", "x", "toggleFormulaBar")
     Call map("@", "s", "showSummaryInfo")
+    Call map("@", "@", "showMacroDialog")
 
 
     'Count
