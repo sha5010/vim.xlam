@@ -87,9 +87,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Find & Replace | `N` | `previousFoundCell` | 検索結果の前のセルを選択 |
 | Scrolling | `<C-u>` | `scrollUpHalf` | 半ページ上スクロール |
 | Scrolling | `<C-d>` | `scrollDownHalf` | 半ページ下スクロール |
-| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` 行余裕をもたせる)|
+| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
 | Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
-| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` 行余裕をもたせる)|
+| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
 | Worksheet | `v` | `nextWorksheet` | 次のシートを選択 |
 | Worksheet | `V` | `previousWorksheet` | 前のシートを選択 |
 | Worksheet | `wr` | `renameWorksheet` | アクティブなシート名を変更 |
@@ -360,9 +360,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `<C-f>` | `scrollDown` | 1ページ下スクロール |
 | Scrolling | `<C-y>` | `scrollUp1Row` | 1行上スクロール |
 | Scrolling | `<C-e>` | `scrollDown1Row` | 1行下スクロール |
-| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` 行余裕をもたせる)|
+| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
 | Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
-| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` 行余裕をもたせる)|
+| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
 | Scrolling | `zs` | `scrollCurrentLeft` | 現在列が一番左に来るように横スクロール |
 | Scrolling | `zm` | `scrollCurrentCenter` | 現在列が中央に来るように横スクロール |
 | Scrolling | `ze` | `scrollCurrentRight` | 現在列が一番右に来るように横スクロール |
