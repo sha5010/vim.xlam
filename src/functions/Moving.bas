@@ -310,16 +310,30 @@ End Function
 Function moveToTopOfCurrentRegion()
     Call recordToJumpList
 
+    Dim targetRow As Long
+
     With ActiveWorkbook.ActiveSheet
-        .Cells(ActiveCell.CurrentRegion.Item(1).Row, ActiveCell.Column).Select
+        targetRow = ActiveCell.CurrentRegion.Item(1).Row
+        If targetRow = ActiveCell.Row Then
+            targetRow = ActiveCell.End(xlUp).Row
+        End If
+
+        .Cells(targetRow, ActiveCell.Column).Select
     End With
 End Function
 
 Function moveToBottomOfCurrentRegion()
     Call recordToJumpList
 
+    Dim targetRow As Long
+
     With ActiveWorkbook.ActiveSheet
-        .Cells(ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Row, ActiveCell.Column).Select
+        targetRow = ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Row
+        If targetRow = ActiveCell.Row Then
+            targetRow = ActiveCell.End(xlDown).Row
+        End If
+
+        .Cells(targetRow, ActiveCell.Column).Select
     End With
 End Function
 
