@@ -253,3 +253,7 @@ Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
         End With
     End If
 End Function
+
+Function exportWorksheet()
+    Application.Dialogs(xlDialogWorkbookCopy).Show
+End Function

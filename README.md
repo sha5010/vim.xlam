@@ -382,6 +382,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Worksheet | `w$` | `activateLastWorksheet` | 一番最後のシートを選択 |
 | Worksheet | `wc` | `changeWorksheetTabColor` | アクティブなシートの色を変更 |
 | Worksheet | `wy` | `cloneWorksheet` | アクティブなシートを複製 |
+| Worksheet | `we` | `exportWorksheet` | シートの移動またはコピーダイアログを表示 |
 | Worksheet | `w[num]` | `activateWorksheet` | `[num]` 番目のシートを選択 (1-9 のみ)|
 | Workbook | `:e` | `openWorkbook` | ブックを開く |
 | Workbook | `:e!` | `reopenActiveWorkbook` | アクティブなブックの変更を破棄し開き直す |

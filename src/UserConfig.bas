@@ -402,6 +402,7 @@ Sub initMapping()
     Call map("w", "$", "activateLastWorksheet")
     Call map("w", "c", "changeWorksheetTabColor")
     Call map("w", "y", "cloneWorksheet")
+    Call map("w", "e", "exportWorksheet")
     Call map("w", "", "activateWorksheet", requireArguments:=True)
 
 
