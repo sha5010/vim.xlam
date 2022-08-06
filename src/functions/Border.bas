@@ -57,12 +57,14 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
         sameAll = True
 
         For Each i In arr
-            With Selection.Borders(i)
-                sameAll = sameAll And (.LineStyle = LineStyle)
-                sameAll = sameAll And (.Weight = Weight)
-            End With
-            If Not sameAll Then
-                Exit For
+            If Not ((i = xlInsideHorizontal And Selection.Rows.Count = 1) Or (i = xlInsideVertical And Selection.Columns.Count = 1)) Then
+                With Selection.Borders(i)
+                    sameAll = sameAll And (.LineStyle = LineStyle)
+                    sameAll = sameAll And (.Weight = Weight)
+                End With
+                If Not sameAll Then
+                    Exit For
+                End If
             End If
         Next i
 
