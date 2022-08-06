@@ -401,6 +401,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `.` | `repeatAction` | 以前の動作を繰り返す (`repeatRegister` が呼ばれるコマンド限定)|
 | Other | `m` | `zoomIn` | 10% ズームイン。`[count]` が与えられたときは `[count]`% ズームイン |
 | Other | `M` | `zoomOut` | 10% ズームアウト。`[count]` が与えられたときは `[count]`% ズームアウト |
+| Other | `\` | `showContextMenu` | コンテキストメニューを表示 |
 | Other | `<C-i>` | `jumpNext` | ジャンプリストの次のセルへ移動 |
 | Other | `<C-o>` | `jumpPrev` | ジャンプリストの前のセルへ移動 |
 | Other | `:cle` | `clearJumps` | ジャンプリストをクリア |
@@ -409,6 +410,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `@m` | `toggleMergeCells` | セル結合のオン/オフを切り替え |
 | Other | `@x` | `toggleFormulaBar` | 関数バーの表示/非表示を切り替え |
 | Other | `@s` | `showSummaryInfo` | ファイルのプロパティを表示 |
+| Other | `@@` | `showMacroDialog` | マクロダイアログを表示 |
 | Other | `1-9` | `showCmdForm` | `[count]` を指定 (`5ri` なら5行挿入) |
 
 </div></details>
