@@ -429,6 +429,7 @@ Sub initMapping()
     Call map("m", "", "zoomIn")
     Call map("M", "", "zoomOut")
     Call map("{226}", "", "showContextMenu")
+    Call map("¥", "", "showContextMenu")
 
     Call map("^i", "", "jumpNext")
     Call map("^o", "", "jumpPrev")
