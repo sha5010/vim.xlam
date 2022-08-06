@@ -282,7 +282,7 @@ End Function
 
 Function disableIME()
     If IMEStatus <> vbIMEOff Then
-        Call keystroke(True, Kanji_)
+        Call keystrokeWithoutKeyup(Kanji_)
     End If
 End Function
 
