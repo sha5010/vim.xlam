@@ -81,7 +81,11 @@ Private Function getCmd(Optional ByVal countFirstOnly As Boolean = False) As Str
             char = Asc(Mid(gCmdBuf, i, 1))
             If 47 < char And char < 58 Then  '0-9
                 If numFlag Then
-                    gCount = gCount * 10 + (char - 48)
+                    If gCount < LONG_MAX / 10 - 1 Then
+                        gCount = gCount * 10 + (char - 48)
+                    Else
+                        gCount = LONG_MAX
+                    End If
                 Else
                     gCount = (char - 48)
                 End If
