@@ -48,6 +48,38 @@ Function zoomOut()
     ActiveWindow.Zoom = afterZoomRate
 End Function
 
+Function zoomSpecifiedScale()
+    Dim zoomScale As Integer
+
+    Select Case gCount
+        Case 1
+            zoomScale = 100
+        Case 2
+            zoomScale = 25
+        Case 3
+            zoomScale = 55
+        Case 4
+            zoomScale = 85
+        Case 5
+            zoomScale = 130
+        Case 6
+            zoomScale = 160
+        Case 7
+            zoomScale = 200
+        Case 8
+            zoomScale = 400
+        Case 9
+            ActiveWindow.Zoom = True
+            Exit Function
+        Case Is > 400
+            zoomScale = 400
+        Case Is <= 400
+            zoomScale = gCount
+    End Select
+
+    ActiveWindow.Zoom = zoomScale
+End Function
+
 Function toggleFormulaBar()
     Application.DisplayFormulaBar = Not Application.DisplayFormulaBar
 End Function
