@@ -19,7 +19,7 @@ End Function
 Function zoomIn()
     Dim afterZoomRate As Integer
 
-    If gCount > 10 Then
+    If gCount > 1 Then
         afterZoomRate = ActiveWindow.Zoom + gCount
     Else
         afterZoomRate = ActiveWindow.Zoom + gCount * 10
@@ -35,7 +35,7 @@ End Function
 Function zoomOut()
     Dim afterZoomRate As Integer
 
-    If gCount > 10 Then
+    If gCount > 1 Then
         afterZoomRate = ActiveWindow.Zoom - gCount
     Else
         afterZoomRate = ActiveWindow.Zoom - gCount * 10
