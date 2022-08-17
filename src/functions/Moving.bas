@@ -329,7 +329,7 @@ Function moveToBottomOfCurrentRegion()
 
     With ActiveWorkbook.ActiveSheet
         targetRow = ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Row
-        If targetRow = ActiveCell.Row Then
+        If .Cells(targetRow, ActiveCell.Column).MergeArea.Row = ActiveCell.Row Then
             targetRow = ActiveCell.End(xlDown).Row
         End If
 
