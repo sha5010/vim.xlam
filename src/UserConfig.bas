@@ -101,6 +101,7 @@ Sub initMapping()
 
     Call map("g", "g", "moveToTopRow")
     Call map("G", "", "moveToLastRow")
+    Call map("|", "", "moveToNthColumn")
     Call map("0", "", "moveToFirstColumn")
     Call map("{^}", "", "moveToLeftEnd")
     Call map("$", "", "moveToRightEnd")

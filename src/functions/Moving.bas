@@ -283,6 +283,18 @@ Function moveToLastRow()
     End With
 End Function
 
+Function moveToNthColumn()
+    Call recordToJumpList
+
+    If gCount > ActiveSheet.Columns.Count Then
+        gCount = ActiveSheet.Columns.Count
+    ElseIf gCount < 1 Then
+        gCount = 1
+    End If
+
+    ActiveSheet.Cells(ActiveCell.Row, gCount).Select
+End Function
+
 Function moveToFirstColumn()
     Call recordToJumpList
 
