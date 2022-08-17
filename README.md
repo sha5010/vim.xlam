@@ -134,6 +134,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Moving | `<C-S-L>` | `moveRight` | Ctrl + Shift + → |
 | Moving | `gg` | `moveToTopRow` | 1行目に移動。`[count]` ありなら `[count]` 行へ移動 |
 | Moving | `G` | `moveToLastRow` | UsedRange の最終行に移動。`[count]` ありなら `[count]` 行へ移動 |
+| Moving | `|` | `moveToNthColumn` | `[count]` 列目に移動 |
 | Moving | `0` | `moveToFirstColumn` | 1列目に移動 |
 | Moving | `^` | `moveToLeftEnd` | UsedRange の最初の列に移動 |
 | Moving | `$` | `moveToRightEnd` | UsedRange の最後の列に移動 |
@@ -360,6 +361,10 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `<C-f>` | `scrollDown` | 1ページ下スクロール |
 | Scrolling | `<C-y>` | `scrollUp1Row` | 1行上スクロール |
 | Scrolling | `<C-e>` | `scrollDown1Row` | 1行下スクロール |
+| Scrolling | `zh` | `scrollLeft1Column` | 1列左スクロール |
+| Scrolling | `zl` | `scrollRight1Column` | 1列右スクロール |
+| Scrolling | `zH` | `scrollLeft` | 1ページ左スクロール |
+| Scrolling | `zL` | `scrollRight` | 1ページ右スクロール |
 | Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
 | Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
 | Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
@@ -402,6 +407,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `.` | `repeatAction` | 以前の動作を繰り返す (`repeatRegister` が呼ばれるコマンド限定)|
 | Other | `m` | `zoomIn` | 10% ズームイン。`[count]` が与えられたときは `[count]`% ズームイン |
 | Other | `M` | `zoomOut` | 10% ズームアウト。`[count]` が与えられたときは `[count]`% ズームアウト |
+| Other | `%` | `zoomSpecifiedScale` | 表示倍率を `[count]`% に設定。`1-9` は決まった値に倍率変更 |
 | Other | `\` | `showContextMenu` | コンテキストメニューを表示 |
 | Other | `<C-i>` | `jumpNext` | ジャンプリストの次のセルへ移動 |
 | Other | `<C-o>` | `jumpPrev` | ジャンプリストの前のセルへ移動 |
