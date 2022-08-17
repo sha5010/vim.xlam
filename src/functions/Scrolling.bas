@@ -316,16 +316,60 @@ Private Function pointToColumn(ByVal point As Double, ByVal searchMode As column
     End Select
 End Function
 
+Private Function getLengthWithZoomConsidered(ByVal Length As Double) As Double
+    'Zoomを考慮した長さを取得
+    Dim rate As Double
+
+    If 90 < ActiveWindow.Zoom And ActiveWindow.Zoom < 110 Then
+        rate = 1
+    Else
+        rate = 103.32 / ActiveWindow.Zoom - 0.05
+    End If
+    getLengthWithZoomConsidered = Length * rate
+End Function
+
+Private Function getRealUsableHeight() As Double
+    If ActiveWindow.DisplayHeadings Then
+        getRealUsableHeight = ActiveWindow.UsableHeight - ActiveSheet.StandardHeight
+    Else
+        getRealUsableHeight = ActiveWindow.UsableHeight
+    End If
+End Function
+
+Private Function getRealUsableWidth() As Double
+    Dim maxVisibleRow As Long
+    Dim headingWidth As Double
+
+    If ActiveWindow.DisplayHeadings Then
+        maxVisibleRow = ActiveWindow.VisibleRange.Item(ActiveWindow.VisibleRange.Count).Row
+        headingWidth = 25
+
+        If maxVisibleRow >= 1000 Then
+            headingWidth = headingWidth + 6.75 * (Len(CStr(maxVisibleRow)) - 3)
+        End If
+
+        getRealUsableWidth = ActiveWindow.UsableWidth - headingWidth
+    Else
+        getRealUsableWidth = ActiveWindow.UsableWidth
+    End If
+End Function
+
 Function scrollCurrentTop()
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top - SCROLL_OFFSET, modeTop)
+    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top - getLengthWithZoomConsidered(SCROLL_OFFSET), modeTop)
 End Function
 
 Function scrollCurrentBottom()
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height + SCROLL_OFFSET - ActiveWindow.UsableHeight + 18, modeBottom)
+    Dim uh As Double
+    uh = getRealUsableHeight()
+
+    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height - getLengthWithZoomConsidered(uh - SCROLL_OFFSET), modeBottom)
 End Function
 
 Function scrollCurrentMiddle()
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height / 2 - (ActiveWindow.UsableHeight - 18) / 2, modeMiddle)
+    Dim uh As Double
+    uh = getRealUsableHeight()
+
+    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height / 2 - getLengthWithZoomConsidered(uh) / 2, modeMiddle)
 End Function
 
 Function scrollCurrentLeft()
@@ -333,9 +377,15 @@ Function scrollCurrentLeft()
 End Function
 
 Function scrollCurrentRight()
-    ActiveWindow.ScrollColumn = pointToColumn(ActiveCell.Left + ActiveCell.Width - ActiveWindow.UsableWidth + 22, modeRight)
+    Dim uw As Double
+    uw = getRealUsableWidth()
+
+    ActiveWindow.ScrollColumn = pointToColumn(ActiveCell.Left + ActiveCell.Width - getLengthWithZoomConsidered(uw), modeRight)
 End Function
 
 Function scrollCurrentCenter()
-    ActiveWindow.ScrollColumn = pointToColumn(ActiveCell.Left + ActiveCell.Width / 2 - (ActiveWindow.UsableWidth - 22) / 2, modeCenter)
+    Dim uw As Double
+    uw = getRealUsableWidth()
+
+    ActiveWindow.ScrollColumn = pointToColumn(ActiveCell.Left + ActiveCell.Width / 2 - getLengthWithZoomConsidered(uw) / 2, modeCenter)
 End Function
