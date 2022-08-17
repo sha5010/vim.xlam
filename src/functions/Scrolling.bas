@@ -53,21 +53,11 @@ Function scrollDownHalf()
 End Function
 
 Function scrollUp()
-    Call keyupControlKeys
-
-    keybd_event vbKeyPageUp, 0, EXTENDED_KEY, 0
-    keybd_event vbKeyPageUp, 0, EXTENDED_KEY Or KEYUP, 0
-
-    Call unkeyupControlKeys
+    ActiveWindow.LargeScroll Up:=1
 End Function
 
 Function scrollDown()
-    Call keyupControlKeys
-
-    keybd_event vbKeyPageDown, 0, EXTENDED_KEY, 0
-    keybd_event vbKeyPageDown, 0, EXTENDED_KEY Or KEYUP, 0
-
-    Call unkeyupControlKeys
+    ActiveWindow.LargeScroll Down:=1
 End Function
 
 Function scrollUp1Row()
