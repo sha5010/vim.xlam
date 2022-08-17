@@ -60,12 +60,28 @@ Function scrollDown()
     ActiveWindow.LargeScroll Down:=1
 End Function
 
+Function scrollLeft()
+    ActiveWindow.LargeScroll ToLeft:=1
+End Function
+
+Function scrollRight()
+    ActiveWindow.LargeScroll ToRight:=1
+End Function
+
 Function scrollUp1Row()
     ActiveWindow.SmallScroll Up:=1
 End Function
 
 Function scrollDown1Row()
     ActiveWindow.SmallScroll Down:=1
+End Function
+
+Function scrollLeft1Column()
+    ActiveWindow.SmallScroll ToLeft:=1
+End Function
+
+Function scrollRight1Column()
+    ActiveWindow.SmallScroll ToRight:=1
 End Function
 
 Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearchMode) As Long
