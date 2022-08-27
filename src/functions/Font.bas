@@ -65,6 +65,11 @@ Function toggleUnderline()
     Call keystroke(True, Ctrl_ + k4_)
 End Function
 
+Function toggleStrikethrough()
+    Call repeatRegister("toggleStrikethrough")
+    Call keystroke(True, Ctrl_ + k5_)
+End Function
+
 Function showFontDialog()
     Call keystroke(True, Ctrl_ + k1_)
 End Function

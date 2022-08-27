@@ -332,6 +332,7 @@ Sub initMapping()
     Call map("f", "b", "toggleBold")
     Call map("f", "i", "toggleItalic")
     Call map("f", "u", "toggleUnderline")
+    Call map("f", "-", "toggleStrikethrough")
     Call map("f", "f", "showFontDialog")
 
 

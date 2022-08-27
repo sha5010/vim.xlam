@@ -328,6 +328,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Font | `fb` | `toggleBold` | 太字 |
 | Font | `fi` | `toggleItalic` | 斜体 |
 | Font | `fu` | `toggleUnderline` | 下線 |
+| Font | `f-` | `toggleStrikethrough` | 取り消し線 |
 | Font | `ff` | `showFontDialog` | セルの書式設定のダイアログを表示 |
 | Color | `fc` | `smartFontColor` | フォントの色を選択するダイアログを表示 |
 | Color | `Fc` | `smartFillColor` | 塗りつぶしの色を選択すダイアログを表示 |
