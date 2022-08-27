@@ -51,7 +51,7 @@ Function substituteWithIME()
         Call temporarilyDisableVim
         Call keystroke(True, Enter_, Delete_, Kanji_)
     Else
-        Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_, Kanji_)
+        Call keystroke(True, BackSpace_, F2_, Kanji_)
         Call StartEditing
     End If
     Application.OnTime Now + 0.1 / 86400, "disableIME"
@@ -62,7 +62,7 @@ Function substituteWithoutIME()
         Call temporarilyDisableVim
         Call keystroke(True, Enter_, Delete_)
     Else
-        Call keystroke(True, F2_, Ctrl_ + Shift_ + Home_, Delete_)
+        Call keystroke(True, BackSpace_, F2_)
         Call StartEditing
     End If
     Application.OnTime Now + 0.1 / 86400, "disableIME"
