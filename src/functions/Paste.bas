@@ -108,6 +108,7 @@ Function pasteSpecial()
     If Application.ClipboardFormats(1) = -1 Then
         Call setStatusBarTemporarily("クリップボードが空です。", 2)
     Else
+        On Error Resume Next
         Application.Dialogs(xlDialogPasteSpecial).Show
     End If
 End Function
