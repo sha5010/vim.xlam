@@ -40,9 +40,7 @@ Private Function pasteRows()
             endRow = startRow + WorksheetFunction.RoundDown((.Rows.Count + 1) / yankedRows, 0) - 1
         End If
 
-        If gCount > 1 Then
-            .Range(.Rows(startRow), .Rows(endRow)).Select
-        End If
+        .Range(.Rows(startRow), .Rows(endRow)).Select
 
         Call keystroke(True, Ctrl_ + NumpadAdd_)
     End With
@@ -64,9 +62,7 @@ Private Function pasteColumns()
             endColumn = startColumn + WorksheetFunction.RoundDown((.Columns.Count + 1) / yankedColumns, 0) - 1
         End If
 
-        If gCount > 1 Then
-            .Range(.Columns(startColumn), .Columns(endColumn)).Select
-        End If
+        .Range(.Columns(startColumn), .Columns(endColumn)).Select
 
         Call keystroke(True, Ctrl_ + NumpadAdd_)
     End With
