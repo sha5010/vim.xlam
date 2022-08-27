@@ -45,7 +45,9 @@ Private Function pasteRows()
         Call keystroke(True, Ctrl_ + NumpadAdd_)
     End With
 
-    gLastYanked.Copy
+    If Application.CutCopyMode = xlCopy Then
+        gLastYanked.Copy
+    End If
 End Function
 
 Private Function pasteColumns()
@@ -67,7 +69,9 @@ Private Function pasteColumns()
         Call keystroke(True, Ctrl_ + NumpadAdd_)
     End With
 
-    gLastYanked.Copy
+    If Application.CutCopyMode = xlCopy Then
+        gLastYanked.Copy
+    End If
 End Function
 
 Function pasteValue()
