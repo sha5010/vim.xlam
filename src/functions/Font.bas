@@ -70,6 +70,10 @@ Function toggleStrikethrough()
     Call keystroke(True, Ctrl_ + k5_)
 End Function
 
+Function changeFormat()
+    Call keystroke(True, Alt_ + H_, N_, Down_, Down_)
+End Function
+
 Function showFontDialog()
     Call keystroke(True, Ctrl_ + k1_)
 End Function
