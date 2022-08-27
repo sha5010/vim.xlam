@@ -420,6 +420,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `@x` | `toggleFormulaBar` | 関数バーの表示/非表示を切り替え |
 | Other | `@s` | `showSummaryInfo` | ファイルのプロパティを表示 |
 | Other | `@@` | `showMacroDialog` | マクロダイアログを表示 |
+| Other | `@p` | `setPrintArea` | 選択セルを印刷範囲に設定 |
+| Other | `@P` | `clearPrintArea` | 印刷範囲をクリア |
 | Other | `1-9` | `showCmdForm` | `[count]` を指定 (`5ri` なら5行挿入) |
 
 </div></details>

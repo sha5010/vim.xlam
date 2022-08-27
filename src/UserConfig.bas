@@ -452,6 +452,8 @@ Sub initMapping()
     Call map("@", "x", "toggleFormulaBar")
     Call map("@", "s", "showSummaryInfo")
     Call map("@", "@", "showMacroDialog")
+    Call map("@", "p", "setPrintArea")
+    Call map("@", "P", "clearPrintArea")
 
 
     'Count

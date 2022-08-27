@@ -189,3 +189,13 @@ Function showMacroDialog()
     'Send Alt+F8
     Call keystroke(True, Alt_ + F8_, Tab_)
 End Function
+
+Function setPrintArea()
+    'Send Alt + P, R, S
+    Call keystroke(True, Alt_ + P_, R_, S_)
+End Function
+
+Function clearPrintArea()
+    'Send Alt + P, R, C
+    Call keystroke(True, Alt_ + P_, R_, C_)
+End Function
