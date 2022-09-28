@@ -33,7 +33,10 @@ End Function
 Function insertColumns()
     Call repeatRegister("insertColumns")
 
+    Dim savedRow As Long
     On Error GoTo Catch
+
+    savedRow = ActiveCell.Row
 
     Application.ScreenUpdating = False
     If gCount > 1 Then
@@ -41,6 +44,7 @@ Function insertColumns()
     Else
         Selection.EntireColumn.Select
     End If
+    Cells(savedRow, ActiveCell.Column).Activate
 
     Call keystroke(True, Alt_ + I_, C_)
 
@@ -51,7 +55,10 @@ End Function
 Function appendColumns()
     Call repeatRegister("appendColumns")
 
+    Dim savedRow As Long
     On Error GoTo Catch
+
+    savedRow = ActiveCell.Row
 
     Application.ScreenUpdating = False
     If Selection.Column < ActiveSheet.Columns.Count Then
@@ -63,6 +70,7 @@ Function appendColumns()
     Else
         Selection.EntireColumn.Select
     End If
+    Cells(savedRow, ActiveCell.Column).Activate
 
     Call keystroke(True, Alt_ + I_, C_)
 
