@@ -24,6 +24,10 @@ Function saveWorkbook()
     End If
 End Function
 
+Function saveAsNewWorkbook()
+    Application.CommandBars.ExecuteMso "FileSaveAs"
+End Function
+
 Function openWorkbook()
     Application.CommandBars.ExecuteMso "FileOpenUsingBackstage"
 End Function
