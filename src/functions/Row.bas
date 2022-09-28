@@ -32,6 +32,7 @@ End Function
 
 Function insertRows()
     Call repeatRegister("insertRows")
+    Call stopVisualMode
 
     Dim savedColumn As Long
     On Error GoTo Catch
@@ -54,6 +55,7 @@ End Function
 
 Function appendRows()
     Call repeatRegister("appendRows")
+    Call stopVisualMode
 
     Dim savedColumn As Long
     On Error GoTo Catch
@@ -80,6 +82,7 @@ End Function
 
 Function deleteRows()
     Call repeatRegister("deleteRows")
+    Call stopVisualMode
 
     Dim t As Range
     On Error GoTo Catch
@@ -110,6 +113,7 @@ End Function
 
 Function deleteToTopRows()
     Call repeatRegister("deleteToTopRows")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -124,6 +128,7 @@ End Function
 
 Function deleteToBottomRows()
     Call repeatRegister("deleteToBottomRows")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -142,6 +147,7 @@ End Function
 
 Function deleteToTopOfCurrentRegionRows()
     Call repeatRegister("deleteToTopOfCurrentRegionRows")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -156,6 +162,7 @@ End Function
 
 Function deleteToBottomOfCurrentRegionRows()
     Call repeatRegister("deleteToBottomOfCurrentRegionRows")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -169,6 +176,7 @@ Catch:
 End Function
 
 Function yankRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -187,6 +195,7 @@ Catch:
 End Function
 
 Function yankToTopRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -205,6 +214,7 @@ Catch:
 End Function
 
 Function yankToBottomRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -227,6 +237,7 @@ Catch:
 End Function
 
 Function yankToTopOfCurrentRegionRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -245,6 +256,7 @@ Catch:
 End Function
 
 Function yankToBottomOfCurrentRegionRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -263,6 +275,7 @@ Catch:
 End Function
 
 Function cutRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -281,6 +294,7 @@ Catch:
 End Function
 
 Function cutToTopRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -299,6 +313,7 @@ Catch:
 End Function
 
 Function cutToBottomRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -321,6 +336,7 @@ Catch:
 End Function
 
 Function cutToTopOfCurrentRegionRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -339,6 +355,7 @@ Catch:
 End Function
 
 Function cutToBottomOfCurrentRegionRows()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startRow As Long
@@ -358,6 +375,7 @@ End Function
 
 Function hideRows()
     Call repeatRegister("hideRows")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -373,6 +391,7 @@ End Function
 
 Function unhideRows()
     Call repeatRegister("unhideRows")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -387,6 +406,7 @@ End Function
 
 Function groupRows()
     Call repeatRegister("groupRows")
+    Call stopVisualMode
 
     Dim t As Range
     On Error GoTo Catch
@@ -417,6 +437,7 @@ End Function
 
 Function ungroupRows()
     Call repeatRegister("ungroupRows")
+    Call stopVisualMode
 
     Dim t As Range
     On Error GoTo Catch
@@ -447,6 +468,7 @@ End Function
 
 Function foldRowsGroup()
     Call repeatRegister("foldRowsGroup")
+    Call stopVisualMode
 
     Dim targetRow As Long
     Dim i As Integer
@@ -466,6 +488,7 @@ End Function
 
 Function spreadRowsGroup()
     Call repeatRegister("spreadRowsGroup")
+    Call stopVisualMode
 
     Dim targetRow As Long
     Dim i As Integer
@@ -484,6 +507,7 @@ End Function
 
 Function adjustRowsHeight()
     Call repeatRegister("adjustRowsHeight")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -497,6 +521,7 @@ Catch:
 End Function
 
 Function setRowsHeight()
+    Call stopVisualMode
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -510,6 +535,7 @@ End Function
 
 Function narrowRowsHeight()
     Call repeatRegister("narrowRowsHeight")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -542,6 +568,7 @@ End Function
 
 Function wideRowsHeight()
     Call repeatRegister("wideRowsHeight")
+    Call stopVisualMode
 
     On Error GoTo Catch
 

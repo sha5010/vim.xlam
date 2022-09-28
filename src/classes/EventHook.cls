@@ -13,8 +13,14 @@ Public WithEvents App As Application
 Attribute App.VB_VarHelpID = -1
 Public WithEvents TempApp As Application
 Attribute TempApp.VB_VarHelpID = -1
+Private WithEvents VisualApp As Application
+Attribute VisualApp.VB_VarHelpID = -1
 
+Public VisualMode As Boolean
+Public VisualLine As Boolean
 Private EditFlag As Boolean
+Private BaseCell As Range
+Private LastCell As Range
 
 Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     If gVimMode Then
@@ -53,4 +59,105 @@ End Sub
 
 Public Sub StopEditing()
     EditFlag = False
+End Sub
+
+Private Sub VisualApp_SheetChange(ByVal Sh As Object, ByVal Target As Range)
+    If Not BaseCell.Parent Is Sh Then
+        Call stopVisualMode
+    End If
+End Sub
+
+Private Sub VisualApp_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
+    If BaseCell.Parent Is Sh Then
+        Application.EnableEvents = False
+
+        Set LastCell = ActiveCell
+        If VisualMode Then
+            Range(BaseCell, ActiveCell).Select
+        ElseIf VisualLine Then
+            Range(Rows(BaseCell.Row), Rows(ActiveCell.Row)).Select
+        End If
+        LastCell.Activate
+
+        Application.EnableEvents = True
+    Else
+        Call stopVisualMode
+    End If
+End Sub
+
+Private Sub SetupVisualMode()
+    Set VisualApp = Application
+
+    If TypeName(Selection) <> "Range" Then
+        Set BaseCell = ActiveCell
+        Set LastCell = ActiveCell
+        Exit Sub
+    End If
+
+    Set BaseCell = Selection.Item(1)
+    Set LastCell = Selection.Item(Selection.Count)
+
+    If LastCell.Address = ActiveCell.Address Then
+        Call SwapBase
+    End If
+
+    LastCell.Activate
+End Sub
+
+Public Sub StartVisualMode()
+    Dim t As Range
+
+    If VisualApp Is Nothing Then
+        Call SetupVisualMode
+    Else
+        Application.EnableEvents = False
+
+        Set t = ActiveCell
+        Range(BaseCell, LastCell).Select
+        t.Activate
+        Set t = Nothing
+
+        Application.EnableEvents = True
+    End If
+
+    VisualMode = True
+    VisualLine = False
+End Sub
+
+Public Sub StartVisualLine()
+    Dim t As Range
+
+    If VisualApp Is Nothing Then
+        Call SetupVisualMode
+        Call selectRows
+    Else
+        Application.EnableEvents = False
+
+        Set t = ActiveCell
+        Range(Rows(BaseCell.Row), Rows(ActiveCell.Row)).Select
+        t.Activate
+        Set t = Nothing
+
+        Application.EnableEvents = True
+    End If
+
+    VisualMode = False
+    VisualLine = True
+End Sub
+
+Public Sub SwapBase()
+    Dim t As Range
+
+    Set t = BaseCell
+    Set BaseCell = LastCell
+    Set LastCell = t
+
+    t.Activate
+End Sub
+
+Public Sub stopVisualMode()
+    Set VisualApp = Nothing
+    Set BaseCell = Nothing
+    VisualMode = False
+    VisualLine = False
 End Sub

@@ -51,6 +51,20 @@ Function map(ByVal key As String, ByVal subKey As String, ByVal funcName As Stri
     Call registerKeyMap(key & subKey, funcNameWithArg, returnOnly, requireArguments)
 End Function
 
+Function temporaryMap(ByVal key As String, ByVal funcName As String)
+    key = optimizeKey(key)
+    Call Application.OnKey(key, funcName)
+End Function
+
+Function restoreAppliedMap(ByVal key As String)
+    key = optimizeKey(key)
+
+    Call Application.OnKey(key)
+    If gRegisteredKeys.Exists(key) Then
+        Call Application.OnKey(key, gRegisteredKeys(key))
+    End If
+End Function
+
 Private Function parseArg(ByVal arg As Variant) As String
     If IsMissing(arg) Then
         Exit Function
@@ -68,13 +82,24 @@ Private Function parseArg(ByVal arg As Variant) As String
     End Select
 End Function
 
-Private Sub registerOnKey(ByVal key As String, Optional funcName As String = "")
+Private Function optimizeKey(ByVal key As String) As String
     Dim lowerKey As String
+
+    If InStr(key, "{") > 0 Then
+        optimizeKey = key
+        Exit Function
+    End If
 
     lowerKey = LCase(key)
     If lowerKey <> key Then
-        key = "+" & lowerKey
+        lowerKey = "+" & lowerKey
     End If
+
+    optimizeKey = lowerKey
+End Function
+
+Private Sub registerOnKey(ByVal key As String, Optional funcName As String = "")
+    key = optimizeKey(key)
 
     If gRegisteredKeys.Exists(key) Then
         gRegisteredKeys(key) = funcName

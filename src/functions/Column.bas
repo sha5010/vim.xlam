@@ -7,6 +7,8 @@ Function selectColumns()
     Dim startColumn As Long
     Dim endColumn As Long
 
+    Call stopVisualMode
+
     With ActiveWorkbook.ActiveSheet
         Set t = ActiveCell
 
@@ -32,6 +34,7 @@ End Function
 
 Function insertColumns()
     Call repeatRegister("insertColumns")
+    Call stopVisualMode
 
     Dim savedRow As Long
     On Error GoTo Catch
@@ -54,6 +57,7 @@ End Function
 
 Function appendColumns()
     Call repeatRegister("appendColumns")
+    Call stopVisualMode
 
     Dim savedRow As Long
     On Error GoTo Catch
@@ -80,6 +84,7 @@ End Function
 
 Function deleteColumns()
     Call repeatRegister("deleteColumns")
+    Call stopVisualMode
 
     Dim t As Range
     On Error GoTo Catch
@@ -110,6 +115,7 @@ End Function
 
 Function deleteToLeftEndColumns()
     Call repeatRegister("deleteToLeftEndColumns")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -124,6 +130,7 @@ End Function
 
 Function deleteToRightEndColumns()
     Call repeatRegister("deleteToRightEndColumns")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -142,6 +149,7 @@ End Function
 
 Function deleteToLeftOfCurrentRegionColumns()
     Call repeatRegister("deleteToLeftOfCurrentRegionColumns")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -156,6 +164,7 @@ End Function
 
 Function deleteToRightOfCurrentRegionColumns()
     Call repeatRegister("deleteToRightOfCurrentRegionColumns")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -169,6 +178,7 @@ Catch:
 End Function
 
 Function yankColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -187,6 +197,7 @@ Catch:
 End Function
 
 Function yankToLeftEndColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -205,6 +216,7 @@ Catch:
 End Function
 
 Function yankToRightEndColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -227,6 +239,7 @@ Catch:
 End Function
 
 Function yankToLeftOfCurrentRegionColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -245,6 +258,7 @@ Catch:
 End Function
 
 Function yankToRightOfCurrentRegionColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -263,6 +277,7 @@ Catch:
 End Function
 
 Function cutColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -281,6 +296,7 @@ Catch:
 End Function
 
 Function cutToLeftEndColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -299,6 +315,7 @@ Catch:
 End Function
 
 Function cutToRightEndColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -321,6 +338,7 @@ Catch:
 End Function
 
 Function cutToLeftOfCurrentRegionColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -339,6 +357,7 @@ Catch:
 End Function
 
 Function cutToRightOfCurrentRegionColumns()
+    Call stopVisualMode
     On Error GoTo Catch
 
     Dim startColumn As Long
@@ -358,6 +377,7 @@ End Function
 
 Function hideColumns()
     Call repeatRegister("hideColumns")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -373,6 +393,7 @@ End Function
 
 Function unhideColumns()
     Call repeatRegister("unhideColumns")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -388,6 +409,7 @@ End Function
 
 Function groupColumns()
     Call repeatRegister("groupColumns")
+    Call stopVisualMode
 
     Dim t As Range
     On Error GoTo Catch
@@ -418,6 +440,7 @@ End Function
 
 Function ungroupColumns()
     Call repeatRegister("ungroupColumns")
+    Call stopVisualMode
 
     Dim t As Range
     On Error GoTo Catch
@@ -448,6 +471,7 @@ End Function
 
 Function foldColumnsGroup()
     Call repeatRegister("foldColumnsGroup")
+    Call stopVisualMode
 
     Dim targetColumn As Long
     Dim i As Integer
@@ -467,6 +491,7 @@ End Function
 
 Function spreadColumnsGroup()
     Call repeatRegister("spreadColumnsGroup")
+    Call stopVisualMode
 
     Dim targetColumn As Long
     Dim i As Integer
@@ -485,6 +510,7 @@ End Function
 
 Function adjustColumnsWidth()
     Call repeatRegister("adjustColumnsWidth")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -498,6 +524,7 @@ Catch:
 End Function
 
 Function setColumnsWidth()
+    Call stopVisualMode
     On Error GoTo Catch
 
     If gCount > 1 Then
@@ -512,6 +539,7 @@ End Function
 
 Function narrowColumnsWidth()
     Call repeatRegister("narrowColumnsWidth")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -544,6 +572,7 @@ End Function
 
 Function wideColumnsWidth()
     Call repeatRegister("wideColumnsWidth")
+    Call stopVisualMode
 
     On Error GoTo Catch
 

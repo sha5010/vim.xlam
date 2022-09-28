@@ -122,5 +122,6 @@ Sub StartEditing()
 End Sub
 
 Sub StopEditing()
+    Call stopVisualMode
     Call X.StopEditing
 End Sub

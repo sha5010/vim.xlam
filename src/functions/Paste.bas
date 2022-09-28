@@ -3,6 +3,7 @@ Option Explicit
 
 Function pasteSmart()
     Call repeatRegister("pasteSmart")
+    Call stopVisualMode
 
     If Application.CutCopyMode = 0 Then 'Empty
         Set gLastYanked = Nothing
@@ -76,6 +77,7 @@ End Function
 
 Function pasteValue()
     Call repeatRegister("pasteValue")
+    Call stopVisualMode
 
     Dim cb As Variant
     Dim cbType As Integer
@@ -105,6 +107,8 @@ Function pasteValue()
 End Function
 
 Function pasteSpecial()
+    Call stopVisualMode
+
     If Application.ClipboardFormats(1) = -1 Then
         Call setStatusBarTemporarily("クリップボードが空です。", 2)
     Else

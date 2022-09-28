@@ -4,11 +4,13 @@ Option Private Module
 
 Function increaseFontSize()
     Call repeatRegister("increaseFontSize")
+    Call stopVisualMode
     Call keystroke(False, Alt_ + H_, F_, G_)
 End Function
 
 Function decreaseFontSize()
     Call repeatRegister("decreaseFontSize")
+    Call stopVisualMode
     Call keystroke(False, Alt_ + H_, F_, K_)
 End Function
 
@@ -22,51 +24,61 @@ End Function
 
 Function alignLeft()
     Call repeatRegister("alignLeft")
+    Call stopVisualMode
     Call keystroke(True, Alt_ + H_, A_, L_)
 End Function
 
 Function alignCenter()
     Call repeatRegister("alignCenter")
+    Call stopVisualMode
     Call keystroke(True, Alt_ + H_, A_, C_)
 End Function
 
 Function alignRight()
     Call repeatRegister("alignRight")
+    Call stopVisualMode
     Call keystroke(True, Alt_ + H_, A_, R_)
 End Function
 
 Function alignTop()
     Call repeatRegister("alignTop")
+    Call stopVisualMode
     Call keystroke(True, Alt_ + H_, A_, T_)
 End Function
 
 Function alignMiddle()
     Call repeatRegister("alignMiddle")
+    Call stopVisualMode
     Call keystroke(True, Alt_ + H_, A_, M_)
 End Function
 
 Function alignBottom()
     Call repeatRegister("alignBottom")
+    Call stopVisualMode
     Call keystroke(True, Alt_ + H_, A_, B_)
 End Function
 
 Function toggleBold()
     Call repeatRegister("toggleBold")
+    Call stopVisualMode
     Call keystroke(True, Ctrl_ + k2_)
 End Function
 
 Function toggleItalic()
     Call repeatRegister("toggleItalic")
+    Call stopVisualMode
     Call keystroke(True, Ctrl_ + k3_)
 End Function
 
 Function toggleUnderline()
     Call repeatRegister("toggleUnderline")
+    Call stopVisualMode
     Call keystroke(True, Ctrl_ + k4_)
 End Function
 
 Function toggleStrikethrough()
     Call repeatRegister("toggleStrikethrough")
+    Call stopVisualMode
     Call keystroke(True, Ctrl_ + k5_)
 End Function
 
@@ -75,6 +87,7 @@ Function changeFormat()
 End Function
 
 Function showFontDialog()
+    Call stopVisualMode
     Call keystroke(True, Ctrl_ + k1_)
 End Function
 
@@ -104,5 +117,6 @@ Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
         End With
 
         Call repeatRegister("changeFontColor", resultColor)
+        Call stopVisualMode
     End If
 End Function

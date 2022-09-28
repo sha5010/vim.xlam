@@ -4,6 +4,7 @@ Option Private Module
 
 Function editCellComment()
     Call repeatRegister("editCellComment")
+    Call stopVisualMode
 
     If TypeName(Selection) = "Range" Then
         Call keystroke(True, Shift_ + F2_)
@@ -12,6 +13,7 @@ End Function
 
 Function deleteCellComment()
     Call repeatRegister("deleteCellComment")
+    Call stopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         Call keystroke(True, Alt_ + R_, D_)
@@ -40,6 +42,7 @@ End Function
 
 Function toggleCellComment()
     Call repeatRegister("toggleCellComment")
+    Call stopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         Application.CommandBars.ExecuteMso "ReviewShowOrHideComment"
@@ -48,6 +51,7 @@ End Function
 
 Function hideCellComment()
     Call repeatRegister("hideCellComment")
+    Call stopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = False
@@ -56,6 +60,7 @@ End Function
 
 Function showCellComment()
     Call repeatRegister("showCellComment")
+    Call stopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = True
@@ -86,6 +91,8 @@ Function nextCommentedCell()
         Exit Function
     End If
 
+    Call stopVisualMode
+
     'もともとの値を取得
     buf = Application.DisplayAlerts
 
@@ -101,6 +108,8 @@ Function prevCommentedCell()
     If ActiveSheet.Comments.Count = 0 Then
         Exit Function
     End If
+
+    Call stopVisualMode
 
     'もともとの値を取得
     buf = Application.DisplayAlerts

@@ -93,6 +93,8 @@ Function jumpPrev()
     Dim wb As Workbook
     Dim ws As Worksheet
 
+    Call stopVisualMode
+
     If Not JumpList Is Nothing Then
         Set t = JumpList.Back
         If Not t Is Nothing Then
@@ -112,6 +114,8 @@ Function jumpNext()
     Dim t As Range
     Dim wb As Workbook
     Dim ws As Worksheet
+
+    Call stopVisualMode
 
     If Not JumpList Is Nothing Then
         Set t = JumpList.Forward
@@ -165,6 +169,8 @@ Function recordToJumpList(Optional Target As Range)
 End Function
 
 Function smartFillColor()
+    Call stopVisualMode
+
     If TypeName(Selection) = "Range" Then
         Call changeInteriorColor
     ElseIf VarType(Selection) = vbObject Then
@@ -173,6 +179,8 @@ Function smartFillColor()
 End Function
 
 Function smartFontColor()
+    Call stopVisualMode
+
     If TypeName(Selection) = "Range" Then
         Call changeFontColor
     ElseIf VarType(Selection) = vbObject Then
@@ -191,11 +199,15 @@ Function showMacroDialog()
 End Function
 
 Function setPrintArea()
+    Call stopVisualMode
+
     'Send Alt + P, R, S
     Call keystroke(True, Alt_ + P_, R_, S_)
 End Function
 
 Function clearPrintArea()
+    Call stopVisualMode
+
     'Send Alt + P, R, C
     Call keystroke(True, Alt_ + P_, R_, C_)
 End Function

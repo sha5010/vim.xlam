@@ -3,6 +3,7 @@ Option Explicit
 Option Private Module
 
 Function cutCell()
+    Call stopVisualMode
     Call keystroke(True, Ctrl_ + X_)
 
     If TypeName(Selection) = "Range" Then
@@ -11,6 +12,7 @@ Function cutCell()
 End Function
 
 Function yankCell()
+    Call stopVisualMode
     Call keystroke(True, Ctrl_ + C_)
 
     If TypeName(Selection) = "Range" Then
@@ -40,6 +42,7 @@ End Function
 
 Function incrementText()
     Call repeatRegister("incrementText")
+    Call stopVisualMode
 
     Dim i As Integer
 
@@ -55,6 +58,7 @@ End Function
 
 Function decrementText()
     Call repeatRegister("decrementText")
+    Call stopVisualMode
 
     Dim i As Integer
 
@@ -70,6 +74,7 @@ End Function
 
 Function increaseDecimal()
     Call repeatRegister("increaseDecimal")
+    Call stopVisualMode
 
     Dim i As Integer
 
@@ -85,6 +90,7 @@ End Function
 
 Function decreaseDecimal()
     Call repeatRegister("decreaseDecimal")
+    Call stopVisualMode
 
     Dim i As Integer
 
@@ -98,9 +104,9 @@ Function decreaseDecimal()
     Call unkeyupControlKeys
 End Function
 
-
 Function insertCellsUp()
     Call repeatRegister("insertCellsUp")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -117,6 +123,7 @@ End Function
 
 Function insertCellsDown()
     Call repeatRegister("insertCellsDown")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -137,6 +144,7 @@ End Function
 
 Function insertCellsLeft()
     Call repeatRegister("insertCellsLeft")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -153,6 +161,7 @@ End Function
 
 Function insertCellsRight()
     Call repeatRegister("insertCellsRight")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -173,11 +182,13 @@ End Function
 
 Function deleteValue()
     Call repeatRegister("deleteValue")
+    Call stopVisualMode
     Call keystroke(True, Delete_)
 End Function
 
 Function deleteToUp()
     Call repeatRegister("deleteToUp")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -194,6 +205,7 @@ End Function
 
 Function deleteToLeft()
     Call repeatRegister("deleteToLeft")
+    Call stopVisualMode
 
     On Error GoTo Catch
 
@@ -209,11 +221,13 @@ Catch:
 End Function
 
 Function toggleWrapText()
+    Call stopVisualMode
     Call keystroke(True, Alt_ + H_, W_)
 End Function
 
 Function toggleMergeCells()
     Call repeatRegister("toggleMergeCells")
+    Call stopVisualMode
 
     If TypeName(Selection) = "Range" Then
         If Not ActiveCell.MergeCells And Selection.Count = 1 Then
@@ -254,6 +268,7 @@ Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
         End With
 
         Call repeatRegister("changeInteriorColor", resultColor)
+        Call stopVisualMode
     End If
 End Function
 
@@ -263,6 +278,8 @@ Function unionSelectCells()
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
+
+    Call stopVisualMode
 
     If gExtendRange Is Nothing Then
         Set gExtendRange = Selection
@@ -286,6 +303,8 @@ Function exceptSelectCells()
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
+
+    Call stopVisualMode
 
     If Not gExtendRange Is Nothing Then
         Set actCell = ActiveCell
@@ -314,9 +333,57 @@ Function followHyperlinkOfActiveCell()
 End Function
 
 Function changeSelectedCells(ByVal Value As String)
+    Call stopVisualMode
+
     If TypeName(Selection) = "Range" Then
         Selection.Value = Value
     ElseIf Not ActiveCell Is Nothing Then
         ActiveCell.Value = Value
+    End If
+End Function
+
+Function toggleVisualMode()
+    If X.VisualMode Then
+        Call stopVisualMode
+    Else
+        Call visualMap("toggleVisualMode")
+        Call X.StartVisualMode
+        Call setStatusBar("vim.xlam: -- VISUAL (ESC to exit) --")
+    End If
+End Function
+
+Function toggleVisualLine()
+    If X.VisualLine Then
+        Call stopVisualMode
+    Else
+        Call visualMap("toggleVisualLine")
+        Call X.StartVisualLine
+        Call setStatusBar("vim.xlam: -- VISUAL LINE (ESC to exit) --")
+    End If
+End Function
+
+Private Function visualMap(ByVal funcName As String)
+    'Register toggleVisualMode to escape key
+    Call temporaryMap("{ESC}", funcName)
+    Call temporaryMap("^{[}", funcName)
+    Call temporaryMap("o", "swapVisualBase")
+End Function
+
+Function swapVisualBase()
+    If X.VisualMode Or X.VisualLine Then
+        Call X.SwapBase
+    End If
+End Function
+
+Function stopVisualMode()
+    If X.VisualMode Or X.VisualLine Then
+        'Unregister escape key
+        Call restoreAppliedMap("{ESC}")
+        Call restoreAppliedMap("^{[}")
+        Call restoreAppliedMap("o")
+
+        Call X.stopVisualMode
+
+        Call setStatusBar("")
     End If
 End Function
