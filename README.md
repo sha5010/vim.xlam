@@ -90,8 +90,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
 | Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
 | Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
-| Worksheet | `v` | `nextWorksheet` | 次のシートを選択 |
-| Worksheet | `V` | `previousWorksheet` | 前のシートを選択 |
+| Worksheet | `e` | `nextWorksheet` | 次のシートを選択 |
+| Worksheet | `E` | `previousWorksheet` | 前のシートを選択 |
 | Worksheet | `wr` | `renameWorksheet` | アクティブなシート名を変更 |
 | Worksheet | `ww` | `showSheetPicker` | SheetPicker を起動 |
 | Workbook | `:w` | `saveWorkbook` | アクティブブックを保存 |
@@ -373,8 +373,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `zs` | `scrollCurrentLeft` | 現在列が一番左に来るように横スクロール |
 | Scrolling | `zm` | `scrollCurrentCenter` | 現在列が中央に来るように横スクロール |
 | Scrolling | `ze` | `scrollCurrentRight` | 現在列が一番右に来るように横スクロール |
-| Worksheet | `v` | `nextWorksheet` | 次のシートを選択 |
-| Worksheet | `V` | `previousWorksheet` | 前のシートを選択 |
+| Worksheet | `e` | `nextWorksheet` | 次のシートを選択 |
+| Worksheet | `E` | `previousWorksheet` | 前のシートを選択 |
 | Worksheet | `ww` | `showSheetPicker` | SheetPicker を起動 |
 | Worksheet | `ws` | `showSheetPicker` | SheetPicker を起動 |
 | Worksheet | `wn` | `nextWorksheet` | 次のシートを選択 |

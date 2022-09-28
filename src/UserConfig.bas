@@ -392,8 +392,8 @@ Sub initMapping()
 
 
     'Worksheet Function
-    Call map("v", "", "nextWorksheet")
-    Call map("V", "", "previousWorksheet")
+    Call map("e", "", "nextWorksheet")
+    Call map("E", "", "previousWorksheet")
 
     Call map("w", "w", "showSheetPicker")
     Call map("w", "s", "showSheetPicker")
