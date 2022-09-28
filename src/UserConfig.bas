@@ -223,8 +223,8 @@ Sub initMapping()
 
 
     'Row
-    Call map("e", "", "narrowRowsHeight")
-    Call map("E", "", "wideRowsHeight")
+    Call map("r", "-", "narrowRowsHeight")
+    Call map("r", "+", "wideRowsHeight")
     Call map("r", "r", "selectRows")
     Call map("r", "a", "appendRows")
     Call map("r", "i", "insertRows")
@@ -242,8 +242,8 @@ Sub initMapping()
 
 
     'Column
-    Call map("q", "", "narrowColumnsWidth")
-    Call map("Q", "", "wideColumnsWidth")
+    Call map("c", "-", "narrowColumnsWidth")
+    Call map("c", "+", "wideColumnsWidth")
     Call map("c", "c", "selectColumns")
     Call map("c", "a", "appendColumns")
     Call map("c", "i", "insertColumns")

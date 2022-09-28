@@ -239,8 +239,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Border | `bciv` | `setBorderColorInnerVertical` | 選択セルの内側垂直の罫線の色を設定 |
 | Border | `bc/` | `setBorderColorDiagonalUp` | 選択セルの `/` 方向の罫線の色を設定 |
 | Border | `bc\` | `setBorderColorDiagonalDown` | 選択セルの `\` 方向の罫線の色を設定 |
-| Row | `e` | `narrowRowsHeight` | 行の高さを1pt狭くする |
-| Row | `E` | `wideRowsHeight` | 行の高さを1pt広くする |
+| Row | `r-` | `narrowRowsHeight` | 行の高さを1pt狭くする |
+| Row | `r+` | `wideRowsHeight` | 行の高さを1pt広くする |
 | Row | `rr` | `selectRows` | 行を選択。`[count]` が与えられたときは `[count]` 行選択 |
 | Row | `ra` | `appendRows` | 現在行の後に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
 | Row | `ri` | `insertRows` | 現在行の前に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
@@ -255,8 +255,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Row | `rs` | `spreadRowsGroup` | 現在行の折り畳みを開く。`[count]` が与えられたときは `[count]` 行開く |
 | Row | `rj` | `adjustRowsHeight` | 現在行の高さを自動調整。`[count]` が与えられたときは `[count]` 行自動調整 |
 | Row | `rw` | `setRowsHeight` | 現在行の高さを任意に設定。`[count]` が与えられたときは `[count]` 行設定 |
-| Column | `q` | `narrowColumnsWidth` | 列幅を1pt狭くする |
-| Column | `Q` | `wideColumnsWidth` | 列幅を1pt広くする |
+| Column | `c-` | `narrowColumnsWidth` | 列幅を1pt狭くする |
+| Column | `c+` | `wideColumnsWidth` | 列幅を1pt広くする |
 | Column | `cc` | `selectColumns` | 列を選択。`[count]` が与えられたときは `[count]` 列選択 |
 | Column | `ca` | `appendColumns` | 現在列の後に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
 | Column | `ci` | `insertColumns` | 現在列の前に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
