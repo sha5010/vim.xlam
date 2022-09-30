@@ -156,7 +156,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cell | `]` | `decreaseDecimal` | 小数点表示桁下げ |
 | Cell | `<Space>` | `unionSelectCells` | 現在セルを記憶に追加し、記憶したセルを選択 (複数セルの選択が可能) |
 | Cell | `<S-Space>` | `exceptSelectCells` | 記憶された選択済みセルから現在セルを取り除く |
-| Cell | `@f` | `followHyperlinkOfActiveCell` | セルのハイパーリンクを開く |
+| Cell | `gf` | `followHyperlinkOfActiveCell` | セルのハイパーリンクを開く |
 | Cell | `v` | `toggleVisualMode` | ビジュアルモード(選択範囲の拡張)を切り替え |
 | Cell | `V` | `toggleVisualLine` | ビジュアル行モード(選択範囲の拡張)を切り替え |
 | Border | `bb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 細線) |

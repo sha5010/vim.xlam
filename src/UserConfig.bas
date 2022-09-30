@@ -127,7 +127,7 @@ Sub initMapping()
     Call map("{]}", "", "decreaseDecimal")
     Call map(" ", "", "unionSelectCells")
     Call map("+ ", "", "exceptSelectCells")
-    Call map("@", "f", "followHyperlinkOfActiveCell")
+    Call map("g", "f", "followHyperlinkOfActiveCell")
     Call map("v", "", "toggleVisualMode")
     Call map("V", "", "toggleVisualLine")
 
