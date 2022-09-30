@@ -61,7 +61,7 @@ Public Sub StopEditing()
     EditFlag = False
 End Sub
 
-Private Sub VisualApp_SheetChange(ByVal Sh As Object, ByVal Target As Range)
+Private Sub VisualApp_SheetActivate(ByVal Sh As Object)
     If Not BaseCell.Parent Is Sh Then
         Call stopVisualMode
     End If
