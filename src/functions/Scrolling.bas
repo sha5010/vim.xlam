@@ -53,35 +53,35 @@ Function scrollDownHalf()
 End Function
 
 Function scrollUp()
-    ActiveWindow.LargeScroll Up:=1
+    ActiveWindow.LargeScroll Up:=gCount
 End Function
 
 Function scrollDown()
-    ActiveWindow.LargeScroll Down:=1
+    ActiveWindow.LargeScroll Down:=gCount
 End Function
 
 Function scrollLeft()
-    ActiveWindow.LargeScroll ToLeft:=1
+    ActiveWindow.LargeScroll ToLeft:=gCount
 End Function
 
 Function scrollRight()
-    ActiveWindow.LargeScroll ToRight:=1
+    ActiveWindow.LargeScroll ToRight:=gCount
 End Function
 
 Function scrollUp1Row()
-    ActiveWindow.SmallScroll Up:=1
+    ActiveWindow.SmallScroll Up:=gCount
 End Function
 
 Function scrollDown1Row()
-    ActiveWindow.SmallScroll Down:=1
+    ActiveWindow.SmallScroll Down:=gCount
 End Function
 
 Function scrollLeft1Column()
-    ActiveWindow.SmallScroll ToLeft:=1
+    ActiveWindow.SmallScroll ToLeft:=gCount
 End Function
 
 Function scrollRight1Column()
-    ActiveWindow.SmallScroll ToRight:=1
+    ActiveWindow.SmallScroll ToRight:=gCount
 End Function
 
 Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearchMode) As Long
