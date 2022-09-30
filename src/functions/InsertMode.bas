@@ -29,7 +29,7 @@ End Function
 Function appendWithIME()
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        Call keystroke(True, Space_, BackSpace_, Ctrl_ + End_, Kanji_)
+        Call keystroke(True, Space_, BackSpace_, Kanji_)
     Else
         Call keystroke(True, F2_, Kanji_)
         Call StartEditing
@@ -41,7 +41,7 @@ End Function
 Function appendWithoutIME()
     If VarType(Selection) = vbObject Then
         Call temporarilyDisableVim
-        Call keystroke(True, Space_, BackSpace_, Ctrl_ + End_)
+        Call keystroke(True, Space_, BackSpace_)
     Else
         Call keystroke(True, F2_)
         Call StartEditing

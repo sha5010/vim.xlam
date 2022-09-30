@@ -150,10 +150,6 @@ Sub resumeVim()
     If IMEStatus <> vbIMEModeOff Then
         SendKeys "{kanji}"
     End If
-
-    If VarType(Selection) = vbObject Then
-        Call keystroke(True, Escape_)
-    End If
 End Sub
 
 Sub showCmdForm(ByVal prefix As String)
