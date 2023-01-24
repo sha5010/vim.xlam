@@ -23,7 +23,7 @@ Private BaseCell As Range
 Private LastCell As Range
 
 Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
-    If gVimMode Then
+    If gVimEditorMode Then
         Call disableIME
         Call recordToJumpList(Target)
 
@@ -34,7 +34,7 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
 End Sub
 
 Private Sub App_WorkbookActivate(ByVal wb As Workbook)
-    If gVimMode Then
+    If gVimEditorMode Then
         On Error Resume Next
 
         Unload UF_Cmd
