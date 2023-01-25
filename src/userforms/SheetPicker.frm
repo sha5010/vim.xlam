@@ -16,7 +16,8 @@ Option Explicit
 
 'キーリストを定義
 Private Const KEYLIST As String = "1234567890abcdefimnopqrstuvwxyz"
-Private Const INVISIBLE As String = "(非表示) "
+Private Const INVISIBLE As String = "(hidden) "
+Private Const VERY_HIDDEN As String = "(HIDDEN) "
 Private Const AMOUNT As Byte = 3   'Ctrl で一気に移動する量
 Private Const FORM_CAPTION As String = "SheetPicker"
 
@@ -41,6 +42,8 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
                                  Optional ByVal VeryHidden As Boolean = False)
     '変数宣言
     Dim idx As Integer
+    Dim sheetVisibility As Integer
+    Dim hiddenText As String
     Dim sheetName As String
 
     'N番目のシートの可視/不可視状態をトグル
@@ -51,17 +54,16 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
     idx = List_Sheets.ListIndex
     sheetName = List_Sheets.List(idx, 1)
 
+    sheetVisibility = IIf(VeryHidden, xlVeryHidden, xlSheetHidden)
+    hiddenText = IIf(VeryHidden, VERY_HIDDEN, INVISIBLE)
+
     With ActiveWorkbook.Worksheets(n)
-        If .Visible <> xlSheetVisible Then
-            .Visible = xlSheetVisible
-            sheetName = Replace(sheetName, INVISIBLE, "", Count:=1)
+        If .Visible <> sheetVisibility Then
+            .Visible = sheetVisibility
+            sheetName = hiddenText & .Name
         Else
-            If VeryHidden Then
-                .Visible = xlVeryHidden
-            Else
-                .Visible = xlSheetHidden
-            End If
-            sheetName = INVISIBLE & sheetName
+            .Visible = xlSheetVisible
+            sheetName = .Name
         End If
     End With
 
