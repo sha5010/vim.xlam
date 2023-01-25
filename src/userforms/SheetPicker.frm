@@ -18,6 +18,7 @@ Option Explicit
 Private Const KEYLIST As String = "1234567890abcdefimnopqrstuvwxyz"
 Private Const INVISIBLE As String = "(非表示) "
 Private Const AMOUNT As Byte = 3   'Ctrl で一気に移動する量
+Private Const FORM_CAPTION As String = "SheetPicker"
 
 'プレビューモード
 Private previewMode As Boolean
@@ -98,21 +99,28 @@ End Sub
 Private Sub Show_Help()
     'ヘルプ文字列
     Dim HELP As String
-    HELP = "[Move]" & vbLf & _
-        "j/k" & Chr(9) & "Move down/up" & vbLf & _
-        "Ctrl+(j/k)" & Chr(9) & "Move down/up " & AMOUNT & " rows" & vbLf & _
-        "g/G" & Chr(9) & "Move to top/bottom" & vbLf & vbLf & _
-        "[Sheet Action]" & vbLf & _
-        "h/H" & Chr(9) & "Toogle sheet visible/(Very hidden)" & vbLf & _
-        "l" & Chr(9) & "Preview the sheet for current row" & vbLf & _
-        "R" & Chr(9) & "Rename sheet" & vbLf & vbLf & _
-        "[Change sheet]" & vbLf & _
-        "Enter" & Chr(9) & "Activate the sheet for current row" & vbLf & _
-        "[0-9a-z]" & Chr(9) & "Activate specify sheet" & vbLf & vbLf & _
-        "[Preview mode]" & vbLf & _
-        "P" & Chr(9) & "Toggle preview mode"
+    HELP = "[Move]¥n" & _
+        "  j/k¥tMove down/up¥n" & _
+        "  C-j/C-k¥tMove down/up" & AMOUNT & "rows¥n" & _
+        "  g/G¥tMove to top/bottom¥n" & _
+        "¥n" & _
+        "[Sheet Action]¥n" & _
+        "  h/H¥tToogle sheet visible/(Very hidden)¥n" & _
+        "  l¥tPreview the sheet for current row¥n" & _
+        "  R¥tRename sheet¥n" & _
+        "¥n" & _
+        "[Change sheet]¥n" & _
+        "  Enter¥tActivate the sheet for current row¥n" & _
+        "  [0-9a-z]¥tActivate specify sheet¥n" & _
+        "¥n" & _
+        "[Preview mode]¥n" & _
+        "  P¥tToggle preview mode"
 
+    HELP = Replace(HELP, "¥n", vbLf)
+    HELP = Replace(HELP, "¥t", vbTab)
     Call MsgBox(HELP)
+
+    Me.Caption = Replace(Me.Caption, " (?: Show help)", "")
 End Sub
 
 Private Sub List_Sheets_Change()
@@ -207,10 +215,10 @@ Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
             Case Asc("P")
                 previewMode = Not previewMode
                 If previewMode Then
-                    Me.Caption = "シートを選択 (プレビューモードON)"
+                    Me.Caption = FORM_CAPTION & " (Preview mode)"
                     Call List_Sheets_Change
                 Else
-                    Me.Caption = "シートを選択"
+                    Me.Caption = FORM_CAPTION
                 End If
 
             Case Asc("R")
@@ -255,6 +263,9 @@ Private Sub UserForm_Initialize()
     '使用できるキーの数を取得
     keyLength = Len(KEYLIST)
 
+    'フォームのキャプションを設定
+    Me.Caption = FORM_CAPTION & " (?: Show help)"
+
     'デフォルトではプレビューモードを無効化
     previewMode = False
 
@@ -264,6 +275,9 @@ Private Sub UserForm_Initialize()
         .Left = 3
         .Height = Me.InsideHeight - 3
         .Width = Me.InsideWidth - 6
+
+        'キー列の表示幅を設定
+        .ColumnWidths = "18 pt"
     End With
 
     'アクティブブックのシート一覧をリストに表示
