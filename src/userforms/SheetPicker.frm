@@ -98,6 +98,36 @@ Private Sub Rename_Sheet(ByVal n As Integer)
     End With
 End Sub
 
+Private Sub Delete_Sheet(ByVal n As Integer)
+    '変数宣言
+    Dim cur As Integer
+
+    'N番目のシートが存在しなければ終了
+    If ActiveWorkbook.Worksheets.Count < n Then
+        Exit Sub
+    End If
+
+    '対象シートがVeryHiddenの場合は消せないので警告表示
+    If ActiveWorkbook.Worksheets(n).Visible = xlVeryHidden Then
+        MsgBox "VeryHidden のシートは消すことができません。" & vbLf & _
+               "非表示を解除してから再実行してください。", vbExclamation
+        Exit Sub
+    End If
+
+    '削除前のシート数を保持
+    cur = ActiveWorkbook.Worksheets.Count
+
+    'N番目のシートを削除 (デフォルトでダイアログが表示される)
+    ActiveWorkbook.Worksheets(n).Delete
+
+    '削除されたか確認
+    If ActiveWorkbook.Worksheets.Count < cur Then
+        '削除された場合はリスト再生性
+        List_Sheets.Clear
+        Call MakeList
+    End If
+End Sub
+
 Private Sub Show_Help()
     'ヘルプ文字列
     Dim HELP As String
@@ -110,6 +140,7 @@ Private Sub Show_Help()
         "  h/H¥tToogle sheet visible/(Very hidden)¥n" & _
         "  l¥tPreview the sheet for current row¥n" & _
         "  R¥tRename sheet¥n" & _
+        "  D/X¥tDelete sheet¥n" & _
         "¥n" & _
         "[Change sheet]¥n" & _
         "  Enter¥tActivate the sheet for current row¥n" & _
@@ -226,6 +257,9 @@ Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
             Case Asc("R")
                 Call Rename_Sheet(.ListIndex + 1)
 
+            Case Asc("D"), Asc("X")
+                Call Delete_Sheet(.ListIndex + 1)
+
             Case Asc("?")
                 Call Show_Help
         End Select
@@ -260,15 +294,6 @@ Private Sub UserForm_Activate()
 End Sub
 
 Private Sub UserForm_Initialize()
-
-    '変数宣言
-    Dim i As Integer
-    Dim keyLength As Integer
-    Dim sheetName As String
-
-    '使用できるキーの数を取得
-    keyLength = Len(KEYLIST)
-
     'フォームのキャプションを設定
     Me.Caption = FORM_CAPTION & " (?: Show help)"
 
@@ -285,6 +310,19 @@ Private Sub UserForm_Initialize()
         'キー列の表示幅を設定
         .ColumnWidths = "18 pt"
     End With
+
+    'シート一覧を表示
+    Call MakeList
+End Sub
+
+Private Sub MakeList()
+    '変数宣言
+    Dim i As Integer
+    Dim keyLength As Integer
+    Dim sheetName As String
+
+    '使用できるキーの数を取得
+    keyLength = Len(KEYLIST)
 
     'アクティブブックのシート一覧をリストに表示
     With List_Sheets
