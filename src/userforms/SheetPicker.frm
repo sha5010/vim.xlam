@@ -244,6 +244,10 @@ Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
         If Activate_Nth_sheet(idx) Then
             Unload Me
         End If
+
+    ElseIf Asc("A") <= KeyAscii And KeyAscii <= Asc("Z") Then
+        '大文字入力時、選択が移動してしまうのを防ぐ
+        KeyAscii = -1
     End If
 End Sub
 
