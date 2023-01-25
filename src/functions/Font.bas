@@ -25,7 +25,20 @@ End Function
 Function alignLeft()
     Call repeatRegister("alignLeft")
     Call stopVisualMode
+
+    'Check excel version
+    On Error GoTo Excel2016
+    If CDbl(Application.Version) >= 16 Then
+        'Raise error in Excel 2016 (Concat exists in Excel 2019 and later)
+        WorksheetFunction.Concat ""
+    End If
+
+    'Default
     Call keystroke(True, Alt_ + H_, A_, L_)
+    Exit Function
+
+Excel2016:
+    Call keystroke(True, Alt_ + H_, L_, k1_)
 End Function
 
 Function alignCenter()
@@ -37,7 +50,21 @@ End Function
 Function alignRight()
     Call repeatRegister("alignRight")
     Call stopVisualMode
+
+    'Check excel version
+    On Error GoTo Excel2016
+    If CDbl(Application.Version) >= 16 Then
+        'Raise error in Excel 2016 (Concat exists in Excel 2019 and later)
+        WorksheetFunction.Concat ""
+    End If
+
+    'Default
     Call keystroke(True, Alt_ + H_, A_, R_)
+    Exit Function
+
+Excel2016:
+    'Excel 2013 and earlier
+    Call keystroke(True, Alt_ + H_, R_)
 End Function
 
 Function alignTop()
