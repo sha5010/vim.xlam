@@ -11,10 +11,10 @@ Sub VimEditorKeyInit()
 
     Call EditorMap("n", "<ESC>", "NORMAL_ClearBuffer")
     Call EditorMap("n", "<C-[>", "NORMAL_ClearBuffer")
-    Call EditorMap("n", "h", "keystroke", True, Left_)
-    Call EditorMap("n", "j", "keystroke", True, Down_)
-    Call EditorMap("n", "k", "keystroke", True, Up_)
-    Call EditorMap("n", "l", "keystroke", True, Right_)
+    Call EditorMap("n", "h", "NORMAL_MoveLeft")
+    Call EditorMap("n", "j", "NORMAL_MoveDown")
+    Call EditorMap("n", "k", "NORMAL_MoveUp")
+    Call EditorMap("n", "l", "NORMAL_MoveRight")
     Call EditorMap("n", "gg", "NORMAL_JumpTop")
     Call EditorMap("n", "G", "NORMAL_JumpButtom")
     Call EditorMap("n", "0", "NORMAL_GoToFirst")
@@ -204,6 +204,30 @@ Private Function ConvertToKeyCode(ByVal key As String) As Integer
                 Call debugPrint("Unsupported key name: " & key, "ConvertToKeyCode")
         End Select
     End If
+End Function
+
+Function NORMAL_MoveLeft()
+    With UF_VimEditor
+        Call .SetPos(BaseX:=.PosX - .gCount)
+    End With
+End Function
+
+Function NORMAL_MoveRight()
+    With UF_VimEditor
+        Call .SetPos(BaseX:=.PosX + .gCount)
+    End With
+End Function
+
+Function NORMAL_MoveUp()
+    With UF_VimEditor
+        Call .SetPos(BaseY:=.PosY - .gCount)
+    End With
+End Function
+
+Function NORMAL_MoveDown()
+    With UF_VimEditor
+        Call .SetPos(BaseY:=.PosY + .gCount)
+    End With
 End Function
 
 Function NORMAL_EnterInsertMode(Optional IsAppend As Boolean = False)

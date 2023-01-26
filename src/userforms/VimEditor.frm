@@ -44,6 +44,8 @@ Private TextBuffers(TEXT_BUFFER_HISTORY) As String
 Private TextBufferMax As Byte
 Private TextBufferCur As Byte
 
+Private savedPosX As Long
+
 Private IsLastIMEModeOn As Boolean
 
 Private Sub Text_Command_Change()
@@ -197,7 +199,6 @@ Private Function KeyToDictKey(ByVal keys As String) As String
 End Function
 
 Private Sub TextArea_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
-    Debug.Print KeyAscii
     Dim key As String
     Dim char As String
 
@@ -365,11 +366,19 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
     Dim tail As Long
 
     With Me.TextArea
+        If BaseX <> 0 Then
+            savedPosX = PosX
+        End If
+
         If BaseY > 0 And BaseY <> PosY Then
             If .LineCount < BaseY Then
                 .CurLine = .LineCount - 1
             Else
                 .CurLine = BaseY - 1
+            End If
+
+            If BaseX = 0 Then
+                BaseX = savedPosX
             End If
         End If
 
@@ -380,9 +389,14 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
                 tail = Len(Buffer)
             End If
 
-            tail = LenB(StrConv(Mid(Buffer, head, tail - head), vbFromUnicode))
+            If tail < head Then
+                tail = head
+            Else
+                tail = LenB(StrConv(Mid(Buffer, head, tail - head), vbFromUnicode))
+            End If
+
             If BaseX > tail Then
-                BaseX = tail
+                BaseX = tail - (.CurLine = .LineCount - 1)
             Else
                 BaseX = Len(StrConv(LeftB(StrConv(Mid(Buffer, head + 1), vbFromUnicode), BaseX), vbUnicode))
             End If
