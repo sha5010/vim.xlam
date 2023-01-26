@@ -4,7 +4,7 @@ Option Private Module
 
 Public X As cls_EventHook               'Workbook 系のイベントを捕捉するために使用
 
-Public gVimEditorMode As Boolean        'Vim モードが有効/無効
+Public gVimMode As Boolean              'Vim モードが有効/無効
 Public gCount As Long                   'カウントを使用できる機能で使用
 Public gLangJa As Boolean               '日本語モードが有効/無効
 Public gKeyMap As Dictionary            'マッピングされたキーと機能の辞書
@@ -30,7 +30,7 @@ Sub startVim()
 
     startTimer = Timer
 
-    gVimEditorMode = True
+    gVimMode = True
     gCount = 1
     gLangJa = DEFAULT_LANG_JA
 
@@ -83,11 +83,11 @@ Sub stopVim()
 
     Application.OnKey VIM_TOOGLE_KEY, "toggleVim"
 
-    gVimEditorMode = False
+    gVimMode = False
 End Sub
 
 Sub reloadVim(Optional isForce As Boolean = False)
-    gVimEditorMode = True
+    gVimMode = True
     gCount = 1
     gLangJa = DEFAULT_LANG_JA
 
@@ -103,7 +103,7 @@ Sub reloadVim(Optional isForce As Boolean = False)
 End Sub
 
 Sub toggleVim()
-    If gVimEditorMode Then
+    If gVimMode Then
         Call stopVim
     Else
         Call startVim
@@ -125,7 +125,7 @@ Sub temporarilyDisableVim()
     Application.OnKey "^{[}", "resumeVim"
     Application.OnKey VIM_TOOGLE_KEY, "toggleVim"
 
-    gVimEditorMode = False
+    gVimMode = False
 End Sub
 
 Sub resumeVim()
@@ -142,7 +142,7 @@ Sub resumeVim()
     Call setStatusBarTemporarily("再開しました。", 1)
 
     Set X.TempApp = Nothing
-    gVimEditorMode = True
+    gVimMode = True
 
     Call disableIME
 End Sub
