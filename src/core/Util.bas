@@ -393,6 +393,33 @@ End Function
 ' Source: https://mohayonao.hatenadiary.org/entry/20080617/1213712469                 '
 '#####################################################################################'
 
+'文字列中の出現回数を返す
+Function StrCount(baseStr As String, chkStr As String) As Long
+    Dim n As Long: n = 0
+    Dim ret As Long: ret = 0
+    Do
+        n = InStr(n + 1, baseStr, chkStr)
+        If n = 0 Then
+            Exit Do
+        Else
+            ret = ret + 1
+        End If
+    Loop
+    StrCount = ret
+End Function
+
+'文字列中のN回目に現れた位置を返す
+Function StrNPos(baseStr As String, chkStr As String, ByVal n As Long) As Long
+    Dim i As Long: i = 0
+    Dim l As Long: l = 0
+    For i = 1 To n
+        l = InStr(l + 1, baseStr, chkStr)
+        If l = 0 Then
+            Exit For
+        End If
+        StrNPos = l
+    Next i
+End Function
 
 Sub debugPrint(ByVal str As String, Optional ByVal funcName As String = "")
     If Not gDebugMode Then

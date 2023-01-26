@@ -351,13 +351,12 @@ Public Property Get PosX() As Long
 End Property
 
 Public Property Get PosY() As Long
-    PosY = Me.TextArea.CurLine + 1
+    PosY = StrCount(Left(Buffer, Me.TextArea.SelStart), vbLf) + 1
 End Property
 
 Public Property Get MaxY() As Long
-    MaxY = Me.TextArea.LineCount
+    MaxY = StrCount(Buffer, vbLf) + 1
 End Property
-
 
 Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
                   Optional TargetY As Long = 0, Optional TargetX As Long = 0, _
@@ -370,11 +369,11 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
     changeLR = (BaseX > 0 Or MoveLR <> 0)
 
     With Me.TextArea
-        If BaseY > 0 And BaseY <> PosY Then
-            If .LineCount < BaseY Then
+        If BaseY > 0 And BaseY <> Me.PosY Then
+            If Me.MaxY < BaseY Then
                 .CurLine = .LineCount - 1
             Else
-                .CurLine = BaseY - 1
+                .SelStart = StrNPos(Buffer, vbLf, BaseY - 1)
             End If
 
             If BaseX = 0 Then
@@ -382,7 +381,7 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
             End If
         End If
 
-        If (BaseX > 0 And BaseX <> PosX) Or MoveLR <> 0 Then
+        If (BaseX > 0 And BaseX <> Me.PosX) Or MoveLR <> 0 Then
             head = HeadIndex
             tail = InStr(HeadIndex, Buffer, vbLf)
             '// Last line
@@ -390,9 +389,13 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
                 tail = Len(Buffer)
             End If
 
+            If head = tail Then
+                Exit Sub
+            End If
+
             If MoveLR <> 0 Then
                 head = head - 1
-                tail = tail - 2 - (.CurLine = .LineCount - 1)
+                tail = tail - 2 - (Me.PosY = Me.MaxY)
                 MoveLR = .SelStart + MoveLR
 
                 If MoveLR < head Then
@@ -410,7 +413,7 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
                 End If
 
                 If BaseX > tail Then
-                    BaseX = Len(StrConv(LeftB(StrConv(Mid(Buffer, head), vbFromUnicode), tail), vbUnicode)) - (.CurLine = .LineCount - 1)
+                    BaseX = Len(StrConv(LeftB(StrConv(Mid(Buffer, head), vbFromUnicode), tail), vbUnicode)) - (Me.PosY = Me.MaxY)
                 Else
                     BaseX = Len(StrConv(LeftB(StrConv(Mid(Buffer, head), vbFromUnicode), BaseX), vbUnicode))
                 End If
@@ -419,7 +422,7 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
             End If
 
             If changeLR Then
-                savedPosX = PosX
+                savedPosX = Me.PosX
             End If
         End If
 
@@ -427,6 +430,10 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
         .SetFocus
     End With
     DoEvents
+End Sub
+
+Public Sub UpdateSavedPosX()
+    savedPosX = PosX
 End Sub
 
 Public Property Get gCount() As Long

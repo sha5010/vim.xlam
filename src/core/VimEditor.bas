@@ -15,6 +15,9 @@ Sub VimEditorKeyInit()
     Call EditorMap("n", "j", "NORMAL_MoveDown")
     Call EditorMap("n", "k", "NORMAL_MoveUp")
     Call EditorMap("n", "l", "NORMAL_MoveRight")
+    Call EditorMap("n", "w", "NORMAL_NextWord")
+    Call EditorMap("n", "e", "NORMAL_NextWord")
+    Call EditorMap("n", "b", "NORMAL_BackWord")
     Call EditorMap("n", "gg", "NORMAL_JumpTop")
     Call EditorMap("n", "G", "NORMAL_JumpButtom")
     Call EditorMap("n", "0", "NORMAL_GoToFirst")
@@ -230,6 +233,16 @@ Function NORMAL_MoveDown()
     End With
 End Function
 
+Function NORMAL_NextWord()
+    Call keystroke(True, Ctrl_ + Right_)
+    Call UF_VimEditor.UpdateSavedPosX
+End Function
+
+Function NORMAL_BackWord()
+    Call keystroke(True, Ctrl_ + Left_)
+    Call UF_VimEditor.UpdateSavedPosX
+End Function
+
 Function NORMAL_EnterInsertMode(Optional IsAppend As Boolean = False)
     With UF_VimEditor.TextArea
         .SelLength = 0
@@ -286,10 +299,12 @@ End Function
 
 Function NORMAL_GoToLeftEdge()
     Call keystroke(True, Home_)
+    Call UF_VimEditor.UpdateSavedPosX
 End Function
 
 Function NORMAL_GoToRightEdge()
-    Call keystroke(True, End_)
+    Call keystroke(True, End_, Left_)
+    Call UF_VimEditor.UpdateSavedPosX
 End Function
 
 Function NORMAL_Quit()
@@ -301,9 +316,10 @@ Function NORMAL_Del1Char()
 End Function
 
 Function INSERT_Leave()
-    With UF_VimEditor.TextArea
-        If .SelStart > 0 Then
-            .SelStart = .SelStart - 1
+    With UF_VimEditor
+        If .TextArea.SelStart > 0 And .PosX > 1 Then
+            .TextArea.SelStart = .TextArea.SelStart - 1
+            Call .UpdateSavedPosX
         End If
         Call UF_VimEditor.ChangeMode("NORMAL")
     End With
