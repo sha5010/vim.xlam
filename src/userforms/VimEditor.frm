@@ -1,5 +1,5 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UF_VimEditor
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} UF_VimEditor 
    Caption         =   "Editor - VIM"
    ClientHeight    =   3510
    ClientLeft      =   45
@@ -90,7 +90,6 @@ Private Sub UserForm_Initialize()
         .Font.Name = FONT_NAME
         .Font.Size = FONT_SIZE
         .Font.Bold = True
-        .Caption = " REPLACE"
         .WordWrap = False
         .AutoSize = True
         .AutoSize = False
@@ -115,19 +114,23 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub TextArea_Change()
+    'TODO: バッファを記録するようになったら 0 じゃなくなりそう
     TextBuffers(0) = Replace(TextArea.Text, vbCr, "")
 End Sub
 
 Private Sub TextArea_Exit(ByVal Cancel As MSForms.ReturnBoolean)
+    '// Do not allow to lose focus expect in COMMAND mode
     If VimEditorMode <> "COMMAND" Then
         TextArea.SetFocus
     End If
 End Sub
 
 Private Sub TextArea_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    '// KeyCode is the same as Common.vKey
     Dim key As String
     Dim code As Integer
 
+    '// Ignore keys (will be typed)
     Select Case KeyCode
         'Ignore Ctrl, Shift, Alt
         Case 16 To 18
@@ -154,25 +157,31 @@ Private Sub TextArea_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift
 
         If VimEditorMode <> "INSERT" Then
             CommandBuffer = ""
-            KeyCode = 0
+            KeyCode = 0         '// prevent default
         End If
 
     'Ctrl or Alt key is pressed
     ElseIf code > 0 Then
         code = code Or (Sgn(Shift And 1) * Shift_)
 
-        key = VimEditorMode & "_" & CStr(code + KeyCode)
+        key = VimEditorMode & "_" & CStr(code Or KeyCode)
         If gVimEditorKeymap.Exists(key) Then
             Application.Run gVimEditorKeymap(key)
         End If
 
-        key = VimEditorMode & "_" & CStr(code + KeyCode - 128)
+        If VimEditorMode <> "INSERT" Then
+            CommandBuffer = ""
+            KeyCode = 0         '// prevent default
+        End If
+
+    'Only Shift is pressed
+    ElseIf (Shift And 1) > 0 Then
+        code = code Or Shift_
+
+        key = VimEditorMode & "_" & CStr(code Or KeyCode)
         If gVimEditorKeymap.Exists(key) Then
             Application.Run gVimEditorKeymap(key)
         End If
-
-        CommandBuffer = ""
-        KeyCode = 0
     End If
 End Sub
 
@@ -188,6 +197,7 @@ Private Function KeyToDictKey(ByVal keys As String) As String
 End Function
 
 Private Sub TextArea_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
+    Debug.Print KeyAscii
     Dim key As String
     Dim char As String
 
@@ -197,6 +207,7 @@ Private Sub TextArea_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
         char = Chr(KeyAscii)
     End If
 
+    '// Prevent defaults except in INSERT mode
     If VimEditorMode <> "INSERT" Then
         KeyAscii = 0
     End If

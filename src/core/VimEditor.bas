@@ -89,6 +89,7 @@ Private Function ParseKeys(ByVal key As String) As Variant
     Dim buf As Integer
     Dim components As Variant
     Dim keys As String
+    Dim result As Integer
 
     For i = 1 To Len(key)
         char = Mid(key, i, 1)
@@ -110,40 +111,24 @@ Private Function ParseKeys(ByVal key As String) As Variant
                                 buf = buf Or Shift_
                             Case "a", "m"
                                 buf = buf Or Alt_
+                            Case Else
+                                Call debugPrint("Unsupported key prefix: " & components(j), "ParseKeys")
                         End Select
                     Next j
-                    buf = buf + Asc(UCase(components(u)))
+
+                    result = ConvertToKeyCode(components(u))
+                    If result = 0 Then
+                        Err.Raise 50000, Description:="Invalid key: " & key
+                    End If
+
+                    buf = buf + result
                 Else
-                    Select Case LCase(components(0))
-                        Case "bs"
-                            buf = buf + BackSpace_
-                        Case "tab"
-                            buf = buf + Tab_
-                        Case "cr", "return", "enter"
-                            buf = buf + Enter_
-                        Case "esc"
-                            buf = buf + Escape_
-                        Case "space"
-                            buf = buf + Space_
-                        Case "del"
-                            buf = buf + Delete_
-                        Case "up"
-                            buf = buf + Up_
-                        Case "down"
-                            buf = buf + Down_
-                        Case "left"
-                            buf = buf + Left_
-                        Case "right"
-                            buf = buf + Right_
-                        Case "home"
-                            buf = buf + Home_
-                        Case "end"
-                            buf = buf + End_
-                        Case "pageup"
-                            buf = buf + PageUp_
-                        Case "pagedown"
-                            buf = buf + PageDown_
-                    End Select
+                    result = ConvertToKeyCode(components(0))
+                    If result = 0 Then
+                        Err.Raise 50000, Description:="Invalid key: " & key
+                    End If
+
+                    buf = buf + result
                 End If
                 keys = keys & buf
             Else
@@ -156,6 +141,69 @@ Private Function ParseKeys(ByVal key As String) As Variant
 
     keys = Left(keys, Len(keys) - 1)
     ParseKeys = Split(keys, ",")
+End Function
+
+Private Function ConvertToKeyCode(ByVal key As String) As Integer
+    Dim keyLength As Integer
+    Dim asciiCode As Integer
+
+    '// check length
+    keyLength = Len(key)
+    If keyLength = 0 Then
+        Call debugPrint("Key is empty", "ConvertToKeyCode")
+        Exit Function
+    End If
+
+    If keyLength = 1 Then
+        asciiCode = Asc(UCase(key))
+        Select Case asciiCode
+            Case 64 '@
+                ConvertToKeyCode = AtMark_
+            Case 91 To 94 '[¥]^
+                ConvertToKeyCode = OpeningSquareBracket_ + (asciiCode - 91)
+            Case 44 To 47 ',-./
+                ConvertToKeyCode = Comma_ + (asciiCode - 44)
+            Case 58 To 59 ':;
+                ConvertToKeyCode = Coron_ + (asciiCode - 58)
+            Case 65 To 90
+                ConvertToKeyCode = asciiCode
+            Case Else
+                Call debugPrint("Unsupported key: " & key, "ConvertToKeyCode")
+        End Select
+    Else
+        Select Case LCase(key)
+            Case "bs"
+                ConvertToKeyCode = BackSpace_
+            Case "tab"
+                ConvertToKeyCode = Tab_
+            Case "cr", "return", "enter"
+                ConvertToKeyCode = Enter_
+            Case "esc"
+                ConvertToKeyCode = Escape_
+            Case "space"
+                ConvertToKeyCode = Space_
+            Case "del"
+                ConvertToKeyCode = Delete_
+            Case "up"
+                ConvertToKeyCode = Up_
+            Case "down"
+                ConvertToKeyCode = Down_
+            Case "left"
+                ConvertToKeyCode = Left_
+            Case "right"
+                ConvertToKeyCode = Right_
+            Case "home"
+                ConvertToKeyCode = Home_
+            Case "end"
+                ConvertToKeyCode = End_
+            Case "pageup"
+                ConvertToKeyCode = PageUp_
+            Case "pagedown"
+                ConvertToKeyCode = PageDown_
+            Case Else
+                Call debugPrint("Unsupported key name: " & key, "ConvertToKeyCode")
+        End Select
+    End If
 End Function
 
 Function NORMAL_EnterInsertMode(Optional IsAppend As Boolean = False)
