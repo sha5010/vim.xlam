@@ -208,13 +208,13 @@ End Function
 
 Function NORMAL_MoveLeft()
     With UF_VimEditor
-        Call .SetPos(BaseX:=.PosX - .gCount)
+        Call .SetPos(MoveLR:=-.gCount)
     End With
 End Function
 
 Function NORMAL_MoveRight()
     With UF_VimEditor
-        Call .SetPos(BaseX:=.PosX + .gCount)
+        Call .SetPos(MoveLR:=.gCount)
     End With
 End Function
 

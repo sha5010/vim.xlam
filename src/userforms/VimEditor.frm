@@ -360,16 +360,16 @@ End Property
 
 
 Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
-                  Optional TargetY As Long = 0, Optional TargetX As Long = 0)
+                  Optional TargetY As Long = 0, Optional TargetX As Long = 0, _
+                  Optional MoveLR As Long = 0)
 
     Dim head As Long
     Dim tail As Long
+    Dim changeLR As Boolean
+
+    changeLR = (BaseX > 0 Or MoveLR <> 0)
 
     With Me.TextArea
-        If BaseX <> 0 Then
-            savedPosX = PosX
-        End If
-
         If BaseY > 0 And BaseY <> PosY Then
             If .LineCount < BaseY Then
                 .CurLine = .LineCount - 1
@@ -382,28 +382,48 @@ Public Sub SetPos(Optional BaseY As Long = 0, Optional BaseX As Long = 0, _
             End If
         End If
 
-        If BaseX > 0 And BaseX <> PosX Then
+        If (BaseX > 0 And BaseX <> PosX) Or MoveLR <> 0 Then
             head = HeadIndex
             tail = InStr(HeadIndex, Buffer, vbLf)
+            '// Last line
             If tail = 0 Then
                 tail = Len(Buffer)
             End If
 
-            If tail < head Then
-                tail = head
+            If MoveLR <> 0 Then
+                head = head - 1
+                tail = tail - 2 - (.CurLine = .LineCount - 1)
+                MoveLR = .SelStart + MoveLR
+
+                If MoveLR < head Then
+                    MoveLR = head
+                ElseIf MoveLR > tail Then
+                    MoveLR = tail
+                End If
+
+                .SelStart = MoveLR
             Else
-                tail = LenB(StrConv(Mid(Buffer, head, tail - head), vbFromUnicode))
+                If tail < head Then
+                    tail = head
+                Else
+                    tail = LenB(StrConv(Mid(Buffer, head, tail - head), vbFromUnicode))
+                End If
+
+                If BaseX > tail Then
+                    BaseX = Len(StrConv(LeftB(StrConv(Mid(Buffer, head), vbFromUnicode), tail), vbUnicode)) - (.CurLine = .LineCount - 1)
+                Else
+                    BaseX = Len(StrConv(LeftB(StrConv(Mid(Buffer, head), vbFromUnicode), BaseX), vbUnicode))
+                End If
+
+                .SelStart = head + BaseX - 2
             End If
 
-            If BaseX > tail Then
-                BaseX = tail - (.CurLine = .LineCount - 1)
-            Else
-                BaseX = Len(StrConv(LeftB(StrConv(Mid(Buffer, head + 1), vbFromUnicode), BaseX), vbUnicode))
+            If changeLR Then
+                savedPosX = PosX
             End If
-            .SelStart = head + BaseX - 2
         End If
 
-        .SelLength = -1
+        .SelLength = 1
         .SetFocus
     End With
     DoEvents
