@@ -40,9 +40,11 @@ Private VimEditorMode As String
 Private CommandBuffer As String
 Private VimEditorCount As Long
 
-Private TextBuffers(TEXT_BUFFER_HISTORY) As String
+Private TextBuffers(TEXT_BUFFER_HISTORY - 1) As String
 Private TextBufferMax As Byte
 Private TextBufferCur As Byte
+Private TextBufferRotate As Boolean
+Private TextBufferLock As Boolean   '// do not change the history if true
 
 Private savedPosX As Long
 
@@ -111,13 +113,37 @@ Private Sub UserForm_Initialize()
     Call ChangeMode("NORMAL")
     Call Resize(300, 400)
 
-    Call TextArea_Change
+    Call TextArea_Change    '// delete when Run method will be implemented
     Call VimEditorKeyInit
 End Sub
 
 Private Sub TextArea_Change()
-    'TODO: バッファを記録するようになったら 0 じゃなくなりそう
-    TextBuffers(0) = Replace(TextArea.Text, vbCr, "")
+    Dim buf As String
+
+    '// do not change the history if locked
+    If TextBufferLock Then
+        Exit Sub
+    End If
+
+    '// evaluate except INSERT mode
+    If VimEditorMode <> "INSERT" Then
+        '// crlf -> lf
+        buf = Replace(TextArea.Text, vbCr, "")
+
+        '// check if they are completely same
+        If TextBuffers(TextBufferCur) <> buf Then
+            TextBufferCur = (TextBufferCur + 1) Mod TEXT_BUFFER_HISTORY
+            TextBufferMax = TextBufferCur
+
+            '// make circulable
+            If TextBufferCur = 0 Then
+                TextBufferRotate = True
+            End If
+
+            '// append
+            TextBuffers(TextBufferCur) = buf
+        End If
+    End If
 End Sub
 
 Private Sub TextArea_Exit(ByVal Cancel As MSForms.ReturnBoolean)
@@ -242,7 +268,11 @@ Private Sub Redraw()
 
     With TextArea
         position = Format(PosY, "#0") & ":" & Format(PosX, "0")
-        persent = Format(.SelStart / Len(TextBuffers(0)), "#0%")
+        If Len(TextBuffers(TextBufferCur)) = 0 Then
+            persent = Format(0, "#0%")
+        Else
+            persent = Format(.SelStart / Len(TextBuffers(TextBufferCur)), "#0%")
+        End If
     End With
 
     Label_Status.Caption = CommandBuffer & " | " & persent & " | " & position & " |"
@@ -305,6 +335,12 @@ Public Sub ChangeMode(ByVal Mode As String, Optional ByVal CommandPrefix As Stri
                 .BackColor = COLOR_AQUA
                 Me.Text_Command.Text = CommandPrefix
             Case Else
+                '// when return from INSERT
+                If .Caption = "INSERT" Then
+                    VimEditorMode = "NORMAL"
+                    Call TextArea_Change
+                End If
+
                 .Caption = "NORMAL"
                 .BackColor = COLOR_GRAY
                 IsLastIMEModeOn = (Me.TextArea.IMEMode <> fmIMEModeOff)
@@ -320,7 +356,7 @@ Public Sub ChangeMode(ByVal Mode As String, Optional ByVal CommandPrefix As Stri
 End Sub
 
 Public Property Get Buffer() As String
-    Buffer = TextBuffers(TextBufferMax Mod (TEXT_BUFFER_HISTORY + 1))
+    Buffer = TextBuffers(TextBufferCur)
 End Property
 
 Public Sub ClearCommandBuffer()
@@ -439,3 +475,58 @@ End Sub
 Public Property Get gCount() As Long
     gCount = VimEditorCount
 End Property
+
+Public Function VimEditor_Undo() As Boolean
+    Dim curPosX As Long
+    Dim curPosY As Long
+
+    '// check if it can be undone
+    If TextBufferCur = 0 And Not TextBufferRotate Then
+        Exit Function
+    ElseIf TextBufferRotate And (TEXT_BUFFER_HISTORY + TextBufferCur - 1) Mod TEXT_BUFFER_HISTORY = TextBufferMax Then
+        Exit Function
+    End If
+
+    '// lock buffers
+    TextBufferLock = True
+
+    '// undo
+    curPosX = Me.PosX
+    curPosY = Me.PosY
+    TextBufferCur = (TEXT_BUFFER_HISTORY + TextBufferCur - 1) Mod TEXT_BUFFER_HISTORY
+    TextArea.Text = TextBuffers(TextBufferCur)
+    Call Me.SetPos(curPosY, curPosX)
+
+    '// unlock buffers
+    TextBufferLock = False
+
+    VimEditor_Undo = True
+End Function
+
+Public Function VimEditor_Redo() As Boolean
+    Dim curPosX As Long
+    Dim curPosY As Long
+
+    '// check if it can be redone
+    If TextBufferCur = TextBufferMax Then
+        Exit Function
+    ElseIf Not TextBufferRotate And TextBufferCur > TextBufferMax Then
+        Call debugPrint("Unexpected situation: " & TextBufferCur & " > " & TextBufferMax, "VimEditor_Redo")
+        Exit Function
+    End If
+
+    '// lock buffers
+    TextBufferLock = True
+
+    '// redo
+    curPosX = Me.PosX
+    curPosY = Me.PosY
+    TextBufferCur = (TextBufferCur + 1) Mod TEXT_BUFFER_HISTORY
+    TextArea.Text = TextBuffers(TextBufferCur)
+    Call Me.SetPos(curPosY, curPosX)
+
+    '// unlock buffers
+    TextBufferLock = False
+
+    VimEditor_Redo = True
+End Function

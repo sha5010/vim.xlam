@@ -29,6 +29,8 @@ Sub VimEditorKeyInit()
     Call EditorMap("n", "A", "NORMAL_AppendFromLast")
     Call EditorMap("n", "i", "NORMAL_EnterinsertMode")
     Call EditorMap("n", "I", "NORMAL_InsertFromFirst")
+    Call EditorMap("n", "u", "NORMAL_Undo")
+    Call EditorMap("n", "<C-r>", "NORMAL_Redo")
     Call EditorMap("n", "n", "Nop")
 
     Call EditorMap("n", "ZQ", "NORMAL_Quit")
@@ -313,6 +315,14 @@ End Function
 
 Function NORMAL_Del1Char()
     Call keystroke(True, Delete_)
+End Function
+
+Function NORMAL_Undo()
+    Call UF_VimEditor.VimEditor_Undo
+End Function
+
+Function NORMAL_Redo()
+    Call UF_VimEditor.VimEditor_Redo
 End Function
 
 Function INSERT_Leave()
