@@ -75,15 +75,14 @@ Private Sub UserForm_Initialize()
         .BackColor = COLOR_BG
         .Font.Name = FONT_NAME
         .Font.Size = FONT_SIZE
-        .AutoSize = True
-        .AutoSize = False
         .SelectionMargin = False
         .Visible = False
     End With
 
     With Label_Command
         .ForeColor = COLOR_FG
-        .BackStyle = fmBackStyleTransparent
+        .BackStyle = fmBackStyleOpaque
+        .BackColor = COLOR_BG
         .Font.Name = FONT_NAME
         .Font.Size = FONT_SIZE
     End With
@@ -93,6 +92,7 @@ Private Sub UserForm_Initialize()
         .TextAlign = fmTextAlignCenter
         .Font.Name = FONT_NAME
         .Font.Size = FONT_SIZE
+        .Caption = "12345678"
         .Font.Bold = True
         .WordWrap = False
         .AutoSize = True
@@ -286,9 +286,11 @@ Public Sub Resize(ByVal Height As Double, ByVal Width As Double)
         .Height = Height
         .Width = Width
 
+        .Label_Padding.Height = Height
+
         .TextArea.Left = VIMEDITOR_PADDING
         .TextArea.Top = 6
-        .TextArea.Height = Height - VIMEDITOR_PADDING - .Text_Command.Height - .Label_Status.Height - TITLE_WIDTH
+        .TextArea.Height = Height - VIMEDITOR_PADDING - .Label_Status.Height * 2 - TITLE_WIDTH
         .TextArea.Width = Width - VIMEDITOR_PADDING * 2 - 6
 
         .Label_Mode.Top = .TextArea.Top + .TextArea.Height
@@ -298,14 +300,15 @@ Public Sub Resize(ByVal Height As Double, ByVal Width As Double)
         .Label_Status.Left = .Label_Mode.Left + .Label_Mode.Width
         .Label_Status.Width = .TextArea.Width - .Label_Mode.Width
 
-        .Text_Command.Top = .Label_Mode.Top + .Label_Mode.Height
-        .Text_Command.Left = .TextArea.Left
-        .Text_Command.Width = .TextArea.Width
+        .Label_Command.Top = .Label_Mode.Top + .Label_Mode.Height
+        .Label_Command.Left = .TextArea.Left
+        .Label_Command.Width = .TextArea.Width
+        .Label_Command.Height = .Label_Mode.Height
 
-        .Label_Command.Top = .Text_Command.Top
-        .Label_Command.Left = .Text_Command.Left
-        .Label_Command.Width = .Text_Command.Width
-        .Label_Command.Height = .Text_Command.Height
+        .Text_Command.Top = .Label_Command.Top - 1.5
+        .Text_Command.Left = .Label_Command.Left - 1.5
+        .Text_Command.Width = .Label_Command.Width + 1.5
+        .Text_Command.Height = .Label_Command.Height + 1.5
     End With
 End Sub
 
