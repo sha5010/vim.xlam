@@ -485,8 +485,10 @@ Public Function VimEditor_Undo() As Boolean
 
     '// check if it can be undone
     If TextBufferCur = 0 And Not TextBufferRotate Then
+        Call VimEditor_SetStatus("Already at oldest change")
         Exit Function
     ElseIf TextBufferRotate And (TEXT_BUFFER_HISTORY + TextBufferCur - 1) Mod TEXT_BUFFER_HISTORY = TextBufferMax Then
+        Call VimEditor_SetStatus("Already at oldest change")
         Exit Function
     End If
 
@@ -512,6 +514,7 @@ Public Function VimEditor_Redo() As Boolean
 
     '// check if it can be redone
     If TextBufferCur = TextBufferMax Then
+        Call VimEditor_SetStatus("Already at newest change", True)
         Exit Function
     ElseIf Not TextBufferRotate And TextBufferCur > TextBufferMax Then
         Call debugPrint("Unexpected situation: " & TextBufferCur & " > " & TextBufferMax, "VimEditor_Redo")
@@ -533,3 +536,18 @@ Public Function VimEditor_Redo() As Boolean
 
     VimEditor_Redo = True
 End Function
+
+'// update status bar
+Public Sub VimEditor_SetStatus(msg As String, Optional Error As Boolean = False)
+    With Me.Label_Command
+        .Caption = msg
+
+        If Error Then
+            .BackColor = COLOR_RED
+            .ForeColor = COLOR_FG
+        Else
+            .BackColor = COLOR_BG
+            .ForeColor = COLOR_FG
+        End If
+    End With
+End Sub
