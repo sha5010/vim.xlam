@@ -5,13 +5,13 @@ Option Private Module
 Function increaseFontSize()
     Call repeatRegister("increaseFontSize")
     Call stopVisualMode
-    Call keystroke(False, Alt_ + H_, F_, G_)
+    Call keystroke(True, Alt_ + H_, F_, G_)
 End Function
 
 Function decreaseFontSize()
     Call repeatRegister("decreaseFontSize")
     Call stopVisualMode
-    Call keystroke(False, Alt_ + H_, F_, K_)
+    Call keystroke(True, Alt_ + H_, F_, K_)
 End Function
 
 Function changeFontName()
