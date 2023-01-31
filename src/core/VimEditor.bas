@@ -37,6 +37,14 @@ Sub VimEditorKeyInit()
 
     Call EditorMap("i", "<ESC>", "INSERT_Leave")
     Call EditorMap("i", "<C-[>", "INSERT_Leave")
+    Call EditorMap("i", "<C-a>", "keystroke", True, Home_)
+    Call EditorMap("i", "<C-e>", "keystroke", True, End_)
+    Call EditorMap("i", "<C-b>", "keystroke", True, Left_)
+    Call EditorMap("i", "<C-f>", "keystroke", True, Right_)
+    Call EditorMap("i", "<C-h>", "keystroke", True, Left_)
+    Call EditorMap("i", "<C-j>", "keystroke", True, Down_)
+    Call EditorMap("i", "<C-k>", "keystroke", True, Up_)
+    Call EditorMap("i", "<C-l>", "keystroke", True, Right_)
 End Sub
 
 Private Sub EditorMap(ByVal Mode As String, _
