@@ -68,6 +68,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Moving | `k` | `moveUp` | ↑ |
 | Moving | `l` | `moveRight` | → |
 | Moving | `gg` | `moveToTopRow` | 1行目に移動。`[count]` ありなら `[count]` 行へ移動 |
+| Cell | `FF`/`Ff` | `applyFlashFill` | フラッシュフィル(適用不可の際はオートフィル) |
 | Cell | `v` | `toggleVisualMode` | ビジュアルモード(選択範囲の拡張)を切り替え |
 | Border | `bb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 細線) |
 | Border | `ba` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (実線, 細線) |
@@ -88,9 +89,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Find & Replace | `N` | `previousFoundCell` | 検索結果の前のセルを選択 |
 | Scrolling | `<C-u>` | `scrollUpHalf` | 半ページ上スクロール |
 | Scrolling | `<C-d>` | `scrollDownHalf` | 半ページ下スクロール |
-| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
+| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
 | Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
-| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
+| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
 | Worksheet | `e` | `nextWorksheet` | 次のシートを選択 |
 | Worksheet | `E` | `previousWorksheet` | 前のシートを選択 |
 | Worksheet | `wr` | `renameWorksheet` | アクティブなシート名を変更 |
@@ -99,7 +100,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `:q` | `closeAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) |
 | Workbook | `:q!` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
 | Workbook | `:wq` | `closeWithSaving` | アクティブブックを保存して閉じる |
-| Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出)|
+| Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) |
 | Other | `<C-r>` | `redoExecute` | やり直し |
 
 <details><summary>全てのコマンドはこちらを展開</summary><div>
@@ -145,9 +146,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Moving | `W[cell]` | `moveToSpecifiedCell` | 指定された `[cell]` へ移動 |
 | Moving | `:[num]` | `moveToSpecifiedRow` | 指定された `[num]` 行目に移動 |
 | Cell | `xx` | `cutCell` | セルを切り取り |
-| Cell | `yy` | `yankCell` | セルをコピー|
-| Cell | `o` | `insertCellsDown` | 選択セルの下にセルを挿入|
-| Cell | `O` | `insertCellsUp` | 選択セルの上にセルを挿入|
+| Cell | `yy` | `yankCell` | セルをコピー |
+| Cell | `o` | `insertCellsDown` | 選択セルの下にセルを挿入 |
+| Cell | `O` | `insertCellsUp` | 選択セルの上にセルを挿入 |
 | Cell | `t` | `insertCellsRight` | 選択セルの右にセルを挿入 |
 | Cell | `T` | `insertCellsLeft` | 選択セルの左にセルを挿入 |
 | Cell | `+` | `incrementText` | インデントを増やす |
@@ -242,8 +243,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Border | `bciv` | `setBorderColorInnerVertical` | 選択セルの内側垂直の罫線の色を設定 |
 | Border | `bc/` | `setBorderColorDiagonalUp` | 選択セルの `/` 方向の罫線の色を設定 |
 | Border | `bc\` | `setBorderColorDiagonalDown` | 選択セルの `\` 方向の罫線の色を設定 |
-| Row | `r-` | `narrowRowsHeight` | 行の高さを1pt狭くする |
-| Row | `r+` | `wideRowsHeight` | 行の高さを1pt広くする |
+| Row | `r-` | `narrowRowsHeight` | 行の高さを1pt狭くする。`[count]` が与えられたときは `[count]`pt |
+| Row | `r+` | `wideRowsHeight` | 行の高さを1pt広くする。`[count]` が与えられたときは `[count]`pt |
 | Row | `rr` | `selectRows` | 行を選択。`[count]` が与えられたときは `[count]` 行選択 |
 | Row | `ra` | `appendRows` | 現在行の後に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
 | Row | `ri` | `insertRows` | 現在行の前に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
@@ -258,8 +259,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Row | `rs` | `spreadRowsGroup` | 現在行の折り畳みを開く。`[count]` が与えられたときは `[count]` 行開く |
 | Row | `rj` | `adjustRowsHeight` | 現在行の高さを自動調整。`[count]` が与えられたときは `[count]` 行自動調整 |
 | Row | `rw` | `setRowsHeight` | 現在行の高さを任意に設定。`[count]` が与えられたときは `[count]` 行設定 |
-| Column | `c-` | `narrowColumnsWidth` | 列幅を1pt狭くする |
-| Column | `c+` | `wideColumnsWidth` | 列幅を1pt広くする |
+| Column | `c-` | `narrowColumnsWidth` | 列幅を1pt狭くする。`[count]` が与えられたときは `[count]`pt |
+| Column | `c+` | `wideColumnsWidth` | 列幅を1pt広くする。`[count]` が与えられたときは `[count]`pt |
 | Column | `cc` | `selectColumns` | 列を選択。`[count]` が与えられたときは `[count]` 列選択 |
 | Column | `ca` | `appendColumns` | 現在列の後に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
 | Column | `ci` | `insertColumns` | 現在列の前に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
@@ -337,13 +338,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Color | `fc` | `smartFontColor` | フォントの色を選択するダイアログを表示 |
 | Color | `Fc` | `smartFillColor` | 塗りつぶしの色を選択すダイアログを表示 |
 | Color | `bc` | `changeShapeBorderColor` | (図形選択時) 枠線の色を選択するダイアログを表示 |
-| Comment | `Ci` | `editCellComment` | コメントを編集 (ない場合は追加) |
-| Comment | `Cc` | `editCellComment` | コメントを編集 (ない場合は追加) |
-| Comment | `Ce` | `deleteCellComment` | 現在セルのコメントを削除 |
-| Comment | `Cx` | `deleteCellComment` | 現在セルのコメントを削除 |
-| Comment | `Cd` | `deleteCellComment` | 現在セルのコメントを削除 |
-| Comment | `CE` | `deleteCellCommentAll` | シート上のコメントを全て削除 |
-| Comment | `CD` | `deleteCellCommentAll` | シート上のコメントを全て削除 |
+| Comment | `Ci`/`Cc` | `editCellComment` | コメントを編集 (ない場合は追加) |
+| Comment | `Ce`/`Cx`/`Cd` | `deleteCellComment` | 現在セルのコメントを削除 |
+| Comment | `CE`/`CD` | `deleteCellCommentAll` | シート上のコメントを全て削除 |
 | Comment | `Ca` | `toggleCellComment` | 現在セルのコメントの表示/非表示を切り替え |
 | Comment | `Cr` | `showCellComment` | 現在セルのコメントを表示 |
 | Comment | `Cm` | `hideCellComment` | 現在セルのコメントを非表示 |
@@ -366,22 +363,19 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `<C-f>` | `scrollDown` | 1ページ下スクロール |
 | Scrolling | `<C-y>` | `scrollUp1Row` | 1行上スクロール |
 | Scrolling | `<C-e>` | `scrollDown1Row` | 1行下スクロール |
-| Scrolling | `zh` | `scrollLeft1Column` | 1列左スクロール |
-| Scrolling | `zl` | `scrollRight1Column` | 1列右スクロール |
-| Scrolling | `zH` | `scrollLeft` | 1ページ左スクロール |
-| Scrolling | `zL` | `scrollRight` | 1ページ右スクロール |
-| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
+| Scrolling | `zh` | `scrollLeft1Column` | 1列左スクロール。`[count]` が与えられたときは `[count]` 列スクロール |
+| Scrolling | `zl` | `scrollRight1Column` | 1列右スクロール。`[count]` が与えられたときは `[count]` 列スクロール |
+| Scrolling | `zH` | `scrollLeft` | 1ページ左スクロール。`[count]` が与えられたときは `[count]` ページスクロール |
+| Scrolling | `zL` | `scrollRight` | 1ページ右スクロール。`[count]` が与えられたときは `[count]` ページスクロール |
+| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
 | Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
-| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる)|
+| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
 | Scrolling | `zs` | `scrollCurrentLeft` | 現在列が一番左に来るように横スクロール |
 | Scrolling | `zm` | `scrollCurrentCenter` | 現在列が中央に来るように横スクロール |
 | Scrolling | `ze` | `scrollCurrentRight` | 現在列が一番右に来るように横スクロール |
-| Worksheet | `e` | `nextWorksheet` | 次のシートを選択 |
-| Worksheet | `E` | `previousWorksheet` | 前のシートを選択 |
-| Worksheet | `ww` | `showSheetPicker` | SheetPicker を起動 |
-| Worksheet | `ws` | `showSheetPicker` | SheetPicker を起動 |
-| Worksheet | `wn` | `nextWorksheet` | 次のシートを選択 |
-| Worksheet | `wp` | `previousWorksheet` | 前のシートを選択 |
+| Worksheet | `e`/`wn` | `nextWorksheet` | 次のシートを選択 |
+| Worksheet | `E`/`wp` | `previousWorksheet` | 前のシートを選択 |
+| Worksheet | `ww`/`ws` | `showSheetPicker` | SheetPicker を起動 |
 | Worksheet | `wr` | `renameWorksheet` | アクティブなシート名を変更 |
 | Worksheet | `wh` | `moveWorksheetBack` | アクティブなシートを前に移動 |
 | Worksheet | `wl` | `moveWorksheetForward` | アクティブなシートを次に移動 |
@@ -393,24 +387,21 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Worksheet | `wc` | `changeWorksheetTabColor` | アクティブなシートの色を変更 |
 | Worksheet | `wy` | `cloneWorksheet` | アクティブなシートを複製 |
 | Worksheet | `we` | `exportWorksheet` | シートの移動またはコピーダイアログを表示 |
-| Worksheet | `w[num]` | `activateWorksheet` | `[num]` 番目のシートを選択 (1-9 のみ)|
+| Worksheet | `w[num]` | `activateWorksheet` | `[num]` 番目のシートを選択 (1-9 のみ) |
 | Worksheet | `:p` | `printPreviewOfActiveSheet` | 印刷プレビューを表示 |
 | Workbook | `:e` | `openWorkbook` | ブックを開く |
 | Workbook | `:e!` | `reopenActiveWorkbook` | アクティブなブックの変更を破棄し開き直す |
 | Workbook | `:w` | `saveWorkbook` | アクティブブックを保存 |
 | Workbook | `:q` | `closeAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) |
 | Workbook | `:q!` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
-| Workbook | `:wq` | `closeWithSaving` | アクティブブックを保存して閉じる |
-| Workbook | `:x` | `closeWithSaving` | アクティブブックを保存して閉じる |
+| Workbook | `:wq`/`:x` | `closeWithSaving` | アクティブブックを保存して閉じる |
 | Workbook | `:b[num]` | `activateWorkbook` | `[num]` 番目のブックを選択 |
-| Workbook | `:bn` | `nextWorkbook` | 次のワークブックを選択 |
-| Workbook | `:bp` | `previousWorkbook` | 前のワークブックを選択 |
+| Workbook | `@n`/`:bn` | `nextWorkbook` | 次のワークブックを選択 |
+| Workbook | `@N`/`:bp` | `previousWorkbook` | 前のワークブックを選択 |
 | Workbook | `@a` | `toggleReadOnly` | 読み取り専用を切り替える |
-| Workbook | `@n` | `nextWorkbook` | 次のワークブックを選択 |
-| Workbook | `@N` | `previousWorkbook` | 前のワークブックを選択 |
-| Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出)|
+| Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) |
 | Other | `<C-r>` | `redoExecute` | やり直し |
-| Other | `.` | `repeatAction` | 以前の動作を繰り返す (`repeatRegister` が呼ばれるコマンド限定)|
+| Other | `.` | `repeatAction` | 以前の動作を繰り返す (`repeatRegister` が呼ばれるコマンド限定) |
 | Other | `m` | `zoomIn` | 10% ズームイン。`[count]` が与えられたときは `[count]`% ズームイン |
 | Other | `M` | `zoomOut` | 10% ズームアウト。`[count]` が与えられたときは `[count]`% ズームアウト |
 | Other | `%` | `zoomSpecifiedScale` | 表示倍率を `[count]`% に設定。`1-9` は決まった値に倍率変更 |
