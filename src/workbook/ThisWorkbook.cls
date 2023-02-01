@@ -9,6 +9,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = True
 Option Explicit
 
+Private Sub Workbook_AddinUninstall()
+    Call mapResetAll
+End Sub
+
 Private Sub Workbook_Open()
     Call C_Core.startVim
     If Not ThisWorkbook.IsAddin Then
