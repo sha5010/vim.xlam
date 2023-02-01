@@ -257,3 +257,7 @@ End Function
 Function exportWorksheet()
     Application.Dialogs(xlDialogWorkbookCopy).Show
 End Function
+
+Function printPreviewOfActiveSheet()
+    ActiveSheet.PrintPreview
+End Function

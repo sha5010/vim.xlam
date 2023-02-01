@@ -414,6 +414,8 @@ Sub initMapping()
     Call map("w", "e", "exportWorksheet")
     Call map("w", "", "activateWorksheet", requireArguments:=True)
 
+    Call map(":", "p", "printPreviewOfActiveSheet", returnOnly:=True)
+
 
     'Workbook Function
     Call map(":", "e", "openWorkbook", returnOnly:=True)
