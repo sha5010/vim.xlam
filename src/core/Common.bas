@@ -279,9 +279,10 @@ Function unkeyupControlKeys()
 End Function
 
 Function disableIME()
-    If IMEStatus <> vbIMEOff Then
-        Call keystrokeWithoutKeyup(Kanji_)
-    End If
+    Select Case IMEStatus
+        Case vbIMEModeOn, Is > 3
+            Call keystrokeWithoutKeyup(Kanji_)
+    End Select
 End Function
 
 Function repeatRegister(ByVal funcName As String, ParamArray args() As Variant)
