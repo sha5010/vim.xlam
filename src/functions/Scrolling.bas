@@ -19,16 +19,22 @@ Function scrollUpHalf()
     Dim scrollWidth As Integer
     Dim targetRow As Long
 
-    topRowVisible = ActiveWindow.VisibleRange.Row
-
-    scrollWidth = ActiveWindow.VisibleRange.Rows.Count / 2
-    targetRow = topRowVisible - scrollWidth
-
-    If targetRow < 1 Then
-        targetRow = 1
+    If gCount > 1 Then
+        ActiveWindow.LargeScroll Up:=gCount ¥ 2
     End If
 
-    ActiveWindow.SmallScroll Up:=scrollWidth
+    If (gCount And 1) = 1 Then
+        topRowVisible = ActiveWindow.VisibleRange.Row
+
+        scrollWidth = ActiveWindow.VisibleRange.Rows.Count / 2
+        targetRow = topRowVisible - scrollWidth
+
+        If targetRow < 1 Then
+            targetRow = 1
+        End If
+
+        ActiveWindow.SmallScroll Up:=scrollWidth
+    End If
 
     Cells(targetRow, ActiveCell.Column).Activate
 End Function
@@ -38,16 +44,22 @@ Function scrollDownHalf()
     Dim scrollWidth As Integer
     Dim targetRow As Long
 
-    topRowVisible = ActiveWindow.VisibleRange.Row
-
-    scrollWidth = ActiveWindow.VisibleRange.Rows.Count / 2
-    targetRow = topRowVisible + scrollWidth
-
-    If targetRow > ActiveSheet.Rows.Count Then
-        targetRow = ActiveSheet.Rows.Count
+    If gCount > 1 Then
+        ActiveWindow.LargeScroll Down:=gCount ¥ 2
     End If
 
-    ActiveWindow.SmallScroll Down:=scrollWidth
+    If (gCount And 1) = 1 Then
+        topRowVisible = ActiveWindow.VisibleRange.Row
+
+        scrollWidth = ActiveWindow.VisibleRange.Rows.Count / 2
+        targetRow = topRowVisible + scrollWidth
+
+        If targetRow > ActiveSheet.Rows.Count Then
+            targetRow = ActiveSheet.Rows.Count
+        End If
+
+        ActiveWindow.SmallScroll Down:=scrollWidth
+    End If
 
     Cells(targetRow, ActiveCell.Column).Activate
 End Function
