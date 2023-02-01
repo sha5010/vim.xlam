@@ -148,6 +148,11 @@ Public Property Get Current() As Object
 End Property
 
 Public Function Forward() As Object
+    If CurrentChunk Is MainArena Then
+        Set Forward = Nothing
+        Exit Function
+    End If
+
     Do While Not CurrentChunk.Fd Is MainArena
         If CurrentChunk.Fd.Content Is Nothing Then
             Call Unlink(CurrentChunk.Fd)
