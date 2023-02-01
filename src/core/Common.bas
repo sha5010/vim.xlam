@@ -259,8 +259,6 @@ Function unkeyupControlKeys()
         keybd_event RSHIFT, 0, EXTENDED_KEY, 0
     ElseIf (GetKeyState(vbKeyShift) And &H8000) <> 0 Then
         keybd_event vbKeyShift, 0, 0, 0
-    Else
-        keybd_event vbKeyShift, 0, KEYUP, 0
     End If
 
     If (GetKeyState(LCTRL) And &H8000) <> 0 Then
@@ -269,8 +267,6 @@ Function unkeyupControlKeys()
         keybd_event RCTRL, 0, EXTENDED_KEY, 0
     ElseIf (GetKeyState(vbKeyControl) And &H8000) <> 0 Then
         keybd_event vbKeyControl, 0, 0, 0
-    Else
-        keybd_event vbKeyControl, 0, KEYUP, 0
     End If
 
     If (GetKeyState(LMENU) And &H8000) <> 0 Then
@@ -279,8 +275,6 @@ Function unkeyupControlKeys()
         keybd_event RMENU, 0, EXTENDED_KEY, 0
     ElseIf (GetKeyState(vbKeyMenu) And &H8000) <> 0 Then
         keybd_event vbKeyMenu, 0, 0, 0
-    Else
-        keybd_event vbKeyMenu, 0, KEYUP, 0
     End If
 End Function
 
