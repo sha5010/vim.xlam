@@ -14,6 +14,39 @@ Private Enum columnSearchMode
     modeRight = 1
 End Enum
 
+Private Function activateCellInVisibleRange()
+    Dim targetRow As Long
+    Dim targetColumn As Long
+    Dim visibleTop As Long, visibleBottom As Long
+    Dim visibleLeft As Long, visibleRight As Long
+
+    targetRow = ActiveCell.Row
+    targetColumn = ActiveCell.Column
+
+    With ActiveWindow.VisibleRange
+        visibleTop = .Item(1).Row
+        visibleBottom = pointToRow(.Item(.Count).Top - 1, xlNone)
+        visibleLeft = .Item(1).Column
+        visibleRight = pointToColumn(.Item(.Count).Left - 1, xlNone)
+    End With
+
+    If targetRow < visibleTop Then
+        targetRow = visibleTop
+    ElseIf targetRow > visibleBottom Then
+        targetRow = visibleBottom
+    End If
+
+    If targetColumn < visibleLeft Then
+        targetColumn = visibleLeft
+    ElseIf targetColumn > visibleRight Then
+        targetColumn = visibleRight
+    End If
+
+    If ActiveCell.Row <> targetRow Or ActiveCell.Column <> targetColumn Then
+        Cells(targetRow, targetColumn).Activate
+    End If
+End Function
+
 Function scrollUpHalf()
     Dim topRowVisible As Long
     Dim scrollWidth As Integer
@@ -36,7 +69,7 @@ Function scrollUpHalf()
         ActiveWindow.SmallScroll Up:=scrollWidth
     End If
 
-    Cells(targetRow, ActiveCell.Column).Activate
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollDownHalf()
@@ -61,39 +94,47 @@ Function scrollDownHalf()
         ActiveWindow.SmallScroll Down:=scrollWidth
     End If
 
-    Cells(targetRow, ActiveCell.Column).Activate
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollUp()
     ActiveWindow.LargeScroll Up:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollDown()
     ActiveWindow.LargeScroll Down:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollLeft()
     ActiveWindow.LargeScroll ToLeft:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollRight()
     ActiveWindow.LargeScroll ToRight:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollUp1Row()
     ActiveWindow.SmallScroll Up:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollDown1Row()
     ActiveWindow.SmallScroll Down:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollLeft1Column()
     ActiveWindow.SmallScroll ToLeft:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollRight1Column()
     ActiveWindow.SmallScroll ToRight:=gCount
+    Call activateCellInVisibleRange
 End Function
 
 Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearchMode) As Long
@@ -214,6 +255,10 @@ Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearch
                 pointToRow = m
             End If
 
+        '例外
+        Case Else
+            pointToRow = m
+
     End Select
 End Function
 
@@ -325,6 +370,10 @@ Private Function pointToColumn(ByVal point As Double, ByVal searchMode As column
             Else
                 pointToColumn = m
             End If
+
+        '例外
+        Case Else
+            pointToColumn = m
     End Select
 End Function
 
