@@ -128,6 +128,10 @@ Sub initMapping()
     Call map(" ", "", "unionSelectCells")
     Call map("+ ", "", "exceptSelectCells")
     Call map("g", "f", "followHyperlinkOfActiveCell")
+    Call map("F", "F", "applyFlashFill")
+    Call map("F", "f", "applyFlashFill")
+    Call map("F", "A", "applyAutoFill")
+    Call map("F", "a", "applyAutoFill")
     Call map("v", "", "toggleVisualMode")
     Call map("V", "", "toggleVisualLine")
 
@@ -341,6 +345,7 @@ Sub initMapping()
 
     'Color
     Call map("f", "c", "smartFontColor")
+    Call map("F", "C", "smartFillColor")
     Call map("F", "c", "smartFillColor")
     Call map("b", "c", "changeShapeBorderColor", requireArguments:=True)
 

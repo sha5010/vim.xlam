@@ -2,6 +2,13 @@ Attribute VB_Name = "F_Cell"
 Option Explicit
 Option Private Module
 
+Private Enum searchMode
+    TopToBottom = 1
+    LeftToRight
+    BottomToTop
+    RightToLeft
+End Enum
+
 Function cutCell()
     Call stopVisualMode
     Call keystroke(True, Ctrl_ + X_)
@@ -339,6 +346,197 @@ Function changeSelectedCells(ByVal Value As String)
         Selection.Value = Value
     ElseIf Not ActiveCell Is Nothing Then
         ActiveCell.Value = Value
+    End If
+End Function
+
+Function applyFlashFill()
+    If TypeName(Selection) <> "Range" Then
+        Exit Function
+    End If
+
+    Call repeatRegister("applyFlashFill")
+
+    On Error GoTo Catch
+    Selection.FlashFill
+
+    Call stopVisualMode
+
+    Exit Function
+Catch:
+    If Err.Number = 1004 Then
+        Call applyAutoFill(fallback:=True)
+    Else
+        Call debugPrint("Error " & Err.Number & ": " & Err.Description, "applyFlashFill")
+    End If
+End Function
+
+Function applyAutoFill(Optional fallback As Boolean = False)
+    Dim baseRange As Range
+
+    If TypeName(Selection) <> "Range" Then
+        Exit Function
+    ElseIf Selection.Count = 1 Then
+        Exit Function
+    End If
+
+    If Not fallback Then
+        Call repeatRegister("applyAutoFill")
+    End If
+
+    On Error GoTo Catch
+
+    Set baseRange = determineBaseRange()
+    If baseRange Is Nothing Then
+        Exit Function
+    End If
+
+    If baseRange.Count = 1 And IsNumeric(baseRange.Formula) Then
+        baseRange.AutoFill Selection, xlFillSeries
+    Else
+        baseRange.AutoFill Selection
+    End If
+
+    Call stopVisualMode
+    Exit Function
+
+Catch:
+    Call debugPrint("Error " & Err.Number & ": " & Err.Description, "applyAutoFill")
+End Function
+
+Private Function determineBaseRange() As Range
+    Dim avgTop As Double
+    Dim avgLeft As Double
+    Dim avgBottom As Double
+    Dim avgRight As Double
+    Dim avgMax As Double
+
+    'n x n cells
+    If Selection.Columns.Count > 1 And Selection.Rows.Count > 1 Then
+        With Selection
+            avgTop = WorksheetFunction.CountA(Range(.Item(1), Cells(.Item(1).Row, .Item(.Count).Column))) / .Columns.Count
+            avgLeft = WorksheetFunction.CountA(Range(.Item(1), Cells(.Item(.Count).Row, .Item(1).Column))) / .Rows.Count
+            avgBottom = WorksheetFunction.CountA(Range(Cells(.Item(.Count).Row, .Item(1).Column), .Item(.Count))) / .Columns.Count
+            avgRight = WorksheetFunction.CountA(Range(Cells(.Item(1).Row, .Item(.Count).Column), .Item(.Count))) / .Rows.Count
+
+            'x - -
+            '- - -
+            '- - -
+            If .Item(1).Formula = "" Then
+                avgTop = 0
+                avgLeft = 0
+            End If
+
+            '- - -
+            '- - -
+            'x - -
+            If Cells(.Item(.Count).Row, .Item(1).Column).Formula = "" Then
+                avgLeft = 0
+                avgBottom = 0
+            End If
+
+            '- - x
+            '- - -
+            '- - -
+            If Cells(.Item(1).Row, .Item(.Count).Column).Formula = "" Then
+                avgTop = 0
+                avgRight = 0
+            End If
+
+            '- - -
+            '- - -
+            '- - x
+            If .Item(.Count).Formula = "" Then
+                avgBottom = 0
+                avgRight = 0
+            End If
+
+            avgMax = WorksheetFunction.Max(avgTop, avgLeft, avgBottom, avgRight)
+
+            Select Case avgMax
+                Case 0
+                    Call setStatusBarTemporarily("元となるデータを特定できません。", 3)
+                    Exit Function
+                Case avgTop
+                    Set determineBaseRange = Range(.Item(1), Cells(.Item(1).Row, .Item(.Count).Column))
+                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, TopToBottom, .Rows.Count - 1))
+                Case avgLeft
+                    Set determineBaseRange = Range(.Item(1), Cells(.Item(.Count).Row, .Item(1).Column))
+                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, LeftToRight, .Columns.Count - 1))
+                Case avgBottom
+                    Set determineBaseRange = Range(Cells(.Item(.Count).Row, .Item(1).Column), .Item(.Count))
+                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, BottomToTop, .Rows.Count - 1))
+                Case avgRight
+                    Set determineBaseRange = Range(Cells(.Item(1).Row, .Item(.Count).Column), .Item(.Count))
+                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, RightToLeft, .Columns.Count - 1))
+                Case Else
+                    Call debugPrint("Unexpected values: " & avgMax & ", " & avgTop & ", " & avgLeft & ", " & avgBottom & ", " & avgRight, "determineBaseRange")
+                    Exit Function
+            End Select
+        End With
+
+    '1 x n or n x 1 cells
+    Else
+        If Selection.Item(1).Formula <> "" Then
+            If Selection.Item(2).Formula <> "" Then
+                If Selection.Columns.Count > 1 Then
+                    Set determineBaseRange = Range(Selection.Item(1), Selection.Item(1).End(xlToRight))
+                Else
+                    Set determineBaseRange = Range(Selection.Item(1), Selection.Item(1).End(xlDown))
+                End If
+            Else
+                Set determineBaseRange = Selection.Item(1)
+            End If
+        ElseIf Selection.Item(Selection.Count).Formula <> "" Then
+            If Selection.Item(Selection.Count - 1).Formula <> "" Then
+                If Selection.Columns.Count > 1 Then
+                    Set determineBaseRange = Range(Selection.Item(Selection.Count).End(xlToLeft), Selection.Item(Selection.Count))
+                Else
+                    Set determineBaseRange = Range(Selection.Item(Selection.Count).End(xlUp), Selection.Item(Selection.Count))
+                End If
+            Else
+                Set determineBaseRange = Selection.Item(Selection.Count)
+            End If
+        Else
+            'there is no data at first and last
+            Call setStatusBarTemporarily("選択セルの先頭、又は末尾にデータがありません。", 3)
+            Exit Function
+        End If
+    End If
+End Function
+
+Private Function innerDataSearch(ByVal targetRange As Range, _
+                                 ByVal searchMode As searchMode, _
+                                 ByVal searchLimit As Long, _
+                                 Optional ByVal searchCount As Long = 0, _
+                                 Optional ByVal expectCells As Long = 0) As Range
+    Dim rowOff As Integer
+    Dim columnOff As Integer
+    Dim nonBlankCells As Long
+
+    If searchCount > searchLimit Then
+        Set innerDataSearch = targetRange
+        Exit Function
+    End If
+
+    Select Case searchMode
+        Case TopToBottom
+            rowOff = 1
+        Case LeftToRight
+            columnOff = 1
+        Case BottomToTop
+            rowOff = -1
+        Case RightToLeft
+            columnOff = -1
+    End Select
+
+    nonBlankCells = WorksheetFunction.CountA(targetRange)
+
+    If searchCount = 0 Or expectCells = nonBlankCells Then
+        Set innerDataSearch = innerDataSearch(targetRange.Offset(rowOff, columnOff), searchMode, searchLimit, searchCount + 1, nonBlankCells)
+
+        If innerDataSearch Is Nothing Then
+            Set innerDataSearch = targetRange
+        End If
     End If
 End Function
 

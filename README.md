@@ -158,6 +158,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cell | `<Space>` | `unionSelectCells` | 現在セルを記憶に追加し、記憶したセルを選択 (複数セルの選択が可能) |
 | Cell | `<S-Space>` | `exceptSelectCells` | 記憶された選択済みセルから現在セルを取り除く |
 | Cell | `gf` | `followHyperlinkOfActiveCell` | セルのハイパーリンクを開く |
+| Cell | `FF`/`Ff` | `applyFlashFill` | フラッシュフィル(適用不可の際はオートフィル) |
+| Cell | `FA`/`Fa` | `applyAutoFill` | オートフィル |
 | Cell | `v` | `toggleVisualMode` | ビジュアルモード(選択範囲の拡張)を切り替え |
 | Cell | `V` | `toggleVisualLine` | ビジュアル行モード(選択範囲の拡張)を切り替え |
 | Border | `bb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 細線) |
@@ -336,7 +338,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Font | `ft` | `changeFormat` | 表示形式にフォーカス |
 | Font | `ff` | `showFontDialog` | セルの書式設定のダイアログを表示 |
 | Color | `fc` | `smartFontColor` | フォントの色を選択するダイアログを表示 |
-| Color | `Fc` | `smartFillColor` | 塗りつぶしの色を選択すダイアログを表示 |
+| Color | `FC`/`Fc` | `smartFillColor` | 塗りつぶしの色を選択すダイアログを表示 |
 | Color | `bc` | `changeShapeBorderColor` | (図形選択時) 枠線の色を選択するダイアログを表示 |
 | Comment | `Ci`/`Cc` | `editCellComment` | コメントを編集 (ない場合は追加) |
 | Comment | `Ce`/`Cx`/`Cd` | `deleteCellComment` | 現在セルのコメントを削除 |
