@@ -14,8 +14,6 @@ Private Sub Workbook_AddinUninstall()
 End Sub
 
 Private Sub Workbook_Open()
+    gDebugMode = Not ThisWorkbook.IsAddin
     Call C_Core.startVim
-    If Not ThisWorkbook.IsAddin Then
-        Windows(ThisWorkbook.Name).Visible = gDebugMode
-    End If
 End Sub

@@ -32,7 +32,6 @@ Sub startVim()
 
     gVimMode = True
     gCount = 1
-    gDebugMode = True
     gLangJa = DEFAULT_LANG_JA
 
     If X Is Nothing Then
@@ -91,7 +90,6 @@ End Sub
 Sub reloadVim(Optional isForce As Boolean = False)
     gVimMode = True
     gCount = 1
-    gDebugMode = True
     gLangJa = DEFAULT_LANG_JA
 
     If isForce Then
