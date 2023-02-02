@@ -45,6 +45,8 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
     Dim sheetVisibility As Integer
     Dim hiddenText As String
     Dim sheetName As String
+    Dim i As Integer
+    Dim cnt As Integer
 
     'N番目のシートの可視/不可視状態をトグル
     If ActiveWorkbook.Worksheets.Count < n Then
@@ -59,6 +61,22 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
 
     With ActiveWorkbook.Worksheets(n)
         If .Visible <> sheetVisibility Then
+            'check the number of visible sheets
+            For i = 1 To ActiveWorkbook.Worksheets.Count
+                If ActiveWorkbook.Worksheets(i).Visible = xlSheetVisible Then
+                    cnt = cnt + 1
+                    If cnt > 1 Then
+                        Exit For
+                    End If
+                End If
+            Next i
+
+            'not all sheets can be hidden
+            If cnt = 1 And .Visible = xlSheetVisible Then
+                MsgBox "すべてのシートを非表示にすることはできません。", vbExclamation
+                Exit Sub
+            End If
+
             .Visible = sheetVisibility
             sheetName = hiddenText & .Name
         Else
