@@ -104,6 +104,12 @@ Private Sub Rename_Sheet(ByVal n As Integer)
         ret = InputBox("新しいシート名を入力してください。", "シートの名前変更", cur)
 
         If ret <> "" Then
+            '新しい名前のシートがすでに存在する場合はエラー
+            If isSheetExists(ret) Then
+                MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
+                Exit Sub
+            End If
+
             'リネーム
             .Name = ret
 
@@ -132,6 +138,12 @@ Private Sub Delete_Sheet(ByVal n As Integer)
         Exit Sub
     End If
 
+    '対象シートが最後の可視シートの場合はエラー
+    If ActiveSheet.Visible = xlSheetVisible And getVisibleSheetsCount() = 1 Then
+        MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
+        Exit Sub
+    End If
+
     '削除前のシート数を保持
     cur = ActiveWorkbook.Worksheets.Count
 
@@ -140,7 +152,7 @@ Private Sub Delete_Sheet(ByVal n As Integer)
 
     '削除されたか確認
     If ActiveWorkbook.Worksheets.Count < cur Then
-        '削除された場合はリスト再生性
+        '削除された場合はリスト再生成
         List_Sheets.Clear
         Call MakeList
     End If

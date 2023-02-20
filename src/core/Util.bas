@@ -183,6 +183,27 @@ Function getWorkbookIndex(ByVal targetWorkbook As Workbook) As Integer
     Next i
 End Function
 
+Function isSheetExists(ByVal targetSheetName As String) As Boolean
+    Dim ws As Worksheet
+
+    For Each ws In Worksheets
+        If ws.Name = targetSheetName Then
+            isSheetExists = True
+            Exit Function
+        End If
+    Next
+End Function
+
+Function getVisibleSheetsCount() As Integer
+    Dim ws As Worksheet
+
+    For Each ws In Worksheets
+        If ws.Visible = xlSheetVisible Then
+            getVisibleSheetsCount = getVisibleSheetsCount + 1
+        End If
+    Next
+End Function
+
 '#####################################################################################'
 ' Source: https://mohayonao.hatenadiary.org/entry/20080617/1213712469                 '
 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv'
