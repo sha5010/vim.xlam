@@ -58,6 +58,7 @@ Public Sub Setup(Optional ByVal msoThemeColorIndex As Integer = xlNone, Optional
         IsThemeColor_ = True
         ThemeColorIndex = msoThemeColorIndex
 
+        On Error GoTo Catch
         Select Case msoThemeColorIndex
             Case 1, 3
                 Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex + 1)
@@ -66,6 +67,38 @@ Public Sub Setup(Optional ByVal msoThemeColorIndex As Integer = xlNone, Optional
             Case Else
                 Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex)
         End Select
+        Exit Sub
+
+Catch:
+        Dim savedMode As Integer
+        Dim savedTintAndShade As Double
+        Dim savedColor As Long
+
+        With ActiveSheet.Tab
+            If .ThemeColor > 0 Then
+                savedColor = .ThemeColor
+                savedTintAndShade = .TintAndShade
+                savedMode = 0
+            ElseIf .ColorIndex = xlNone Then
+                savedMode = 1
+            Else
+                savedColor = .Color
+                savedMode = 2
+            End If
+
+            .ThemeColor = msoThemeColorIndex
+            Color_ = .Color
+
+            If savedMode = 0 Then
+                .ThemeColor = savedColor
+                .TintAndShade = savedTintAndShade
+            ElseIf savedMode = 1 Then
+                .ColorIndex = xlNone
+            Else
+                .Color = savedColor
+            End If
+        End With
+
     Else
         Color_ = colorCode
     End If
