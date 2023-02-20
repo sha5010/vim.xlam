@@ -20,11 +20,11 @@ Function map(ByVal key As String, ByVal subKey As String, ByVal funcName As Stri
     End If
 
     'argX の指定と returnArguments は同時指定不可
-    If Not (IsMissing(arg1) And IsMissing(arg2) And IsMissing(arg3) And IsMissing(arg4) And IsMissing(arg5)) _
-        And requireArguments Then
-
-        Err.Raise 50000, Description:="argX と requireArguments は同時指定できません。"
-        Exit Function
+    If requireArguments Then
+        If Not (IsMissing(arg1) And IsMissing(arg2) And IsMissing(arg3) And IsMissing(arg4) And IsMissing(arg5)) Then
+            Err.Raise 50000, Description:="argX と requireArguments は同時指定できません。"
+            Exit Function
+        End If
     End If
 
     '引数付きの名前を算出
@@ -152,7 +152,9 @@ Private Sub registerKeyMap(ByVal key As String, ByVal funcName As String, _
                            ByVal requireArguments As Boolean)
 
     'Remove {}
-    key = reReplace(key, "¥{(.+)¥}", "$1")
+    If InStr(key, "{") > 0 Then
+        key = reReplace(key, "¥{(.+)¥}", "$1")
+    End If
 
     Call unregisterKeyMap(key)
     If returnOnly Then
