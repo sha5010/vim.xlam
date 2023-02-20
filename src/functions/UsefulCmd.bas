@@ -9,7 +9,6 @@ End Function
 Function redoExecute()
     On Error Resume Next
     Application.CommandBars.ExecuteMso "Redo"
-    On Error GoTo 0
 End Function
 
 Function toggleFreezePanes()
@@ -89,6 +88,8 @@ Function showSummaryInfo()
 End Function
 
 Function jumpPrev()
+    On Error GoTo Catch
+
     Dim t As Range
     Dim wb As Workbook
     Dim ws As Worksheet
@@ -108,9 +109,17 @@ Function jumpPrev()
             Call setStatusBarTemporarily("一番古い履歴です。", 1)
         End If
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("jumpPrev")
+    End If
 End Function
 
 Function jumpNext()
+    On Error GoTo Catch
+
     Dim t As Range
     Dim wb As Workbook
     Dim ws As Worksheet
@@ -130,6 +139,12 @@ Function jumpNext()
             Call setStatusBarTemporarily("一番新しい履歴です。", 1)
         End If
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("jumpNext")
+    End If
 End Function
 
 Function clearJumps()
@@ -140,6 +155,8 @@ Function clearJumps()
 End Function
 
 Function recordToJumpList(Optional Target As Range)
+    On Error GoTo Catch
+
     'JumpList が利用できるか検証
     If JumpList Is Nothing Then
         Exit Function
@@ -165,6 +182,12 @@ Function recordToJumpList(Optional Target As Range)
         Call JumpList.Add(Target)
     ElseIf Target.Parent.Parent.FullName <> JumpList.Latest.Parent.Parent.FullName Then
         Call JumpList.Add(Target)
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("recordToJumpList")
     End If
 End Function
 

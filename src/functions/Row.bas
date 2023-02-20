@@ -3,6 +3,8 @@ Option Explicit
 Option Private Module
 
 Function selectRows()
+    On Error GoTo Catch
+
     Dim t As Range
     Dim startRow As Long
     Dim endRow As Long
@@ -28,14 +30,21 @@ Function selectRows()
         .Range(.Rows(startRow), .Rows(endRow)).Select
         t.Activate
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("selectRows")
+    End If
 End Function
 
 Function insertRows()
+    On Error GoTo Catch
+
     Call repeatRegister("insertRows")
     Call stopVisualMode
 
     Dim savedColumn As Long
-    On Error GoTo Catch
 
     savedColumn = ActiveCell.Column
 
@@ -51,14 +60,18 @@ Function insertRows()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("insertRows")
+    End If
 End Function
 
 Function appendRows()
+    On Error GoTo Catch
+
     Call repeatRegister("appendRows")
     Call stopVisualMode
 
     Dim savedColumn As Long
-    On Error GoTo Catch
 
     savedColumn = ActiveCell.Column
 
@@ -78,14 +91,18 @@ Function appendRows()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("appendRows")
+    End If
 End Function
 
 Function deleteRows()
+    On Error GoTo Catch
+
     Call repeatRegister("deleteRows")
     Call stopVisualMode
 
     Dim t As Range
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If TypeName(Selection) <> "Range" Then
@@ -109,28 +126,35 @@ Catch:
     Set t = Nothing
 
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteRows")
+    End If
 End Function
 
 Function deleteToTopRows()
+    On Error GoTo Catch
+
     Call repeatRegister("deleteToTopRows")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     With ActiveSheet
         .Range(.Rows(1), .Rows(ActiveCell.Row)).Select
     End With
 
     Call keystroke(True, Ctrl_ + Minus_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteToTopRows")
+    End If
 End Function
 
 Function deleteToBottomRows()
+    On Error GoTo Catch
+
     Call repeatRegister("deleteToBottomRows")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     With ActiveSheet
         If ActiveCell.Row > .UsedRange.Item(.UsedRange.Count).Row Then
@@ -141,43 +165,56 @@ Function deleteToBottomRows()
     End With
 
     Call keystroke(True, Ctrl_ + Minus_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteToBottomRows")
+    End If
 End Function
 
 Function deleteToTopOfCurrentRegionRows()
+    On Error GoTo Catch
+
     Call repeatRegister("deleteToTopOfCurrentRegionRows")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     With ActiveSheet
         .Range(.Rows(ActiveCell.CurrentRegion.Item(1).Row), .Rows(ActiveCell.Row)).Select
     End With
 
     Call keystroke(True, Ctrl_ + Minus_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteToTopOfCurrentRegionRows")
+    End If
 End Function
 
 Function deleteToBottomOfCurrentRegionRows()
+    On Error GoTo Catch
+
     Call repeatRegister("deleteToBottomOfCurrentRegionRows")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     With ActiveSheet
         .Range(.Rows(ActiveCell.Row), .Rows(ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Row)).Select
     End With
 
     Call keystroke(True, Ctrl_ + Minus_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteToBottomOfCurrentRegionRows")
+    End If
 End Function
 
 Function yankRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -192,11 +229,15 @@ Function yankRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("yankRows")
+    End If
 End Function
 
 Function yankToTopRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -211,11 +252,15 @@ Function yankToTopRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("yankToTopRows")
+    End If
 End Function
 
 Function yankToBottomRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -234,11 +279,15 @@ Function yankToBottomRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("yankToBottomRows")
+    End If
 End Function
 
 Function yankToTopOfCurrentRegionRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -253,11 +302,15 @@ Function yankToTopOfCurrentRegionRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("yankToTopOfCurrentRegionRows")
+    End If
 End Function
 
 Function yankToBottomOfCurrentRegionRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -272,11 +325,15 @@ Function yankToBottomOfCurrentRegionRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("yankToBottomOfCurrentRegionRows")
+    End If
 End Function
 
 Function cutRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -291,11 +348,15 @@ Function cutRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("cutRows")
+    End If
 End Function
 
 Function cutToTopRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -310,11 +371,15 @@ Function cutToTopRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("cutToTopRows")
+    End If
 End Function
 
 Function cutToBottomRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -333,11 +398,15 @@ Function cutToBottomRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("cutToBottomRows")
+    End If
 End Function
 
 Function cutToTopOfCurrentRegionRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -352,11 +421,15 @@ Function cutToTopOfCurrentRegionRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("cutToTopOfCurrentRegionRows")
+    End If
 End Function
 
 Function cutToBottomOfCurrentRegionRows()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     Dim startRow As Long
     Dim endRow As Long
@@ -371,45 +444,56 @@ Function cutToBottomOfCurrentRegionRows()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("cutToBottomOfCurrentRegionRows")
+    End If
 End Function
 
 Function hideRows()
+    On Error GoTo Catch
+
     Call repeatRegister("hideRows")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     If gCount > 1 Then
         Selection.Resize(gCount, Selection.Columns.Count).Select
     End If
 
     Call keystroke(True, Ctrl_ + k9_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("hideRows")
+    End If
 End Function
 
-
 Function unhideRows()
+    On Error GoTo Catch
+
     Call repeatRegister("unhideRows")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     If gCount > 1 Then
         Selection.Resize(gCount, Selection.Columns.Count).Select
     End If
 
     Call keystroke(True, Ctrl_ + Shift_ + k9_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("unhideRows")
+    End If
 End Function
 
 Function groupRows()
+    On Error GoTo Catch
+
     Call repeatRegister("groupRows")
     Call stopVisualMode
 
     Dim t As Range
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If TypeName(Selection) <> "Range" Then
@@ -433,14 +517,18 @@ Catch:
     Set t = Nothing
 
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("groupRows")
+    End If
 End Function
 
 Function ungroupRows()
+    On Error GoTo Catch
+
     Call repeatRegister("ungroupRows")
     Call stopVisualMode
 
     Dim t As Range
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If TypeName(Selection) <> "Range" Then
@@ -464,16 +552,19 @@ Catch:
     Set t = Nothing
 
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("ungroupRows")
+    End If
 End Function
 
 Function foldRowsGroup()
+    On Error GoTo Catch
+
     Call repeatRegister("foldRowsGroup")
     Call stopVisualMode
 
     Dim targetRow As Long
     Dim i As Integer
-
-    On Error GoTo Catch
 
     targetRow = ActiveCell.Row
 
@@ -483,17 +574,19 @@ Function foldRowsGroup()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("foldRowsGroup")
+    End If
 End Function
 
-
 Function spreadRowsGroup()
+    On Error GoTo Catch
+
     Call repeatRegister("spreadRowsGroup")
     Call stopVisualMode
 
     Dim targetRow As Long
     Dim i As Integer
-
-    On Error GoTo Catch
 
     targetRow = ActiveCell.Row
 
@@ -503,41 +596,53 @@ Function spreadRowsGroup()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("spreadRowsGroup")
+    End If
 End Function
 
 Function adjustRowsHeight()
+    On Error GoTo Catch
+
     Call repeatRegister("adjustRowsHeight")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     If gCount > 1 Then
         Selection.Resize(gCount, Selection.Columns.Count).Select
     End If
 
     Call keystroke(True, Alt_ + H_, O_, A_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("adjustRowsHeight")
+    End If
 End Function
 
 Function setRowsHeight()
-    Call stopVisualMode
     On Error GoTo Catch
+
+    Call stopVisualMode
 
     If gCount > 1 Then
         Selection.Resize(gCount, Selection.Columns.Count).Select
     End If
 
     Call keystroke(True, Alt_ + H_, O_, H_)
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("setRowsHeight")
+    End If
 End Function
 
 Function narrowRowsHeight()
+    On Error GoTo Catch
+
     Call repeatRegister("narrowRowsHeight")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Dim currentHeight As Double
     Dim targetRows As Range
@@ -564,13 +669,16 @@ Function narrowRowsHeight()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("narrowRowsHeight")
+    End If
 End Function
 
 Function wideRowsHeight()
+    On Error GoTo Catch
+
     Call repeatRegister("wideRowsHeight")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Dim currentHeight As Double
     Dim targetRows As Range
@@ -597,4 +705,7 @@ Function wideRowsHeight()
     Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("wideRowsHeight")
+    End If
 End Function

@@ -3,6 +3,8 @@ Option Explicit
 Option Private Module
 
 Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
+    On Error GoTo Catch
+
     Dim shp As ShapeRange
 
     If VarType(Selection) <> vbObject Then
@@ -33,9 +35,17 @@ Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
     End If
 
     Set shp = Nothing
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("changeShapeFillColor")
+    End If
 End Function
 
 Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
+    On Error GoTo Catch
+
     Dim shp As ShapeRange
 
     If VarType(Selection) <> vbObject Then
@@ -64,10 +74,18 @@ Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
     End If
 
     Set shp = Nothing
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("changeShapeFontColor")
+    End If
 End Function
 
 Function changeShapeBorderColor(Optional garbage As String, _
                                 Optional ByVal resultColor As cls_FontColor) As Boolean
+    On Error GoTo Catch
+
     Dim shp As ShapeRange
 
     If VarType(Selection) <> vbObject Then
@@ -99,4 +117,10 @@ Function changeShapeBorderColor(Optional garbage As String, _
 
     Set shp = Nothing
     changeShapeBorderColor = True
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("changeShapeBorderColor")
+    End If
 End Function

@@ -21,6 +21,8 @@ Function deleteCellComment()
 End Function
 
 Function deleteCellCommentAll()
+    On Error GoTo Catch
+
     Dim cmt As Comment
 
     'アクティブシートにコメントがないなら何もしない
@@ -38,37 +40,75 @@ Function deleteCellCommentAll()
     For Each cmt In ActiveSheet.Comments
         cmt.Delete
     Next cmt
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteCellCommentAll")
+    End If
 End Function
 
 Function toggleCellComment()
+    On Error GoTo Catch
+
     Call repeatRegister("toggleCellComment")
     Call stopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         Application.CommandBars.ExecuteMso "ReviewShowOrHideComment"
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("toggleCellComment")
+    End If
 End Function
 
 Function hideCellComment()
+    On Error GoTo Catch
+
     Call repeatRegister("hideCellComment")
     Call stopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = False
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("hideCellComment")
+    End If
 End Function
 
 Function showCellComment()
+    On Error GoTo Catch
+
     Call repeatRegister("showCellComment")
     Call stopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = True
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("showCellComment")
+    End If
 End Function
 
 Function toggleCellCommentAll()
+    On Error GoTo Catch
+
     Application.CommandBars.ExecuteMso "ReviewShowAllComments"
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("toggleCellCommentAll")
+    End If
 End Function
 
 Function hideCellCommentAll()
@@ -84,6 +124,8 @@ Function hideCellCommentIndicator()
 End Function
 
 Function nextCommentedCell()
+    On Error GoTo Catch
+
     Dim buf As Boolean
 
     'アクティブシートにコメントが無いなら何もしない
@@ -99,9 +141,17 @@ Function nextCommentedCell()
     Application.DisplayAlerts = False
     Application.CommandBars.ExecuteMso "ReviewNextComment"
     Application.DisplayAlerts = buf
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("nextCommentedCell")
+    End If
 End Function
 
 Function prevCommentedCell()
+    On Error GoTo Catch
+
     Dim buf As Boolean
 
     'アクティブシートにコメントが無いなら何もしない
@@ -117,4 +167,10 @@ Function prevCommentedCell()
     Application.DisplayAlerts = False
     Application.CommandBars.ExecuteMso "ReviewPreviousComment"
     Application.DisplayAlerts = buf
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("prevCommentedCell")
+    End If
 End Function

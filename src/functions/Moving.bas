@@ -62,6 +62,8 @@ Private Function resizeAPI(Optional Up As Long = 0, _
                            Optional Down As Long = 0, _
                            Optional Left As Long = 0, _
                            Optional Right As Long = 0)
+    On Error GoTo Catch
+
     Dim r As Long
     Dim c As Long
     Dim firstRow As Long
@@ -185,6 +187,12 @@ Private Function resizeAPI(Optional Up As Long = 0, _
     Set actCell = Nothing
     Set baseRange = Nothing
 
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("resizeAPI")
+    End If
 End Function
 
 Function moveUpWithShift()
@@ -260,6 +268,8 @@ Function moveRightWithShift()
 End Function
 
 Function moveToTopRow()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     With ActiveWorkbook.ActiveSheet
@@ -269,9 +279,17 @@ Function moveToTopRow()
             .Cells(gCount, ActiveCell.Column).Select
         End If
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToTopRow")
+    End If
 End Function
 
 Function moveToLastRow()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     With ActiveWorkbook.ActiveSheet
@@ -281,9 +299,17 @@ Function moveToLastRow()
             .Cells(gCount, ActiveCell.Column).Select
         End If
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToLastRow")
+    End If
 End Function
 
 Function moveToNthColumn()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     If gCount > ActiveSheet.Columns.Count Then
@@ -293,33 +319,65 @@ Function moveToNthColumn()
     End If
 
     ActiveSheet.Cells(ActiveCell.Row, gCount).Select
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToNthColumn")
+    End If
 End Function
 
 Function moveToFirstColumn()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, 1).Select
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToFirstColumn")
+    End If
 End Function
 
 Function moveToLeftEnd()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, .UsedRange.Item(1).Column).Select
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToLeftEnd")
+    End If
 End Function
 
 Function moveToRightEnd()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, .UsedRange.Item(.UsedRange.Count).Column).Select
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToRightEnd")
+    End If
 End Function
 
 Function moveToTopOfCurrentRegion()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     Dim targetRow As Long
@@ -332,9 +390,17 @@ Function moveToTopOfCurrentRegion()
 
         .Cells(targetRow, ActiveCell.Column).Select
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToTopOfCurrentRegion")
+    End If
 End Function
 
 Function moveToBottomOfCurrentRegion()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     Dim targetRow As Long
@@ -347,20 +413,35 @@ Function moveToBottomOfCurrentRegion()
 
         .Cells(targetRow, ActiveCell.Column).Select
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToBottomOfCurrentRegion")
+    End If
 End Function
 
 Function moveToA1()
+    On Error GoTo Catch
+
     Call recordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(1, 1).Select
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToA1")
+    End If
 End Function
 
 Function moveToSpecifiedCell(ByVal Address As String) As Boolean
+    On Error GoTo Catch
+
     Call recordToJumpList
 
-    On Error GoTo Catch
     Address = Trim(Address)
 
     If reMatch(Address, "^[0-9]{1,7}$") Then
@@ -384,12 +465,17 @@ Function moveToSpecifiedCell(ByVal Address As String) As Boolean
         moveToSpecifiedCell = True
 
     End If
+    Exit Function
 
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToSpecifiedCell")
+    End If
 End Function
 
 Function moveToSpecifiedRow(ByVal n As String) As Boolean
     On Error GoTo Catch
+
     n = Trim(n)
     If reMatch(n, "^[0-9]{1,7}$") Then
         If CLng(n) > ActiveSheet.Rows.Count Then
@@ -402,5 +488,10 @@ Function moveToSpecifiedRow(ByVal n As String) As Boolean
         moveToSpecifiedRow = True
     End If
 
+    Exit Function
+
 Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveToSpecifiedRow")
+    End If
 End Function

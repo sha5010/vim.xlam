@@ -15,6 +15,8 @@ Private Enum columnSearchMode
 End Enum
 
 Private Function activateCellInVisibleRange()
+    On Error GoTo Catch
+
     Dim targetRow As Long
     Dim targetColumn As Long
     Dim visibleTop As Long, visibleBottom As Long
@@ -45,9 +47,17 @@ Private Function activateCellInVisibleRange()
     If ActiveCell.Row <> targetRow Or ActiveCell.Column <> targetColumn Then
         Cells(targetRow, targetColumn).Activate
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("activateCellInVisibleRange")
+    End If
 End Function
 
 Function scrollUpHalf()
+    On Error GoTo Catch
+
     Dim topRowVisible As Long
     Dim scrollWidth As Integer
     Dim targetRow As Long
@@ -70,9 +80,17 @@ Function scrollUpHalf()
     End If
 
     Call activateCellInVisibleRange
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("scrollUpHalf")
+    End If
 End Function
 
 Function scrollDownHalf()
+    On Error GoTo Catch
+
     Dim topRowVisible As Long
     Dim scrollWidth As Integer
     Dim targetRow As Long
@@ -95,6 +113,12 @@ Function scrollDownHalf()
     End If
 
     Call activateCellInVisibleRange
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("scrollDownHalf")
+    End If
 End Function
 
 Function scrollUp()
@@ -138,6 +162,8 @@ Function scrollRight1Column()
 End Function
 
 Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearchMode) As Long
+    On Error GoTo Catch
+
     Dim avg As Double
     Dim pred As Long
     Dim diff As Double
@@ -260,9 +286,17 @@ Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearch
             pointToRow = m
 
     End Select
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("pointToRow")
+    End If
 End Function
 
 Private Function pointToColumn(ByVal point As Double, ByVal searchMode As columnSearchMode) As Long
+    On Error GoTo Catch
+
     Dim avg As Double
     Dim pred As Long
     Dim diff As Double
@@ -375,6 +409,12 @@ Private Function pointToColumn(ByVal point As Double, ByVal searchMode As column
         Case Else
             pointToColumn = m
     End Select
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("pointToColumn")
+    End If
 End Function
 
 Private Function getLengthWithZoomConsidered(ByVal Length As Double) As Double

@@ -128,18 +128,34 @@ Function moveWorksheetBack()
 End Function
 
 Function insertWorksheet()
+    On Error GoTo Catch
     With ActiveWorkbook
         .Worksheets.Add Before:=.ActiveSheet
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("insertWorksheet")
+    End If
 End Function
 
 Function appendWorksheet()
+    On Error GoTo Catch
     With ActiveWorkbook
         .Worksheets.Add After:=.ActiveSheet
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("appendWorksheet")
+    End If
 End Function
 
 Function deleteWorksheet()
+    On Error GoTo Catch
+
     'error if target sheet is last visible one
     If ActiveSheet.Visible = xlSheetVisible And getVisibleSheetsCount() = 1 Then
         MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
@@ -147,12 +163,18 @@ Function deleteWorksheet()
     End If
 
     ActiveSheet.Delete
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteWorksheet")
+    End If
 End Function
 
 Function activateWorksheet(ByVal n As String) As Boolean
-    Dim idx As Integer
-
     On Error GoTo Catch
+
+    Dim idx As Integer
 
     If Not IsNumeric(n) Or InStr(n, ".") > 0 Then
         Exit Function
@@ -175,13 +197,15 @@ Function activateWorksheet(ByVal n As String) As Boolean
     Exit Function
 
 Catch:
-    Call debugPrint("Cannot activate worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "activateWorksheet")
+    If Err.Number <> 0 Then
+        Call errorHandler("activateWorksheet")
+    End If
 End Function
 
 Function activateFirstWorksheet()
-    Dim i As Integer
-
     On Error GoTo Catch
+
+    Dim i As Integer
 
     With ActiveWorkbook
         For i = 1 To .Worksheets.Count
@@ -194,13 +218,15 @@ Function activateFirstWorksheet()
     Exit Function
 
 Catch:
-    Call debugPrint("Cannot activate worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "activateFirstWorksheet")
+    If Err.Number <> 0 Then
+        Call errorHandler("activateFirstWorksheet")
+    End If
 End Function
 
 Function activateLastWorksheet()
-    Dim i As Integer
-
     On Error GoTo Catch
+
+    Dim i As Integer
 
     With ActiveWorkbook
         For i = .Worksheets.Count To 1 Step -1
@@ -213,7 +239,9 @@ Function activateLastWorksheet()
     Exit Function
 
 Catch:
-    Call debugPrint("Cannot activate worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "activateLastWorksheet")
+    If Err.Number <> 0 Then
+        Call errorHandler("activateLastWorksheet")
+    End If
 End Function
 
 Function cloneWorksheet()
@@ -224,7 +252,9 @@ Function cloneWorksheet()
     Exit Function
 
 Catch:
-    Call debugPrint("Cannot clone worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "cloneWorksheet")
+    If Err.Number <> 0 Then
+        Call errorHandler("cloneWorksheet")
+    End If
 End Function
 
 Function showSheetPicker()
@@ -232,6 +262,8 @@ Function showSheetPicker()
 End Function
 
 Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
+    On Error GoTo Catch
+
     If ActiveSheet Is Nothing Then
         Exit Function
     End If
@@ -253,6 +285,12 @@ Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
 
             Call repeatRegister("changeWorksheetTabColor", resultColor)
         End With
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("changeWorksheetTabColor")
     End If
 End Function
 

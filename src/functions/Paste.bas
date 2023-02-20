@@ -2,6 +2,8 @@ Attribute VB_Name = "F_Paste"
 Option Explicit
 
 Function pasteSmart()
+    On Error GoTo Catch
+
     Call repeatRegister("pasteSmart")
     Call stopVisualMode
 
@@ -21,6 +23,12 @@ Function pasteSmart()
     Else
         Call paste_CtrlV
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("pasteSmart")
+    End If
 End Function
 
 Private Function paste_CtrlV()
@@ -28,6 +36,8 @@ Private Function paste_CtrlV()
 End Function
 
 Private Function pasteRows()
+    On Error GoTo Catch
+
     Dim yankedRows As Long
     Dim startRow As Long
     Dim endRow As Long
@@ -49,9 +59,17 @@ Private Function pasteRows()
     If Application.CutCopyMode = xlCopy Then
         gLastYanked.Copy
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("pasteRows")
+    End If
 End Function
 
 Private Function pasteColumns()
+    On Error GoTo Catch
+
     Dim yankedColumns As Long
     Dim startColumn As Long
     Dim endColumn As Long
@@ -73,9 +91,17 @@ Private Function pasteColumns()
     If Application.CutCopyMode = xlCopy Then
         gLastYanked.Copy
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("pasteColumns")
+    End If
 End Function
 
 Function pasteValue()
+    On Error GoTo Catch
+
     Call repeatRegister("pasteValue")
     Call stopVisualMode
 
@@ -104,9 +130,17 @@ Function pasteValue()
                 Call debugPrint("Unknown ClipboardType: " & cbType, "pasteValue")
         End Select
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("pasteValue")
+    End If
 End Function
 
 Function pasteSpecial()
+    On Error GoTo Catch
+
     Call stopVisualMode
 
     If Application.ClipboardFormats(1) = -1 Then
@@ -114,5 +148,11 @@ Function pasteSpecial()
     Else
         On Error Resume Next
         Application.Dialogs(xlDialogPasteSpecial).Show
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("pasteSpecial")
     End If
 End Function

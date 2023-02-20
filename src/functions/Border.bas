@@ -16,6 +16,8 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
                            Optional ByVal Color As Long = -1, _
                            Optional ByVal ThemeColor As XlThemeColor = -1, _
                            Optional ByVal TintAndShade As Double = 0)
+    On Error GoTo Catch
+
     Dim arr As Variant
     Dim i As Variant
     Dim sameAll As Boolean
@@ -95,10 +97,18 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
             End If
         End With
     Next i
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("BorderAPI")
+    End If
 End Function
 
 Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
                         Optional ByVal resultColor As cls_FontColor)
+    On Error GoTo Catch
+
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
@@ -119,6 +129,12 @@ Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
         End With
 
         Call repeatRegister("BorderColorAPI", Index, resultColor)
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("BorderColorAPI")
     End If
 End Function
 

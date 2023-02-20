@@ -3,18 +3,41 @@ Option Explicit
 Option Private Module
 
 Function closeAskSaving()
+    On Error GoTo Catch
     ActiveWorkbook.Close
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("closeAskSaving")
+    End If
 End Function
 
 Function closeWithoutSaving()
+    On Error GoTo Catch
     ActiveWorkbook.Close False
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("closeWithoutSaving")
+    End If
 End Function
 
 Function closeWithSaving()
+    On Error GoTo Catch
     ActiveWorkbook.Close True
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("closeWithSaving")
+    End If
 End Function
 
 Function saveWorkbook()
+    On Error GoTo Catch
+
     If ActiveWorkbook.Path = "" Then
         Application.CommandBars.ExecuteMso "FileSaveAs"
     ElseIf ActiveWorkbook.ReadOnly Then
@@ -22,17 +45,39 @@ Function saveWorkbook()
     Else
         ActiveWorkbook.Save
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("saveWorkbook")
+    End If
 End Function
 
 Function saveAsNewWorkbook()
+    On Error GoTo Catch
     Application.CommandBars.ExecuteMso "FileSaveAs"
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("saveAsNewWorkbook")
+    End If
 End Function
 
 Function openWorkbook()
+    On Error GoTo Catch
     Application.CommandBars.ExecuteMso "FileOpenUsingBackstage"
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("openWorkbook")
+    End If
 End Function
 
 Function reopenActiveWorkbook()
+    On Error GoTo Catch
+
     Dim wbFullName As String
     Dim ret As VbMsgBoxResult
 
@@ -55,9 +100,17 @@ Function reopenActiveWorkbook()
 
     ActiveWorkbook.Close
     Call Workbooks.Open(wbFullName)
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("reopenActiveWorkbook")
+    End If
 End Function
 
 Function activateWorkbook(ByVal n As String) As Boolean
+    On Error GoTo Catch
+
     Dim idx As Integer
     Dim isForce As Boolean
 
@@ -86,10 +139,14 @@ Function activateWorkbook(ByVal n As String) As Boolean
     Exit Function
 
 Catch:
-    Call debugPrint("Cannot activate window. ErrNo: " & Err.Number & "  Description: " & Err.Description, "activateWorkbook")
+    If Err.Number <> 0 Then
+        Call errorHandler("activateWorkbook")
+    End If
 End Function
 
 Function nextWorkbook()
+    On Error GoTo Catch
+
     Dim i As Integer
     Dim idx As Integer
 
@@ -101,9 +158,17 @@ Function nextWorkbook()
             Exit Function
         End If
     Next i
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("nextWorkbook")
+    End If
 End Function
 
 Function previousWorkbook()
+    On Error GoTo Catch
+
     Dim i As Integer
     Dim idx As Integer
 
@@ -115,9 +180,17 @@ Function previousWorkbook()
             Exit Function
         End If
     Next i
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("previousWorkbook")
+    End If
 End Function
 
 Function toggleReadOnly()
+    On Error GoTo Catch
+
     Dim ret As VbMsgBoxResult
 
     If InStr(ActiveWorkbook.FullName, "¥") = 0 Then
@@ -140,5 +213,11 @@ Function toggleReadOnly()
         End If
 
         Call ActiveWorkbook.ChangeFileAccess(xlReadOnly)
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("toggleReadOnly")
     End If
 End Function

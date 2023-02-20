@@ -119,6 +119,8 @@ Function showFontDialog()
 End Function
 
 Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
+    On Error GoTo Catch
+
     If TypeName(Selection) = "Nothing" Then
         Exit Function
     End If
@@ -141,5 +143,11 @@ Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
 
         Call repeatRegister("changeFontColor", resultColor)
         Call stopVisualMode
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("changeFontColor")
     End If
 End Function

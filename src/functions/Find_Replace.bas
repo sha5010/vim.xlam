@@ -13,6 +13,8 @@ Function showFindNotFollowLang()
 End Function
 
 Function nextFoundCell()
+    On Error GoTo Catch
+
     Dim t As Range
     Dim i As Integer
 
@@ -36,9 +38,17 @@ Function nextFoundCell()
         End If
 
     Next i
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("nextFoundCell")
+    End If
 End Function
 
 Function previousFoundCell()
+    On Error GoTo Catch
+
     Dim t As Range
     Dim i As Integer
 
@@ -62,6 +72,12 @@ Function previousFoundCell()
         End If
 
     Next i
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("previousFoundCell")
+    End If
 End Function
 
 Function showReplaceWindow()
@@ -69,6 +85,8 @@ Function showReplaceWindow()
 End Function
 
 Function findActiveValueNext()
+    On Error GoTo Catch
+
     Dim t As Range
     Dim findText As String
 
@@ -97,9 +115,17 @@ Function findActiveValueNext()
     End If
 
     Call setStatusBarTemporarily("/" & findText, 2, disablePrefix:=True)
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("findActiveValueNext")
+    End If
 End Function
 
 Function findActiveValuePrev()
+    On Error GoTo Catch
+
     Dim t As Range
     Dim findText As String
 
@@ -129,4 +155,10 @@ Function findActiveValuePrev()
     End If
 
     Call setStatusBarTemporarily("?" & findText, 2, disablePrefix:=True)
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("findActiveValuePrev")
+    End If
 End Function

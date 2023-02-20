@@ -112,10 +112,10 @@ Function decreaseDecimal()
 End Function
 
 Function insertCellsUp()
+    On Error GoTo Catch
+
     Call repeatRegister("insertCellsUp")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If gCount > 1 Then
@@ -126,13 +126,16 @@ Function insertCellsUp()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("insertCellsUp")
+    End If
 End Function
 
 Function insertCellsDown()
+    On Error GoTo Catch
+
     Call repeatRegister("insertCellsDown")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If Selection.Row < ActiveSheet.Rows.Count Then
@@ -147,13 +150,16 @@ Function insertCellsDown()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("insertCellsDown")
+    End If
 End Function
 
 Function insertCellsLeft()
+    On Error GoTo Catch
+
     Call repeatRegister("insertCellsLeft")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If gCount > 1 Then
@@ -164,13 +170,16 @@ Function insertCellsLeft()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("insertCellsLeft")
+    End If
 End Function
 
 Function insertCellsRight()
+    On Error GoTo Catch
+
     Call repeatRegister("insertCellsRight")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If Selection.Column < ActiveSheet.Columns.Count Then
@@ -185,6 +194,9 @@ Function insertCellsRight()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("insertCellsRight")
+    End If
 End Function
 
 Function deleteValue()
@@ -194,10 +206,10 @@ Function deleteValue()
 End Function
 
 Function deleteToUp()
+    On Error GoTo Catch
+
     Call repeatRegister("deleteToUp")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If gCount > 1 Then
@@ -208,13 +220,16 @@ Function deleteToUp()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteToUp")
+    End If
 End Function
 
 Function deleteToLeft()
+    On Error GoTo Catch
+
     Call repeatRegister("deleteToLeft")
     Call stopVisualMode
-
-    On Error GoTo Catch
 
     Application.ScreenUpdating = False
     If gCount > 1 Then
@@ -225,6 +240,9 @@ Function deleteToLeft()
 
 Catch:
     Application.ScreenUpdating = True
+    If Err.Number <> 0 Then
+        Call errorHandler("deleteToLeft")
+    End If
 End Function
 
 Function toggleWrapText()
@@ -250,6 +268,8 @@ Function toggleMergeCells()
 End Function
 
 Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
+    On Error GoTo Catch
+
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
@@ -273,9 +293,17 @@ Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
         Call repeatRegister("changeInteriorColor", resultColor)
         Call stopVisualMode
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("changeInteriorColor")
+    End If
 End Function
 
 Function unionSelectCells()
+    On Error GoTo Catch
+
     Dim actCell As Range
 
     If TypeName(Selection) <> "Range" Then
@@ -298,9 +326,17 @@ Function unionSelectCells()
         actCell.Activate
 
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("unionSelectCells")
+    End If
 End Function
 
 Function exceptSelectCells()
+    On Error GoTo Catch
+
     Dim actCell As Range
 
     If TypeName(Selection) <> "Range" Then
@@ -319,10 +355,16 @@ Function exceptSelectCells()
             Call setStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2)
         End If
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("exceptSelectCells")
+    End If
 End Function
 
 Function followHyperlinkOfActiveCell()
-    On Error Resume Next
+    On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
         Exit Function
@@ -333,9 +375,17 @@ Function followHyperlinkOfActiveCell()
     ElseIf InStr(UCase(ActiveCell.Formula), "=HYPERLINK(") > 0 Then
         ActiveWorkbook.followHyperlink Split(ActiveCell.Formula, """")(1)
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("followHyperlinkOfActiveCell")
+    End If
 End Function
 
 Function changeSelectedCells(ByVal Value As String)
+    On Error GoTo Catch
+
     Call stopVisualMode
 
     If TypeName(Selection) = "Range" Then
@@ -343,16 +393,23 @@ Function changeSelectedCells(ByVal Value As String)
     ElseIf Not ActiveCell Is Nothing Then
         ActiveCell.Value = Value
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("changeSelectedCells")
+    End If
 End Function
 
 Function applyFlashFill()
+    On Error GoTo Catch
+
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
 
     Call repeatRegister("applyFlashFill")
 
-    On Error GoTo Catch
     Selection.FlashFill
 
     Call stopVisualMode
@@ -362,11 +419,13 @@ Catch:
     If Err.Number = 1004 Then
         Call applyAutoFill(fallback:=True)
     Else
-        Call debugPrint("Error " & Err.Number & ": " & Err.Description, "applyFlashFill")
+        Call errorHandler("applyFlashFill")
     End If
 End Function
 
 Function applyAutoFill(Optional fallback As Boolean = False)
+    On Error GoTo Catch
+
     Dim baseRange As Range
 
     If TypeName(Selection) <> "Range" Then
@@ -378,8 +437,6 @@ Function applyAutoFill(Optional fallback As Boolean = False)
     If Not fallback Then
         Call repeatRegister("applyAutoFill")
     End If
-
-    On Error GoTo Catch
 
     Set baseRange = determineBaseRange()
     If baseRange Is Nothing Then
@@ -396,10 +453,14 @@ Function applyAutoFill(Optional fallback As Boolean = False)
     Exit Function
 
 Catch:
-    Call debugPrint("Error " & Err.Number & ": " & Err.Description, "applyAutoFill")
+    If Err.Number <> 0 Then
+        Call errorHandler("applyAutoFill")
+    End If
 End Function
 
 Private Function determineBaseRange() As Range
+    On Error GoTo Catch
+
     Dim avgTop As Double
     Dim avgLeft As Double
     Dim avgBottom As Double
@@ -498,6 +559,12 @@ Private Function determineBaseRange() As Range
             Exit Function
         End If
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("determineBaseRange")
+    End If
 End Function
 
 Private Function innerDataSearch(ByVal targetRange As Range, _
@@ -505,6 +572,8 @@ Private Function innerDataSearch(ByVal targetRange As Range, _
                                  ByVal searchLimit As Long, _
                                  Optional ByVal searchCount As Long = 0, _
                                  Optional ByVal expectCells As Long = 0) As Range
+    On Error GoTo Catch
+
     Dim rowOff As Integer
     Dim columnOff As Integer
     Dim nonBlankCells As Long
@@ -534,9 +603,17 @@ Private Function innerDataSearch(ByVal targetRange As Range, _
             Set innerDataSearch = targetRange
         End If
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("innerDataSearch")
+    End If
 End Function
 
 Function toggleVisualMode()
+    On Error GoTo Catch
+
     If X.VisualMode Then
         Call stopVisualMode
     Else
@@ -544,15 +621,29 @@ Function toggleVisualMode()
         Call X.StartVisualMode
         Call setStatusBar("vim.xlam: -- VISUAL (ESC to exit) --")
     End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("toggleVisualMode")
+    End If
 End Function
 
 Function toggleVisualLine()
+    On Error GoTo Catch
+
     If X.VisualLine Then
         Call stopVisualMode
     Else
         Call visualMap("toggleVisualLine")
         Call X.StartVisualLine
         Call setStatusBar("vim.xlam: -- VISUAL LINE (ESC to exit) --")
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("toggleVisualLine")
     End If
 End Function
 
