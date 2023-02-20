@@ -140,6 +140,12 @@ Function appendWorksheet()
 End Function
 
 Function deleteWorksheet()
+    'error if target sheet is last visible one
+    If ActiveSheet.Visible = xlSheetVisible And getVisibleSheetsCount() = 1 Then
+        MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
+        Exit Function
+    End If
+
     ActiveSheet.Delete
 End Function
 
