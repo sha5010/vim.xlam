@@ -57,7 +57,15 @@ Public Sub Setup(Optional ByVal msoThemeColorIndex As Integer = xlNone, Optional
     If msoThemeColorIndex <> xlNone Then
         IsThemeColor_ = True
         ThemeColorIndex = msoThemeColorIndex
-        Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex)
+
+        Select Case msoThemeColorIndex
+            Case 1, 3
+                Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex + 1)
+            Case 2, 4
+                Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex - 1)
+            Case Else
+                Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex)
+        End Select
     Else
         Color_ = colorCode
     End If

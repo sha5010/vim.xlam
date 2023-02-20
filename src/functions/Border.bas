@@ -99,13 +99,9 @@ End Function
 
 Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
                         Optional ByVal resultColor As cls_FontColor)
-    Dim colorTable As Variant
-
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
-
-    colorTable = Array(2, 1, 4, 3, 5, 6, 7, 8, 9, 10)
 
     If resultColor Is Nothing Then
         Set resultColor = UF_ColorPicker.showColorPicker()
@@ -116,7 +112,7 @@ Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
             If .IsNull Then
                 Call BorderAPI(APIsetBorder, Index, ColorIndex:=xlColorIndexAutomatic)
             ElseIf .IsThemeColor Then
-                Call BorderAPI(APIsetBorder, Index, ThemeColor:=colorTable(.ThemeColor - 1), TintAndShade:=.TintAndShade)
+                Call BorderAPI(APIsetBorder, Index, ThemeColor:=.ThemeColor, TintAndShade:=.TintAndShade)
             Else
                 Call BorderAPI(APIsetBorder, Index, Color:=.Color)
             End If

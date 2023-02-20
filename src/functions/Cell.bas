@@ -250,13 +250,9 @@ Function toggleMergeCells()
 End Function
 
 Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
-    Dim colorTable As Variant
-
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
-
-    colorTable = Array(2, 1, 4, 3, 5, 6, 7, 8, 9, 10)
 
     If resultColor Is Nothing Then
         Set resultColor = UF_ColorPicker.showColorPicker()
@@ -267,7 +263,7 @@ Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
             If resultColor.IsNull Then
                 .ColorIndex = xlNone
             ElseIf resultColor.IsThemeColor Then
-                .ThemeColor = colorTable(resultColor.ThemeColor - 1)
+                .ThemeColor = resultColor.ThemeColor
                 .TintAndShade = resultColor.TintAndShade
             Else
                 .Color = resultColor.Color

@@ -223,7 +223,6 @@ Private Sub UserForm_Initialize()
     Dim i As Integer, j As Integer
     Dim l As Variant, lw As Variant, lb As Variant, lg As Variant
     Dim Color As cls_FontColor
-    Dim order As Variant
     Dim defaultColor As Variant
     Dim cnt As Integer
 
@@ -235,7 +234,6 @@ Private Sub UserForm_Initialize()
     cmdBuf = ""
 
     cnt = 1
-    order = Array(2, 1, 4, 3, 5, 6, 7, 8, 9, 10)
     defaultColor = Array(192, 255, 49407, 65535, 5296274, 5287936, 15773696, 12611584, 6299648, 10498160)
 
     l = Split(LUMINANCES, ";")
@@ -250,21 +248,21 @@ Private Sub UserForm_Initialize()
 
     For i = 0 To 9
         Set Color = New cls_FontColor
-        Call Color.Setup(msoThemeColorIndex:=order(i))
+        Call Color.Setup(msoThemeColorIndex:=i + 1)
 
         Call PutLabel(i + 1, 1, Caption:=Mid(KEY_LIST2, i + 1, 1))
         Call PutLabel(i + 1, IDX_LIST2, Color)
 
         For j = 1 To 5
             Set Color = New cls_FontColor
-            Call Color.Setup(msoThemeColorIndex:=order(i))
+            Call Color.Setup(msoThemeColorIndex:=i + 1)
 
-            Select Case order(i)
-                Case 2
-                    Color.Luminance = CInt(lw(j))
+            Select Case i + 1
                 Case 1
+                    Color.Luminance = CInt(lw(j))
+                Case 2
                     Color.Luminance = CInt(lb(j))
-                Case 4
+                Case 3
                     Color.Luminance = CInt(lg(j))
                 Case Else
                     Color.Luminance = CInt(l(j))

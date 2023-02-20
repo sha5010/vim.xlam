@@ -119,13 +119,9 @@ Function showFontDialog()
 End Function
 
 Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
-    Dim colorTable As Variant
-
     If TypeName(Selection) = "Nothing" Then
         Exit Function
     End If
-
-    colorTable = Array(2, 1, 4, 3, 5, 6, 7, 8, 9, 10)
 
     If resultColor Is Nothing Then
         Set resultColor = UF_ColorPicker.showColorPicker()
@@ -136,7 +132,7 @@ Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
             If resultColor.IsNull Then
                 .ColorIndex = xlAutomatic
             ElseIf resultColor.IsThemeColor Then
-                .ThemeColor = colorTable(resultColor.ThemeColor - 1)
+                .ThemeColor = resultColor.ThemeColor
                 .TintAndShade = resultColor.TintAndShade
             Else
                 .Color = resultColor.Color
