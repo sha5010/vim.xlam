@@ -619,7 +619,7 @@ Function toggleVisualMode()
     Else
         Call visualMap("toggleVisualMode")
         Call X.StartVisualMode
-        Call setStatusBar("vim.xlam: -- VISUAL (ESC to exit) --")
+        Call setStatusBar(STATUS_PREFIX & "-- VISUAL (ESC to exit) --")
     End If
     Exit Function
 
@@ -637,7 +637,7 @@ Function toggleVisualLine()
     Else
         Call visualMap("toggleVisualLine")
         Call X.StartVisualLine
-        Call setStatusBar("vim.xlam: -- VISUAL LINE (ESC to exit) --")
+        Call setStatusBar(STATUS_PREFIX & "-- VISUAL LINE (ESC to exit) --")
     End If
     Exit Function
 
