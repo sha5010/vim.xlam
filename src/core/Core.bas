@@ -50,12 +50,11 @@ Sub startVim()
         Set Repeater = New cls_Repeater
     End If
 
-    If IMEStatus <> vbIMEModeOff Then
-        SendKeys "{kanji}"
-    End If
+    Call disableIME
 
     If gRegisteredKeys Is Nothing Then
         Call initMapping
+        gDebugMode = Not ThisWorkbook.IsAddin
     Else
         Call enableKeys
     End If
@@ -145,12 +144,16 @@ Sub resumeVim()
     Set X.TempApp = Nothing
     gVimMode = True
 
-    If IMEStatus <> vbIMEModeOff Then
-        SendKeys "{kanji}"
-    End If
+    Call disableIME
 End Sub
 
 Sub showCmdForm(ByVal prefix As String)
+    If Not gVimMode Then
+        'gVimMode = False なのにキーマップが有効な場合は
+        'エラー等でインスタンスが落ちたと考えられるので再起動
+        Call startVim
+    End If
+
     gCmdBuf = prefix
     UF_Cmd.Show
 End Sub
