@@ -61,6 +61,15 @@ Function renameWorksheet()
         ret = InputBox("新しいシート名を入力してください。", "シート名の変更", beforeName)
 
         If ret <> "" Then
+            'Exit if same name
+            If ret = beforeName Then
+                Exit Function
+
+            'Error when new sheet name already exists
+            ElseIf isSheetExists(ret) Then
+                MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
+                Exit Function
+            End If
             .Worksheets(.ActiveSheet.Index).Name = ret
 
             Call setStatusBarTemporarily("シート名を変更しました： """ & _

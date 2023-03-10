@@ -104,8 +104,12 @@ Private Sub Rename_Sheet(ByVal n As Integer)
         ret = InputBox("新しいシート名を入力してください。", "シートの名前変更", cur)
 
         If ret <> "" Then
+            '同名だったら何もしない
+            If ret = cur Then
+                Exit Sub
+
             '新しい名前のシートがすでに存在する場合はエラー
-            If isSheetExists(ret) Then
+            ElseIf isSheetExists(ret) Then
                 MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
                 Exit Sub
             End If
