@@ -17,9 +17,7 @@ Function toggleFreezePanes()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("toggleFreezePanes")
-    End If
+    Call errorHandler("toggleFreezePanes")
 End Function
 
 Function zoomIn()
@@ -41,10 +39,8 @@ Function zoomIn()
     Exit Function
 
 Catch:
-    If Err.Number = 91 Then
+    If errorHandler("zoomIn") Then
         Call keystroke(True, Ctrl_ + Shift_ + Alt_ + Minus_)
-    ElseIf Err.Number <> 0 Then
-        Call errorHandler("zoomIn")
     End If
 End Function
 
@@ -67,10 +63,8 @@ Function zoomOut()
     Exit Function
 
 Catch:
-    If Err.Number = 91 Then
+    If errorHandler("zoomOut") Then
         Call keystroke(True, Ctrl_ + Alt_ + Minus_)
-    ElseIf Err.Number <> 0 Then
-        Call errorHandler("zoomOut")
     End If
 End Function
 
@@ -109,9 +103,7 @@ Function zoomSpecifiedScale()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("zoomSpecifiedScale")
-    End If
+    Call errorHandler("zoomSpecifiedScale")
 End Function
 
 Function toggleFormulaBar()
@@ -120,9 +112,7 @@ Function toggleFormulaBar()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("toggleFormulaBar")
-    End If
+    Call errorHandler("toggleFormulaBar")
 End Function
 
 Function showSummaryInfo()
@@ -131,9 +121,7 @@ Function showSummaryInfo()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("showSummaryInfo")
-    End If
+    Call errorHandler("showSummaryInfo")
 End Function
 
 Function jumpPrev()
@@ -161,9 +149,7 @@ Function jumpPrev()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("jumpPrev")
-    End If
+    Call errorHandler("jumpPrev")
 End Function
 
 Function jumpNext()
@@ -191,9 +177,7 @@ Function jumpNext()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("jumpNext")
-    End If
+    Call errorHandler("jumpNext")
 End Function
 
 Function clearJumps()
@@ -235,9 +219,7 @@ Function recordToJumpList(Optional Target As Range)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("recordToJumpList")
-    End If
+    Call errorHandler("recordToJumpList")
 End Function
 
 Function smartFillColor()

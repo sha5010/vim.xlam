@@ -52,9 +52,7 @@ Private Function activateCellInVisibleRange()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("activateCellInVisibleRange")
-    End If
+    Call errorHandler("activateCellInVisibleRange")
 End Function
 
 Function scrollUpHalf()
@@ -85,9 +83,7 @@ Function scrollUpHalf()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("scrollUpHalf")
-    End If
+    Call errorHandler("scrollUpHalf")
 End Function
 
 Function scrollDownHalf()
@@ -118,9 +114,7 @@ Function scrollDownHalf()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("scrollDownHalf")
-    End If
+    Call errorHandler("scrollDownHalf")
 End Function
 
 Function scrollUp()
@@ -291,9 +285,7 @@ Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearch
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("pointToRow")
-    End If
+    Call errorHandler("pointToRow")
 End Function
 
 Private Function pointToColumn(ByVal point As Double, ByVal searchMode As columnSearchMode) As Long
@@ -414,9 +406,7 @@ Private Function pointToColumn(ByVal point As Double, ByVal searchMode As column
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("pointToColumn")
-    End If
+    Call errorHandler("pointToColumn")
 End Function
 
 Private Function getLengthWithZoomConsidered(ByVal Length As Double) As Double

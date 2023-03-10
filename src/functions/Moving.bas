@@ -190,9 +190,7 @@ Private Function resizeAPI(Optional Up As Long = 0, _
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("resizeAPI")
-    End If
+    Call errorHandler("resizeAPI")
 End Function
 
 Function moveUpWithShift()
@@ -282,9 +280,7 @@ Function moveToTopRow()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToTopRow")
-    End If
+    Call errorHandler("moveToTopRow")
 End Function
 
 Function moveToLastRow()
@@ -302,9 +298,7 @@ Function moveToLastRow()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToLastRow")
-    End If
+    Call errorHandler("moveToLastRow")
 End Function
 
 Function moveToNthColumn()
@@ -322,9 +316,7 @@ Function moveToNthColumn()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToNthColumn")
-    End If
+    Call errorHandler("moveToNthColumn")
 End Function
 
 Function moveToFirstColumn()
@@ -338,9 +330,7 @@ Function moveToFirstColumn()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToFirstColumn")
-    End If
+    Call errorHandler("moveToFirstColumn")
 End Function
 
 Function moveToLeftEnd()
@@ -354,9 +344,7 @@ Function moveToLeftEnd()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToLeftEnd")
-    End If
+    Call errorHandler("moveToLeftEnd")
 End Function
 
 Function moveToRightEnd()
@@ -370,9 +358,7 @@ Function moveToRightEnd()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToRightEnd")
-    End If
+    Call errorHandler("moveToRightEnd")
 End Function
 
 Function moveToTopOfCurrentRegion()
@@ -393,9 +379,7 @@ Function moveToTopOfCurrentRegion()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToTopOfCurrentRegion")
-    End If
+    Call errorHandler("moveToTopOfCurrentRegion")
 End Function
 
 Function moveToBottomOfCurrentRegion()
@@ -416,9 +400,7 @@ Function moveToBottomOfCurrentRegion()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToBottomOfCurrentRegion")
-    End If
+    Call errorHandler("moveToBottomOfCurrentRegion")
 End Function
 
 Function moveToA1()
@@ -432,9 +414,7 @@ Function moveToA1()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToA1")
-    End If
+    Call errorHandler("moveToA1")
 End Function
 
 Function moveToSpecifiedCell(ByVal Address As String) As Boolean
@@ -468,9 +448,7 @@ Function moveToSpecifiedCell(ByVal Address As String) As Boolean
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToSpecifiedCell")
-    End If
+    Call errorHandler("moveToSpecifiedCell")
 End Function
 
 Function moveToSpecifiedRow(ByVal n As String) As Boolean
@@ -491,7 +469,5 @@ Function moveToSpecifiedRow(ByVal n As String) As Boolean
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveToSpecifiedRow")
-    End If
+    Call errorHandler("moveToSpecifiedRow")
 End Function

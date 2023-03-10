@@ -387,8 +387,7 @@ Private Sub MakeList()
     Exit Sub
 
 Catch:
-    If Err.Number <> 0 Then
+    If errorHandler("MakeList in UF_SheetPicker") Then
         Unload Me
-        Call errorHandler("MakeList in UF_SheetPicker")
     End If
 End Sub

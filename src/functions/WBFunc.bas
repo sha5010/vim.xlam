@@ -8,9 +8,7 @@ Function closeAskSaving()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("closeAskSaving")
-    End If
+    Call errorHandler("closeAskSaving")
 End Function
 
 Function closeWithoutSaving()
@@ -19,9 +17,7 @@ Function closeWithoutSaving()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("closeWithoutSaving")
-    End If
+    Call errorHandler("closeWithoutSaving")
 End Function
 
 Function closeWithSaving()
@@ -30,9 +26,7 @@ Function closeWithSaving()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("closeWithSaving")
-    End If
+    Call errorHandler("closeWithSaving")
 End Function
 
 Function saveWorkbook()
@@ -48,9 +42,7 @@ Function saveWorkbook()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("saveWorkbook")
-    End If
+    Call errorHandler("saveWorkbook")
 End Function
 
 Function saveAsNewWorkbook()
@@ -59,9 +51,7 @@ Function saveAsNewWorkbook()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("saveAsNewWorkbook")
-    End If
+    Call errorHandler("saveAsNewWorkbook")
 End Function
 
 Function openWorkbook()
@@ -70,9 +60,7 @@ Function openWorkbook()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("openWorkbook")
-    End If
+    Call errorHandler("openWorkbook")
 End Function
 
 Function reopenActiveWorkbook()
@@ -103,9 +91,7 @@ Function reopenActiveWorkbook()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("reopenActiveWorkbook")
-    End If
+    Call errorHandler("reopenActiveWorkbook")
 End Function
 
 Function activateWorkbook(ByVal n As String) As Boolean
@@ -139,9 +125,7 @@ Function activateWorkbook(ByVal n As String) As Boolean
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("activateWorkbook")
-    End If
+    Call errorHandler("activateWorkbook")
 End Function
 
 Function nextWorkbook()
@@ -161,9 +145,7 @@ Function nextWorkbook()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("nextWorkbook")
-    End If
+    Call errorHandler("nextWorkbook")
 End Function
 
 Function previousWorkbook()
@@ -183,9 +165,7 @@ Function previousWorkbook()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("previousWorkbook")
-    End If
+    Call errorHandler("previousWorkbook")
 End Function
 
 Function toggleReadOnly()
@@ -217,7 +197,5 @@ Function toggleReadOnly()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("toggleReadOnly")
-    End If
+    Call errorHandler("toggleReadOnly")
 End Function

@@ -98,10 +98,8 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("getTargetColumns")
-        Set getTargetColumns = Nothing
-    End If
+    Set getTargetColumns = Nothing
+    Call errorHandler("getTargetColumns")
 End Function
 
 Private Function selectColumnsInternal(ByVal TargetType As TargetColumnType) As Boolean
@@ -126,9 +124,7 @@ Private Function selectColumnsInternal(ByVal TargetType As TargetColumnType) As 
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("selectColumnsInternal")
-    End If
+    Call errorHandler("selectColumnsInternal")
 End Function
 
 Function selectColumns(Optional ByVal TargetType As TargetColumnType = Entire)
@@ -138,9 +134,7 @@ Function selectColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("selectColumns")
-    End If
+    Call errorHandler("selectColumns")
 End Function
 
 Function insertColumns()
@@ -167,9 +161,7 @@ Function insertColumns()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("insertColumns")
-    End If
+    Call errorHandler("insertColumns")
 End Function
 
 Function appendColumns()
@@ -202,9 +194,7 @@ Function appendColumns()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("appendColumns")
-    End If
+    Call errorHandler("appendColumns")
 End Function
 
 Function deleteColumns(Optional ByVal TargetType As TargetColumnType = Entire)
@@ -223,9 +213,7 @@ Function deleteColumns(Optional ByVal TargetType As TargetColumnType = Entire)
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteColumns")
-    End If
+    Call errorHandler("deleteColumns")
 End Function
 
 Function yankColumns(Optional ByVal TargetType As TargetColumnType = Entire)
@@ -246,9 +234,7 @@ Function yankColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankColumns")
-    End If
+    Call errorHandler("yankColumns")
 End Function
 
 Function cutColumns(Optional ByVal TargetType As TargetColumnType = Entire)
@@ -269,9 +255,7 @@ Function cutColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutColumns")
-    End If
+    Call errorHandler("cutColumns")
 End Function
 
 Function hideColumns()
@@ -287,9 +271,7 @@ Function hideColumns()
     Call keystroke(True, Ctrl_ + k0_)
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("hideColumns")
-    End If
+    Call errorHandler("hideColumns")
 End Function
 
 Function unhideColumns()
@@ -307,9 +289,7 @@ Function unhideColumns()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("unhideColumns")
-    End If
+    Call errorHandler("unhideColumns")
 End Function
 
 Function groupColumns()
@@ -328,9 +308,7 @@ Function groupColumns()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("groupColumns")
-    End If
+    Call errorHandler("groupColumns")
 End Function
 
 Function ungroupColumns()
@@ -349,9 +327,7 @@ Function ungroupColumns()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("ungroupColumns")
-    End If
+    Call errorHandler("ungroupColumns")
 End Function
 
 Function foldColumnsGroup()
@@ -371,9 +347,7 @@ Function foldColumnsGroup()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("foldColumnsGroup")
-    End If
+    Call errorHandler("foldColumnsGroup")
 End Function
 
 Function spreadColumnsGroup()
@@ -393,9 +367,7 @@ Function spreadColumnsGroup()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("spreadColumnsGroup")
-    End If
+    Call errorHandler("spreadColumnsGroup")
 End Function
 
 Function adjustColumnsWidth()
@@ -412,9 +384,7 @@ Function adjustColumnsWidth()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("adjustColumnsWidth")
-    End If
+    Call errorHandler("adjustColumnsWidth")
 End Function
 
 Function setColumnsWidth()
@@ -430,9 +400,7 @@ Function setColumnsWidth()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("setColumnsWidth")
-    End If
+    Call errorHandler("setColumnsWidth")
 End Function
 
 Function narrowColumnsWidth()
@@ -466,9 +434,7 @@ Function narrowColumnsWidth()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("narrowColumnsWidth")
-    End If
+    Call errorHandler("narrowColumnsWidth")
 End Function
 
 Function wideColumnsWidth()
@@ -502,7 +468,5 @@ Function wideColumnsWidth()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("wideColumnsWidth")
-    End If
+    Call errorHandler("wideColumnsWidth")
 End Function

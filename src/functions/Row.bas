@@ -98,10 +98,8 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("getTargetRows")
-        Set getTargetRows = Nothing
-    End If
+    Set getTargetRows = Nothing
+    Call errorHandler("getTargetRows")
 End Function
 
 Private Function selectRowsInternal(ByVal TargetType As TargetRowType) As Boolean
@@ -126,9 +124,7 @@ Private Function selectRowsInternal(ByVal TargetType As TargetRowType) As Boolea
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("selectRowsInternal")
-    End If
+    Call errorHandler("selectRowsInternal")
 End Function
 
 Function selectRows(Optional ByVal TargetType As TargetRowType = Entire)
@@ -138,9 +134,7 @@ Function selectRows(Optional ByVal TargetType As TargetRowType = Entire)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("selectRows")
-    End If
+    Call errorHandler("selectRows")
 End Function
 
 Function insertRows()
@@ -167,9 +161,7 @@ Function insertRows()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("insertRows")
-    End If
+    Call errorHandler("insertRows")
 End Function
 
 Function appendRows()
@@ -202,9 +194,7 @@ Function appendRows()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("appendRows")
-    End If
+    Call errorHandler("appendRows")
 End Function
 
 Function deleteRows(Optional ByVal TargetType As TargetRowType = Entire)
@@ -223,9 +213,7 @@ Function deleteRows(Optional ByVal TargetType As TargetRowType = Entire)
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteRows")
-    End If
+    Call errorHandler("deleteRows")
 End Function
 
 Function yankRows(Optional ByVal TargetType As TargetRowType = Entire)
@@ -246,9 +234,7 @@ Function yankRows(Optional ByVal TargetType As TargetRowType = Entire)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankRows")
-    End If
+    Call errorHandler("yankRows")
 End Function
 
 Function cutRows(Optional ByVal TargetType As TargetRowType = Entire)
@@ -269,9 +255,7 @@ Function cutRows(Optional ByVal TargetType As TargetRowType = Entire)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutRows")
-    End If
+    Call errorHandler("cutRows")
 End Function
 
 Function hideRows()
@@ -287,9 +271,7 @@ Function hideRows()
     Call keystroke(True, Ctrl_ + k9_)
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("hideRows")
-    End If
+    Call errorHandler("hideRows")
 End Function
 
 Function unhideRows()
@@ -306,9 +288,7 @@ Function unhideRows()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("unhideRows")
-    End If
+    Call errorHandler("unhideRows")
 End Function
 
 Function groupRows()
@@ -327,9 +307,7 @@ Function groupRows()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("groupRows")
-    End If
+    Call errorHandler("groupRows")
 End Function
 
 Function ungroupRows()
@@ -348,9 +326,7 @@ Function ungroupRows()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("ungroupRows")
-    End If
+    Call errorHandler("ungroupRows")
 End Function
 
 Function foldRowsGroup()
@@ -370,9 +346,7 @@ Function foldRowsGroup()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("foldRowsGroup")
-    End If
+    Call errorHandler("foldRowsGroup")
 End Function
 
 Function spreadRowsGroup()
@@ -392,9 +366,7 @@ Function spreadRowsGroup()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("spreadRowsGroup")
-    End If
+    Call errorHandler("spreadRowsGroup")
 End Function
 
 Function adjustRowsHeight()
@@ -411,9 +383,7 @@ Function adjustRowsHeight()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("adjustRowsHeight")
-    End If
+    Call errorHandler("adjustRowsHeight")
 End Function
 
 Function setRowsHeight()
@@ -429,9 +399,7 @@ Function setRowsHeight()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("setRowsHeight")
-    End If
+    Call errorHandler("setRowsHeight")
 End Function
 
 Function narrowRowsHeight()
@@ -465,9 +433,7 @@ Function narrowRowsHeight()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("narrowRowsHeight")
-    End If
+    Call errorHandler("narrowRowsHeight")
 End Function
 
 Function wideRowsHeight()
@@ -501,7 +467,5 @@ Function wideRowsHeight()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("wideRowsHeight")
-    End If
+    Call errorHandler("wideRowsHeight")
 End Function

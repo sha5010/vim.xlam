@@ -26,9 +26,7 @@ Function pasteSmart()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("pasteSmart")
-    End If
+    Call errorHandler("pasteSmart")
 End Function
 
 Private Function paste_CtrlV()
@@ -62,9 +60,7 @@ Private Function pasteRows()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("pasteRows")
-    End If
+    Call errorHandler("pasteRows")
 End Function
 
 Private Function pasteColumns()
@@ -94,9 +90,7 @@ Private Function pasteColumns()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("pasteColumns")
-    End If
+    Call errorHandler("pasteColumns")
 End Function
 
 Function pasteValue()
@@ -133,9 +127,7 @@ Function pasteValue()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("pasteValue")
-    End If
+    Call errorHandler("pasteValue")
 End Function
 
 Function pasteSpecial()
@@ -152,7 +144,5 @@ Function pasteSpecial()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("pasteSpecial")
-    End If
+    Call errorHandler("pasteSpecial")
 End Function

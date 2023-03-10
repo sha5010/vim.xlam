@@ -126,9 +126,7 @@ Function insertCellsUp()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("insertCellsUp")
-    End If
+    Call errorHandler("insertCellsUp")
 End Function
 
 Function insertCellsDown()
@@ -150,9 +148,7 @@ Function insertCellsDown()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("insertCellsDown")
-    End If
+    Call errorHandler("insertCellsDown")
 End Function
 
 Function insertCellsLeft()
@@ -170,9 +166,7 @@ Function insertCellsLeft()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("insertCellsLeft")
-    End If
+    Call errorHandler("insertCellsLeft")
 End Function
 
 Function insertCellsRight()
@@ -194,9 +188,7 @@ Function insertCellsRight()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("insertCellsRight")
-    End If
+    Call errorHandler("insertCellsRight")
 End Function
 
 Function deleteValue()
@@ -220,9 +212,7 @@ Function deleteToUp()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToUp")
-    End If
+    Call errorHandler("deleteToUp")
 End Function
 
 Function deleteToLeft()
@@ -240,9 +230,7 @@ Function deleteToLeft()
 
 Catch:
     Application.ScreenUpdating = True
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToLeft")
-    End If
+    Call errorHandler("deleteToLeft")
 End Function
 
 Function toggleWrapText()
@@ -296,9 +284,7 @@ Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("changeInteriorColor")
-    End If
+    Call errorHandler("changeInteriorColor")
 End Function
 
 Function unionSelectCells()
@@ -331,7 +317,7 @@ Function unionSelectCells()
 Catch:
     If Err.Number = 424 Then
         Set gExtendRange = Selection
-    ElseIf Err.Number <> 0 Then
+    Else
         Call errorHandler("unionSelectCells")
     End If
 End Function
@@ -362,7 +348,7 @@ Function exceptSelectCells()
 Catch:
     If Err.Number = 424 Then
         Set gExtendRange = Nothing
-    ElseIf Err.Number <> 0 Then
+    Else
         Call errorHandler("exceptSelectCells")
     End If
 End Function
@@ -382,9 +368,7 @@ Function followHyperlinkOfActiveCell()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("followHyperlinkOfActiveCell")
-    End If
+    Call errorHandler("followHyperlinkOfActiveCell")
 End Function
 
 Function changeSelectedCells(ByVal Value As String)
@@ -400,9 +384,7 @@ Function changeSelectedCells(ByVal Value As String)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("changeSelectedCells")
-    End If
+    Call errorHandler("changeSelectedCells")
 End Function
 
 Function applyFlashFill()
@@ -457,9 +439,7 @@ Function applyAutoFill(Optional fallback As Boolean = False)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("applyAutoFill")
-    End If
+    Call errorHandler("applyAutoFill")
 End Function
 
 Private Function determineBaseRange() As Range
@@ -566,9 +546,7 @@ Private Function determineBaseRange() As Range
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("determineBaseRange")
-    End If
+    Call errorHandler("determineBaseRange")
 End Function
 
 Private Function innerDataSearch(ByVal targetRange As Range, _
@@ -610,9 +588,7 @@ Private Function innerDataSearch(ByVal targetRange As Range, _
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("innerDataSearch")
-    End If
+    Call errorHandler("innerDataSearch")
 End Function
 
 Function toggleVisualMode()
@@ -628,9 +604,7 @@ Function toggleVisualMode()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("toggleVisualMode")
-    End If
+    Call errorHandler("toggleVisualMode")
 End Function
 
 Function toggleVisualLine()
@@ -646,9 +620,7 @@ Function toggleVisualLine()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("toggleVisualLine")
-    End If
+    Call errorHandler("toggleVisualLine")
 End Function
 
 Private Function visualMap(ByVal funcName As String)

@@ -100,9 +100,7 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("BorderAPI")
-    End If
+    Call errorHandler("BorderAPI")
 End Function
 
 Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
@@ -133,9 +131,7 @@ Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("BorderColorAPI")
-    End If
+    Call errorHandler("BorderColorAPI")
 End Function
 
 Function toggleBorderAround(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _

@@ -21,9 +21,7 @@ Function nextWorksheet()
 
 Catch:
     Call keystroke(True, Ctrl_ + PageDown_)
-    If Err.Number <> 0 Then
-        Call errorHandler("nextWorksheet")
-    End If
+    Call errorHandler("nextWorksheet")
 End Function
 
 Function previousWorksheet()
@@ -45,9 +43,7 @@ Function previousWorksheet()
 
 Catch:
     Call keystroke(True, Ctrl_ + PageUp_)
-    If Err.Number <> 0 Then
-        Call errorHandler("previousWorksheet")
-    End If
+    Call errorHandler("previousWorksheet")
 End Function
 
 Function renameWorksheet()
@@ -79,9 +75,7 @@ Function renameWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("renameWorksheet")
-    End If
+    Call errorHandler("renameWorksheet")
 End Function
 
 Function moveWorksheetForward()
@@ -123,9 +117,7 @@ Function moveWorksheetForward()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveWorksheetBack")
-    End If
+    Call errorHandler("moveWorksheetBack")
 End Function
 
 Function moveWorksheetBack()
@@ -168,9 +160,7 @@ Function moveWorksheetBack()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("moveWorksheetBack")
-    End If
+    Call errorHandler("moveWorksheetBack")
 End Function
 
 Function insertWorksheet()
@@ -181,9 +171,7 @@ Function insertWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("insertWorksheet")
-    End If
+    Call errorHandler("insertWorksheet")
 End Function
 
 Function appendWorksheet()
@@ -194,9 +182,7 @@ Function appendWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("appendWorksheet")
-    End If
+    Call errorHandler("appendWorksheet")
 End Function
 
 Function deleteWorksheet()
@@ -212,9 +198,7 @@ Function deleteWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteWorksheet")
-    End If
+    Call errorHandler("deleteWorksheet")
 End Function
 
 Function activateWorksheet(ByVal n As String) As Boolean
@@ -243,9 +227,7 @@ Function activateWorksheet(ByVal n As String) As Boolean
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("activateWorksheet")
-    End If
+    Call errorHandler("activateWorksheet")
 End Function
 
 Function activateFirstWorksheet()
@@ -264,9 +246,7 @@ Function activateFirstWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("activateFirstWorksheet")
-    End If
+    Call errorHandler("activateFirstWorksheet")
 End Function
 
 Function activateLastWorksheet()
@@ -285,9 +265,7 @@ Function activateLastWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("activateLastWorksheet")
-    End If
+    Call errorHandler("activateLastWorksheet")
 End Function
 
 Function cloneWorksheet()
@@ -298,9 +276,7 @@ Function cloneWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cloneWorksheet")
-    End If
+    Call errorHandler("cloneWorksheet")
 End Function
 
 Function showSheetPicker()
@@ -335,9 +311,7 @@ Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("changeWorksheetTabColor")
-    End If
+    Call errorHandler("changeWorksheetTabColor")
 End Function
 
 Function exportWorksheet()
@@ -346,9 +320,7 @@ Function exportWorksheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("exportWorksheet")
-    End If
+    Call errorHandler("exportWorksheet")
 End Function
 
 Function printPreviewOfActiveSheet()
@@ -357,7 +329,5 @@ Function printPreviewOfActiveSheet()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("printPreviewOfActiveSheet")
-    End If
+    Call errorHandler("printPreviewOfActiveSheet")
 End Function

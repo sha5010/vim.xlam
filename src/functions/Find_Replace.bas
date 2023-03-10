@@ -41,9 +41,7 @@ Function nextFoundCell()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("nextFoundCell")
-    End If
+    Call errorHandler("nextFoundCell")
 End Function
 
 Function previousFoundCell()
@@ -75,9 +73,7 @@ Function previousFoundCell()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("previousFoundCell")
-    End If
+    Call errorHandler("previousFoundCell")
 End Function
 
 Function showReplaceWindow()
@@ -118,9 +114,7 @@ Function findActiveValueNext()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("findActiveValueNext")
-    End If
+    Call errorHandler("findActiveValueNext")
 End Function
 
 Function findActiveValuePrev()
@@ -158,7 +152,5 @@ Function findActiveValuePrev()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("findActiveValuePrev")
-    End If
+    Call errorHandler("findActiveValuePrev")
 End Function

@@ -147,7 +147,5 @@ Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("changeFontColor")
-    End If
+    Call errorHandler("changeFontColor")
 End Function

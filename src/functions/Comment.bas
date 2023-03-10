@@ -43,9 +43,7 @@ Function deleteCellCommentAll()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteCellCommentAll")
-    End If
+    Call errorHandler("deleteCellCommentAll")
 End Function
 
 Function toggleCellComment()
@@ -60,9 +58,7 @@ Function toggleCellComment()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("toggleCellComment")
-    End If
+    Call errorHandler("toggleCellComment")
 End Function
 
 Function hideCellComment()
@@ -77,9 +73,7 @@ Function hideCellComment()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("hideCellComment")
-    End If
+    Call errorHandler("hideCellComment")
 End Function
 
 Function showCellComment()
@@ -94,9 +88,7 @@ Function showCellComment()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("showCellComment")
-    End If
+    Call errorHandler("showCellComment")
 End Function
 
 Function toggleCellCommentAll()
@@ -106,9 +98,7 @@ Function toggleCellCommentAll()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("toggleCellCommentAll")
-    End If
+    Call errorHandler("toggleCellCommentAll")
 End Function
 
 Function hideCellCommentAll()
@@ -144,9 +134,7 @@ Function nextCommentedCell()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("nextCommentedCell")
-    End If
+    Call errorHandler("nextCommentedCell")
 End Function
 
 Function prevCommentedCell()
@@ -170,7 +158,5 @@ Function prevCommentedCell()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("prevCommentedCell")
-    End If
+    Call errorHandler("prevCommentedCell")
 End Function

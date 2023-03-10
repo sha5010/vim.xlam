@@ -38,9 +38,7 @@ Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("changeShapeFillColor")
-    End If
+    Call errorHandler("changeShapeFillColor")
 End Function
 
 Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
@@ -77,9 +75,7 @@ Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("changeShapeFontColor")
-    End If
+    Call errorHandler("changeShapeFontColor")
 End Function
 
 Function changeShapeBorderColor(Optional garbage As String, _
@@ -120,7 +116,5 @@ Function changeShapeBorderColor(Optional garbage As String, _
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("changeShapeBorderColor")
-    End If
+    Call errorHandler("changeShapeBorderColor")
 End Function

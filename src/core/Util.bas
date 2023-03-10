@@ -407,17 +407,20 @@ Sub debugPrint(ByVal str As String, Optional ByVal funcName As String = "")
     Debug.Print "[" & Now & "] [DEBUG] " & funcName & str
 End Sub
 
-Function errorHandler(Optional ByVal funcName As String = "")
+Function errorHandler(Optional ByVal funcName As String = "") As Boolean
     Dim message As String
 
-    message = "[ERROR] "
-    If funcName <> "" Then
-        message = message & funcName & ": "
+    If Err.Number <> 0 Then
+        message = "[ERROR] "
+        If funcName <> "" Then
+            message = message & funcName & ": "
+        End If
+        message = message & Err.Description & " (" & Err.Number & ")"
+
+        Call setStatusBarTemporarily(message, 5)
+        Debug.Print "[" & Now & "] " & message
+
+        Err.Clear
+        errorHandler = True
     End If
-    message = message & Err.Description & " (" & Err.Number & ")"
-
-    Call setStatusBarTemporarily(message, 5)
-    Debug.Print "[" & Now & "] " & message
-
-    Err.Clear
 End Function
