@@ -98,8 +98,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Worksheet | `ww` | `showSheetPicker` | SheetPicker を起動 |
 | Workbook | `:w` | `saveWorkbook` | アクティブブックを保存 |
 | Workbook | `:q` | `closeAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) |
-| Workbook | `:q!` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
-| Workbook | `:wq` | `closeWithSaving` | アクティブブックを保存して閉じる |
+| Workbook | `:q!`/`ZQ` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
+| Workbook | `:wq`/`x`/`ZZ` | `closeWithSaving` | アクティブブックを保存して閉じる |
 | Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) |
 | Other | `<C-r>` | `redoExecute` | やり直し |
 
@@ -395,8 +395,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `:e!` | `reopenActiveWorkbook` | アクティブなブックの変更を破棄し開き直す |
 | Workbook | `:w` | `saveWorkbook` | アクティブブックを保存 |
 | Workbook | `:q` | `closeAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) |
-| Workbook | `:q!` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
-| Workbook | `:wq`/`:x` | `closeWithSaving` | アクティブブックを保存して閉じる |
+| Workbook | `:q!`/`ZQ` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
+| Workbook | `:wq`/`:x`/`ZZ` | `closeWithSaving` | アクティブブックを保存して閉じる |
 | Workbook | `:b[num]` | `activateWorkbook` | `[num]` 番目のブックを選択 |
 | Workbook | `@n`/`:bn` | `nextWorkbook` | 次のワークブックを選択 |
 | Workbook | `@N`/`:bp` | `previousWorkbook` | 前のワークブックを選択 |

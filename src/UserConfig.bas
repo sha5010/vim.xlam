@@ -435,6 +435,8 @@ Sub initMapping()
     Call map(":", "bn", "nextWorkbook", returnOnly:=True)
     Call map(":", "bp", "previousWorkbook", returnOnly:=True)
 
+    Call map("Z", "Z", "closeWithSaving")
+    Call map("Z", "Q", "closeWithoutSaving")
     Call map("@", "a", "toggleReadOnly")
     Call map("@", "n", "nextWorkbook")
     Call map("@", "N", "previousWorkbook")
