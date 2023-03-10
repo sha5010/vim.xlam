@@ -44,8 +44,10 @@ Private Function activateCellInVisibleRange()
         targetColumn = visibleRight
     End If
 
-    If ActiveCell.Row <> targetRow Or ActiveCell.Column <> targetColumn Then
-        Cells(targetRow, targetColumn).Activate
+    If TypeName(Selection) = "Range" Then
+        If ActiveCell.Row <> targetRow Or ActiveCell.Column <> targetColumn Then
+            Cells(targetRow, targetColumn).Activate
+        End If
     End If
     Exit Function
 
