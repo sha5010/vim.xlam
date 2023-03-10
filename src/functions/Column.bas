@@ -2,36 +2,139 @@ Attribute VB_Name = "F_Column"
 Option Explicit
 Option Private Module
 
-Function selectColumns()
+Enum TargetColumnType
+    Entire
+    ToLeftEndColumns
+    ToRightEndColumns
+    ToLeftOfCurrentRegionColumns
+    ToRightOfCurrentRegionColumns
+End Enum
+
+Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
+    'Error handling
     On Error GoTo Catch
 
-    Dim t As Range
-    Dim startColumn As Long
-    Dim endColumn As Long
+    'Return Nothing when selection is not Range
+    If TypeName(Selection) <> "Range" Then
+        Set getTargetColumns = Nothing
+        Exit Function
+    End If
+
+    Dim rngSelection As Range
+    Dim startColumn  As Long
+    Dim endColumn    As Long
+
+    Set rngSelection = Selection
+
+    'Entire
+    If TargetType = Entire Then
+        With rngSelection
+            If .Columns.Count > 1 Or gCount = 1 Then
+                Set getTargetColumns = .EntireColumn
+                Exit Function
+            ElseIf gCount > 1 Then
+                startColumn = .Column
+                endColumn = .Column + gCount - 1
+            End If
+        End With
+
+    'ToLeftEndColumns
+    ElseIf TargetType = ToLeftEndColumns Then
+        startColumn = ActiveSheet.UsedRange.Column
+        endColumn = ActiveCell.Column
+
+        'Out of range
+        If startColumn > endColumn Then
+            Set getTargetColumns = Nothing
+            Exit Function
+        End If
+
+    'ToRightEndColumns
+    ElseIf TargetType = ToRightEndColumns Then
+        With ActiveSheet.UsedRange
+            startColumn = ActiveCell.Column
+            endColumn = .Columns(.Columns.Count).Column
+        End With
+
+        'Out of range
+        If startColumn > endColumn Then
+            Set getTargetColumns = Nothing
+            Exit Function
+        End If
+
+    'ToLeftOfCurrentRegionColumns
+    ElseIf TargetType = ToLeftOfCurrentRegionColumns Then
+        startColumn = ActiveCell.CurrentRegion.Column
+        endColumn = ActiveCell.Column
+
+        'Out of range
+        If startColumn > endColumn Then
+            Set getTargetColumns = Nothing
+            Exit Function
+        End If
+
+    'ToRightOfCurrentRegionColumns
+    ElseIf TargetType = ToRightOfCurrentRegionColumns Then
+        With ActiveCell.CurrentRegion
+            startColumn = ActiveCell.Column
+            endColumn = .Colmuns(.Columns.Count).Column
+        End With
+
+        'Out of range
+        If startColumn > endColumn Then
+            Set getTargetColumns = Nothing
+            Exit Function
+        End If
+
+    End If
+
+    With ActiveSheet
+        If endColumn > .Columns.Count Then
+            endColumn = .Columns.Count
+        End If
+
+        Set getTargetColumns = .Range(.Columns(startColumn), .Columns(endColumn))
+    End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("getTargetColumns")
+        Set getTargetColumns = Nothing
+    End If
+End Function
+
+Private Function selectColumnsInternal(ByVal TargetType As TargetColumnType) As Boolean
+    On Error GoTo Catch
+
+    Dim savedCell As Range
+    Dim Target As Range
+
+    Set Target = getTargetColumns(TargetType)
+    If Target Is Nothing Then
+        Exit Function
+    End If
 
     Call stopVisualMode
 
-    With ActiveWorkbook.ActiveSheet
-        Set t = ActiveCell
+    Set savedCell = ActiveCell
 
-        If gCount = 1 And TypeName(Selection) = "Range" Then
-            If Selection.Columns.Count > 1 Then
-                Selection.EntireColumn.Select
-                Exit Function
-            End If
-        End If
+    Target.Select
+    savedCell.Activate
 
-        startColumn = t.Column
-        endColumn = startColumn + gCount - 1
+    selectColumnsInternal = True
+    Exit Function
 
-        If endColumn > .Columns.Count Then
-            endColumn = .Columns.Count
-            startColumn = endColumn - gCount + 1
-        End If
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("selectColumnsInternal")
+    End If
+End Function
 
-        .Range(.Columns(startColumn), .Columns(endColumn)).Select
-        t.Activate
-    End With
+Function selectColumns(Optional ByVal TargetType As TargetColumnType = Entire)
+    On Error GoTo Catch
+
+    Call selectColumnsInternal(TargetType)
     Exit Function
 
 Catch:
@@ -43,20 +146,22 @@ End Function
 Function insertColumns()
     On Error GoTo Catch
 
+    Dim savedCell As Range
+    Dim Target As Range
+
+    Set Target = getTargetColumns(Entire)
+    If Target Is Nothing Then
+        Exit Function
+    End If
+
     Call repeatRegister("insertColumns")
     Call stopVisualMode
 
-    Dim savedRow As Long
-
-    savedRow = ActiveCell.Row
-
     Application.ScreenUpdating = False
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).EntireColumn.Select
-    Else
-        Selection.EntireColumn.Select
-    End If
-    Cells(savedRow, ActiveCell.Column).Activate
+
+    Set savedCell = ActiveCell
+    Target.Select
+    savedCell.Activate
 
     Call keystroke(True, Alt_ + I_, C_)
 
@@ -70,24 +175,28 @@ End Function
 Function appendColumns()
     On Error GoTo Catch
 
+    Dim savedCell As Range
+    Dim Target As Range
+
+    Set Target = getTargetColumns(Entire)
+    If Target Is Nothing Then
+        Exit Function
+    End If
+
     Call repeatRegister("appendColumns")
     Call stopVisualMode
 
-    Dim savedRow As Long
+    Set savedCell = ActiveCell
 
-    savedRow = ActiveCell.Row
+    If Target.Item(Target.Count).Column < ActiveSheet.Columns.Count Then
+        Set Target = Target.Offset(0, 1)
+        Set savedCell = savedCell.Offset(0, 1)
+    End If
 
     Application.ScreenUpdating = False
-    If Selection.Column < ActiveSheet.Columns.Count Then
-        Selection.Offset(0, 1).Select
-    End If
 
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).EntireColumn.Select
-    Else
-        Selection.EntireColumn.Select
-    End If
-    Cells(savedRow, ActiveCell.Column).Activate
+    Target.Select
+    savedCell.Activate
 
     Call keystroke(True, Alt_ + I_, C_)
 
@@ -98,136 +207,42 @@ Catch:
     End If
 End Function
 
-Function deleteColumns()
+Function deleteColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     On Error GoTo Catch
+
+    Application.ScreenUpdating = False
+    If selectColumnsInternal(TargetType) = False Then
+        Application.ScreenUpdating = True
+        Exit Function
+    End If
 
     Call repeatRegister("deleteColumns")
     Call stopVisualMode
 
-    Dim t As Range
-
-    Application.ScreenUpdating = False
-    If TypeName(Selection) <> "Range" Then
-        ActiveCell.Select
-    End If
-
-    Set t = ActiveCell
-
-    With ActiveSheet
-        If gCount > 1 Then
-            .Range(.Columns(Selection.Column), .Columns(WorksheetFunction.Min(Selection.Column + gCount - 1, .Columns.Count))).Select
-        Else
-            Selection.EntireColumn.Select
-        End If
-    End With
-
     Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-    t.Activate
-    Set t = Nothing
-
     Application.ScreenUpdating = True
     If Err.Number <> 0 Then
         Call errorHandler("deleteColumns")
     End If
 End Function
 
-Function deleteToLeftEndColumns()
+Function yankColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     On Error GoTo Catch
 
-    Call repeatRegister("deleteToLeftEndColumns")
-    Call stopVisualMode
+    Dim Target As Range
 
-    With ActiveSheet
-        .Range(.Columns(1), .Columns(ActiveCell.Columns)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToLeftEndColumns")
+    Set Target = getTargetColumns(TargetType)
+    If Target Is Nothing Then
+        Exit Function
     End If
-End Function
-
-Function deleteToRightEndColumns()
-    On Error GoTo Catch
-
-    Call repeatRegister("deleteToRightEndColumns")
-    Call stopVisualMode
-
-    With ActiveSheet
-        If ActiveCell.Column > .UsedRange.Item(.UsedRange.Count).Column Then
-            Exit Function
-        End If
-
-        .Range(.Columns(ActiveCell.Column), .Columns(.UsedRange.Item(.UsedRange.Count).Column)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToRightEndColumns")
-    End If
-End Function
-
-Function deleteToLeftOfCurrentRegionColumns()
-    On Error GoTo Catch
-
-    Call repeatRegister("deleteToLeftOfCurrentRegionColumns")
-    Call stopVisualMode
-
-    With ActiveSheet
-        .Range(.Columns(ActiveCell.CurrentRegion.Item(1).Column), .Columns(ActiveCell.Column)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToLeftOfCurrentRegionColumns")
-    End If
-End Function
-
-Function deleteToRightOfCurrentRegionColumns()
-    On Error GoTo Catch
-
-    Call repeatRegister("deleteToRightOfCurrentRegionColumns")
-    Call stopVisualMode
-
-    With ActiveSheet
-        .Range(.Columns(ActiveCell.Column), .Columns(ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Column)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToRightOfCurrentRegionColumns")
-    End If
-End Function
-
-Function yankColumns()
-    On Error GoTo Catch
 
     Call stopVisualMode
 
-    Dim startColumn As Long
-    Dim endColumn As Long
+    Target.Copy
+    Set gLastYanked = Target
 
-    startColumn = ActiveCell.Column
-    endColumn = WorksheetFunction.Min(startColumn + gCount - 1, ActiveSheet.Columns.Count)
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Copy
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
     Exit Function
 
 Catch:
@@ -236,117 +251,21 @@ Catch:
     End If
 End Function
 
-Function yankToLeftEndColumns()
+Function cutColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     On Error GoTo Catch
 
-    Call stopVisualMode
+    Dim Target As Range
 
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    startColumn = 1
-    endColumn = ActiveCell.Column
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Copy
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToLeftEndColumns")
+    Set Target = getTargetColumns(TargetType)
+    If Target Is Nothing Then
+        Exit Function
     End If
-End Function
-
-Function yankToRightEndColumns()
-    On Error GoTo Catch
 
     Call stopVisualMode
 
-    Dim startColumn As Long
-    Dim endColumn As Long
+    Target.Cut
+    Set gLastYanked = Target
 
-    With ActiveSheet
-        startColumn = ActiveCell.Column
-        endColumn = .UsedRange.Item(.UsedRange.Count).Column
-
-        If startColumn > endColumn Then
-            Exit Function
-        End If
-
-        .Range(.Columns(startColumn), .Columns(endColumn)).Copy
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToRightEndColumns")
-    End If
-End Function
-
-Function yankToLeftOfCurrentRegionColumns()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    startColumn = ActiveCell.CurrentRegion.Item(1).Column
-    endColumn = ActiveCell.Column
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Copy
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToLeftOfCurrentRegionColumns")
-    End If
-End Function
-
-Function yankToRightOfCurrentRegionColumns()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    startColumn = ActiveCell.Column
-    endColumn = ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Column
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Copy
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToRightOfCurrentRegionColumns")
-    End If
-End Function
-
-Function cutColumns()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    startColumn = ActiveCell.Column
-    endColumn = WorksheetFunction.Min(startColumn + gCount - 1, ActiveSheet.Columns.Count)
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Cut
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
     Exit Function
 
 Catch:
@@ -355,114 +274,17 @@ Catch:
     End If
 End Function
 
-Function cutToLeftEndColumns()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    startColumn = 1
-    endColumn = ActiveCell.Column
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Cut
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToLeftEndColumns")
-    End If
-End Function
-
-Function cutToRightEndColumns()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    With ActiveSheet
-        startColumn = ActiveCell.Column
-        endColumn = .UsedRange.Item(.UsedRange.Count).Column
-
-        If startColumn > endColumn Then
-            Exit Function
-        End If
-
-        .Range(.Columns(startColumn), .Columns(endColumn)).Cut
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToRightEndColumns")
-    End If
-End Function
-
-Function cutToLeftOfCurrentRegionColumns()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    startColumn = ActiveCell.CurrentRegion.Item(1).Column
-    endColumn = ActiveCell.Column
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Cut
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToLeftOfCurrentRegionColumns")
-    End If
-End Function
-
-Function cutToRightOfCurrentRegionColumns()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startColumn As Long
-    Dim endColumn As Long
-
-    startColumn = ActiveCell.Column
-    endColumn = ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Column
-
-    With ActiveSheet
-        .Range(.Columns(startColumn), .Columns(endColumn)).Cut
-        Set gLastYanked = .Range(.Columns(startColumn), .Columns(endColumn))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToRightOfCurrentRegionColumns")
-    End If
-End Function
-
 Function hideColumns()
     On Error GoTo Catch
+
+    If selectColumnsInternal(Entire) = False Then
+        Exit Function
+    End If
 
     Call repeatRegister("hideColumns")
     Call stopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).Select
-    End If
-
     Call keystroke(True, Ctrl_ + k0_)
-    Exit Function
 
 Catch:
     If Err.Number <> 0 Then
@@ -473,12 +295,12 @@ End Function
 Function unhideColumns()
     On Error GoTo Catch
 
+    If selectColumnsInternal(Entire) = False Then
+        Exit Function
+    End If
+
     Call repeatRegister("unhideColumns")
     Call stopVisualMode
-
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).Select
-    End If
 
     'ref: https://excel.nj-clucker.com/ctrl-shift-0-not-working/
     Call keystroke(True, Ctrl_ + Shift_ + k0_)
@@ -493,32 +315,18 @@ End Function
 Function groupColumns()
     On Error GoTo Catch
 
-    Call repeatRegister("groupColumns")
-    Call stopVisualMode
-
-    Dim t As Range
-
     Application.ScreenUpdating = False
-    If TypeName(Selection) <> "Range" Then
-        ActiveCell.Select
+    If selectColumnsInternal(Entire) = False Then
+        Application.ScreenUpdating = True
+        Exit Function
     End If
 
-    Set t = ActiveCell
-
-    With ActiveSheet
-        If gCount > 1 Then
-            .Range(.Columns(Selection.Column), .Columns(WorksheetFunction.Min(Selection.Column + gCount - 1, .Columns.Count))).Select
-        Else
-            Selection.EntireColumn.Select
-        End If
-    End With
+    Call repeatRegister("groupColumns")
+    Call stopVisualMode
 
     Call keystroke(True, Alt_ + Shift_ + Right_)
 
 Catch:
-    t.Activate
-    Set t = Nothing
-
     Application.ScreenUpdating = True
     If Err.Number <> 0 Then
         Call errorHandler("groupColumns")
@@ -528,32 +336,18 @@ End Function
 Function ungroupColumns()
     On Error GoTo Catch
 
-    Call repeatRegister("ungroupColumns")
-    Call stopVisualMode
-
-    Dim t As Range
-
     Application.ScreenUpdating = False
-    If TypeName(Selection) <> "Range" Then
-        ActiveCell.Select
+    If selectColumnsInternal(Entire) = False Then
+        Application.ScreenUpdating = True
+        Exit Function
     End If
 
-    Set t = ActiveCell
-
-    With ActiveSheet
-        If gCount > 1 Then
-            .Range(.Columns(Selection.Column), .Columns(WorksheetFunction.Min(Selection.Column + gCount - 1, .Columns.Count))).Select
-        Else
-            Selection.EntireColumn.Select
-        End If
-    End With
+    Call repeatRegister("ungroupColumns")
+    Call stopVisualMode
 
     Call keystroke(True, Alt_ + Shift_ + Left_)
 
 Catch:
-    t.Activate
-    Set t = Nothing
-
     Application.ScreenUpdating = True
     If Err.Number <> 0 Then
         Call errorHandler("ungroupColumns")

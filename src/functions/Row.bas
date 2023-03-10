@@ -2,34 +2,139 @@ Attribute VB_Name = "F_Row"
 Option Explicit
 Option Private Module
 
-Function selectRows()
+Enum TargetRowType
+    Entire
+    ToTopRows
+    ToBottomRows
+    ToTopOfCurrentRegionRows
+    ToBottomOfCurrentRegionRows
+End Enum
+
+Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
+    'Error handling
     On Error GoTo Catch
 
-    Dim t As Range
-    Dim startRow As Long
-    Dim endRow As Long
+    'Return Nothing when selection is not Range
+    If TypeName(Selection) <> "Range" Then
+        Set getTargetRows = Nothing
+        Exit Function
+    End If
 
-    With ActiveWorkbook.ActiveSheet
-        Set t = ActiveCell
+    Dim rngSelection As Range
+    Dim startRow     As Long
+    Dim endRow       As Long
 
-        If gCount = 1 And TypeName(Selection) = "Range" Then
-            If Selection.Rows.Count > 1 Then
-                Selection.EntireRow.Select
+    Set rngSelection = Selection
+
+    'Entire
+    If TargetType = Entire Then
+        With rngSelection
+            If .Rows.Count > 1 Or gCount = 1 Then
+                Set getTargetRows = .EntireRow
                 Exit Function
+            ElseIf gCount > 1 Then
+                startRow = .Row
+                endRow = .Row + gCount - 1
             End If
+        End With
+
+    'ToTopRows
+    ElseIf TargetType = ToTopRows Then
+        startRow = ActiveSheet.UsedRange.Row
+        endRow = ActiveCell.Row
+
+        'Out of range
+        If startRow > endRow Then
+            Set getTargetRows = Nothing
+            Exit Function
         End If
 
-        startRow = t.Row
-        endRow = startRow + gCount - 1
+    'ToBottomRows
+    ElseIf TargetType = ToBottomRows Then
+        With ActiveSheet.UsedRange
+            startRow = ActiveCell.Row
+            endRow = .Rows(.Rows.Count).Row
+        End With
 
+        'Out of range
+        If startRow > endRow Then
+            Set getTargetRows = Nothing
+            Exit Function
+        End If
+
+    'ToTopOfCurrentRegionRows
+    ElseIf TargetType = ToTopOfCurrentRegionRows Then
+        startRow = ActiveCell.CurrentRegion.Row
+        endRow = ActiveCell.Row
+
+        'Out of range
+        If startRow > endRow Then
+            Set getTargetRows = Nothing
+            Exit Function
+        End If
+
+    'ToBottomOfCurrentRegionRows
+    ElseIf TargetType = ToBottomOfCurrentRegionRows Then
+        With ActiveCell.CurrentRegion
+            startRow = ActiveCell.Row
+            endRow = .Colmuns(.Rows.Count).Row
+        End With
+
+        'Out of range
+        If startRow > endRow Then
+            Set getTargetRows = Nothing
+            Exit Function
+        End If
+
+    End If
+
+    With ActiveSheet
         If endRow > .Rows.Count Then
             endRow = .Rows.Count
-            startRow = endRow - gCount + 1
         End If
 
-        .Range(.Rows(startRow), .Rows(endRow)).Select
-        t.Activate
+        Set getTargetRows = .Range(.Rows(startRow), .Rows(endRow))
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("getTargetRows")
+        Set getTargetRows = Nothing
+    End If
+End Function
+
+Private Function selectRowsInternal(ByVal TargetType As TargetRowType) As Boolean
+    On Error GoTo Catch
+
+    Dim savedCell As Range
+    Dim Target As Range
+
+    Set Target = getTargetRows(TargetType)
+    If Target Is Nothing Then
+        Exit Function
+    End If
+
+    Call stopVisualMode
+
+    Set savedCell = ActiveCell
+
+    Target.Select
+    savedCell.Activate
+
+    selectRowsInternal = True
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("selectRowsInternal")
+    End If
+End Function
+
+Function selectRows(Optional ByVal TargetType As TargetRowType = Entire)
+    On Error GoTo Catch
+
+    Call selectRowsInternal(TargetType)
     Exit Function
 
 Catch:
@@ -41,20 +146,22 @@ End Function
 Function insertRows()
     On Error GoTo Catch
 
+    Dim savedCell As Range
+    Dim Target As Range
+
+    Set Target = getTargetRows(Entire)
+    If Target Is Nothing Then
+        Exit Function
+    End If
+
     Call repeatRegister("insertRows")
     Call stopVisualMode
 
-    Dim savedColumn As Long
-
-    savedColumn = ActiveCell.Column
-
     Application.ScreenUpdating = False
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).EntireRow.Select
-    Else
-        Selection.EntireRow.Select
-    End If
-    Cells(ActiveCell.Row, savedColumn).Activate
+
+    Set savedCell = ActiveCell
+    Target.Select
+    savedCell.Activate
 
     Call keystroke(True, Alt_ + I_, R_)
 
@@ -68,24 +175,28 @@ End Function
 Function appendRows()
     On Error GoTo Catch
 
+    Dim savedCell As Range
+    Dim Target As Range
+
+    Set Target = getTargetRows(Entire)
+    If Target Is Nothing Then
+        Exit Function
+    End If
+
     Call repeatRegister("appendRows")
     Call stopVisualMode
 
-    Dim savedColumn As Long
+    Set savedCell = ActiveCell
 
-    savedColumn = ActiveCell.Column
+    If Target.Item(Target.Count).Row < ActiveSheet.Rows.Count Then
+        Set Target = Target.Offset(1, 0)
+        Set savedCell = savedCell.Offset(1, 0)
+    End If
 
     Application.ScreenUpdating = False
-    If Selection.Row < ActiveSheet.Rows.Count Then
-        Selection.Offset(1, 0).Select
-    End If
 
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).EntireRow.Select
-    Else
-        Selection.EntireRow.Select
-    End If
-    Cells(ActiveCell.Row, savedColumn).Activate
+    Target.Select
+    savedCell.Activate
 
     Call keystroke(True, Alt_ + I_, R_)
 
@@ -96,136 +207,42 @@ Catch:
     End If
 End Function
 
-Function deleteRows()
+Function deleteRows(Optional ByVal TargetType As TargetRowType = Entire)
     On Error GoTo Catch
+
+    Application.ScreenUpdating = False
+    If selectRowsInternal(TargetType) = False Then
+        Application.ScreenUpdating = True
+        Exit Function
+    End If
 
     Call repeatRegister("deleteRows")
     Call stopVisualMode
 
-    Dim t As Range
-
-    Application.ScreenUpdating = False
-    If TypeName(Selection) <> "Range" Then
-        ActiveCell.Select
-    End If
-
-    Set t = ActiveCell
-
-    With ActiveSheet
-        If gCount > 1 Then
-            .Range(.Rows(Selection.Row), .Rows(WorksheetFunction.Min(Selection.Row + gCount - 1, .Rows.Count))).Select
-        Else
-            Selection.EntireRow.Select
-        End If
-    End With
-
     Call keystroke(True, Ctrl_ + Minus_)
 
 Catch:
-    t.Activate
-    Set t = Nothing
-
     Application.ScreenUpdating = True
     If Err.Number <> 0 Then
         Call errorHandler("deleteRows")
     End If
 End Function
 
-Function deleteToTopRows()
+Function yankRows(Optional ByVal TargetType As TargetRowType = Entire)
     On Error GoTo Catch
 
-    Call repeatRegister("deleteToTopRows")
-    Call stopVisualMode
+    Dim Target As Range
 
-    With ActiveSheet
-        .Range(.Rows(1), .Rows(ActiveCell.Row)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToTopRows")
+    Set Target = getTargetRows(TargetType)
+    If Target Is Nothing Then
+        Exit Function
     End If
-End Function
-
-Function deleteToBottomRows()
-    On Error GoTo Catch
-
-    Call repeatRegister("deleteToBottomRows")
-    Call stopVisualMode
-
-    With ActiveSheet
-        If ActiveCell.Row > .UsedRange.Item(.UsedRange.Count).Row Then
-            Exit Function
-        End If
-
-        .Range(.Rows(ActiveCell.Row), .Rows(.UsedRange.Item(.UsedRange.Count).Row)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToBottomRows")
-    End If
-End Function
-
-Function deleteToTopOfCurrentRegionRows()
-    On Error GoTo Catch
-
-    Call repeatRegister("deleteToTopOfCurrentRegionRows")
-    Call stopVisualMode
-
-    With ActiveSheet
-        .Range(.Rows(ActiveCell.CurrentRegion.Item(1).Row), .Rows(ActiveCell.Row)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToTopOfCurrentRegionRows")
-    End If
-End Function
-
-Function deleteToBottomOfCurrentRegionRows()
-    On Error GoTo Catch
-
-    Call repeatRegister("deleteToBottomOfCurrentRegionRows")
-    Call stopVisualMode
-
-    With ActiveSheet
-        .Range(.Rows(ActiveCell.Row), .Rows(ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Row)).Select
-    End With
-
-    Call keystroke(True, Ctrl_ + Minus_)
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("deleteToBottomOfCurrentRegionRows")
-    End If
-End Function
-
-Function yankRows()
-    On Error GoTo Catch
 
     Call stopVisualMode
 
-    Dim startRow As Long
-    Dim endRow As Long
+    Target.Copy
+    Set gLastYanked = Target
 
-    startRow = ActiveCell.Row
-    endRow = WorksheetFunction.Min(ActiveCell.Row + gCount - 1, ActiveSheet.Rows.Count)
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Copy
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
     Exit Function
 
 Catch:
@@ -234,117 +251,21 @@ Catch:
     End If
 End Function
 
-Function yankToTopRows()
+Function cutRows(Optional ByVal TargetType As TargetRowType = Entire)
     On Error GoTo Catch
 
-    Call stopVisualMode
+    Dim Target As Range
 
-    Dim startRow As Long
-    Dim endRow As Long
-
-    startRow = 1
-    endRow = ActiveCell.Row
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Copy
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToTopRows")
+    Set Target = getTargetRows(TargetType)
+    If Target Is Nothing Then
+        Exit Function
     End If
-End Function
-
-Function yankToBottomRows()
-    On Error GoTo Catch
 
     Call stopVisualMode
 
-    Dim startRow As Long
-    Dim endRow As Long
+    Target.Cut
+    Set gLastYanked = Target
 
-    With ActiveSheet
-        startRow = ActiveCell.Row
-        endRow = .UsedRange.Item(.UsedRange.Count).Row
-
-        If startRow > endRow Then
-            Exit Function
-        End If
-
-        .Range(.Rows(startRow), .Rows(endRow)).Copy
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToBottomRows")
-    End If
-End Function
-
-Function yankToTopOfCurrentRegionRows()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startRow As Long
-    Dim endRow As Long
-
-    startRow = ActiveCell.CurrentRegion.Item(1).Row
-    endRow = ActiveCell.Row
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Copy
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToTopOfCurrentRegionRows")
-    End If
-End Function
-
-Function yankToBottomOfCurrentRegionRows()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startRow As Long
-    Dim endRow As Long
-
-    startRow = ActiveCell.Row
-    endRow = ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Row
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Copy
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("yankToBottomOfCurrentRegionRows")
-    End If
-End Function
-
-Function cutRows()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startRow As Long
-    Dim endRow As Long
-
-    startRow = ActiveCell.Row
-    endRow = WorksheetFunction.Min(ActiveCell.Row + gCount - 1, ActiveSheet.Rows.Count)
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Cut
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
     Exit Function
 
 Catch:
@@ -353,114 +274,17 @@ Catch:
     End If
 End Function
 
-Function cutToTopRows()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startRow As Long
-    Dim endRow As Long
-
-    startRow = 1
-    endRow = ActiveCell.Row
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Cut
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToTopRows")
-    End If
-End Function
-
-Function cutToBottomRows()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startRow As Long
-    Dim endRow As Long
-
-    With ActiveSheet
-        startRow = ActiveCell.Row
-        endRow = .UsedRange.Item(.UsedRange.Count).Row
-
-        If startRow > endRow Then
-            Exit Function
-        End If
-
-        .Range(.Rows(startRow), .Rows(endRow)).Cut
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToBottomRows")
-    End If
-End Function
-
-Function cutToTopOfCurrentRegionRows()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startRow As Long
-    Dim endRow As Long
-
-    startRow = ActiveCell.CurrentRegion.Item(1).Row
-    endRow = ActiveCell.Row
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Cut
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToTopOfCurrentRegionRows")
-    End If
-End Function
-
-Function cutToBottomOfCurrentRegionRows()
-    On Error GoTo Catch
-
-    Call stopVisualMode
-
-    Dim startRow As Long
-    Dim endRow As Long
-
-    startRow = ActiveCell.Row
-    endRow = ActiveCell.CurrentRegion.Item(ActiveCell.CurrentRegion.Count).Row
-
-    With ActiveSheet
-        .Range(.Rows(startRow), .Rows(endRow)).Cut
-        Set gLastYanked = .Range(.Rows(startRow), .Rows(endRow))
-    End With
-    Exit Function
-
-Catch:
-    If Err.Number <> 0 Then
-        Call errorHandler("cutToBottomOfCurrentRegionRows")
-    End If
-End Function
-
 Function hideRows()
     On Error GoTo Catch
+
+    If selectRowsInternal(Entire) = False Then
+        Exit Function
+    End If
 
     Call repeatRegister("hideRows")
     Call stopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
-    End If
-
     Call keystroke(True, Ctrl_ + k9_)
-    Exit Function
 
 Catch:
     If Err.Number <> 0 Then
@@ -471,12 +295,12 @@ End Function
 Function unhideRows()
     On Error GoTo Catch
 
+    If selectRowsInternal(Entire) = False Then
+        Exit Function
+    End If
+
     Call repeatRegister("unhideRows")
     Call stopVisualMode
-
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
-    End If
 
     Call keystroke(True, Ctrl_ + Shift_ + k9_)
     Exit Function
@@ -490,32 +314,18 @@ End Function
 Function groupRows()
     On Error GoTo Catch
 
-    Call repeatRegister("groupRows")
-    Call stopVisualMode
-
-    Dim t As Range
-
     Application.ScreenUpdating = False
-    If TypeName(Selection) <> "Range" Then
-        ActiveCell.Select
+    If selectRowsInternal(Entire) = False Then
+        Application.ScreenUpdating = True
+        Exit Function
     End If
 
-    Set t = ActiveCell
-
-    With ActiveSheet
-        If gCount > 1 Then
-            .Range(.Rows(Selection.Row), .Rows(WorksheetFunction.Min(Selection.Row + gCount - 1, .Rows.Count))).Select
-        Else
-            Selection.EntireRow.Select
-        End If
-    End With
+    Call repeatRegister("groupRows")
+    Call stopVisualMode
 
     Call keystroke(True, Alt_ + Shift_ + Right_)
 
 Catch:
-    t.Activate
-    Set t = Nothing
-
     Application.ScreenUpdating = True
     If Err.Number <> 0 Then
         Call errorHandler("groupRows")
@@ -525,32 +335,18 @@ End Function
 Function ungroupRows()
     On Error GoTo Catch
 
-    Call repeatRegister("ungroupRows")
-    Call stopVisualMode
-
-    Dim t As Range
-
     Application.ScreenUpdating = False
-    If TypeName(Selection) <> "Range" Then
-        ActiveCell.Select
+    If selectRowsInternal(Entire) = False Then
+        Application.ScreenUpdating = True
+        Exit Function
     End If
 
-    Set t = ActiveCell
-
-    With ActiveSheet
-        If gCount > 1 Then
-            .Range(.Rows(Selection.Row), .Rows(WorksheetFunction.Min(Selection.Row + gCount - 1, .Rows.Count))).Select
-        Else
-            Selection.EntireRow.Select
-        End If
-    End With
+    Call repeatRegister("ungroupRows")
+    Call stopVisualMode
 
     Call keystroke(True, Alt_ + Shift_ + Left_)
 
 Catch:
-    t.Activate
-    Set t = Nothing
-
     Application.ScreenUpdating = True
     If Err.Number <> 0 Then
         Call errorHandler("ungroupRows")
