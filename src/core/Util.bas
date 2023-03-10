@@ -20,6 +20,8 @@ Sub setStatusBar(Optional ByVal str As String = "", _
                  Optional ByVal ProgressBar As Boolean = False, _
                  Optional ByVal Cnt_per_Max As Boolean = False)
 
+    On Error GoTo Catch
+
     Const MAX_LEN As Byte = 13
 
     Dim txt As String
@@ -74,6 +76,8 @@ Sub setStatusBar(Optional ByVal str As String = "", _
         Application.StatusBar = str & txt
         last = Timer
     End If
+
+Catch:
 End Sub
 
 Sub setStatusBarTemporarily(ByVal str As String, _
@@ -88,7 +92,7 @@ Sub setStatusBarTemporarily(ByVal str As String, _
 
     On Error Resume Next
     Call Application.OnTime(lastRegisterTime, "setStatusBar", , False)
-    On Error GoTo 0
+    On Error GoTo Catch
 
     lastRegisterTime = CDbl(startDate) + (Timer + seconds) / 86400
 
@@ -98,6 +102,8 @@ Sub setStatusBarTemporarily(ByVal str As String, _
         Call setStatusBar(STATUS_PREFIX & str)
     End If
     Call Application.OnTime(lastRegisterTime, "setStatusBar")
+
+Catch:
 End Sub
 
 Function reMatch(ByVal str As String, ByVal Pattern As String, _

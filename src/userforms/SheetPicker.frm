@@ -346,6 +346,9 @@ Private Sub UserForm_Initialize()
 End Sub
 
 Private Sub MakeList()
+    'エラーハンドリング
+    On Error GoTo Catch
+
     '変数宣言
     Dim i As Integer
     Dim keyLength As Integer
@@ -377,4 +380,11 @@ Private Sub MakeList()
             End If
         Next
     End With
+    Exit Sub
+
+Catch:
+    If Err.Number <> 0 Then
+        Unload Me
+        Call errorHandler("MakeList in UF_SheetPicker")
+    End If
 End Sub

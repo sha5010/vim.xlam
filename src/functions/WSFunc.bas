@@ -3,6 +3,8 @@ Option Explicit
 Option Private Module
 
 Function nextWorksheet()
+    On Error GoTo Catch
+
     Dim i As Integer
 
     With ActiveWorkbook
@@ -15,9 +17,18 @@ Function nextWorksheet()
             End If
         Loop
     End With
+    Exit Function
+
+Catch:
+    Call keystroke(True, Ctrl_ + PageDown_)
+    If Err.Number <> 0 Then
+        Call errorHandler("nextWorksheet")
+    End If
 End Function
 
 Function previousWorksheet()
+    On Error GoTo Catch
+
     Dim i As Integer
 
     With ActiveWorkbook
@@ -30,9 +41,18 @@ Function previousWorksheet()
             End If
         Loop
     End With
+    Exit Function
+
+Catch:
+    Call keystroke(True, Ctrl_ + PageUp_)
+    If Err.Number <> 0 Then
+        Call errorHandler("previousWorksheet")
+    End If
 End Function
 
 Function renameWorksheet()
+    On Error GoTo Catch
+
     Dim ret As String
     Dim beforeName As String
 
@@ -41,7 +61,6 @@ Function renameWorksheet()
         ret = InputBox("新しいシート名を入力してください。", "シート名の変更", beforeName)
 
         If ret <> "" Then
-            On Error GoTo Catch
             .Worksheets(.ActiveSheet.Index).Name = ret
 
             Call setStatusBarTemporarily("シート名を変更しました： """ & _
@@ -51,10 +70,14 @@ Function renameWorksheet()
     Exit Function
 
 Catch:
-    Call debugPrint("Cannot rename worksheet. ErrNo: " & Err.Number & "  Description: " & Err.Description, "renameWorksheet")
+    If Err.Number <> 0 Then
+        Call errorHandler("renameWorksheet")
+    End If
 End Function
 
 Function moveWorksheetForward()
+    On Error GoTo Catch
+
     Dim idx As Integer
     Dim cnt As Integer
     Dim n As Integer
@@ -88,9 +111,17 @@ Function moveWorksheetForward()
             End If
         Loop
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveWorksheetBack")
+    End If
 End Function
 
 Function moveWorksheetBack()
+    On Error GoTo Catch
+
     Dim idx As Integer
     Dim cnt As Integer
     Dim n As Integer
@@ -125,6 +156,12 @@ Function moveWorksheetBack()
             End If
         Loop
     End With
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("moveWorksheetBack")
+    End If
 End Function
 
 Function insertWorksheet()
@@ -295,9 +332,23 @@ Catch:
 End Function
 
 Function exportWorksheet()
+    On Error GoTo Catch
     Application.Dialogs(xlDialogWorkbookCopy).Show
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("exportWorksheet")
+    End If
 End Function
 
 Function printPreviewOfActiveSheet()
+    On Error GoTo Catch
     ActiveSheet.PrintPreview
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("printPreviewOfActiveSheet")
+    End If
 End Function

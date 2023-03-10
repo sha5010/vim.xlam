@@ -12,10 +12,19 @@ Function redoExecute()
 End Function
 
 Function toggleFreezePanes()
+    On Error GoTo Catch
     ActiveWindow.FreezePanes = Not ActiveWindow.FreezePanes
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("toggleFreezePanes")
+    End If
 End Function
 
 Function zoomIn()
+    On Error GoTo Catch
+
     Dim afterZoomRate As Integer
 
     If gCount > 1 Then
@@ -29,9 +38,19 @@ Function zoomIn()
     End If
 
     ActiveWindow.Zoom = afterZoomRate
+    Exit Function
+
+Catch:
+    If Err.Number = 91 Then
+        Call keystroke(True, Ctrl_ + Shift_ + Alt_ + Minus_)
+    ElseIf Err.Number <> 0 Then
+        Call errorHandler("zoomIn")
+    End If
 End Function
 
 Function zoomOut()
+    On Error GoTo Catch
+
     Dim afterZoomRate As Integer
 
     If gCount > 1 Then
@@ -45,9 +64,19 @@ Function zoomOut()
     End If
 
     ActiveWindow.Zoom = afterZoomRate
+    Exit Function
+
+Catch:
+    If Err.Number = 91 Then
+        Call keystroke(True, Ctrl_ + Alt_ + Minus_)
+    ElseIf Err.Number <> 0 Then
+        Call errorHandler("zoomOut")
+    End If
 End Function
 
 Function zoomSpecifiedScale()
+    On Error GoTo Catch
+
     Dim zoomScale As Integer
 
     Select Case gCount
@@ -77,14 +106,34 @@ Function zoomSpecifiedScale()
     End Select
 
     ActiveWindow.Zoom = zoomScale
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("zoomSpecifiedScale")
+    End If
 End Function
 
 Function toggleFormulaBar()
+    On Error GoTo Catch
     Application.DisplayFormulaBar = Not Application.DisplayFormulaBar
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("toggleFormulaBar")
+    End If
 End Function
 
 Function showSummaryInfo()
+    On Error GoTo Catch
     Application.Dialogs(xlDialogSummaryInfo).Show
+    Exit Function
+
+Catch:
+    If Err.Number <> 0 Then
+        Call errorHandler("showSummaryInfo")
+    End If
 End Function
 
 Function jumpPrev()
