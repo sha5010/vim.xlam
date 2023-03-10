@@ -329,7 +329,9 @@ Function unionSelectCells()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
+    If Err.Number = 424 Then
+        Set gExtendRange = Selection
+    ElseIf Err.Number <> 0 Then
         Call errorHandler("unionSelectCells")
     End If
 End Function
@@ -358,7 +360,9 @@ Function exceptSelectCells()
     Exit Function
 
 Catch:
-    If Err.Number <> 0 Then
+    If Err.Number = 424 Then
+        Set gExtendRange = Nothing
+    ElseIf Err.Number <> 0 Then
         Call errorHandler("exceptSelectCells")
     End If
 End Function
