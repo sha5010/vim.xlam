@@ -23,6 +23,7 @@ Option Explicit
 
 Private IsThemeColor_ As Boolean
 Private ThemeColorIndex As Integer
+Private ObjectThemeColorIndex As Integer
 Private Luminance_ As Integer
 Private Color_ As Long
 Private IsSetup As Boolean
@@ -58,15 +59,18 @@ Public Sub Setup(Optional ByVal msoThemeColorIndex As Integer = xlNone, Optional
         IsThemeColor_ = True
         ThemeColorIndex = msoThemeColorIndex
 
-        On Error GoTo Catch
         Select Case msoThemeColorIndex
             Case 1, 3
-                Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex + 1)
+                ObjectThemeColorIndex = ThemeColorIndex + 1
             Case 2, 4
-                Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex - 1)
+                ObjectThemeColorIndex = ThemeColorIndex - 1
             Case Else
-                Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ThemeColorIndex)
+                ObjectThemeColorIndex = ThemeColorIndex
         End Select
+
+        On Error GoTo Catch
+
+        Color_ = ActiveWorkbook.Theme.ThemeColorScheme(ObjectThemeColorIndex)
         Exit Sub
 
 Catch:
@@ -128,6 +132,10 @@ End Property
 
 Public Property Get ThemeColor() As Integer
     ThemeColor = ThemeColorIndex
+End Property
+
+Public Property Get ObjectThemeColor() As Integer
+    ObjectThemeColor = ObjectThemeColorIndex
 End Property
 
 Public Property Get TintAndShade() As Double

@@ -23,7 +23,7 @@ Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
                 .Visible = msoFalse
             ElseIf resultColor.IsThemeColor Then
                 .Visible = msoTrue
-                .ForeColor.ObjectThemeColor = resultColor.ThemeColor
+                .ForeColor.ObjectThemeColor = resultColor.ObjectThemeColor
                 .ForeColor.TintAndShade = resultColor.TintAndShade
             Else
                 .Visible = msoTrue
@@ -63,7 +63,7 @@ Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
             If resultColor.IsNull Then
                 .RGB = 0
             ElseIf resultColor.IsThemeColor Then
-                .ObjectThemeColor = resultColor.ThemeColor
+                .ObjectThemeColor = resultColor.ObjectThemeColor
                 .TintAndShade = resultColor.TintAndShade
             Else
                 .RGB = resultColor.Color
@@ -104,7 +104,7 @@ Function changeShapeBorderColor(Optional garbage As String, _
                 .Visible = msoFalse
             ElseIf resultColor.IsThemeColor Then
                 .Visible = msoTrue
-                .ForeColor.ObjectThemeColor = resultColor.ThemeColor
+                .ForeColor.ObjectThemeColor = resultColor.ObjectThemeColor
                 .ForeColor.TintAndShade = resultColor.TintAndShade
             Else
                 .Visible = msoTrue
