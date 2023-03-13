@@ -292,6 +292,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Yank | `yj` | `yankFromDownCell` | 現在のセルの下の値をコピーして貼り付け |
 | Yank | `yk` | `yankFromUpCell` | 現在のセルの上の値をコピーして貼り付け |
 | Yank | `yl` | `yankFromRightCell` | 現在のセルの右の値をコピーして貼り付け |
+| Yank | `Y` | `yankAsPlaintext` | 選択中のセルをプレーンテキストとしてコピー |
 | Delete | `X` | `deleteValue` | セルの値を削除 |
 | Delete | `D` | `deleteValue` | セルの値を削除 |
 | Delete | `dx` | `deleteRows` | 現在行を削除。`[count]` が与えられたときは `[count]` 行削除 |

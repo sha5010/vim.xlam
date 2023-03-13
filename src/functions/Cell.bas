@@ -47,6 +47,102 @@ Function yankFromRightCell()
     Call keystroke(True, Alt_ + H_, F_, I_, L_)
 End Function
 
+Function yankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab)
+    On Error GoTo Catch
+
+    If TypeName(Selection) <> "Range" Then
+        Exit Function
+    End If
+
+    'Error if too many cells selected
+    If Selection.Count > 1048576 * 8 Then
+        Err.Raise 6
+    End If
+
+    Call stopVisualMode
+
+    Dim resultText As String
+    Dim aryTarget As Variant
+    Dim aryX() As String
+    Dim aryY() As String
+    Dim i As Long
+    Dim j As Long
+    Dim startTime As Double
+    Dim currentTime As Double
+
+    'Exit if all selected cells are blank
+    If WorksheetFunction.CountBlank(Selection) = Selection.Count Then
+        Exit Function
+    End If
+
+    If Selection.Count = 1 Then
+        resultText = Selection.Value
+
+    ElseIf Selection.Columns.Count = 1 Then
+        aryTarget = Selection
+        aryTarget = WorksheetFunction.Transpose(aryTarget)
+        resultText = Join(aryTarget, vbCrLf)
+
+    ElseIf Selection.Rows.Count = 1 Then
+        aryTarget = Selection
+
+        'Array dimensionality reduction
+        aryTarget = WorksheetFunction.Transpose(aryTarget)
+        aryTarget = WorksheetFunction.Transpose(aryTarget)
+
+        resultText = Join(aryTarget, ColumnSpliter)
+
+    Else
+fallback:
+        startTime = Timer
+        aryTarget = Selection
+        ReDim aryX(LBound(aryTarget, 1) To UBound(aryTarget, 1))
+        ReDim aryY(LBound(aryTarget, 2) To UBound(aryTarget, 2))
+
+        For i = LBound(aryX) To UBound(aryX)
+            For j = LBound(aryY) To UBound(aryY)
+                aryY(j) = aryTarget(i, j)
+            Next j
+            aryX(i) = Join(aryY, ColumnSpliter)
+
+            'Avoid freeze
+            If (i And &HFFF) = 0 Then
+                'Show progress bar in status bar
+                Call setStatusBar("テキストをコピーしています...", _
+                                 Count:=i, Max:=UBound(aryX), ProgressBar:=True)
+
+                currentTime = Timer
+                If currentTime < startTime Or currentTime - startTime > 2 Then
+                    DoEvents
+                    startTime = currentTime
+                End If
+            End If
+        Next i
+        resultText = Join(aryX, vbCrLf)
+        Call setStatusBar
+    End If
+
+    'Set to clipboard
+    With New DataObject
+        .SetText resultText
+        .PutInClipboard
+    End With
+
+    Call setStatusBarTemporarily("クリップボードにコピーしました。(" & _
+                                 LenB(StrConv(resultText, vbFromUnicode)) & " Bytes)", 3)
+    Exit Function
+
+Catch:
+    If Err.Number = 6 Then
+        Call setStatusBarTemporarily("選択セル数が多すぎます", 3)
+    ElseIf Err.Number = 13 Then
+        'Error from WorksheetFunction.Transpose
+        Resume fallback
+    Else
+        Call errorHandler("yankAsPlaintext")
+    End If
+End Function
+
 Function incrementText()
     Call repeatRegister("incrementText")
     Call stopVisualMode

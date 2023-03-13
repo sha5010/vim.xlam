@@ -283,6 +283,7 @@ Sub initMapping()
     Call map("y", "j", "yankFromDownCell")
     Call map("y", "k", "yankFromUpCell")
     Call map("y", "l", "yankFromRightCell")
+    Call map("Y", "", "yankAsPlaintext")
 
 
     'Delete
