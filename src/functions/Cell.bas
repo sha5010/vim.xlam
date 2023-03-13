@@ -255,6 +255,13 @@ Function toggleMergeCells()
     End If
 End Function
 
+Function applyCommaStyle()
+    Call repeatRegister("applyCommaStyle")
+    Call stopVisualMode
+
+    Call keystroke(True, Alt_ + H_, K_)
+End Function
+
 Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
     On Error GoTo Catch
 
