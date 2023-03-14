@@ -85,14 +85,19 @@ End Function
 Private Function optimizeKey(ByVal key As String) As String
     Dim lowerKey As String
 
-    If InStr(key, "{") > 0 Then
+    If InStr(key, "{") > 0 And InStr(key, "}") > 0 Then
+        optimizeKey = key
+        Exit Function
+    ElseIf InStr("^+%", Left(key, 1)) > 0 And Len(key) > 1 Then
         optimizeKey = key
         Exit Function
     End If
 
     lowerKey = LCase(key)
     If lowerKey <> key Then
-        lowerKey = "+" & lowerKey
+        lowerKey = "+{" & lowerKey & "}"
+    ElseIf Asc(key) < 48 Or 57 < Asc(key) Then
+        lowerKey = "{" & lowerKey & "}"
     End If
 
     optimizeKey = lowerKey

@@ -450,7 +450,7 @@ Sub initMapping()
     Call map(".", "", "repeatAction")
     Call map("m", "", "zoomIn")
     Call map("M", "", "zoomOut")
-    Call map("{%}", "", "zoomSpecifiedScale")
+    Call map("%", "", "zoomSpecifiedScale")
     Call map("{226}", "", "showContextMenu")
     Call map("¥", "", "showContextMenu")
 
