@@ -81,8 +81,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Column | `cd` | `deleteColumns` | 現在列を削除。`[count]` が与えられたときは `[count]` 列削除 |
 | Delete | `D` | `deleteValue` | セルの値を削除 |
 | Paste | `p` | `pasteSmart` | 行や列がコピーされたときは挿入。それ以外は `Ctrl + V` で貼り付け |
-| Font | `<` | `decreaseFontSize` | フォントサイズの縮小 |
-| Font | `>` | `increaseFontSize` | フォントサイズの拡大 |
+| Font | `-` | `decreaseFontSize` | フォントサイズの縮小 |
+| Font | `+` | `increaseFontSize` | フォントサイズの拡大 |
 | Color | `fc` | `smartFontColor` | フォントの色を選択するダイアログを表示 |
 | Find & Replace | `/` | `showFindFollowLang` | IMEを言語モードに合わせて検索ダイアログを表示 |
 | Find & Replace | `n` | `nextFoundCell` | 検索結果の次のセルを選択 |
@@ -151,10 +151,10 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cell | `O` | `insertCellsUp` | 選択セルの上にセルを挿入 |
 | Cell | `t` | `insertCellsRight` | 選択セルの右にセルを挿入 |
 | Cell | `T` | `insertCellsLeft` | 選択セルの左にセルを挿入 |
-| Cell | `+` | `incrementText` | インデントを増やす |
-| Cell | `-` | `decrementText` | インデントを減らす |
-| Cell | `[` | `increaseDecimal` | 小数点表示桁上げ |
-| Cell | `]` | `decreaseDecimal` | 小数点表示桁下げ |
+| Cell | `>` | `incrementText` | インデントを増やす |
+| Cell | `<` | `decrementText` | インデントを減らす |
+| Cell | `(` | `increaseDecimal` | 小数点表示桁上げ |
+| Cell | `)` | `decreaseDecimal` | 小数点表示桁下げ |
 | Cell | `f,` | `applyCommaStyle` | 桁区切りスタイルを適用 |
 | Cell | `<Space>` | `unionSelectCells` | 現在セルを記憶に追加し、記憶したセルを選択 (複数セルの選択が可能) |
 | Cell | `<S-Space>` | `exceptSelectCells` | 記憶された選択済みセルから現在セルを取り除く |
@@ -323,8 +323,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Paste | `p` | `pasteSmart` | 行や列がコピーされたときは挿入。それ以外は `Ctrl + V` で貼り付け |
 | Paste | `P` | `pasteSpecial` | 形式を選択して貼り付けのダイアログを表示 |
 | Paste | `U` | `pasteValue` | 値のみ貼り付け |
-| Font | `<` | `decreaseFontSize` | フォントサイズの縮小 |
-| Font | `>` | `increaseFontSize` | フォントサイズの拡大 |
+| Font | `-` | `decreaseFontSize` | フォントサイズの縮小 |
+| Font | `+` | `increaseFontSize` | フォントサイズの拡大 |
 | Font | `fn` | `changeFontName` | フォント名にフォーカス |
 | Font | `fs` | `changeFontSize` | フォントサイズにフォーカス |
 | Font | `fh` | `alignLeft` | 左揃え |
@@ -361,6 +361,18 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Find & Replace | `R` | `showReplaceWindow` | 検索と置換のダイアログを表示 |
 | Find & Replace | `*` | `findActiveValueNext` | 現在セルの値で検索し次のセルを選択 |
 | Find & Replace | `#` | `findActiveValuePrev` | 現在セルの値で検索し前のセルを選択 |
+| Find & Replace | `]c` | `nextSpecialCells` | 次のコメントがあるセルを選択 |
+| Find & Replace | `[c` | `prevSpecialCells` | 前のコメントがあるセルを選択 |
+| Find & Replace | `]o` | `nextSpecialCells` | 次の定数があるセルを選択 |
+| Find & Replace | `[o` | `prevSpecialCells` | 前の定数があるセルを選択 |
+| Find & Replace | `]f` | `nextSpecialCells` | 次の数式があるセルを選択 |
+| Find & Replace | `[f` | `prevSpecialCells` | 前の数式があるセルを選択 |
+| Find & Replace | `]k` | `nextSpecialCells` | 次の空白セルを選択 |
+| Find & Replace | `[k` | `prevSpecialCells` | 前の空白セルを選択 |
+| Find & Replace | `]t` | `nextSpecialCells` | 次の条件付き書式があるセルを選択 |
+| Find & Replace | `[t` | `prevSpecialCells` | 前の条件付き書式があるセルを選択 |
+| Find & Replace | `]v` | `nextSpecialCells` | 次の入力規則があるセルを選択 |
+| Find & Replace | `[v` | `prevSpecialCells` | 前の入力規則があるセルを選択 |
 | Scrolling | `<C-u>` | `scrollUpHalf` | 半ページ上スクロール |
 | Scrolling | `<C-d>` | `scrollDownHalf` | 半ページ下スクロール |
 | Scrolling | `<C-b>` | `scrollUp` | 1ページ上スクロール |
