@@ -1,7 +1,7 @@
 Attribute VB_Name = "F_Paste"
 Option Explicit
 
-Function pasteSmart()
+Function pasteSmart(Optional ByVal PasteDirection As XlSearchDirection = xlNext)
     On Error GoTo Catch
 
     Call repeatRegister("pasteSmart")
@@ -17,9 +17,9 @@ Function pasteSmart()
     End If
 
     If gLastYanked.Rows.Count = gLastYanked.Parent.Rows.Count Then
-        Call pasteColumns
+        Call pasteColumns(PasteDirection)
     ElseIf gLastYanked.Columns.Count = gLastYanked.Parent.Columns.Count Then
-        Call pasteRows
+        Call pasteRows(PasteDirection)
     Else
         Call paste_CtrlV
     End If
@@ -33,7 +33,7 @@ Private Function paste_CtrlV()
     Call keystroke(True, Ctrl_ + V_)
 End Function
 
-Private Function pasteRows()
+Private Function pasteRows(ByVal PasteDirection As XlSearchDirection)
     On Error GoTo Catch
 
     Dim yankedRows As Long
@@ -41,7 +41,7 @@ Private Function pasteRows()
     Dim endRow As Long
 
     yankedRows = gLastYanked.Rows.Count
-    startRow = ActiveCell.Row
+    startRow = ActiveCell.Row + IIf(PasteDirection = xlNext, 1, 0)
     endRow = startRow + yankedRows * gCount - 1
 
     With ActiveSheet
@@ -63,7 +63,7 @@ Catch:
     Call errorHandler("pasteRows")
 End Function
 
-Private Function pasteColumns()
+Private Function pasteColumns(ByVal PasteDirection As XlSearchDirection)
     On Error GoTo Catch
 
     Dim yankedColumns As Long
@@ -71,7 +71,7 @@ Private Function pasteColumns()
     Dim endColumn As Long
 
     yankedColumns = gLastYanked.Columns.Count
-    startColumn = ActiveCell.Column
+    startColumn = ActiveCell.Column + IIf(PasteDirection = xlNext, 1, 0)
     endColumn = startColumn + yankedColumns * gCount - 1
 
     With ActiveSheet

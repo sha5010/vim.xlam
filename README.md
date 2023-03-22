@@ -80,7 +80,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Column | `ci` | `insertColumns` | 現在列の前に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
 | Column | `cd` | `deleteColumns` | 現在列を削除。`[count]` が与えられたときは `[count]` 列削除 |
 | Delete | `D` | `deleteValue` | セルの値を削除 |
-| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは挿入。それ以外は `Ctrl + V` で貼り付け |
+| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは後に追加。それ以外は `Ctrl + V` で貼り付け |
+| Paste | `P` | `pasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` で貼り付け |
 | Font | `-` | `decreaseFontSize` | フォントサイズの縮小 |
 | Font | `+` | `increaseFontSize` | フォントサイズの拡大 |
 | Color | `fc` | `smartFontColor` | フォントの色を選択するダイアログを表示 |
@@ -329,8 +330,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cut | `x$` | `cutToRightEndColumns` | 現在列から UsedRange の最後の列までを切り取り |
 | Cut | `x^` | `cutToLeftOfCurrentRegionColumns` | 現在列から CurrentRegion  の最初の列までを切り取り |
 | Cut | `xg$` | `cutToRightOfCurrentRegionColumns` | 現在列から CurrentRegion の最後の列までを切り取り |
-| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは挿入。それ以外は `Ctrl + V` で貼り付け |
-| Paste | `P` | `pasteSpecial` | 形式を選択して貼り付けのダイアログを表示 |
+| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは後に追加。それ以外は `Ctrl + V` で貼り付け |
+| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` で貼り付け |
+| Paste | `gp` | `pasteSpecial` | 形式を選択して貼り付けのダイアログを表示 |
 | Paste | `U` | `pasteValue` | 値のみ貼り付け |
 | Font | `-` | `decreaseFontSize` | フォントサイズの縮小 |
 | Font | `+` | `increaseFontSize` | フォントサイズの拡大 |

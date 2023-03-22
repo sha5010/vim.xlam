@@ -332,8 +332,9 @@ Sub initMapping()
 
 
     'Paste
-    Call map("p", "", "pasteSmart")
-    Call map("P", "", "pasteSpecial")
+    Call map("p", "", "pasteSmart", xlNext)
+    Call map("P", "", "pasteSmart", xlPrevious)
+    Call map("g", "p", "pasteSpecial")
     Call map("U", "", "pasteValue")
 
 
