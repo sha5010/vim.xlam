@@ -428,8 +428,6 @@ End Function
 Function exceptSelectCells()
     On Error GoTo Catch
 
-    Dim actCell As Range
-
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
@@ -437,8 +435,11 @@ Function exceptSelectCells()
     Call stopVisualMode
 
     If Not gExtendRange Is Nothing Then
-        Set actCell = ActiveCell
-        Set gExtendRange = Except2(gExtendRange, Selection)
+        If Selection.Address = gExtendRange.Address Then
+            Set gExtendRange = Except2(gExtendRange, ActiveCell)
+        Else
+            Set gExtendRange = Except2(gExtendRange, Selection)
+        End If
 
         If Not gExtendRange Is Nothing Then
             gExtendRange.Select
@@ -453,6 +454,38 @@ Catch:
         Set gExtendRange = Nothing
     Else
         Call errorHandler("exceptSelectCells")
+    End If
+End Function
+
+Function clearSelectCells()
+    On Error GoTo Catch
+
+    If TypeName(Selection) <> "Range" Then
+        Exit Function
+    End If
+
+    Call stopVisualMode
+
+    If Not gExtendRange Is Nothing Then
+        If Selection.Address = gExtendRange.Address Then
+            Set gExtendRange = Nothing
+            Call setStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2)
+            Exit Function
+        End If
+    End If
+
+    If Selection.Columns.Count > 1 Or Selection.Rows.Count > 1 Or Selection.Areas.Count > 1 Then
+        ActiveCell.Select
+    ElseIf Not gExtendRange Is Nothing Then
+        gExtendRange.Select
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number = 424 Then
+        Set gExtendRange = Nothing
+    Else
+        Call errorHandler("clearSelectCells")
     End If
 End Function
 
