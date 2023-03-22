@@ -68,16 +68,29 @@ Private Sub VisualApp_SheetActivate(ByVal Sh As Object)
 End Sub
 
 Private Sub VisualApp_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
+    Dim rowVisible As Double
+    Dim colVisible As Double
+
     If BaseCell.Parent Is Sh Then
         Application.EnableEvents = False
 
         Set LastCell = ActiveCell
+        rowVisible = ActiveWindow.ScrollRow
+        colVisible = ActiveWindow.ScrollColumn
+
         If VisualMode Then
             Range(BaseCell, ActiveCell).Select
         ElseIf VisualLine Then
             Range(Rows(BaseCell.Row), Rows(ActiveCell.Row)).Select
         End If
         LastCell.Activate
+
+        If ActiveWindow.ScrollRow <> rowVisible Then
+            ActiveWindow.ScrollRow = rowVisible
+        End If
+        If ActiveWindow.ScrollColumn <> colVisible Then
+            ActiveWindow.ScrollColumn = colVisible
+        End If
 
         Application.EnableEvents = True
     Else
