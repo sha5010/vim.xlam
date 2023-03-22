@@ -125,6 +125,8 @@ Sub initMapping()
     Call map("<", "", "decrementText")
     Call map("(", "", "increaseDecimal")
     Call map(")", "", "decreaseDecimal")
+    Call map("z", "w", "toggleWrapText")
+    Call map("&", "", "toggleMergeCells")
     Call map("f", ",", "applyCommaStyle")
     Call map(" ", "", "unionSelectCells")
     Call map("+ ", "", "exceptSelectCells")
@@ -463,9 +465,9 @@ Sub initMapping()
 
     Call map("Z", "Z", "closeWithSaving")
     Call map("Z", "Q", "closeWithoutSaving")
-    Call map("@", "a", "toggleReadOnly")
-    Call map("@", "n", "nextWorkbook")
-    Call map("@", "N", "previousWorkbook")
+    Call map("‾", "", "toggleReadOnly")
+    Call map("]", "b", "nextWorkbook")
+    Call map("[", "b", "previousWorkbook")
 
 
     'Useful Command
@@ -483,15 +485,13 @@ Sub initMapping()
     Call map(":", "cle", "clearJumps", returnOnly:=True)
 
 
-    'Atmark Command
-    Call map("@", "w", "toggleFreezePanes")
-    Call map("@", "r", "toggleWrapText")
-    Call map("@", "m", "toggleMergeCells")
-    Call map("@", "x", "toggleFormulaBar")
-    Call map("@", "s", "showSummaryInfo")
+    'Other Commands
+    Call map("z", "f", "toggleFreezePanes")
+    Call map("=", "v", "toggleFormulaBar")
+    Call map("g", "s", "showSummaryInfo")
+    Call map("z", "p", "setPrintArea")
+    Call map("z", "P", "clearPrintArea")
     Call map("@", "@", "showMacroDialog")
-    Call map("@", "p", "setPrintArea")
-    Call map("@", "P", "clearPrintArea")
 
 
     'Count

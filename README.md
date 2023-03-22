@@ -155,6 +155,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cell | `<` | `decrementText` | インデントを減らす |
 | Cell | `(` | `increaseDecimal` | 小数点表示桁上げ |
 | Cell | `)` | `decreaseDecimal` | 小数点表示桁下げ |
+| Cell | `zw` | `toggleWrapText` | セルの折り返しのオン/オフを切り替え |
+| Cell | `&` | `toggleMergeCells` | セル結合のオン/オフを切り替え |
 | Cell | `f,` | `applyCommaStyle` | 桁区切りスタイルを適用 |
 | Cell | `<Space>` | `unionSelectCells` | 現在セルを記憶に追加し、記憶したセルを選択 (複数セルの選択が可能) |
 | Cell | `<S-Space>` | `exceptSelectCells` | 記憶された選択済みセルから現在セルを取り除く |
@@ -421,9 +423,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `:q!`/`ZQ` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
 | Workbook | `:wq`/`:x`/`ZZ` | `closeWithSaving` | アクティブブックを保存して閉じる |
 | Workbook | `:b[num]` | `activateWorkbook` | `[num]` 番目のブックを選択 |
-| Workbook | `@n`/`:bn` | `nextWorkbook` | 次のワークブックを選択 |
-| Workbook | `@N`/`:bp` | `previousWorkbook` | 前のワークブックを選択 |
-| Workbook | `@a` | `toggleReadOnly` | 読み取り専用を切り替える |
+| Workbook | `]b`/`:bn` | `nextWorkbook` | 次のワークブックを選択 |
+| Workbook | `[b`/`:bp` | `previousWorkbook` | 前のワークブックを選択 |
+| Workbook | `~` | `toggleReadOnly` | 読み取り専用を切り替える |
 | Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) |
 | Other | `<C-r>` | `redoExecute` | やり直し |
 | Other | `.` | `repeatAction` | 以前の動作を繰り返す (`repeatRegister` が呼ばれるコマンド限定) |
@@ -434,14 +436,12 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `<C-i>` | `jumpNext` | ジャンプリストの次のセルへ移動 |
 | Other | `<C-o>` | `jumpPrev` | ジャンプリストの前のセルへ移動 |
 | Other | `:cle` | `clearJumps` | ジャンプリストをクリア |
-| Other | `@w` | `toggleFreezePanes` | ウィンドウ枠の固定のオン/オフを切り替え |
-| Other | `@r` | `toggleWrapText` | セルの折り返しのオン/オフを切り替え |
-| Other | `@m` | `toggleMergeCells` | セル結合のオン/オフを切り替え |
-| Other | `@x` | `toggleFormulaBar` | 関数バーの表示/非表示を切り替え |
-| Other | `@s` | `showSummaryInfo` | ファイルのプロパティを表示 |
+| Other | `zf` | `toggleFreezePanes` | ウィンドウ枠の固定のオン/オフを切り替え |
+| Other | `=v` | `toggleFormulaBar` | 関数バーの表示/非表示を切り替え |
+| Other | `gs` | `showSummaryInfo` | ファイルのプロパティを表示 |
+| Other | `zp` | `setPrintArea` | 選択セルを印刷範囲に設定 |
+| Other | `zP` | `clearPrintArea` | 印刷範囲をクリア |
 | Other | `@@` | `showMacroDialog` | マクロダイアログを表示 |
-| Other | `@p` | `setPrintArea` | 選択セルを印刷範囲に設定 |
-| Other | `@P` | `clearPrintArea` | 印刷範囲をクリア |
 | Other | `1-9` | `showCmdForm` | `[count]` を指定 (`5ri` なら5行挿入) |
 
 </div></details>
