@@ -118,3 +118,55 @@ Function changeShapeBorderColor(Optional garbage As String, _
 Catch:
     Call errorHandler("changeShapeBorderColor")
 End Function
+
+Function nextShape()
+    On Error GoTo Catch
+
+    Dim i As Long
+    Dim cnt As Long
+    Dim shp As Shape
+
+    If VarType(Selection) = vbObject Then
+        Call keyupControlKeys
+        For i = 1 To gCount
+            Call keystrokeWithoutKeyup(Tab_)
+        Next i
+        Call unkeyupControlKeys
+    Else
+        cnt = ActiveSheet.Shapes.Count
+        If cnt = 0 Then
+            Exit Function
+        End If
+        ActiveSheet.Shapes((gCount - 1) Mod cnt + 1).Select
+    End If
+    Exit Function
+
+Catch:
+    Call errorHandler("nextShape")
+End Function
+
+Function prevShape()
+    On Error GoTo Catch
+
+    Dim i As Long
+    Dim cnt As Long
+    Dim shp As Shape
+
+    If VarType(Selection) = vbObject Then
+        Call keyupControlKeys
+        For i = 1 To gCount
+            Call keystrokeWithoutKeyup(Shift_ + Tab_)
+        Next i
+        Call unkeyupControlKeys
+    Else
+        cnt = ActiveSheet.Shapes.Count
+        If cnt = 0 Then
+            Exit Function
+        End If
+        ActiveSheet.Shapes(cnt - (gCount - 1) Mod cnt).Select
+    End If
+    Exit Function
+
+Catch:
+    Call errorHandler("prevShape")
+End Function

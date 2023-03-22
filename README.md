@@ -373,6 +373,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Find & Replace | `[t` | `prevSpecialCells` | 前の条件付き書式があるセルを選択 |
 | Find & Replace | `]v` | `nextSpecialCells` | 次の入力規則があるセルを選択 |
 | Find & Replace | `[v` | `prevSpecialCells` | 前の入力規則があるセルを選択 |
+| Find & Replace | `]s` | `nextShape` | 次の図形を選択 |
+| Find & Replace | `[s` | `prevShape` | 前の図形を選択 |
 | Scrolling | `<C-u>` | `scrollUpHalf` | 半ページ上スクロール |
 | Scrolling | `<C-d>` | `scrollDownHalf` | 半ページ下スクロール |
 | Scrolling | `<C-b>` | `scrollUp` | 1ページ上スクロール |

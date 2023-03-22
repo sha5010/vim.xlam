@@ -392,6 +392,9 @@ Sub initMapping()
     Call map("]", "v", "nextSpecialCells", xlCellTypeSameValidation)
     Call map("[", "v", "prevSpecialCells", xlCellTypeSameValidation)
 
+    Call map("]", "s", "nextShape")
+    Call map("[", "s", "prevShape")
+
 
     'Scrolling
     Call map("^u", "", "scrollUpHalf")
