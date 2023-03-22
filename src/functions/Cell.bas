@@ -727,6 +727,48 @@ Catch:
     Call errorHandler("innerDataSearch")
 End Function
 
+Private Function autoSumInner(ByVal lastKey As Long)
+    On Error GoTo Catch
+
+    If TypeName(Selection) <> "Range" Then
+        Exit Function
+    End If
+
+    Call keystroke(True, Alt_ + M_, U_, lastKey)
+
+    Exit Function
+Catch:
+    Call errorHandler("autoSumInner")
+End Function
+
+Function autoSum()
+    Call autoSumInner(S_)
+End Function
+
+Function autoAverage()
+    Call autoSumInner(A_)
+End Function
+
+Function autoCount()
+    Call autoSumInner(C_)
+End Function
+
+Function autoMax()
+    Call autoSumInner(M_)
+End Function
+
+Function autoMin()
+    Call autoSumInner(I_)
+End Function
+
+Function insertFunction()
+    On Error GoTo Catch
+    Application.CommandBars.ExecuteMso "AutoSumMoreFunctions"
+    Exit Function
+Catch:
+    Call errorHandler("insertFunction")
+End Function
+
 Function toggleVisualMode()
     On Error GoTo Catch
 

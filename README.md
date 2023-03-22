@@ -162,6 +162,12 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cell | `gf` | `followHyperlinkOfActiveCell` | セルのハイパーリンクを開く |
 | Cell | `FF`/`Ff` | `applyFlashFill` | フラッシュフィル(適用不可の際はオートフィル) |
 | Cell | `FA`/`Fa` | `applyAutoFill` | オートフィル |
+| Cell | `=s` | `autoSum` | オートSUM (合計) |
+| Cell | `=a` | `autoAverage` | オートSUM (平均) |
+| Cell | `=c` | `autoCount` | オートSUM (数値の個数) |
+| Cell | `=m` | `autoMax` | オートSUM (最大値) |
+| Cell | `=i` | `autoMin` | オートSUM (最小値) |
+| Cell | `==` | `insertFunction` | 関数の挿入 |
 | Cell | `v` | `toggleVisualMode` | ビジュアルモード(選択範囲の拡張)を切り替え |
 | Cell | `V` | `toggleVisualLine` | ビジュアル行モード(選択範囲の拡張)を切り替え |
 | Border | `bb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 細線) |

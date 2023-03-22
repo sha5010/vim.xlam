@@ -134,6 +134,14 @@ Sub initMapping()
     Call map("F", "f", "applyFlashFill")
     Call map("F", "A", "applyAutoFill")
     Call map("F", "a", "applyAutoFill")
+
+    Call map("=", "s", "autoSum")
+    Call map("=", "a", "autoAverage")
+    Call map("=", "c", "autoCount")
+    Call map("=", "m", "autoMax")
+    Call map("=", "i", "autoMin")
+    Call map("=", "=", "insertFunction")
+
     Call map("v", "", "toggleVisualMode")
     Call map("V", "", "toggleVisualLine")
 
