@@ -821,7 +821,7 @@ Function stopVisualMode()
         Call restoreAppliedMap("^{[}")
         Call restoreAppliedMap("o")
 
-        Call X.stopVisualMode
+        Call X.QuitVisualMode
 
         Call setStatusBar("")
     End If

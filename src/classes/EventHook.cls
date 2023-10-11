@@ -94,7 +94,7 @@ Private Sub VisualApp_SheetSelectionChange(ByVal Sh As Object, ByVal Target As R
 
         Application.EnableEvents = True
     Else
-        Call stopVisualMode
+        Call Me.QuitVisualMode
     End If
 End Sub
 
@@ -168,7 +168,7 @@ Public Sub SwapBase()
     t.Activate
 End Sub
 
-Public Sub stopVisualMode()
+Public Sub QuitVisualMode()
     Set VisualApp = Nothing
     Set BaseCell = Nothing
     VisualMode = False
