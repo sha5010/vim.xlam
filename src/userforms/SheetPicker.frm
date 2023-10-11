@@ -195,7 +195,7 @@ Private Sub List_Sheets_Change()
 
     idx = List_Sheets.ListIndex + 1
 
-    If previewMode Then
+    If previewMode And idx > 0 Then
         If ActiveWorkbook.Worksheets(idx).Visible And idx <> ActiveWorkbook.ActiveSheet.Index Then
             Call Activate_Nth_sheet(idx)
         End If
