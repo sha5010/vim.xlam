@@ -1,5 +1,7 @@
 <p align="center">
-  <img alt="vim xlam_banner" src="https://user-images.githubusercontent.com/95682647/175554011-5f9b5a37-a08d-47f7-ac63-b162620cc99d.png" width="600">
+  <a href="https://github.com/sha5010/vim.xlam">
+    <img alt="vim xlam_banner" src="https://user-images.githubusercontent.com/95682647/175554011-5f9b5a37-a08d-47f7-ac63-b162620cc99d.png" width="600">
+  </a>
 </p>
 
 <p align="center">
@@ -16,439 +18,443 @@
 
 # vim.xlam
 
-[VimExcel](https://www.vector.co.jp/soft/winnt/business/se494158.html) を参考に、ExcelでVimのキーバインドが使えるようにした Excelアドインです。
-
-This is an Excel add-in that allows Vim keybindings to be used in Excel, with reference to [Vimexcel](https://www.vector.co.jp/soft/winnt/business/se494158.html).
+Vim experience in Excel. This is an Excel add-in that allows you to use Vim keybindings within Excel.
 
 ## Description
 
-vim.xlam は vim のような使用感で Excel 上でもキーボード主体で操作できるようにするための Excelアドインです。
+vim.xlam is an Excel add-in designed to provide a Vim-like experience, allowing you to navigate and operate within Excel using keyboard shortcuts.
 
-拡張性を意識して作成しており、自身でメソッドを作成し `map` メソッドでキー割り当てを行うことで、簡単にカスタマイズできます。またデフォルトのキーバインドから簡単に変えられるように設計していますので、ご自分に取って最適なキーバインドに設定することができます。
+Designed with extensibility in mind, you can create your own methods and easily customize keybindings using the `map` method. It's also designed to allow you to change keybindings easily from the default ones, so you can configure it to suit your preferences.
 
 ***Demo:***
 
 ![demo](https://user-images.githubusercontent.com/95682647/175773473-50376812-afcc-4ced-b436-7150d7b97872.gif)
 
-\* サンプルファイルは [https://atelierkobato.com](https://atelierkobato.com/download/) 様のものを使用しております。
+\* Sample file courtesy of [https://atelierkobato.com](https://atelierkobato.com/download/).
 
 ## Features
 
-- `hjkl` を基本としたセル移動だけでなく、`gg`、`G`、`^`、`$` といったジャンプコマンドも多数使用可能
-- フォント、背景色、罫線などの設定もマウス操作なしで効率的に実施可能
-- コメント操作、スクロール操作、ワークシート操作などの機能も搭載
-- 最後に編集したセルやジャンプ前のセルを記憶し、ジャンプする機能も搭載 (ジャンプリスト)
-- 容易なカスタマイズ性を追求しており、どなたでもカスタマイズ可能
+- Supports not only basic cell navigation using `hjkl` but also various jump commands like `gg`, `G`, `^`, `$`.
+- Efficiently perform tasks such as font, background color, and border settings without mouse interaction.
+- Equipped with features for commenting, scrolling, and worksheet operations.
+- Remembers the last edited cell and the cell before a jump, providing a jump list feature.
+- Designed for easy customization, making it accessible to anyone.
 
 ## Installation
 
-1. [リリースページ](https://github.com/sha5010/vim.xlam/releases/latest)から最新の vim.xlam をダウンロードしてください。(または[ここ](https://github.com/sha5010/vim.xlam/releases/latest/download/vim.xlam)から直接ダウンロードできます）
-2. ダウンロードした vim.xlam を `C:\Users\<USERNAME>\AppData\Roaming\Microsoft\AddIns` 配下に保存してください。
-3. Excel を起動し、ファイル &gt; オプション &gt; アドイン と進み、画面下部の **設定...** ボタンをクリックしてください。
-4. **参照...** のボタンをクリックし、保存した vim.xlam を選択してアドインを追加すれば完了です。
+1. Download the latest vim.xlam from the [Release Page](https://github.com/sha5010/vim.xlam/releases/latest) (or [directly download the latest version](https://github.com/sha5010/vim.xlam/releases/latest/download/vim.xlam)).
+2. Save the downloaded vim.xlam in `C:\Users\<USERNAME>\AppData\Roaming\Microsoft\AddIns`.
+3. Launch Excel, go to File &gt; Options &gt; Add-Ins, and click the **Go...** button at the bottom of the screen.
+4. Click the **Browse...** button, select the saved vim.xlam, and add the add-in.
 
 ## Usage
 
-- デフォルトの設定では `Ctrl + M` キーを押すことで Vimモードのオン/オフを切り替え可能
-- セルの移動は `hjkl` で実施できるほか、`a` や `i` などでセルの編集が可能
-- その他、多数のコマンドが使用可能
+- By default, you can toggle Vim mode on/off with the `Ctrl + M` key combination.
+- You can navigate cells using `hjkl`, and also perform cell editing with commands like `a` and `i`.
+- Many other commands are available for use.
+
+
+Please note that the default configuration is tailored for Japanese users. If you are not a Japanese user, you should modify the following section in [UserConfig.bas](./src/UserConfig.bas) to set it to `False`:
+
+```vb
+Public Const DEFAULT_LANG_JA As Boolean = True
+```
 
 ### Default Keybindings
 
-**主なコマンド**
+**Primary Commands**
 
-| Type | Keystroke | Action | Description |
-| ---- | --------- | ------ | ----------- |
-| Core | `<C-m>` | `toggleVim` | Vimモードの切替 |
-| InsertMode | `a` | `appendFollowLangMode` | IMEを言語モードに合わせてセルを末尾から編集 |
-| InsertMode | `i` | `insertFollowLangMode` | IMEを言語モードに合わせてセルを先頭から編集 |
-| InsertMode | `s` | `substituteFollowLangMode` | IMEを言語モードに合わせてセルをクリアして編集 |
-| Moving | `h` | `moveLeft` | ← |
-| Moving | `j` | `moveDown` | ↓ |
-| Moving | `k` | `moveUp` | ↑ |
-| Moving | `l` | `moveRight` | → |
-| Moving | `gg` | `moveToTopRow` | 1行目に移動。`[count]` ありなら `[count]` 行へ移動 |
-| Cell | `FF`/`Ff` | `applyFlashFill` | フラッシュフィル(適用不可の際はオートフィル) |
-| Cell | `v` | `toggleVisualMode` | ビジュアルモード(選択範囲の拡張)を切り替え |
-| Border | `bb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 細線) |
-| Border | `ba` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (実線, 細線) |
-| Border | `bia` | `toggleBorderInner` | 選択セルの内側全てに罫線を設定 (実線, 細線) |
-| Row | `ra` | `appendRows` | 現在行の後に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
-| Row | `ri` | `insertRows` | 現在行の前に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
-| Row | `rd` | `deleteRows` | 現在行を削除。`[count]` が与えられたときは `[count]` 行削除 |
-| Column | `ca` | `appendColumns` | 現在列の後に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
-| Column | `ci` | `insertColumns` | 現在列の前に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
-| Column | `cd` | `deleteColumns` | 現在列を削除。`[count]` が与えられたときは `[count]` 列削除 |
-| Delete | `D` | `deleteValue` | セルの値を削除 |
-| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは後に追加。それ以外は `Ctrl + V` で貼り付け |
-| Paste | `P` | `pasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` で貼り付け |
-| Font | `-` | `decreaseFontSize` | フォントサイズの縮小 |
-| Font | `+` | `increaseFontSize` | フォントサイズの拡大 |
-| Color | `fc` | `smartFontColor` | フォントの色を選択するダイアログを表示 |
-| Find & Replace | `/` | `showFindFollowLang` | IMEを言語モードに合わせて検索ダイアログを表示 |
-| Find & Replace | `n` | `nextFoundCell` | 検索結果の次のセルを選択 |
-| Find & Replace | `N` | `previousFoundCell` | 検索結果の前のセルを選択 |
-| Scrolling | `<C-u>` | `scrollUpHalf` | 半ページ上スクロール |
-| Scrolling | `<C-d>` | `scrollDownHalf` | 半ページ下スクロール |
-| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
-| Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
-| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
-| Worksheet | `e` | `nextWorksheet` | 次のシートを選択 |
-| Worksheet | `E` | `previousWorksheet` | 前のシートを選択 |
-| Worksheet | `wr` | `renameWorksheet` | アクティブなシート名を変更 |
-| Worksheet | `ww` | `showSheetPicker` | SheetPicker を起動 |
-| Workbook | `:w` | `saveWorkbook` | アクティブブックを保存 |
-| Workbook | `:q` | `closeAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) |
-| Workbook | `:q!`/`ZQ` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
-| Workbook | `:wq`/`x`/`ZZ` | `closeWithSaving` | アクティブブックを保存して閉じる |
-| Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) |
-| Other | `<C-r>` | `redoExecute` | やり直し |
+| Type | Keystroke | Action | Description | Count |
+| ---- | --------- | ------ | ----------- | ----- |
+| Core | `<C-m>` | `toggleVim` | Toggle Vim mode | |
+| InsertMode | `a` | `appendFollowLangMode` | Edit cell from the end, following language mode for IME | |
+| InsertMode | `i` | `insertFollowLangMode` | Edit cell from the start, following language mode for IME | |
+| InsertMode | `s` | `substituteFollowLangMode` | Clear and edit cell, following language mode for IME | |
+| Moving | `h` | `moveLeft` | ← | ✓ |
+| Moving | `j` | `moveDown` | ↓ | ✓ |
+| Moving | `k` | `moveUp` | ↑ | ✓ |
+| Moving | `l` | `moveRight` | → | ✓ |
+| Moving | `gg` | `moveToTopRow` | Move to the 1st row or the `[count]`-th row | ✓ |
+| Cell | `FF`/`Ff` | `applyFlashFill` | Flash Fill (fallback to Auto Fill if not applicable) | |
+| Cell | `v` | `toggleVisualMode` | Toggle visual mode (extend selection) | |
+| Border | `bb` | `toggleBorderAll` | Set borders around and inside the selected cells (solid, thin line) | |
+| Border | `ba` | `toggleBorderAround` | Set borders around the selected cells (solid, thin line) | |
+| Border | `bia` | `toggleBorderInner` | Set borders inside the selected cells (solid, thin line) | |
+| Row | `ra` | `appendRows` | Insert rows below the current row | ✓ |
+| Row | `ri` | `insertRows` | Insert rows above the current row | ✓ |
+| Row | `rd` | `deleteRows` | Delete the current row | ✓ |
+| Column | `ca` | `appendColumns` | Insert columns to the right of the current column | ✓ |
+| Column | `ci` | `insertColumns` | Insert columns to the left of the current column | ✓ |
+| Column | `cd` | `deleteColumns` | Delete the current column | ✓ |
+| Delete | `D`/`X` | `deleteValue` | Delete the value in the cell | |
+| Paste | `p` | `pasteSmart` | Paste after copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
+| Paste | `P` | `pasteSmart` | Paste before copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
+| Font | `-` | `decreaseFontSize` | Decrease font size | |
+| Font | `+` | `increaseFontSize` | Increase font size | |
+| Color | `fc` | `smartFontColor` | Show the font color selection dialog | |
+| Find & Replace | `/` | `showFindFollowLang` | Show the find dialog, following the language mode of IME | |
+| Find & Replace | `n` | `nextFoundCell` | Select the next found cell | ✓ |
+| Find & Replace | `N` | `previousFoundCell` | Select the previous found cell | ✓ |
+| Scrolling | `<C-u>` | `scrollUpHalf` | Scroll up by half a page | |
+| Scrolling | `<C-d>` | `scrollDownHalf` | Scroll down by half a page | |
+| Scrolling | `zt` | `scrollCurrentTop` | Scroll to make the current row at the top (`SCREEN_OFFSET` pts of padding) | |
+| Scrolling | `zz` | `scrollCurrentMiddle` | Scroll to make the current row in the middle | |
+| Scrolling | `zb` | `scrollCurrentBottom` | Scroll to make the current row at the bottom (`SCREEN_OFFSET` pts of padding) | |
+| Worksheet | `e` | `nextWorksheet` | Select the next worksheet | |
+| Worksheet | `E` | `previousWorksheet` | Select the previous worksheet | |
+| Worksheet | `ww` | `showSheetPicker` | Launch the Sheet Picker | |
+| Worksheet | `wr` | `renameWorksheet` | Change the name of the active worksheet | |
+| Workbook | `:w` | `saveWorkbook` | Save the active workbook | |
+| Workbook | `:q` | `closeAskSaving` | Close the active workbook (show a dialog if there are unsaved changes) | |
+| Workbook | `:q!`/`ZQ` | `closeWithoutSaving` | Close the active workbook without saving | |
+| Workbook | `:wq`/`:x`/`ZZ` | `closeWithSaving` | Save and close the active workbook | |
+| Other | `u` | `undo_CtrlZ` | Undo (send `Ctrl + Z`) | |
+| Other | `<C-r>` | `redoExecute` | Redo | |
 
-<details><summary>全てのコマンドはこちらを展開</summary><div>
+<details><summary>Expand all commands</summary><div>
 
-| Type | Keystroke | Action | Description |
-| ---- | --------- | ------ | ----------- |
-| Core | `<C-m>` | `toggleVim` | Vimモードの切替 |
-| Core | `<C-p>` | `toggleLang` | 言語モードの切替 (日本語/英語) |
-| Core | `:r` | `reloadVim` | vim.xlam をリロード |
-| Core | `:r!` | `reloadVim` | vim.xlam をリロード (キーバインドを再適用) |
-| Core | `:debug` | `toggleDebugMode` | デバッグモードを切り替える |
-| InsertMode | `a` | `appendFollowLangMode` | IMEを言語モードに合わせてセルを末尾から編集 |
-| InsertMode | `A` | `appendNotFollowLangMode` | IMEを言語モードに合わせずセルを末尾から編集 |
-| InsertMode | `i` | `insertFollowLangMode` | IMEを言語モードに合わせてセルを先頭から編集 |
-| InsertMode | `I` | `insertNotFollowLangMode` | IMEを言語モードに合わせずセルを先頭から編集 |
-| InsertMode | `s` | `substituteFollowLangMode` | IMEを言語モードに合わせてセルをクリアして編集 |
-| InsertMode | `S` | `substituteNotFollowLangMode` | IMEを言語モードに合わせずセルをクリアして編集 |
-| Moving | `h` | `moveLeft` | ← |
-| Moving | `j` | `moveDown` | ↓ |
-| Moving | `k` | `moveUp` | ↑ |
-| Moving | `l` | `moveRight` | → |
-| Moving | `H` | `moveLeft` | Shift + ← |
-| Moving | `J` | `moveDown` | Shift + ↓ |
-| Moving | `K` | `moveUp` | Shift + ↑ |
-| Moving | `L` | `moveRight` | Shift + → |
-| Moving | `<C-h>` | `moveLeft` | Ctrl + ← |
-| Moving | `<C-j>` | `moveDown` | Ctrl + ↓ |
-| Moving | `<C-k>` | `moveUp` | Ctrl + ↑ |
-| Moving | `<C-l>` | `moveRight` | Ctrl + → |
-| Moving | `<C-S-H>` | `moveLeft` | Ctrl + Shift + ← |
-| Moving | `<C-S-J>` | `moveDown` | Ctrl + Shift + ↓ |
-| Moving | `<C-S-K>` | `moveUp` | Ctrl + Shift + ↑ |
-| Moving | `<C-S-L>` | `moveRight` | Ctrl + Shift + → |
-| Moving | `gg` | `moveToTopRow` | 1行目に移動。`[count]` ありなら `[count]` 行へ移動 |
-| Moving | `G` | `moveToLastRow` | UsedRange の最終行に移動。`[count]` ありなら `[count]` 行へ移動 |
-| Moving | `\|` | `moveToNthColumn` | `[count]` 列目に移動 |
-| Moving | `0` | `moveToFirstColumn` | 1列目に移動 |
-| Moving | `^` | `moveToLeftEnd` | UsedRange の最初の列に移動 |
-| Moving | `$` | `moveToRightEnd` | UsedRange の最後の列に移動 |
-| Moving | `g0` | `moveToA1` | A1セルに移動 |
-| Moving | `{` | `moveToTopOfCurrentRegion` | CurrentRegion 内で最初の行に移動 |
-| Moving | `}` | `moveToBottomOfCurrentRegion` | CurrentRegion 内で最後の行に移動 |
-| Moving | `W[cell]` | `moveToSpecifiedCell` | 指定された `[cell]` へ移動 |
-| Moving | `:[num]` | `moveToSpecifiedRow` | 指定された `[num]` 行目に移動 |
-| Cell | `xx` | `cutCell` | セルを切り取り |
-| Cell | `yy` | `yankCell` | セルをコピー |
-| Cell | `o` | `insertCellsDown` | 選択セルの下にセルを挿入 |
-| Cell | `O` | `insertCellsUp` | 選択セルの上にセルを挿入 |
-| Cell | `t` | `insertCellsRight` | 選択セルの右にセルを挿入 |
-| Cell | `T` | `insertCellsLeft` | 選択セルの左にセルを挿入 |
-| Cell | `>` | `incrementText` | インデントを増やす |
-| Cell | `<` | `decrementText` | インデントを減らす |
-| Cell | `(` | `increaseDecimal` | 小数点表示桁上げ |
-| Cell | `)` | `decreaseDecimal` | 小数点表示桁下げ |
-| Cell | `zw` | `toggleWrapText` | セルの折り返しのオン/オフを切り替え |
-| Cell | `&` | `toggleMergeCells` | セル結合のオン/オフを切り替え |
-| Cell | `f,` | `applyCommaStyle` | 桁区切りスタイルを適用 |
-| Cell | `<Space>` | `unionSelectCells` | 現在セルを記憶に追加し、記憶したセルを選択 (複数セルの選択が可能) |
-| Cell | `<S-Space>` | `exceptSelectCells` | 記憶された選択済みセルから現在セルを取り除く |
-| Cell | `<S-BS>` | `clearSelectCells` | 記憶された選択済みセルをクリアする |
-| Cell | `gf` | `followHyperlinkOfActiveCell` | セルのハイパーリンクを開く |
-| Cell | `FF`/`Ff` | `applyFlashFill` | フラッシュフィル(適用不可の際はオートフィル) |
-| Cell | `FA`/`Fa` | `applyAutoFill` | オートフィル |
-| Cell | `=s` | `autoSum` | オートSUM (合計) |
-| Cell | `=a` | `autoAverage` | オートSUM (平均) |
-| Cell | `=c` | `autoCount` | オートSUM (数値の個数) |
-| Cell | `=m` | `autoMax` | オートSUM (最大値) |
-| Cell | `=i` | `autoMin` | オートSUM (最小値) |
-| Cell | `==` | `insertFunction` | 関数の挿入 |
-| Cell | `v` | `toggleVisualMode` | ビジュアルモード(選択範囲の拡張)を切り替え |
-| Cell | `V` | `toggleVisualLine` | ビジュアル行モード(選択範囲の拡張)を切り替え |
-| Border | `bb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 細線) |
-| Border | `ba` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (実線, 細線) |
-| Border | `bh` | `toggleBorderLeft` | 選択セルの左に罫線を設定 (実線, 細線) |
-| Border | `bj` | `toggleBorderBottom` | 選択セルの下に罫線を設定 (実線, 細線) |
-| Border | `bk` | `toggleBorderTop` | 選択セルの上に罫線を設定 (実線, 細線) |
-| Border | `bl` | `toggleBorderRight` | 選択セルの右に罫線を設定 (実線, 細線) |
-| Border | `bia` | `toggleBorderInner` | 選択セルの内側全てに罫線を設定 (実線, 細線) |
-| Border | `bis` | `toggleBorderInnerHorizontal` | 選択セルの内側水平に罫線を設定 (実線, 細線) |
-| Border | `biv` | `toggleBorderInnerVertical` | 選択セルの内側垂直に罫線を設定 (実線, 細線) |
-| Border | `b/` | `toggleBorderDiagonalUp` | 選択セルに `/` 方向の罫線を設定 (実線, 細線) |
-| Border | `b\` | `toggleBorderDiagonalDown` | 選択セルに `\` 方向の罫線を設定 (実線, 細線) |
-| Border | `bB` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 太線) |
-| Border | `bA` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (実線, 太線) |
-| Border | `bH` | `toggleBorderLeft` | 選択セルの左に罫線を設定 (実線, 太線) |
-| Border | `bJ` | `toggleBorderBottom` | 選択セルの下に罫線を設定 (実線, 太線) |
-| Border | `bK` | `toggleBorderTop` | 選択セルの上に罫線を設定 (実線, 太線) |
-| Border | `bL` | `toggleBorderRight` | 選択セルの右に罫線を設定 (実線, 太線) |
-| Border | `Bb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 太線) |
-| Border | `Ba` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (実線, 太線) |
-| Border | `Bh` | `toggleBorderLeft` | 選択セルの左に罫線を設定 (実線, 太線) |
-| Border | `Bj` | `toggleBorderBottom` | 選択セルの下に罫線を設定 (実線, 太線) |
-| Border | `Bk` | `toggleBorderTop` | 選択セルの上に罫線を設定 (実線, 太線) |
-| Border | `Bl` | `toggleBorderRight` | 選択セルの右に罫線を設定 (実線, 太線) |
-| Border | `Bia` | `toggleBorderInner` | 選択セルの内側全てに罫線を設定 (実線, 太線) |
-| Border | `Bis` | `toggleBorderInnerHorizontal` | 選択セルの内側水平に罫線を設定 (実線, 太線) |
-| Border | `Biv` | `toggleBorderInnerVertical` | 選択セルの内側垂直に罫線を設定 (実線, 太線) |
-| Border | `B/` | `toggleBorderDiagonalUp` | 選択セルに `/` 方向の罫線を設定 (実線, 太線) |
-| Border | `B\` | `toggleBorderDiagonalDown` | 選択セルに `\` 方向の罫線を設定 (実線, 太線) |
-| Border | `bob` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 極細線) |
-| Border | `boa` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (実線, 極細線) |
-| Border | `boh` | `toggleBorderLeft` | 選択セルの左に罫線を設定 (実線, 極細線) |
-| Border | `boj` | `toggleBorderBottom` | 選択セルの下に罫線を設定 (実線, 極細線) |
-| Border | `bok` | `toggleBorderTop` | 選択セルの上に罫線を設定 (実線, 極細線) |
-| Border | `bol` | `toggleBorderRight` | 選択セルの右に罫線を設定 (実線, 極細線) |
-| Border | `boia` | `toggleBorderInner` | 選択セルの内側全てに罫線を設定 (実線, 極細線) |
-| Border | `bois` | `toggleBorderInnerHorizontal` | 選択セルの内側水平に罫線を設定 (実線, 極細線) |
-| Border | `boiv` | `toggleBorderInnerVertical` | 選択セルの内側垂直に罫線を設定 (実線, 極細線) |
-| Border | `bo/` | `toggleBorderDiagonalUp` | 選択セルに `/` 方向の罫線を設定 (実線, 極細線) |
-| Border | `bo\` | `toggleBorderDiagonalDown` | 選択セルに `\` 方向の罫線を設定 (実線, 極細線) |
-| Border | `bmb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (実線, 中線) |
-| Border | `bma` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (実線, 中線) |
-| Border | `bmh` | `toggleBorderLeft` | 選択セルの左に罫線を設定 (実線, 中線) |
-| Border | `bmj` | `toggleBorderBottom` | 選択セルの下に罫線を設定 (実線, 中線) |
-| Border | `bmk` | `toggleBorderTop` | 選択セルの上に罫線を設定 (実線, 中線) |
-| Border | `bml` | `toggleBorderRight` | 選択セルの右に罫線を設定 (実線, 中線) |
-| Border | `bmia` | `toggleBorderInner` | 選択セルの内側全てに罫線を設定 (実線, 中線) |
-| Border | `bmis` | `toggleBorderInnerHorizontal` | 選択セルの内側水平に罫線を設定 (実線, 中線) |
-| Border | `bmiv` | `toggleBorderInnerVertical` | 選択セルの内側垂直に罫線を設定 (実線, 中線) |
-| Border | `bm/` | `toggleBorderDiagonalUp` | 選択セルに `/` 方向の罫線を設定 (実線, 中線) |
-| Border | `bm\` | `toggleBorderDiagonalDown` | 選択セルに `\` 方向の罫線を設定 (実線, 中線) |
-| Border | `btb` | `toggleBorderAll` | 選択セルの周りと内側の全てに罫線を設定 (二重線, 太線) |
-| Border | `bta` | `toggleBorderAround` | 選択セルの周りに罫線を設定 (二重線, 太線) |
-| Border | `bth` | `toggleBorderLeft` | 選択セルの左に罫線を設定 (二重線, 太線) |
-| Border | `btj` | `toggleBorderBottom` | 選択セルの下に罫線を設定 (二重線, 太線) |
-| Border | `btk` | `toggleBorderTop` | 選択セルの上に罫線を設定 (二重線, 太線) |
-| Border | `btl` | `toggleBorderRight` | 選択セルの右に罫線を設定 (二重線, 太線) |
-| Border | `btia` | `toggleBorderInner` | 選択セルの内側全てに罫線を設定 (二重線, 太線) |
-| Border | `btis` | `toggleBorderInnerHorizontal` | 選択セルの内側水平に罫線を設定 (二重線, 太線) |
-| Border | `btiv` | `toggleBorderInnerVertical` | 選択セルの内側垂直に罫線を設定 (二重線, 太線) |
-| Border | `bt/` | `toggleBorderDiagonalUp` | 選択セルに `/` 方向の罫線を設定 (二重線, 太線) |
-| Border | `bt\` | `toggleBorderDiagonalDown` | 選択セルに `\` 方向の罫線を設定 (二重線, 太線) |
-| Border | `bdd` | `deleteBorderAll` | 選択セルの周りと内側の全ての罫線を削除 |
-| Border | `bda` | `deleteBorderAround` | 選択セルの周りの罫線を削除 |
-| Border | `bdh` | `deleteBorderLeft` | 選択セルの左の罫線を削除 |
-| Border | `bdj` | `deleteBorderBottom` | 選択セルの下の罫線を削除 |
-| Border | `bdk` | `deleteBorderTop` | 選択セルの上の罫線を削除 |
-| Border | `bdl` | `deleteBorderRight` | 選択セルの右の罫線を削除 |
-| Border | `bdia` | `deleteBorderInner` | 選択セルの内側全ての罫線を削除 |
-| Border | `bdis` | `deleteBorderInnerHorizontal` | 選択セルの内側水平の罫線を削除 |
-| Border | `bdiv` | `deleteBorderInnerVertical` | 選択セルの内側垂直の罫線を削除 |
-| Border | `bd/` | `deleteBorderDiagonalUp` | 選択セルの `/` 方向の罫線を削除 |
-| Border | `bd\` | `deleteBorderDiagonalDown` | 選択セルの `\` 方向の罫線を削除 |
-| Border | `bcc` | `setBorderColorAll` | 選択セルの周りと内側の全ての罫線の色を設定 |
-| Border | `bca` | `setBorderColorAround` | 選択セルの周りの罫線の色を設定 |
-| Border | `bch` | `setBorderColorLeft` | 選択セルの左の罫線の色を設定 |
-| Border | `bcj` | `setBorderColorBottom` | 選択セルの下の罫線の色を設定 |
-| Border | `bck` | `setBorderColorTop` | 選択セルの上の罫線の色を設定 |
-| Border | `bcl` | `setBorderColorRight` | 選択セルの右の罫線の色を設定 |
-| Border | `bcia` | `setBorderColorInner` | 選択セルの内側全ての罫線の色を設定 |
-| Border | `bcis` | `setBorderColorInnerHorizontal` | 選択セルの内側水平の罫線の色を設定 |
-| Border | `bciv` | `setBorderColorInnerVertical` | 選択セルの内側垂直の罫線の色を設定 |
-| Border | `bc/` | `setBorderColorDiagonalUp` | 選択セルの `/` 方向の罫線の色を設定 |
-| Border | `bc\` | `setBorderColorDiagonalDown` | 選択セルの `\` 方向の罫線の色を設定 |
-| Row | `r-` | `narrowRowsHeight` | 行の高さを1pt狭くする。`[count]` が与えられたときは `[count]`pt |
-| Row | `r+` | `wideRowsHeight` | 行の高さを1pt広くする。`[count]` が与えられたときは `[count]`pt |
-| Row | `rr` | `selectRows` | 行を選択。`[count]` が与えられたときは `[count]` 行選択 |
-| Row | `ra` | `appendRows` | 現在行の後に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
-| Row | `ri` | `insertRows` | 現在行の前に行を挿入。`[count]` が与えられたときは `[count]` 行挿入 |
-| Row | `rd` | `deleteRows` | 現在行を削除。`[count]` が与えられたときは `[count]` 行削除 |
-| Row | `ry` | `yankRows` | 現在行をコピー。`[count]` が与えられたときは `[count]` 行コピー |
-| Row | `rx` | `cutRows` | 現在行を切り取り。`[count]` が与えられたときは `[count]` 行切り取り |
-| Row | `rh` | `hideRows` | 現在行を非表示化。`[count]` が与えられたときは `[count]` 行非表示化 |
-| Row | `rH` | `unhideRows` | 現在行を再表示。`[count]` が与えられたときは `[count]` 行再表示 |
-| Row | `rg` | `groupRows` | 現在行をグループ化。`[count]` が与えられたときは `[count]` 行グループ化 |
-| Row | `ru` | `ungroupRows` | 現在行をグループ化解除。`[count]` が与えられたときは `[count]` 行グループ化解除 |
-| Row | `rf` | `foldRowsGroup` | 現在行を畳む。`[count]` が与えられたときは `[count]` 行畳む |
-| Row | `rs` | `spreadRowsGroup` | 現在行の折り畳みを開く。`[count]` が与えられたときは `[count]` 行開く |
-| Row | `rj` | `adjustRowsHeight` | 現在行の高さを自動調整。`[count]` が与えられたときは `[count]` 行自動調整 |
-| Row | `rw` | `setRowsHeight` | 現在行の高さを任意に設定。`[count]` が与えられたときは `[count]` 行設定 |
-| Column | `c-` | `narrowColumnsWidth` | 列幅を1pt狭くする。`[count]` が与えられたときは `[count]`pt |
-| Column | `c+` | `wideColumnsWidth` | 列幅を1pt広くする。`[count]` が与えられたときは `[count]`pt |
-| Column | `cc` | `selectColumns` | 列を選択。`[count]` が与えられたときは `[count]` 列選択 |
-| Column | `ca` | `appendColumns` | 現在列の後に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
-| Column | `ci` | `insertColumns` | 現在列の前に列を挿入。`[count]` が与えられたときは `[count]` 列挿入 |
-| Column | `cd` | `deleteColumns` | 現在列を削除。`[count]` が与えられたときは `[count]` 列削除 |
-| Column | `cy` | `yankColumns` | 現在列をコピー。`[count]` が与えられたときは `[count]` 列コピー |
-| Column | `cx` | `cutColumns` | 現在列を切り取り。`[count]` が与えられたときは `[count]` 列切り取り |
-| Column | `ch` | `hideColumns` | 現在列を非表示化。`[count]` が与えられたときは `[count]` 列非表示化 |
-| Column | `cH` | `unhideColumns` | 現在列を再表示。`[count]` が与えられたときは `[count]` 列再表示 |
-| Column | `cg` | `groupColumns` | 現在列をグループ化。`[count]` が与えられたときは `[count]` 列グループ化 |
-| Column | `cu` | `ungroupColumns` | 現在列をグループ化解除。`[count]` が与えられたときは `[count]` 列グループ化解除 |
-| Column | `cf` | `foldColumnsGroup` | 現在列を畳む。`[count]` が与えられたときは `[count]` 列畳む |
-| Column | `cs` | `spreadColumnsGroup` | 現在列の折り畳みを開く。`[count]` が与えられたときは `[count]` 列開く |
-| Column | `cj` | `adjustColumnsWidth` | 現在列の幅を自動調整。`[count]` が与えられたときは `[count]` 列自動調整 |
-| Column | `cw` | `setColumnsWidth` | 現在列の幅を任意に設定。`[count]` が与えられたときは `[count]` 列設定 |
-| Yank | `yr` | `yankRows` | 現在行をコピー。`[count]` が与えられたときは `[count]` 行コピー |
-| Yank | `yc` | `yankColumns` | 現在列をコピー。`[count]` が与えられたときは `[count]` 列コピー |
-| Yank | `ygg` | `yankToTopRows` | 現在行から1行目までをコピー |
-| Yank | `yG` | `yankToBottomRows` | 現在行から UsedRange の最終行までをコピー |
-| Yank | `y{` | `yankToTopOfCurrentRegionRows` | 現在行から CurrentRegion の最初の行までをコピー |
-| Yank | `y}` | `yankToBottomOfCurrentRegionRows` | 現在行から CurrentRegion の最後の行までをコピー |
-| Yank | `y0` | `yankToLeftEndColumns` | 現在列から UsedRange の最初の列までをコピー |
-| Yank | `y$` | `yankToRightEndColumns` | 現在列から UsedRange の最後の列までをコピー |
-| Yank | `y^` | `yankToLeftOfCurrentRegionColumns` | 現在列から CurrentRegion  の最初の列までをコピー |
-| Yank | `yg$` | `yankToRightOfCurrentRegionColumns` | 現在列から CurrentRegion の最後の列までをコピー |
-| Yank | `yh` | `yankFromLeftCell` | 現在のセルの左の値をコピーして貼り付け |
-| Yank | `yj` | `yankFromDownCell` | 現在のセルの下の値をコピーして貼り付け |
-| Yank | `yk` | `yankFromUpCell` | 現在のセルの上の値をコピーして貼り付け |
-| Yank | `yl` | `yankFromRightCell` | 現在のセルの右の値をコピーして貼り付け |
-| Yank | `Y` | `yankAsPlaintext` | 選択中のセルをプレーンテキストとしてコピー |
-| Delete | `X` | `deleteValue` | セルの値を削除 |
-| Delete | `D` | `deleteValue` | セルの値を削除 |
-| Delete | `dx` | `deleteRows` | 現在行を削除。`[count]` が与えられたときは `[count]` 行削除 |
-| Delete | `dr` | `deleteRows` | 現在行を削除。`[count]` が与えられたときは `[count]` 行削除 |
-| Delete | `dc` | `deleteColumns` | 現在列を削除。`[count]` が与えられたときは `[count]` 列削除 |
-| Delete | `dgg` | `deleteToTopRows` | 現在行から先頭行までを削除 |
-| Delete | `dG` | `deleteToBottomRows` | 現在行から UsedRange の最終行までを削除 |
-| Delete | `d{` | `deleteToTopOfCurrentRegionRows` | 現在行から CurrentRegion の最初の行までを削除 |
-| Delete | `d}` | `deleteToBottomOfCurrentRegionRows` | 現在行から CurrentRegion の最後の行までを削除 |
-| Delete | `d0` | `deleteToLeftEndColumns` | 現在列から UsedRange の最初の列までを削除 |
-| Delete | `d$` | `deleteToRightEndColumns` | 現在列から UsedRange の最後の列までを削除 |
-| Delete | `d^` | `deleteToLeftOfCurrentRegionColumns` | 現在列から CurrentRegion  の最初の列までを削除 |
-| Delete | `dg$` | `deleteToRightOfCurrentRegionColumns` | 現在列から CurrentRegion の最後の列までを削除 |
-| Delete | `dh` | `deleteToLeft` | 現在のセルを削除し左方向へシフト
-| Delete | `dj` | `deleteToUp` | 現在のセルを削除し上方向へシフト |
-| Delete | `dk` | `deleteToUp` | 現在のセルを削除し上方向へシフト |
-| Delete | `dl` | `deleteToLeft` | 現在のセルを削除し左方向へシフト |
-| Cut | `xr` | `cutRows` | 現在行を切り取り。`[count]` が与えられたときは `[count]` 行切り取り |
-| Cut | `xc` | `cutColumns` | 現在列を切り取り。`[count]` が与えられたときは `[count]` 列切り取り |
-| Cut | `xgg` | `cutToTopRows` | 現在行から1行目までを切り取り |
-| Cut | `xG` | `cutToBottomRows` | 現在行から UsedRange の最後の行までを切り取り |
-| Cut | `x{` | `cutToTopOfCurrentRegionRows` | 現在行から CurrentRegion  の最初の列までを切り取り |
-| Cut | `x}` | `cutToBottomOfCurrentRegionRows` | 現在行から CurrentRegion の最後の行までを切り取り |
-| Cut | `x0` | `cutToLeftEndColumns` | 現在列から UsedRange の最初の列までを切り取り |
-| Cut | `x$` | `cutToRightEndColumns` | 現在列から UsedRange の最後の列までを切り取り |
-| Cut | `x^` | `cutToLeftOfCurrentRegionColumns` | 現在列から CurrentRegion  の最初の列までを切り取り |
-| Cut | `xg$` | `cutToRightOfCurrentRegionColumns` | 現在列から CurrentRegion の最後の列までを切り取り |
-| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは後に追加。それ以外は `Ctrl + V` で貼り付け |
-| Paste | `p` | `pasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` で貼り付け |
-| Paste | `gp` | `pasteSpecial` | 形式を選択して貼り付けのダイアログを表示 |
-| Paste | `U` | `pasteValue` | 値のみ貼り付け |
-| Font | `-` | `decreaseFontSize` | フォントサイズの縮小 |
-| Font | `+` | `increaseFontSize` | フォントサイズの拡大 |
-| Font | `fn` | `changeFontName` | フォント名にフォーカス |
-| Font | `fs` | `changeFontSize` | フォントサイズにフォーカス |
-| Font | `fh` | `alignLeft` | 左揃え |
-| Font | `fj` | `alignBottom` | 下揃え |
-| Font | `fk` | `alignTop` | 上揃え |
-| Font | `fl` | `alignRight` | 右揃え |
-| Font | `fo` | `alignCenter` | 文字列中央揃え |
-| Font | `fm` | `alignMiddle` | 上下中央揃え |
-| Font | `fb` | `toggleBold` | 太字 |
-| Font | `fi` | `toggleItalic` | 斜体 |
-| Font | `fu` | `toggleUnderline` | 下線 |
-| Font | `f-` | `toggleStrikethrough` | 取り消し線 |
-| Font | `ft` | `changeFormat` | 表示形式にフォーカス |
-| Font | `ff` | `showFontDialog` | セルの書式設定のダイアログを表示 |
-| Color | `fc` | `smartFontColor` | フォントの色を選択するダイアログを表示 |
-| Color | `FC`/`Fc` | `smartFillColor` | 塗りつぶしの色を選択すダイアログを表示 |
-| Color | `bc` | `changeShapeBorderColor` | (図形選択時) 枠線の色を選択するダイアログを表示 |
-| Comment | `Ci`/`Cc` | `editCellComment` | コメントを編集 (ない場合は追加) |
-| Comment | `Ce`/`Cx`/`Cd` | `deleteCellComment` | 現在セルのコメントを削除 |
-| Comment | `CE`/`CD` | `deleteCellCommentAll` | シート上のコメントを全て削除 |
-| Comment | `Ca` | `toggleCellComment` | 現在セルのコメントの表示/非表示を切り替え |
-| Comment | `Cr` | `showCellComment` | 現在セルのコメントを表示 |
-| Comment | `Cm` | `hideCellComment` | 現在セルのコメントを非表示 |
-| Comment | `CA` | `toggleCellCommentAll` | すべてのコメントの表示/非表示を切り替え |
-| Comment | `CR` | `showCellCommentAll` | すべてのコメントを表示 |
-| Comment | `CM` | `hideCellCommentAll` | すべてのコメントを非表示 |
-| Comment | `CH` | `hideCellCommentIndicator` | 現在セルのコメントインジケータを非表示 |
-| Comment | `Cn` | `nextCommentedCell` | 次のコメントを選択 |
-| Comment | `Cp` | `prevCommentedCell` | 前のコメントを選択 |
-| Find & Replace | `/` | `showFindFollowLang` | IMEを言語モードに合わせて検索ダイアログを表示 |
-| Find & Replace | `?` | `showFindNotFollowLang` | IMEを言語モードに合わせず検索ダイアログを表示 |
-| Find & Replace | `n` | `nextFoundCell` | 検索結果の次のセルを選択 |
-| Find & Replace | `N` | `previousFoundCell` | 検索結果の前のセルを選択 |
-| Find & Replace | `R` | `showReplaceWindow` | 検索と置換のダイアログを表示 |
-| Find & Replace | `*` | `findActiveValueNext` | 現在セルの値で検索し次のセルを選択 |
-| Find & Replace | `#` | `findActiveValuePrev` | 現在セルの値で検索し前のセルを選択 |
-| Find & Replace | `]c` | `nextSpecialCells` | 次のコメントがあるセルを選択 |
-| Find & Replace | `[c` | `prevSpecialCells` | 前のコメントがあるセルを選択 |
-| Find & Replace | `]o` | `nextSpecialCells` | 次の定数があるセルを選択 |
-| Find & Replace | `[o` | `prevSpecialCells` | 前の定数があるセルを選択 |
-| Find & Replace | `]f` | `nextSpecialCells` | 次の数式があるセルを選択 |
-| Find & Replace | `[f` | `prevSpecialCells` | 前の数式があるセルを選択 |
-| Find & Replace | `]k` | `nextSpecialCells` | 次の空白セルを選択 |
-| Find & Replace | `[k` | `prevSpecialCells` | 前の空白セルを選択 |
-| Find & Replace | `]t` | `nextSpecialCells` | 次の条件付き書式があるセルを選択 |
-| Find & Replace | `[t` | `prevSpecialCells` | 前の条件付き書式があるセルを選択 |
-| Find & Replace | `]v` | `nextSpecialCells` | 次の入力規則があるセルを選択 |
-| Find & Replace | `[v` | `prevSpecialCells` | 前の入力規則があるセルを選択 |
-| Find & Replace | `]s` | `nextShape` | 次の図形を選択 |
-| Find & Replace | `[s` | `prevShape` | 前の図形を選択 |
-| Scrolling | `<C-u>` | `scrollUpHalf` | 半ページ上スクロール |
-| Scrolling | `<C-d>` | `scrollDownHalf` | 半ページ下スクロール |
-| Scrolling | `<C-b>` | `scrollUp` | 1ページ上スクロール |
-| Scrolling | `<C-f>` | `scrollDown` | 1ページ下スクロール |
-| Scrolling | `<C-y>` | `scrollUp1Row` | 1行上スクロール |
-| Scrolling | `<C-e>` | `scrollDown1Row` | 1行下スクロール |
-| Scrolling | `zh` | `scrollLeft1Column` | 1列左スクロール。`[count]` が与えられたときは `[count]` 列スクロール |
-| Scrolling | `zl` | `scrollRight1Column` | 1列右スクロール。`[count]` が与えられたときは `[count]` 列スクロール |
-| Scrolling | `zH` | `scrollLeft` | 1ページ左スクロール。`[count]` が与えられたときは `[count]` ページスクロール |
-| Scrolling | `zL` | `scrollRight` | 1ページ右スクロール。`[count]` が与えられたときは `[count]` ページスクロール |
-| Scrolling | `zt` | `scrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
-| Scrolling | `zz` | `scrollCurrentMiddle` | 現在行が中央に来るように縦スクロール |
-| Scrolling | `zb` | `scrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) |
-| Scrolling | `zs` | `scrollCurrentLeft` | 現在列が一番左に来るように横スクロール |
-| Scrolling | `zm` | `scrollCurrentCenter` | 現在列が中央に来るように横スクロール |
-| Scrolling | `ze` | `scrollCurrentRight` | 現在列が一番右に来るように横スクロール |
-| Worksheet | `e`/`wn` | `nextWorksheet` | 次のシートを選択 |
-| Worksheet | `E`/`wp` | `previousWorksheet` | 前のシートを選択 |
-| Worksheet | `ww`/`ws` | `showSheetPicker` | SheetPicker を起動 |
-| Worksheet | `wr` | `renameWorksheet` | アクティブなシート名を変更 |
-| Worksheet | `wh` | `moveWorksheetBack` | アクティブなシートを前に移動 |
-| Worksheet | `wl` | `moveWorksheetForward` | アクティブなシートを次に移動 |
-| Worksheet | `wi` | `insertWorksheet` | アクティブなシートの前に新しいシートを挿入 |
-| Worksheet | `wa` | `appendWorksheet` | アクティブなシートの次に新しいシートを挿入 |
-| Worksheet | `wd` | `deleteWorksheet` | アクティブなシートを削除 |
-| Worksheet | `w0` | `activateLastWorksheet` | 一番最後のシートを選択 |
-| Worksheet | `w$` | `activateLastWorksheet` | 一番最後のシートを選択 |
-| Worksheet | `wc` | `changeWorksheetTabColor` | アクティブなシートの色を変更 |
-| Worksheet | `wy` | `cloneWorksheet` | アクティブなシートを複製 |
-| Worksheet | `we` | `exportWorksheet` | シートの移動またはコピーダイアログを表示 |
-| Worksheet | `w[num]` | `activateWorksheet` | `[num]` 番目のシートを選択 (1-9 のみ) |
-| Worksheet | `:p` | `printPreviewOfActiveSheet` | 印刷プレビューを表示 |
-| Workbook | `:e` | `openWorkbook` | ブックを開く |
-| Workbook | `:e!` | `reopenActiveWorkbook` | アクティブなブックの変更を破棄し開き直す |
-| Workbook | `:w` | `saveWorkbook` | アクティブブックを保存 |
-| Workbook | `:q` | `closeAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) |
-| Workbook | `:q!`/`ZQ` | `closeWithoutSaving` | アクティブブックを保存せずに閉じる |
-| Workbook | `:wq`/`:x`/`ZZ` | `closeWithSaving` | アクティブブックを保存して閉じる |
-| Workbook | `:b[num]` | `activateWorkbook` | `[num]` 番目のブックを選択 |
-| Workbook | `]b`/`:bn` | `nextWorkbook` | 次のワークブックを選択 |
-| Workbook | `[b`/`:bp` | `previousWorkbook` | 前のワークブックを選択 |
-| Workbook | `~` | `toggleReadOnly` | 読み取り専用を切り替える |
-| Other | `u` | `undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) |
-| Other | `<C-r>` | `redoExecute` | やり直し |
-| Other | `.` | `repeatAction` | 以前の動作を繰り返す (`repeatRegister` が呼ばれるコマンド限定) |
-| Other | `m` | `zoomIn` | 10% ズームイン。`[count]` が与えられたときは `[count]`% ズームイン |
-| Other | `M` | `zoomOut` | 10% ズームアウト。`[count]` が与えられたときは `[count]`% ズームアウト |
-| Other | `%` | `zoomSpecifiedScale` | 表示倍率を `[count]`% に設定。`1-9` は決まった値に倍率変更 |
-| Other | `\` | `showContextMenu` | コンテキストメニューを表示 |
-| Other | `<C-i>` | `jumpNext` | ジャンプリストの次のセルへ移動 |
-| Other | `<C-o>` | `jumpPrev` | ジャンプリストの前のセルへ移動 |
-| Other | `:cle` | `clearJumps` | ジャンプリストをクリア |
-| Other | `zf` | `toggleFreezePanes` | ウィンドウ枠の固定のオン/オフを切り替え |
-| Other | `=v` | `toggleFormulaBar` | 関数バーの表示/非表示を切り替え |
-| Other | `gs` | `showSummaryInfo` | ファイルのプロパティを表示 |
-| Other | `zp` | `setPrintArea` | 選択セルを印刷範囲に設定 |
-| Other | `zP` | `clearPrintArea` | 印刷範囲をクリア |
-| Other | `@@` | `showMacroDialog` | マクロダイアログを表示 |
-| Other | `1-9` | `showCmdForm` | `[count]` を指定 (`5ri` なら5行挿入) |
+| Type | Keystroke | Action | Description | Count |
+| ---- | --------- | ------ | ----------- | ----- |
+| Core | `<C-m>` | `toggleVim` | Toggle Vim mode | |
+| Core | `<C-p>` | `toggleLang` | Toggle language mode (Japanese/English) | |
+| Core | `:r` | `reloadVim` | Reload vim.xlam | |
+| Core | `:r!` | `reloadVim` | Reload vim.xlam (reapply keybindings) | |
+| Core | `:debug` | `toggleDebugMode` | Toggle debug mode | |
+| InsertMode | `a` | `appendFollowLangMode` | Edit cell from the end, following language mode for IME | |
+| InsertMode | `A` | `appendNotFollowLangMode` | Edit cell from the end without following language mode for IME | |
+| InsertMode | `i` | `insertFollowLangMode` | Edit cell from the start, following language mode for IME | |
+| InsertMode | `I` | `insertNotFollowLangMode` | Edit cell from the start without following language mode for IME | |
+| InsertMode | `s` | `substituteFollowLangMode` | Clear and edit cell, following language mode for IME | |
+| InsertMode | `S` | `substituteNotFollowLangMode` | Clear and edit cell without following language mode for IME | |
+| Moving | `h` | `moveLeft` | ← | ✓ |
+| Moving | `j` | `moveDown` | ↓ | ✓ |
+| Moving | `k` | `moveUp` | ↑ | ✓ |
+| Moving | `l` | `moveRight` | → | ✓ |
+| Moving | `H` | `moveLeft` | Shift + ← | ✓ |
+| Moving | `J` | `moveDown` | Shift + ↓ | ✓ |
+| Moving | `K` | `moveUp` | Shift + ↑ | ✓ |
+| Moving | `L` | `moveRight` | Shift + → | ✓ |
+| Moving | `<C-h>` | `moveLeft` | Ctrl + ← | |
+| Moving | `<C-j>` | `moveDown` | Ctrl + ↓ | |
+| Moving | `<C-k>` | `moveUp` | Ctrl + ↑ | |
+| Moving | `<C-l>` | `moveRight` | Ctrl + → | |
+| Moving | `<C-S-H>` | `moveLeft` | Ctrl + Shift + ← | |
+| Moving | `<C-S-J>` | `moveDown` | Ctrl + Shift + ↓ | |
+| Moving | `<C-S-K>` | `moveUp` | Ctrl + Shift + ↑ | |
+| Moving | `<C-S-L>` | `moveRight` | Ctrl + Shift + → | |
+| Moving | `gg` | `moveToTopRow` | Move to the 1st row or the `[count]`-th row | ✓ |
+| Moving | `G` | `moveToLastRow` | Move to the last row of UsedRange or the `[count]`-th row | ✓ |
+| Moving | `\|` | `moveToNthColumn` | Move to the `[count]`-th column | ✓ |
+| Moving | `0` | `moveToFirstColumn` | Move to the 1st column | |
+| Moving | `^` | `moveToLeftEnd` | Move to the first column of UsedRange | |
+| Moving | `$` | `moveToRightEnd` | Move to the last column of UsedRange | |
+| Moving | `g0` | `moveToA1` | Move to cell A1 | |
+| Moving | `{` | `moveToTopOfCurrentRegion` | Move to the first row within the CurrentRegion | |
+| Moving | `}` | `moveToBottomOfCurrentRegion` | Move to the last row within the CurrentRegion | |
+| Moving | `W[cell]` | `moveToSpecifiedCell` | Move to the specified `[cell]` | |
+| Moving | `:[num]` | `moveToSpecifiedRow` | Move to the specified `[num]`-th row | |
+| Cell | `xx` | `cutCell` | Cut cell | |
+| Cell | `yy` | `yankCell` | Copy cell | |
+| Cell | `o` | `insertCellsDown` | Insert cells below the selected cells | ✓ |
+| Cell | `O` | `insertCellsUp` | Insert cells above the selected cells | ✓ |
+| Cell | `t` | `insertCellsRight` | Insert cells to the right of the selected cells | ✓ |
+| Cell | `T` | `insertCellsLeft` | Insert cells to the left of the selected cells | ✓ |
+| Cell | `>` | `incrementText` | Increase indentation | ✓ |
+| Cell | `<` | `decrementText` | Decrease indentation | ✓ |
+| Cell | `(` | `increaseDecimal` | Increase decimal places | ✓ |
+| Cell | `)` | `decreaseDecimal` | Decrease decimal places | ✓ |
+| Cell | `zw` | `toggleWrapText` | Toggle cell wrap text | |
+| Cell | `&` | `toggleMergeCells` | Toggle cell merge | |
+| Cell | `f,` | `applyCommaStyle` | Apply comma style | |
+| Cell | `<Space>` | `unionSelectCells` | Add the current cell to the selection memory and select the remembered cells (allows selecting multiple cells) | |
+| Cell | `<S-Space>` | `exceptSelectCells` | Remove the current cell from the remembered selected cells | |
+| Cell | `<S-BS>` | `clearSelectCells` | Clear the remembered selected cells | |
+| Cell | `gf` | `followHyperlinkOfActiveCell` | Open the hyperlink in the cell | |
+| Cell | `FF`/`Ff` | `applyFlashFill` | Flash Fill (fallback to Auto Fill if not applicable) | |
+| Cell | `FA`/`Fa` | `applyAutoFill` | Auto Fill | |
+| Cell | `=s` | `autoSum` | Auto SUM | |
+| Cell | `=a` | `autoAverage` | Auto SUM (average) | |
+| Cell | `=c` | `autoCount` | Auto SUM (count) | |
+| Cell | `=m` | `autoMax` | Auto SUM (maximum) | |
+| Cell | `=i` | `autoMin` | Auto SUM (minimum) | |
+| Cell | `==` | `insertFunction` | Insert function | |
+| Cell | `v` | `toggleVisualMode` | Toggle visual mode (extend selection) | |
+| Cell | `V` | `toggleVisualLine` | Toggle visual line mode (extend selection) | |
+| Border | `bb` | `toggleBorderAll` | Set borders around and inside the selected cells (solid, thin line) | |
+| Border | `ba` | `toggleBorderAround` | Set borders around the selected cells (solid, thin line) | |
+| Border | `bh` | `toggleBorderLeft` | Set left borders of the selected cells (solid, thin line) | |
+| Border | `bj` | `toggleBorderBottom` | Set bottom borders of the selected cells (solid, thin line) | |
+| Border | `bk` | `toggleBorderTop` | Set top borders of the selected cells (solid, thin line) | |
+| Border | `bl` | `toggleBorderRight` | Set right borders of the selected cells (solid, thin line) | |
+| Border | `bia` | `toggleBorderInner` | Set borders inside the selected cells (solid, thin line) | |
+| Border | `bis` | `toggleBorderInnerHorizontal` | Set horizontal borders inside the selected cells (solid, thin line) | |
+| Border | `biv` | `toggleBorderInnerVertical` | Set vertical borders inside the selected cells (solid, thin line) | |
+| Border | `b/` | `toggleBorderDiagonalUp` | Set diagonal up borders in the selected cells (solid, thin line) | |
+| Border | `b\` | `toggleBorderDiagonalDown` | Set diagonal down borders in the selected cells (solid, thin line) | |
+| Border | `bB` | `toggleBorderAll` | Set borders around and inside the selected cells (solid, thick line) | |
+| Border | `bA` | `toggleBorderAround` | Set borders around the selected cells (solid, thick line) | |
+| Border | `bH` | `toggleBorderLeft` | Set left borders of the selected cells (solid, thick line) | |
+| Border | `bJ` | `toggleBorderBottom` | Set bottom borders of the selected cells (solid, thick line) | |
+| Border | `bK` | `toggleBorderTop` | Set top borders of the selected cells (solid, thick line) | |
+| Border | `bL` | `toggleBorderRight` | Set right borders of the selected cells (solid, thick line) | |
+| Border | `Bb` | `toggleBorderAll` | Set borders around and inside the selected cells (solid, thick line) | |
+| Border | `Ba` | `toggleBorderAround` | Set borders around the selected cells (solid, thick line) | |
+| Border | `Bh` | `toggleBorderLeft` | Set left borders of the selected cells (solid, thick line) | |
+| Border | `Bj` | `toggleBorderBottom` | Set bottom borders of the selected cells (solid, thick line) | |
+| Border | `Bk` | `toggleBorderTop` | Set top borders of the selected cells (solid, thick line) | |
+| Border | `Bl` | `toggleBorderRight` | Set right borders of the selected cells (solid, thick line) | |
+| Border | `Bia` | `toggleBorderInner` | Set borders inside the selected cells (solid, thick line) | |
+| Border | `Bis` | `toggleBorderInnerHorizontal` | Set horizontal borders inside the selected cells (solid, thick line) | |
+| Border | `Biv` | `toggleBorderInnerVertical` | Set vertical borders inside the selected cells (solid, thick line) | |
+| Border | `B/` | `toggleBorderDiagonalUp` | Set diagonal up borders in the selected cells (solid, thick line) | |
+| Border | `B\` | `toggleBorderDiagonalDown` | Set diagonal down borders in the selected cells (solid, thick line) | |
+| Border | `bob` | `toggleBorderAll` | Set borders around and inside the selected cells (solid, hairline) | |
+| Border | `boa` | `toggleBorderAround` | Set borders around the selected cells (solid, hairline) | |
+| Border | `boh` | `toggleBorderLeft` | Set left borders of the selected cells (solid, hairline) | |
+| Border | `boj` | `toggleBorderBottom` | Set bottom borders of the selected cells (solid, hairline) | |
+| Border | `bok` | `toggleBorderTop` | Set top borders of the selected cells (solid, hairline) | |
+| Border | `bol` | `toggleBorderRight` | Set right borders of the selected cells (solid, hairline) | |
+| Border | `boia` | `toggleBorderInner` | Set borders inside the selected cells (solid, hairline) | |
+| Border | `bois` | `toggleBorderInnerHorizontal` | Set horizontal borders inside the selected cells (solid, hairline) | |
+| Border | `boiv` | `toggleBorderInnerVertical` | Set vertical borders inside the selected cells (solid, hairline) | |
+| Border | `bo/` | `toggleBorderDiagonalUp` | Set diagonal up borders in the selected cells (solid, hairline) | |
+| Border | `bo\` | `toggleBorderDiagonalDown` | Set diagonal down borders in the selected cells (solid, hairline) | |
+| Border | `bmb` | `toggleBorderAll` | Set borders around and inside the selected cells (solid, medium line) | |
+| Border | `bma` | `toggleBorderAround` | Set borders around the selected cells (solid, medium line) | |
+| Border | `bmh` | `toggleBorderLeft` | Set left borders of the selected cells (solid, medium line) | |
+| Border | `bmj` | `toggleBorderBottom` | Set bottom borders of the selected cells (solid, medium line) | |
+| Border | `bmk` | `toggleBorderTop` | Set top borders of the selected cells (solid, medium line) | |
+| Border | `bml` | `toggleBorderRight` | Set right borders of the selected cells (solid, medium line) | |
+| Border | `bmia` | `toggleBorderInner` | Set borders inside the selected cells (solid, medium line) | |
+| Border | `bmis` | `toggleBorderInnerHorizontal` | Set horizontal borders inside the selected cells (solid, medium line) | |
+| Border | `bmiv` | `toggleBorderInnerVertical` | Set vertical borders inside the selected cells (solid, medium line) | |
+| Border | `bm/` | `toggleBorderDiagonalUp` | Set diagonal up borders in the selected cells (solid, medium line) | |
+| Border | `bm\` | `toggleBorderDiagonalDown` | Set diagonal down borders in the selected cells (solid, medium line) | |
+| Border | `btb` | `toggleBorderAll` | Set borders around and inside the selected cells (double line, thick line) | |
+| Border | `bta` | `toggleBorderAround` | Set borders around the selected cells (double line, thick line) | |
+| Border | `bth` | `toggleBorderLeft` | Set left borders of the selected cells (double line, thick line) | |
+| Border | `btj` | `toggleBorderBottom` | Set bottom borders of the selected cells (double line, thick line) | |
+| Border | `btk` | `toggleBorderTop` | Set top borders of the selected cells (double line, thick line) | |
+| Border | `btl` | `toggleBorderRight` | Set right borders of the selected cells (double line, thick line) | |
+| Border | `btia` | `toggleBorderInner` | Set borders inside the selected cells (double line, thick line) | |
+| Border | `btis` | `toggleBorderInnerHorizontal` | Set horizontal borders inside the selected cells (double line, thick line) | |
+| Border | `btiv` | `toggleBorderInnerVertical` | Set vertical borders inside the selected cells (double line, thick line) | |
+| Border | `bt/` | `toggleBorderDiagonalUp` | Set diagonal up borders in the selected cells (double line, thick line) | |
+| Border | `bt\` | `toggleBorderDiagonalDown` | Set diagonal down borders in the selected cells (double line, thick line) | |
+| Border | `bdd` | `deleteBorderAll` | Delete all borders around and inside the selected cells | |
+| Border | `bda` | `deleteBorderAround` | Delete borders around the selected cells | |
+| Border | `bdh` | `deleteBorderLeft` | Delete left borders of the selected cells | |
+| Border | `bdj` | `deleteBorderBottom` | Delete bottom borders of the selected cells | |
+| Border | `bdk` | `deleteBorderTop` | Delete top borders of the selected cells | |
+| Border | `bdl` | `deleteBorderRight` | Delete right borders of the selected cells | |
+| Border | `bdia` | `deleteBorderInner` | Delete all inner borders of the selected cells | |
+| Border | `bdis` | `deleteBorderInnerHorizontal` | Delete horizontal inner borders of the selected cells | |
+| Border | `bdiv` | `deleteBorderInnerVertical` | Delete vertical inner borders of the selected cells | |
+| Border | `bd/` | `deleteBorderDiagonalUp` | Delete diagonal up borders in the selected cells | |
+| Border | `bd\` | `deleteBorderDiagonalDown` | Delete diagonal down borders in the selected cells | |
+| Border | `bcc` | `setBorderColorAll` | Set the color of all borders around and inside the selected cells | |
+| Border | `bca` | `setBorderColorAround` | Set the color of borders around the selected cells | |
+| Border | `bch` | `setBorderColorLeft` | Set the color of left borders of the selected cells | |
+| Border | `bcj` | `setBorderColorBottom` | Set the color of bottom borders of the selected cells | |
+| Border | `bck` | `setBorderColorTop` | Set the color of top borders of the selected cells | |
+| Border | `bcl` | `setBorderColorRight` | Set the color of right borders of the selected cells | |
+| Border | `bcia` | `setBorderColorInner` | Set the color of all inner borders of the selected cells | |
+| Border | `bcis` | `setBorderColorInnerHorizontal` | Set the color of horizontal inner borders of the selected cells | |
+| Border | `bciv` | `setBorderColorInnerVertical` | Set the color of vertical inner borders of the selected cells | |
+| Border | `bc/` | `setBorderColorDiagonalUp` | Set the color of diagonal up borders in the selected cells | |
+| Border | `bc\` | `setBorderColorDiagonalDown` | Set the color of diagonal down borders in the selected cells | |
+| Row | `r-` | `narrowRowsHeight` | Narrow the height of the row | ✓ |
+| Row | `r+` | `wideRowsHeight` | Widen the height of the row | ✓ |
+| Row | `rr` | `selectRows` | Select rows | ✓ |
+| Row | `ra` | `appendRows` | Insert rows below the current row | ✓ |
+| Row | `ri` | `insertRows` | Insert rows above the current row | ✓ |
+| Row | `rd` | `deleteRows` | Delete the current row | ✓ |
+| Row | `ry` | `yankRows` | Copy the current row | ✓ |
+| Row | `rx` | `cutRows` | Cut the current row | ✓ |
+| Row | `rh` | `hideRows` | Hide the current row | ✓ |
+| Row | `rH` | `unhideRows` | Unhide the current row | ✓ |
+| Row | `rg` | `groupRows` | Group the current row | ✓ |
+| Row | `ru` | `ungroupRows` | Ungroup the current row | ✓ |
+| Row | `rf` | `foldRowsGroup` | Fold the current row group | ✓ |
+| Row | `rs` | `spreadRowsGroup` | Expand the folding of the current row group | ✓ |
+| Row | `rj` | `adjustRowsHeight` | Automatically adjust the height of the current row | ✓ |
+| Row | `rw` | `setRowsHeight` | Set the height of the current row to a custom value | ✓ |
+| Column | `c-` | `narrowColumnsWidth` | Narrow the width of the column | ✓ |
+| Column | `c+` | `wideColumnsWidth` | Widen the width of the column | ✓ |
+| Column | `cc` | `selectColumns` | Select columns | ✓ |
+| Column | `ca` | `appendColumns` | Insert columns to the right of the current column | ✓ |
+| Column | `ci` | `insertColumns` | Insert columns to the left of the current column | ✓ |
+| Column | `cd` | `deleteColumns` | Delete the current column | ✓ |
+| Column | `cy` | `yankColumns` | Copy the current column | ✓ |
+| Column | `cx` | `cutColumns` | Cut the current column | ✓ |
+| Column | `ch` | `hideColumns` | Hide the current column | ✓ |
+| Column | `cH` | `unhideColumns` | Unhide the current column | ✓ |
+| Column | `cg` | `groupColumns` | Group the current column | ✓ |
+| Column | `cu` | `ungroupColumns` | Ungroup the current column | ✓ |
+| Column | `cf` | `foldColumnsGroup` | Fold the current column group | ✓ |
+| Column | `cs` | `spreadColumnsGroup` | Expand the folding of the current column group | ✓ |
+| Column | `cj` | `adjustColumnsWidth` | Automatically adjust the width of the current column | ✓ |
+| Column | `cw` | `setColumnsWidth` | Set the width of the current column to a custom value | ✓ |
+| Yank | `yr` | `yankRows` | Copy the current row | ✓ |
+| Yank | `yc` | `yankColumns` | Copy the current column | ✓ |
+| Yank | `ygg` | `yankToTopRows` | Copy from the current row to the first row | |
+| Yank | `yG` | `yankToBottomRows` | Copy from the current row to the last row in UsedRange | |
+| Yank | `y{` | `yankToTopOfCurrentRegionRows` | Copy from the current row to the first row of the CurrentRegion | |
+| Yank | `y}` | `yankToBottomOfCurrentRegionRows` | Copy from the current row to the last row of the CurrentRegion | |
+| Yank | `y0` | `yankToLeftEndColumns` | Copy from the current column to the first column in UsedRange | |
+| Yank | `y$` | `yankToRightEndColumns` | Copy from the current column to the last column in UsedRange | |
+| Yank | `y^` | `yankToLeftOfCurrentRegionColumns` | Copy from the current column to the first column of the CurrentRegion | |
+| Yank | `yg$` | `yankToRightOfCurrentRegionColumns` | Copy from the current column to the last column of the CurrentRegion | |
+| Yank | `yh` | `yankFromLeftCell` | Copy and paste the value from the cell to the left of the current cell | |
+| Yank | `yj` | `yankFromDownCell` | Copy and paste the value from the cell below the current cell | |
+| Yank | `yk` | `yankFromUpCell` | Copy and paste the value from the cell above the current cell | |
+| Yank | `yl` | `yankFromRightCell` | Copy and paste the value from the cell to the right of the current cell | |
+| Yank | `Y` | `yankAsPlaintext` | Copy the selected cells as plaintext | |
+| Delete | `D`/`X` | `deleteValue` | Delete the value in the cell | |
+| Delete | `dx` | `deleteRows` | Delete the current row | ✓ |
+| Delete | `dr` | `deleteRows` | Delete the current row | ✓ |
+| Delete | `dc` | `deleteColumns` | Delete the current column | ✓ |
+| Delete | `dgg` | `deleteToTopRows` | Delete from the current row to the top row | |
+| Delete | `dG` | `deleteToBottomRows` | Delete from the current row to the last row in UsedRange | |
+| Delete | `d{` | `deleteToTopOfCurrentRegionRows` | Delete from the current row to the first row of the CurrentRegion | |
+| Delete | `d}` | `deleteToBottomOfCurrentRegionRows` | Delete from the current row to the last row of the CurrentRegion | |
+| Delete | `d0` | `deleteToLeftEndColumns` | Delete from the current column to the first column in UsedRange | |
+| Delete | `d$` | `deleteToRightEndColumns` | Delete from the current column to the last column in UsedRange | |
+| Delete | `d^` | `deleteToLeftOfCurrentRegionColumns` | Delete from the current column to the first column of the CurrentRegion | |
+| Delete | `dg$` | `deleteToRightOfCurrentRegionColumns` | Delete from the current column to the last column of the CurrentRegion | |
+| Delete | `dh` | `deleteToLeft` | Delete the current cell and shift left | ✓ |
+| Delete | `dj` | `deleteToUp` | Delete the current cell and shift up | ✓ |
+| Delete | `dk` | `deleteToUp` | Delete the current cell and shift up | ✓ |
+| Delete | `dl` | `deleteToLeft` | Delete the current cell and shift left | ✓ |
+| Cut | `xr` | `cutRows` | Cut the current row | ✓ |
+| Cut | `xc` | `cutColumns` | Cut the current column | ✓ |
+| Cut | `xgg` | `cutToTopRows` | Cut from the current row to the first row | |
+| Cut | `xG` | `cutToBottomRows` | Cut from the current row to the last row in UsedRange | |
+| Cut | `x{` | `cutToTopOfCurrentRegionRows` | Cut from the current row to the first row of the CurrentRegion | |
+| Cut | `x}` | `cutToBottomOfCurrentRegionRows` | Cut from the current row to the last row of the CurrentRegion | |
+| Cut | `x0` | `cutToLeftEndColumns` | Cut from the current column to the first column in UsedRange | |
+| Cut | `x$` | `cutToRightEndColumns` | Cut from the current column to the last column in UsedRange | |
+| Cut | `x^` | `cutToLeftOfCurrentRegionColumns` | Cut from the current column to the first column of the CurrentRegion | |
+| Cut | `xg$` | `cutToRightOfCurrentRegionColumns` | Cut from the current column to the last column of the CurrentRegion | |
+| Paste | `p` | `pasteSmart` | Paste after copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
+| Paste | `P` | `pasteSmart` | Paste before copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
+| Paste | `gp` | `pasteSpecial` | Show the paste special format dialog | |
+| Paste | `U` | `pasteValue` | Paste values only | |
+| Font | `-` | `decreaseFontSize` | Decrease font size | |
+| Font | `+` | `increaseFontSize` | Increase font size | |
+| Font | `fn` | `changeFontName` | Focus on font name | |
+| Font | `fs` | `changeFontSize` | Focus on font size | |
+| Font | `fh` | `alignLeft` | Align left | |
+| Font | `fj` | `alignBottom` | Align bottom | |
+| Font | `fk` | `alignTop` | Align top | |
+| Font | `fl` | `alignRight` | Align right | |
+| Font | `fo` | `alignCenter` | Align center horizontally | |
+| Font | `fm` | `alignMiddle` | Align center vertically | |
+| Font | `fb` | `toggleBold` | Toggle bold | |
+| Font | `fi` | `toggleItalic` | Toggle italic | |
+| Font | `fu` | `toggleUnderline` | Toggle underline | |
+| Font | `f-` | `toggleStrikethrough` | Toggle strikethrough | |
+| Font | `ft` | `changeFormat` | Focus on cell format | |
+| Font | `ff` | `showFontDialog` | Show the cell format dialog | |
+| Color | `fc` | `smartFontColor` | Show the font color selection dialog | |
+| Color | `FC`/`Fc` | `smartFillColor` | Show the fill color selection dialog | |
+| Color | `bc` | `changeShapeBorderColor` | (when a shape is selected) Show the border color selection dialog | |
+| Comment | `Ci`/`Cc` | `editCellComment` | Edit the cell comment (add if none exists) | |
+| Comment | `Ce`/`Cx`/`Cd` | `deleteCellComment` | Delete the current cell's comment | |
+| Comment | `CE`/`CD` | `deleteCellCommentAll` | Delete all comments on the sheet | |
+| Comment | `Ca` | `toggleCellComment` | Toggle the display of the current cell's comment | |
+| Comment | `Cr` | `showCellComment` | Show the current cell's comment | |
+| Comment | `Cm` | `hideCellComment` | Hide the current cell's comment | |
+| Comment | `CA` | `toggleCellCommentAll` | Toggle the display of all comments | |
+| Comment | `CR` | `showCellCommentAll` | Show all comments | |
+| Comment | `CM` | `hideCellCommentAll` | Hide all comments | |
+| Comment | `CH` | `hideCellCommentIndicator` | Hide the current cell's comment indicator | |
+| Comment | `Cn` | `nextCommentedCell` | Select the next commented cell | |
+| Comment | `Cp` | `prevCommentedCell` | Select the previous commented cell | |
+| Find & Replace | `/` | `showFindFollowLang` | Show the find dialog, following the language mode of IME | |
+| Find & Replace | `?` | `showFindNotFollowLang` | Show the find dialog without following the language mode of IME | |
+| Find & Replace | `n` | `nextFoundCell` | Select the next found cell | ✓ |
+| Find & Replace | `N` | `previousFoundCell` | Select the previous found cell | ✓ |
+| Find & Replace | `R` | `showReplaceWindow` | Show the find and replace dialog | |
+| Find & Replace | `*` | `findActiveValueNext` | Find the next cell with the active cell's value and select it | |
+| Find & Replace | `#` | `findActiveValuePrev` | Find the previous cell with the active cell's value and select it | |
+| Find & Replace | `]c` | `nextSpecialCells` | Select the next cell with a comment | ✓ |
+| Find & Replace | `[c` | `prevSpecialCells` | Select the previous cell with a comment | ✓ |
+| Find & Replace | `]o` | `nextSpecialCells` | Select the next cell with a constant value | ✓ |
+| Find & Replace | `[o` | `prevSpecialCells` | Select the previous cell with a constant value | ✓ |
+| Find & Replace | `]f` | `nextSpecialCells` | Select the next cell with a formula | ✓ |
+| Find & Replace | `[f` | `prevSpecialCells` | Select the previous cell with a formula | ✓ |
+| Find & Replace | `]k` | `nextSpecialCells` | Select the next empty cell | ✓ |
+| Find & Replace | `[k` | `prevSpecialCells` | Select the previous empty cell | ✓ |
+| Find & Replace | `]t` | `nextSpecialCells` | Select the next cell with conditional formatting | ✓ |
+| Find & Replace | `[t` | `prevSpecialCells` | Select the previous cell with conditional formatting | ✓ |
+| Find & Replace | `]v` | `nextSpecialCells` | Select the next cell with data validation | ✓ |
+| Find & Replace | `[v` | `prevSpecialCells` | Select the previous cell with data validation | ✓ |
+| Find & Replace | `]s` | `nextShape` | Select the next shape | ✓ |
+| Find & Replace | `[s` | `prevShape` | Select the previous shape | ✓ |
+| Scrolling | `<C-u>` | `scrollUpHalf` | Scroll up by half a page | |
+| Scrolling | `<C-d>` | `scrollDownHalf` | Scroll down by half a page | |
+| Scrolling | `<C-b>` | `scrollUp` | Scroll up by one page | |
+| Scrolling | `<C-f>` | `scrollDown` | Scroll down by one page | |
+| Scrolling | `<C-y>` | `scrollUp1Row` | Scroll up by one row | |
+| Scrolling | `<C-e>` | `scrollDown1Row` | Scroll down by one row | |
+| Scrolling | `zh` | `scrollLeft1Column` | Scroll left by one column | ✓ |
+| Scrolling | `zl` | `scrollRight1Column` | Scroll right by one column | ✓ |
+| Scrolling | `zH` | `scrollLeft` | Scroll left by one page | ✓ |
+| Scrolling | `zL` | `scrollRight` | Scroll right by one page | ✓ |
+| Scrolling | `zt` | `scrollCurrentTop` | Scroll to make the current row at the top (`SCREEN_OFFSET` pts of padding) | |
+| Scrolling | `zz` | `scrollCurrentMiddle` | Scroll to make the current row in the middle | |
+| Scrolling | `zb` | `scrollCurrentBottom` | Scroll to make the current row at the bottom (`SCREEN_OFFSET` pts of padding) | |
+| Scrolling | `zs` | `scrollCurrentLeft` | Scroll to make the current column at the left | |
+| Scrolling | `zm` | `scrollCurrentCenter` | Scroll to make the current column in the center | |
+| Scrolling | `ze` | `scrollCurrentRight` | Scroll to make the current column at the right | |
+| Worksheet | `e`/`wn` | `nextWorksheet` | Select the next worksheet | |
+| Worksheet | `E`/`wp` | `previousWorksheet` | Select the previous worksheet | |
+| Worksheet | `ww`/`ws` | `showSheetPicker` | Launch the Sheet Picker | |
+| Worksheet | `wr` | `renameWorksheet` | Change the name of the active worksheet | |
+| Worksheet | `wh` | `moveWorksheetBack` | Move the active worksheet one position to the front | ✓ |
+| Worksheet | `wl` | `moveWorksheetForward` | Move the active worksheet one position to the back | ✓ |
+| Worksheet | `wi` | `insertWorksheet` | Insert a new worksheet in front of the active worksheet | |
+| Worksheet | `wa` | `appendWorksheet` | Insert a new worksheet after the active worksheet | |
+| Worksheet | `wd` | `deleteWorksheet` | Delete the active worksheet | |
+| Worksheet | `w0` | `activateLastWorksheet` | Select the last worksheet | |
+| Worksheet | `w$` | `activateLastWorksheet` | Select the last worksheet | |
+| Worksheet | `wc` | `changeWorksheetTabColor` | Change the color of the active worksheet tab | |
+| Worksheet | `wy` | `cloneWorksheet` | Clone the active worksheet | |
+| Worksheet | `we` | `exportWorksheet` | Show the move or copy sheet dialog | |
+| Worksheet | `w[num]` | `activateWorksheet` | Select the worksheet at position `[num]` (only 1-9) | |
+| Worksheet | `:p` | `printPreviewOfActiveSheet` | Show the print preview of the active sheet | |
+| Workbook | `:e` | `openWorkbook` | Open a workbook | |
+| Workbook | `:e!` | `reopenActiveWorkbook` | Discard changes to the active workbook and reopen it | |
+| Workbook | `:w` | `saveWorkbook` | Save the active workbook | |
+| Workbook | `:q` | `closeAskSaving` | Close the active workbook (show a dialog if there are unsaved changes) | |
+| Workbook | `:q!`/`ZQ` | `closeWithoutSaving` | Close the active workbook without saving | |
+| Workbook | `:wq`/`:x`/`ZZ` | `closeWithSaving` | Save and close the active workbook | |
+| Workbook | `:b[num]` | `activateWorkbook` | Select the workbook at position `[num]` | |
+| Workbook | `]b`/`:bn` | `nextWorkbook` | Select the next workbook | |
+| Workbook | `[b`/`:bp` | `previousWorkbook` | Select the previous workbook | |
+| Workbook | `~` | `toggleReadOnly` | Toggle read-only mode | |
+| Other | `u` | `undo_CtrlZ` | Undo (send `Ctrl + Z`) | |
+| Other | `<C-r>` | `redoExecute` | Redo | |
+| Other | `.` | `repeatAction` | Repeat the previous action (limited to commands where `repeatRegister` is called) | |
+| Other | `m` | `zoomIn` | Zoom in by 10% or `[count]`% | ✓ |
+| Other | `M` | `zoomOut` | Zoom out by 10% or `[count]`% | ✓ |
+| Other | `%` | `zoomSpecifiedScale` | Set the zoom level to `[count]`% (digits `1`-`9` correspond to predefined zoom levels) | ✓ |
+| Other | `\` | `showContextMenu` | Show the context menu | |
+| Other | `<C-i>` | `jumpNext` | Move to the next cell in the jump list | |
+| Other | `<C-o>` | `jumpPrev` | Move to the previous cell in the jump list | |
+| Other | `:cle` | `clearJumps` | Clear the jump list | |
+| Other | `zf` | `toggleFreezePanes` | Toggle freeze panes on/off | |
+| Other | `=v` | `toggleFormulaBar` | Toggle the visibility of the formula bar | |
+| Other | `gs` | `showSummaryInfo` | Show the file properties | |
+| Other | `zp` | `setPrintArea` | Set the selected cells as the print area | |
+| Other | `zP` | `clearPrintArea` | Clear the print area | |
+| Other | `@@` | `showMacroDialog` | Show the macro dialog | |
+| Other | `1-9` | `showCmdForm` | Specify `[count]` (only works with features marked with ✓ in Count) | |
 
 </div></details>
 
-\* [UserConfig.bas](./src/UserConfig.bas) の中で `map` メソッドを使って定義しています。
+\* The keymaps are defined with `map` method in [UserConfig.bas](./src/UserConfig.bas).
 
 ### Custom Key Mapping
 
@@ -460,7 +466,9 @@ Under construction...
 
 ## Contributing
 
-[Issue](https://github.com/sha5010/vim.xlam/issues) や [Pull Request](https://github.com/sha5010/vim.xlam/pulls) は大歓迎です。もしご自身で開発された機能がありましたら、開発にご協力いただけますと幸いです。
+[Issues](https://github.com/sha5010/vim.xlam/issues) and [Pull Requests](https://github.com/sha5010/vim.xlam/pulls) are welcome. If you've developed your own features and would like to contribute, I'd appreciate your help.
+
+English version of the README was generated by ChatGPT. If you come across any errors or have suggestions for improvements, please don't hesitate to let me know. Your feedback is highly appreciated.
 
 ## Author
 
