@@ -28,7 +28,7 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
         Call recordToJumpList(Target)
 
         If EditFlag Then
-            Call repeatRegister("changeSelectedCells", Target.Item(1).Value)  'Note: Undo command will no longer be available.
+            Call repeatRegister("changeSelectedCells", Target.Item(1).Text)   'Note: Undo command will no longer be available.
         End If
     End If
 End Sub
