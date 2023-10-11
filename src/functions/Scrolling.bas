@@ -47,6 +47,8 @@ Private Function activateCellInVisibleRange()
     If TypeName(Selection) = "Range" Then
         If ActiveCell.Row <> targetRow Or ActiveCell.Column <> targetColumn Then
             Cells(targetRow, targetColumn).Activate
+            ActiveWindow.ScrollRow = visibleTop
+            ActiveWindow.ScrollColumn = visibleLeft
         End If
     End If
     Exit Function
