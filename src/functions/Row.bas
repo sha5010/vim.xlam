@@ -77,7 +77,7 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
     ElseIf TargetType = ToBottomOfCurrentRegionRows Then
         With ActiveCell.CurrentRegion
             startRow = ActiveCell.Row
-            endRow = .Colmuns(.Rows.Count).Row
+            endRow = .Rows(.Rows.Count).Row
         End With
 
         'Out of range
