@@ -27,17 +27,18 @@ Function alignLeft()
     Call stopVisualMode
 
     'Check excel version
-    On Error GoTo Excel2016
+    On Error GoTo Excel2019
     If CDbl(Application.Version) >= 16 Then
-        'Raise error in Excel 2016 (Concat exists in Excel 2019 and later)
-        WorksheetFunction.Concat ""
+        'Raise error in Excel 2016, 2019 (Sequence exists in Excel 2021 and later)
+        WorksheetFunction.Sequence 1
     End If
 
     'Default
     Call keystroke(True, Alt_ + H_, A_, L_)
     Exit Function
 
-Excel2016:
+Excel2019:
+    'Excel 2019 and earlier
     Call keystroke(True, Alt_ + H_, L_, k1_)
 End Function
 
@@ -52,18 +53,18 @@ Function alignRight()
     Call stopVisualMode
 
     'Check excel version
-    On Error GoTo Excel2016
+    On Error GoTo Excel2019
     If CDbl(Application.Version) >= 16 Then
-        'Raise error in Excel 2016 (Concat exists in Excel 2019 and later)
-        WorksheetFunction.Concat ""
+        'Raise error in Excel 2016, 2019 (Sequence exists in Excel 2021 and later)
+        WorksheetFunction.Sequence 1
     End If
 
     'Default
     Call keystroke(True, Alt_ + H_, A_, R_)
     Exit Function
 
-Excel2016:
-    'Excel 2013 and earlier
+Excel2019:
+    'Excel 2019 and earlier
     Call keystroke(True, Alt_ + H_, R_)
 End Function
 
