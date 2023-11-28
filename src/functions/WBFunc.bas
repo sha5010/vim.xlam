@@ -94,38 +94,38 @@ Catch:
     Call errorHandler("reopenActiveWorkbook")
 End Function
 
-Function activateWorkbook(ByVal n As String) As Boolean
+Function ActivateWorkbook(Optional ByVal arg As String) As Boolean
     On Error GoTo Catch
 
-    Dim idx As Integer
+    Dim idx As Long
     Dim isForce As Boolean
 
-    On Error GoTo Catch
+    isForce = (InStr(arg, "!") > 0)
+    arg = Replace(arg, "!", "")
 
-    isForce = (InStr(n, "!") > 0)
-    n = Replace(n, "!", "")
-
-    If Not IsNumeric(n) Or InStr(n, ".") > 0 Then
+    If Len(arg) = 0 Or arg Like "*[!0-9]*" Then
         Exit Function
     End If
 
-    idx = CInt(n)
+    idx = CLng(arg)
 
-    If idx < 1 Or Windows.Count < idx Then
-        Exit Function
+    If idx < 1 Then
+        idx = 1
+    ElseIf Windows.Count < idx Then
+        idx = Windows.Count
     End If
 
     With Windows(idx)
         If .Visible Or isForce Then
             .Visible = True
             .Activate
-            activateWorkbook = True
+            ActivateWorkbook = True
         End If
     End With
     Exit Function
 
 Catch:
-    Call errorHandler("activateWorkbook")
+    Call ErrorHandler("ActivateWorkbook")
 End Function
 
 Function nextWorkbook()

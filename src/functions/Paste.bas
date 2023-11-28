@@ -8,17 +8,17 @@ Function pasteSmart(Optional ByVal PasteDirection As XlSearchDirection = xlNext)
     Call stopVisualMode
 
     If Application.CutCopyMode = 0 Then 'Empty
-        Set gLastYanked = Nothing
+        Set gVim.Vars.LastYanked = Nothing
     End If
 
-    If gLastYanked Is Nothing Then
+    If gVim.Vars.LastYanked Is Nothing Then
         Call paste_CtrlV
         Exit Function
     End If
 
-    If gLastYanked.Rows.Count = gLastYanked.Parent.Rows.Count Then
+    If gVim.Vars.LastYanked.Rows.Count = gVim.Vars.LastYanked.Parent.Rows.Count Then
         Call pasteColumns(PasteDirection)
-    ElseIf gLastYanked.Columns.Count = gLastYanked.Parent.Columns.Count Then
+    ElseIf gVim.Vars.LastYanked.Columns.Count = gVim.Vars.LastYanked.Parent.Columns.Count Then
         Call pasteRows(PasteDirection)
     Else
         Call paste_CtrlV
@@ -40,9 +40,9 @@ Private Function pasteRows(ByVal PasteDirection As XlSearchDirection)
     Dim startRow As Long
     Dim endRow As Long
 
-    yankedRows = gLastYanked.Rows.Count
+    yankedRows = gVim.Vars.LastYanked.Rows.Count
     startRow = ActiveCell.Row + IIf(PasteDirection = xlNext, 1, 0)
-    endRow = startRow + yankedRows * gCount - 1
+    endRow = startRow + yankedRows * gVim.Count1 - 1
 
     With ActiveSheet
         If endRow > .Rows.Count Then
@@ -55,7 +55,7 @@ Private Function pasteRows(ByVal PasteDirection As XlSearchDirection)
     End With
 
     If Application.CutCopyMode = xlCopy Then
-        gLastYanked.Copy
+        gVim.Vars.LastYanked.Copy
     End If
     Exit Function
 
@@ -70,9 +70,9 @@ Private Function pasteColumns(ByVal PasteDirection As XlSearchDirection)
     Dim startColumn As Long
     Dim endColumn As Long
 
-    yankedColumns = gLastYanked.Columns.Count
+    yankedColumns = gVim.Vars.LastYanked.Columns.Count
     startColumn = ActiveCell.Column + IIf(PasteDirection = xlNext, 1, 0)
-    endColumn = startColumn + yankedColumns * gCount - 1
+    endColumn = startColumn + yankedColumns * gVim.Count1 - 1
 
     With ActiveSheet
         If endColumn > .Columns.Count Then
@@ -85,7 +85,7 @@ Private Function pasteColumns(ByVal PasteDirection As XlSearchDirection)
     End With
 
     If Application.CutCopyMode = xlCopy Then
-        gLastYanked.Copy
+        gVim.Vars.LastYanked.Copy
     End If
     Exit Function
 
@@ -136,7 +136,7 @@ Function pasteSpecial()
     Call stopVisualMode
 
     If Application.ClipboardFormats(1) = -1 Then
-        Call setStatusBarTemporarily("クリップボードが空です。", 2)
+        Call SetStatusBarTemporarily("クリップボードが空です。", 2000)
     Else
         On Error Resume Next
         Application.Dialogs(xlDialogPasteSpecial).Show

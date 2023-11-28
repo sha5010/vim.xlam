@@ -54,459 +54,460 @@ Attribute VB_Name = "A_UserConfig"
 Option Explicit
 Option Private Module
 
-Public Const VIM_TOOGLE_KEY As String = "^m"    'Vimモードを切り替えるショートカット (default: Ctrl + m)
-
-Public Const SCROLL_OFFSET As Double = 54       'scrollCurrentTop, scrollCurrentBottom で N pt分空ける
-Public Const MAX_HISTORIES As Integer = 100     'ジャンプリストに格納する最大数
-Public Const DEFAULT_LANG_JA As Boolean = True  'デフォルト言語設定を日本語にする (True: Japanese / False: English)
-
-
-Sub initMapping()
-    'マッピングの準備
-    Call prepareMapping
-
-    'Core
-    Call map("^p", "", "toggleLang")
-    Call map(":", "r", "reloadVim", returnOnly:=True)
-    Call map(":", "r!", "reloadVim", True, returnOnly:=True)
-    Call map(":", "debug", "toggleDebugMode", returnOnly:=True)
-
-
-    'InsertMode
-    Call map("a", "", "appendFollowLangMode")
-    Call map("A", "", "appendNotFollowLangMode")
-    Call map("i", "", "insertFollowLangMode")
-    Call map("I", "", "insertNotFollowLangMode")
-    Call map("s", "", "substituteFollowLangMode")
-    Call map("S", "", "substituteNotFollowLangMode")
-
-
-    'Moving
-    Call map("h", "", "moveLeft")
-    Call map("j", "", "moveDown")
-    Call map("k", "", "moveUp")
-    Call map("l", "", "moveRight")
-    Call map("H", "", "moveLeftWithShift")
-    Call map("J", "", "moveDownWithShift")
-    Call map("K", "", "moveUpWithShift")
-    Call map("L", "", "moveRightWithShift")
-    Call map("^h", "", "moveLeft")
-    Call map("^j", "", "moveDown")
-    Call map("^k", "", "moveUp")
-    Call map("^l", "", "moveRight")
-    Call map("^H", "", "moveLeft")
-    Call map("^J", "", "moveDown")
-    Call map("^K", "", "moveUp")
-    Call map("^L", "", "moveRight")
-
-    Call map("g", "g", "moveToTopRow")
-    Call map("G", "", "moveToLastRow")
-    Call map("|", "", "moveToNthColumn")
-    Call map("0", "", "moveToFirstColumn")
-    Call map("{^}", "", "moveToLeftEnd")
-    Call map("$", "", "moveToRightEnd")
-    Call map("g", "0", "moveToA1")
-
-    Call map("+{[}", "", "moveToTopOfCurrentRegion")
-    Call map("+{]}", "", "moveToBottomOfCurrentRegion")
-
-    Call map("W", "", "moveToSpecifiedCell", returnOnly:=True, requireArguments:=True)
-    Call map(":", "", "moveToSpecifiedRow", returnOnly:=True, requireArguments:=True)
-
-
-    'Cell
-    Call map("x", "x", "cutCell")
-    Call map("y", "y", "yankCell")
-    Call map("o", "", "insertCellsDown")
-    Call map("O", "", "insertCellsUp")
-    Call map("t", "", "insertCellsRight")
-    Call map("T", "", "insertCellsLeft")
-    Call map(">", "", "incrementText")
-    Call map("<", "", "decrementText")
-    Call map("(", "", "increaseDecimal")
-    Call map(")", "", "decreaseDecimal")
-    Call map("z", "w", "toggleWrapText")
-    Call map("&", "", "toggleMergeCells")
-    Call map("f", ",", "applyCommaStyle")
-    Call map(" ", "", "unionSelectCells")
-    Call map("+ ", "", "exceptSelectCells")
-    Call map("+{BS}", "", "clearSelectCells")
-    Call map("g", "f", "followHyperlinkOfActiveCell")
-    Call map("F", "F", "applyFlashFill")
-    Call map("F", "f", "applyFlashFill")
-    Call map("F", "A", "applyAutoFill")
-    Call map("F", "a", "applyAutoFill")
-
-    Call map("=", "s", "autoSum")
-    Call map("=", "a", "autoAverage")
-    Call map("=", "c", "autoCount")
-    Call map("=", "m", "autoMax")
-    Call map("=", "i", "autoMin")
-    Call map("=", "=", "insertFunction")
-
-    Call map("v", "", "toggleVisualMode")
-    Call map("V", "", "toggleVisualLine")
-
-
-    'Border
-    Call map("b", "b", "toggleBorderAll", xlContinuous, xlThin)
-    Call map("b", "a", "toggleBorderAround", xlContinuous, xlThin)
-    Call map("b", "h", "toggleBorderLeft", xlContinuous, xlThin)
-    Call map("b", "j", "toggleBorderBottom", xlContinuous, xlThin)
-    Call map("b", "k", "toggleBorderTop", xlContinuous, xlThin)
-    Call map("b", "l", "toggleBorderRight", xlContinuous, xlThin)
-    Call map("b", "ia", "toggleBorderInner", xlContinuous, xlThin)
-    Call map("b", "is", "toggleBorderInnerHorizontal", xlContinuous, xlThin)
-    Call map("b", "iv", "toggleBorderInnerVertical", xlContinuous, xlThin)
-    Call map("b", "/", "toggleBorderDiagonalUp", xlContinuous, xlThin)
-    Call map("b", "¥", "toggleBorderDiagonalDown", xlContinuous, xlThin)
-
-    Call map("b", "B", "toggleBorderAll", xlContinuous, xlThick)
-    Call map("b", "A", "toggleBorderAround", xlContinuous, xlThick)
-    Call map("b", "H", "toggleBorderLeft", xlContinuous, xlThick)
-    Call map("b", "J", "toggleBorderBottom", xlContinuous, xlThick)
-    Call map("b", "K", "toggleBorderTop", xlContinuous, xlThick)
-    Call map("b", "L", "toggleBorderRight", xlContinuous, xlThick)
-    Call map("B", "b", "toggleBorderAll", xlContinuous, xlThick)
-    Call map("B", "a", "toggleBorderAround", xlContinuous, xlThick)
-    Call map("B", "h", "toggleBorderLeft", xlContinuous, xlThick)
-    Call map("B", "j", "toggleBorderBottom", xlContinuous, xlThick)
-    Call map("B", "k", "toggleBorderTop", xlContinuous, xlThick)
-    Call map("B", "l", "toggleBorderRight", xlContinuous, xlThick)
-    Call map("B", "ia", "toggleBorderInner", xlContinuous, xlThick)
-    Call map("B", "is", "toggleBorderInnerHorizontal", xlContinuous, xlThick)
-    Call map("B", "iv", "toggleBorderInnerVertical", xlContinuous, xlThick)
-    Call map("B", "/", "toggleBorderDiagonalUp", xlContinuous, xlThick)
-    Call map("B", "¥", "toggleBorderDiagonalDown", xlContinuous, xlThick)
-
-    Call map("b", "ob", "toggleBorderAll", xlContinuous, xlHairline)
-    Call map("b", "oa", "toggleBorderAround", xlContinuous, xlHairline)
-    Call map("b", "oh", "toggleBorderLeft", xlContinuous, xlHairline)
-    Call map("b", "oj", "toggleBorderBottom", xlContinuous, xlHairline)
-    Call map("b", "ok", "toggleBorderTop", xlContinuous, xlHairline)
-    Call map("b", "ol", "toggleBorderRight", xlContinuous, xlHairline)
-    Call map("b", "oia", "toggleBorderInner", xlContinuous, xlHairline)
-    Call map("b", "ois", "toggleBorderInnerHorizontal", xlContinuous, xlHairline)
-    Call map("b", "oiv", "toggleBorderInnerVertical", xlContinuous, xlHairline)
-    Call map("b", "o/", "toggleBorderDiagonalUp", xlContinuous, xlHairline)
-    Call map("b", "o¥", "toggleBorderDiagonalDown", xlContinuous, xlHairline)
-
-    Call map("b", "mb", "toggleBorderAll", xlContinuous, xlMedium)
-    Call map("b", "ma", "toggleBorderAround", xlContinuous, xlMedium)
-    Call map("b", "mh", "toggleBorderLeft", xlContinuous, xlMedium)
-    Call map("b", "mj", "toggleBorderBottom", xlContinuous, xlMedium)
-    Call map("b", "mk", "toggleBorderTop", xlContinuous, xlMedium)
-    Call map("b", "ml", "toggleBorderRight", xlContinuous, xlMedium)
-    Call map("b", "mia", "toggleBorderInner", xlContinuous, xlMedium)
-    Call map("b", "mis", "toggleBorderInnerHorizontal", xlContinuous, xlMedium)
-    Call map("b", "miv", "toggleBorderInnerVertical", xlContinuous, xlMedium)
-    Call map("b", "m/", "toggleBorderDiagonalUp", xlContinuous, xlMedium)
-    Call map("b", "m¥", "toggleBorderDiagonalDown", xlContinuous, xlMedium)
-
-    Call map("b", "tb", "toggleBorderAll", xlDouble, xlThick)
-    Call map("b", "ta", "toggleBorderAround", xlDouble, xlThick)
-    Call map("b", "th", "toggleBorderLeft", xlDouble, xlThick)
-    Call map("b", "tj", "toggleBorderBottom", xlDouble, xlThick)
-    Call map("b", "tk", "toggleBorderTop", xlDouble, xlThick)
-    Call map("b", "tl", "toggleBorderRight", xlDouble, xlThick)
-    Call map("b", "tia", "toggleBorderInner", xlDouble, xlThick)
-    Call map("b", "tis", "toggleBorderInnerHorizontal", xlDouble, xlThick)
-    Call map("b", "tiv", "toggleBorderInnerVertical", xlDouble, xlThick)
-    Call map("b", "t/", "toggleBorderDiagonalUp", xlDouble, xlThick)
-    Call map("b", "t¥", "toggleBorderDiagonalDown", xlDouble, xlThick)
-
-    Call map("b", "dd", "deleteBorderAll")
-    Call map("b", "da", "deleteBorderAround")
-    Call map("b", "dh", "deleteBorderLeft")
-    Call map("b", "dj", "deleteBorderBottom")
-    Call map("b", "dk", "deleteBorderTop")
-    Call map("b", "dl", "deleteBorderRight")
-    Call map("b", "dia", "deleteBorderInner")
-    Call map("b", "dis", "deleteBorderInnerHorizontal")
-    Call map("b", "div", "deleteBorderInnerVertical")
-    Call map("b", "d/", "deleteBorderDiagonalUp")
-    Call map("b", "d¥", "deleteBorderDiagonalDown")
-
-    Call map("b", "cc", "setBorderColorAll")
-    Call map("b", "ca", "setBorderColorAround")
-    Call map("b", "ch", "setBorderColorLeft")
-    Call map("b", "cj", "setBorderColorBottom")
-    Call map("b", "ck", "setBorderColorTop")
-    Call map("b", "cl", "setBorderColorRight")
-    Call map("b", "cia", "setBorderColorInner")
-    Call map("b", "cis", "setBorderColorInnerHorizontal")
-    Call map("b", "civ", "setBorderColorInnerVertical")
-    Call map("b", "c/", "setBorderColorDiagonalUp")
-    Call map("b", "c¥", "setBorderColorDiagonalDown")
-
-
-    'Row
-    Call map("r", "-", "narrowRowsHeight")
-    Call map("r", "+", "wideRowsHeight")
-    Call map("r", "r", "selectRows")
-    Call map("r", "a", "appendRows")
-    Call map("r", "i", "insertRows")
-    Call map("r", "d", "deleteRows")
-    Call map("r", "y", "yankRows")
-    Call map("r", "x", "cutRows")
-    Call map("r", "h", "hideRows")
-    Call map("r", "H", "unhideRows")
-    Call map("r", "g", "groupRows")
-    Call map("r", "u", "ungroupRows")
-    Call map("r", "f", "foldRowsGroup")
-    Call map("r", "s", "spreadRowsGroup")
-    Call map("r", "j", "adjustRowsHeight")
-    Call map("r", "w", "setRowsHeight")
-
-
-    'Column
-    Call map("c", "-", "narrowColumnsWidth")
-    Call map("c", "+", "wideColumnsWidth")
-    Call map("c", "c", "selectColumns")
-    Call map("c", "a", "appendColumns")
-    Call map("c", "i", "insertColumns")
-    Call map("c", "d", "deleteColumns")
-    Call map("c", "y", "yankColumns")
-    Call map("c", "x", "cutColumns")
-    Call map("c", "h", "hideColumns")
-    Call map("c", "H", "unhideColumns")
-    Call map("c", "g", "groupColumns")
-    Call map("c", "u", "ungroupColumns")
-    Call map("c", "f", "foldColumnsGroup")
-    Call map("c", "s", "spreadColumnsGroup")
-    Call map("c", "j", "adjustColumnsWidth")
-    Call map("c", "w", "setColumnsWidth")
-
-
-    'Yank
-    Call map("y", "r", "yankRows")
-    Call map("y", "c", "yankColumns")
-    Call map("y", "gg", "yankRows", TargetRowType.ToTopRows)
-    Call map("y", "G", "yankRows", TargetRowType.ToBottomRows)
-    Call map("y", "{", "yankRows", TargetRowType.ToTopOfCurrentRegionRows)
-    Call map("y", "}", "yankRows", TargetRowType.ToBottomOfCurrentRegionRows)
-    Call map("y", "0", "yankColumns", TargetColumnType.ToLeftEndColumns)
-    Call map("y", "$", "yankColumns", TargetColumnType.ToRightEndColumns)
-    Call map("y", "^", "yankColumns", TargetColumnType.ToLeftOfCurrentRegionColumns)
-    Call map("y", "g$", "yankColumns", TargetColumnType.ToRightOfCurrentRegionColumns)
-
-    Call map("y", "h", "yankFromLeftCell")
-    Call map("y", "j", "yankFromDownCell")
-    Call map("y", "k", "yankFromUpCell")
-    Call map("y", "l", "yankFromRightCell")
-    Call map("Y", "", "yankAsPlaintext")
-
-
-    'Delete
-    Call map("X", "", "deleteValue")
-    Call map("D", "", "deleteValue")
-    Call map("d", "d", "deleteRows")
-    Call map("d", "r", "deleteRows")
-    Call map("d", "c", "deleteColumns")
-    Call map("d", "gg", "deleteRows", TargetRowType.ToTopRows)
-    Call map("d", "G", "deleteRows", TargetRowType.ToBottomRows)
-    Call map("d", "{", "deleteRows", TargetRowType.ToTopOfCurrentRegionRows)
-    Call map("d", "}", "deleteRows", TargetRowType.ToBottomOfCurrentRegionRows)
-    Call map("d", "0", "deleteColumns", TargetColumnType.ToLeftEndColumns)
-    Call map("d", "$", "deleteColumns", TargetColumnType.ToRightEndColumns)
-    Call map("d", "^", "deleteColumns", TargetColumnType.ToLeftOfCurrentRegionColumns)
-    Call map("d", "g$", "deleteColumns", TargetColumnType.ToRightOfCurrentRegionColumns)
-
-    Call map("d", "h", "deleteToLeft")
-    Call map("d", "j", "deleteToUp")
-    Call map("d", "k", "deleteToUp")
-    Call map("d", "l", "deleteToLeft")
-
-
-    'Cut
-    Call map("x", "r", "cutRows")
-    Call map("x", "c", "cutColumns")
-    Call map("x", "gg", "cutRows", TargetRowType.ToTopRows)
-    Call map("x", "G", "cutRows", TargetRowType.ToBottomRows)
-    Call map("x", "{", "cutRows", TargetRowType.ToTopOfCurrentRegionRows)
-    Call map("x", "}", "cutRows", TargetRowType.ToBottomOfCurrentRegionRows)
-    Call map("x", "0", "cutColumns", TargetColumnType.ToLeftEndColumns)
-    Call map("x", "$", "cutColumns", TargetColumnType.ToRightEndColumns)
-    Call map("x", "^", "cutColumns", TargetColumnType.ToLeftOfCurrentRegionColumns)
-    Call map("x", "g$", "cutColumns", TargetColumnType.ToRightOfCurrentRegionColumns)
-
-
-    'Paste
-    Call map("p", "", "pasteSmart", xlNext)
-    Call map("P", "", "pasteSmart", xlPrevious)
-    Call map("g", "p", "pasteSpecial")
-    Call map("U", "", "pasteValue")
-
-
-    'Font
-    Call map("-", "", "decreaseFontSize")
-    Call map("+", "", "increaseFontSize")
-    Call map("f", "n", "changeFontName")
-    Call map("f", "s", "changeFontSize")
-    Call map("f", "h", "alignLeft")
-    Call map("f", "j", "alignBottom")
-    Call map("f", "k", "alignTop")
-    Call map("f", "l", "alignRight")
-    Call map("f", "o", "alignCenter")
-    Call map("f", "m", "alignMiddle")
-    Call map("f", "b", "toggleBold")
-    Call map("f", "i", "toggleItalic")
-    Call map("f", "u", "toggleUnderline")
-    Call map("f", "-", "toggleStrikethrough")
-    Call map("f", "t", "changeFormat")
-    Call map("f", "f", "showFontDialog")
-
-
-    'Color
-    Call map("f", "c", "smartFontColor")
-    Call map("F", "C", "smartFillColor")
-    Call map("F", "c", "smartFillColor")
-    Call map("b", "c", "changeShapeBorderColor", requireArguments:=True)
-
-
-    'Comment
-    Call map("C", "i", "editCellComment")
-    Call map("C", "c", "editCellComment")
-    Call map("C", "e", "deleteCellComment")
-    Call map("C", "x", "deleteCellComment")
-    Call map("C", "d", "deleteCellComment")
-    Call map("C", "E", "deleteCellCommentAll")
-    Call map("C", "D", "deleteCellCommentAll")
-    Call map("C", "a", "toggleCellComment")
-    Call map("C", "r", "showCellComment")
-    Call map("C", "m", "hideCellComment")
-    Call map("C", "A", "toggleCellCommentAll")
-    Call map("C", "R", "showCellCommentAll")
-    Call map("C", "M", "hideCellCommentAll")
-    Call map("C", "H", "hideCellCommentIndicator")
-    Call map("C", "n", "nextCommentedCell")
-    Call map("C", "p", "prevCommentedCell")
-
-
-    'Find & Replace
-    Call map("/", "", "showFindFollowLang")
-    Call map("?", "", "showFindNotFollowLang")
-    Call map("n", "", "nextFoundCell")
-    Call map("N", "", "previousFoundCell")
-    Call map("R", "", "showReplaceWindow")
-    Call map("*", "", "findActiveValueNext")
-    Call map("#", "", "findActiveValuePrev")
-    Call map("]", "c", "nextSpecialCells", xlCellTypeComments)
-    Call map("[", "c", "prevSpecialCells", xlCellTypeComments)
-    Call map("]", "o", "nextSpecialCells", xlCellTypeConstants)
-    Call map("[", "o", "prevSpecialCells", xlCellTypeConstants)
-    Call map("]", "f", "nextSpecialCells", xlCellTypeFormulas)
-    Call map("[", "f", "prevSpecialCells", xlCellTypeFormulas)
-    Call map("]", "k", "nextSpecialCells", xlCellTypeBlanks)
-    Call map("[", "k", "prevSpecialCells", xlCellTypeBlanks)
-    Call map("]", "t", "nextSpecialCells", xlCellTypeSameFormatConditions)
-    Call map("[", "t", "prevSpecialCells", xlCellTypeSameFormatConditions)
-    Call map("]", "v", "nextSpecialCells", xlCellTypeSameValidation)
-    Call map("[", "v", "prevSpecialCells", xlCellTypeSameValidation)
-
-    Call map("]", "s", "nextShape")
-    Call map("[", "s", "prevShape")
-
-
-    'Scrolling
-    Call map("^u", "", "scrollUpHalf")
-    Call map("^d", "", "scrollDownHalf")
-    Call map("^b", "", "scrollUp")
-    Call map("^f", "", "scrollDown")
-    Call map("^y", "", "scrollUp1Row")
-    Call map("^e", "", "scrollDown1Row")
-    Call map("z", "h", "scrollLeft1Column")
-    Call map("z", "l", "scrollRight1Column")
-    Call map("z", "H", "scrollLeft")
-    Call map("z", "L", "scrollRight")
-    Call map("z", "t", "scrollCurrentTop")
-    Call map("z", "z", "scrollCurrentMiddle")
-    Call map("z", "b", "scrollCurrentBottom")
-    Call map("z", "s", "scrollCurrentLeft")
-    Call map("z", "m", "scrollCurrentCenter")
-    Call map("z", "e", "scrollCurrentRight")
-
-
-    'Worksheet Function
-    Call map("e", "", "nextWorksheet")
-    Call map("E", "", "previousWorksheet")
-
-    Call map("w", "w", "showSheetPicker")
-    Call map("w", "s", "showSheetPicker")
-    Call map("w", "n", "nextWorksheet")
-    Call map("w", "p", "previousWorksheet")
-    Call map("w", "r", "renameWorksheet")
-    Call map("w", "h", "moveWorksheetBack")
-    Call map("w", "l", "moveWorksheetForward")
-    Call map("w", "i", "insertWorksheet")
-    Call map("w", "a", "appendWorksheet")
-    Call map("w", "d", "deleteWorksheet")
-    Call map("w", "0", "activateLastWorksheet")
-    Call map("w", "$", "activateLastWorksheet")
-    Call map("w", "c", "changeWorksheetTabColor")
-    Call map("w", "y", "cloneWorksheet")
-    Call map("w", "e", "exportWorksheet")
-    Call map("w", "", "activateWorksheet", requireArguments:=True)
-
-    Call map(":", "p", "printPreviewOfActiveSheet", returnOnly:=True)
-
-
-    'Workbook Function
-    Call map(":", "e", "openWorkbook", returnOnly:=True)
-    Call map(":", "e!", "reopenActiveWorkbook", returnOnly:=True)
-    Call map(":", "w", "saveWorkbook", returnOnly:=True)
-    Call map(":", "q", "closeAskSaving", returnOnly:=True)
-    Call map(":", "q!", "closeWithoutSaving", returnOnly:=True)
-    Call map(":", "wq", "closeWithSaving", returnOnly:=True)
-    Call map(":", "x", "closeWithSaving", returnOnly:=True)
-    Call map(":", "sav", "saveAsNewWorkbook", returnOnly:=True)
-    Call map(":", "b", "activateWorkbook", returnOnly:=True, requireArguments:=True)
-    Call map(":", "bn", "nextWorkbook", returnOnly:=True)
-    Call map(":", "bp", "previousWorkbook", returnOnly:=True)
-
-    Call map("Z", "Z", "closeWithSaving")
-    Call map("Z", "Q", "closeWithoutSaving")
-    Call map("‾", "", "toggleReadOnly")
-    Call map("]", "b", "nextWorkbook")
-    Call map("[", "b", "previousWorkbook")
-
-
-    'Useful Command
-    Call map("u", "", "undo_CtrlZ")
-    Call map("^r", "", "redoExecute")
-    Call map(".", "", "repeatAction")
-    Call map("m", "", "zoomIn")
-    Call map("M", "", "zoomOut")
-    Call map("%", "", "zoomSpecifiedScale")
-    Call map("{226}", "", "showContextMenu")
-    Call map("¥", "", "showContextMenu")
-
-    Call map("^i", "", "jumpNext")
-    Call map("^o", "", "jumpPrev")
-    Call map(":", "cle", "clearJumps", returnOnly:=True)
-
-
-    'Other Commands
-    Call map("z", "f", "toggleFreezePanes")
-    Call map("=", "v", "toggleFormulaBar")
-    Call map("g", "s", "showSummaryInfo")
-    Call map("z", "p", "setPrintArea")
-    Call map("z", "P", "clearPrintArea")
-    Call map("@", "@", "showMacroDialog")
-
-
-    'Count
-    Call map("1", "", "showCmdForm", "1")
-    Call map("2", "", "showCmdForm", "2")
-    Call map("3", "", "showCmdForm", "3")
-    Call map("4", "", "showCmdForm", "4")
-    Call map("5", "", "showCmdForm", "5")
-    Call map("6", "", "showCmdForm", "6")
-    Call map("7", "", "showCmdForm", "7")
-    Call map("8", "", "showCmdForm", "8")
-    Call map("9", "", "showCmdForm", "9")
-
-
-    'KeyMapping
-    Call map("^{[}", "", "primitiveKeyMapping", vbKeyEscape)
+Sub DefaultMapping()
+
+    With gVim.KeyMap
+        'Core
+        Call .Map("nmap <C-p> ToggleLang")
+        Call .Map("nmap : EnterCmdlineMode")
+        Call .Map("nmap <cmd>debug ToggleDebugMode")
+
+
+        'InsertMode
+        Call .Map("nmap a AppendFollowLangMode")
+        Call .Map("nmap A AppendNotFollowLangMode")
+        Call .Map("nmap i InsertFollowLangMode")
+        Call .Map("nmap I InsertNotFollowLangMode")
+        Call .Map("nmap s SubstituteFollowLangMode")
+        Call .Map("nmap S SubstituteNotFollowLangMode")
+
+
+        'Moving
+        Call .Map("nmap h MoveLeft")
+        Call .Map("nmap j MoveDown")
+        Call .Map("nmap k MoveUp")
+        Call .Map("nmap l MoveRight")
+        Call .Map("nmap H MoveLeftWithShift")
+        Call .Map("nmap J MoveDownWithShift")
+        Call .Map("nmap K MoveUpWithShift")
+        Call .Map("nmap L MoveRightWithShift")
+        Call .Map("nmap <C-h> MoveLeft")
+        Call .Map("nmap <C-j> MoveDown")
+        Call .Map("nmap <C-k> MoveUp")
+        Call .Map("nmap <C-l> MoveRight")
+        Call .Map("nmap <C-S-H> MoveLeft")
+        Call .Map("nmap <C-S-J> MoveDown")
+        Call .Map("nmap <C-S-K> MoveUp")
+        Call .Map("nmap <C-S-L> MoveRight")
+
+        Call .Map("nmap gg MoveToTopRow")
+        Call .Map("nmap G MoveToLastRow")
+        Call .Map("nmap <bar> MoveToNthColumn")
+        Call .Map("nmap 0 MoveToFirstColumn")
+        Call .Map("nmap ^ MoveToLeftEnd")
+        Call .Map("nmap $ MoveToRightEnd")
+        Call .Map("nmap g0 MoveToA1")
+
+        Call .Map("nmap { MoveToTopOfCurrentRegion")
+        Call .Map("nmap } MoveToBottomOfCurrentRegion")
+
+        Call .Map("nmap W MoveToSpecifiedCell")
+
+
+        'Cell
+        Call .Map("nmap xx CutCell")
+        Call .Map("nmap yy YankCell")
+        Call .Map("nmap o InsertCellsDown")
+        Call .Map("nmap O InsertCellsUp")
+        Call .Map("nmap t InsertCellsRight")
+        Call .Map("nmap T InsertCellsLeft")
+        Call .Map("nmap > IncrementText")
+        Call .Map("nmap <lt> DecrementText")
+        Call .Map("nmap ( IncreaseDecimal")
+        Call .Map("nmap ) DecreaseDecimal")
+        Call .Map("nmap zw ToggleWrapText")
+        Call .Map("nmap & ToggleMergeCells")
+        Call .Map("nmap f, ApplyCommaStyle")
+        Call .Map("nmap <Space> UnionSelectCells")
+        Call .Map("nmap <S-Space> ExceptSelectCells")
+        Call .Map("nmap <S-BS> ClearSelectCells")
+        Call .Map("nmap gf FollowHyperlinkOfActiveCell")
+        Call .Map("nmap Ff ApplyFlashFill")
+        Call .Map("nmap FF ApplyFlashFill")
+        Call .Map("nmap Fa ApplyAutoFill")
+        Call .Map("nmap FA ApplyAutoFill")
+
+        Call .Map("nmap =s AutoSum")
+        Call .Map("nmap =a AutoAverage")
+        Call .Map("nmap =c AutoCount")
+        Call .Map("nmap =m AutoMax")
+        Call .Map("nmap =i AutoMin")
+        Call .Map("nmap == InsertFunction")
+
+        Call .Map("nmap v ToggleVisualMode")
+        Call .Map("nmap V ToggleVisualLine")
+
+
+        ' Border
+        Call .Map("nmap bb ToggleBorderAll " & xlContinuous & " " & xlThin)
+        Call .Map("nmap ba ToggleBorderAround " & xlContinuous & " " & xlThin)
+        Call .Map("nmap bh ToggleBorderLeft " & xlContinuous & " " & xlThin)
+        Call .Map("nmap bj ToggleBorderBottom " & xlContinuous & " " & xlThin)
+        Call .Map("nmap bk ToggleBorderTop " & xlContinuous & " " & xlThin)
+        Call .Map("nmap bl ToggleBorderRight " & xlContinuous & " " & xlThin)
+        Call .Map("nmap bia ToggleBorderInner " & xlContinuous & " " & xlThin)
+        Call .Map("nmap bis ToggleBorderInnerHorizontal " & xlContinuous & " " & xlThin)
+        Call .Map("nmap biv ToggleBorderInnerVertical " & xlContinuous & " " & xlThin)
+        Call .Map("nmap b/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlThin)
+        Call .Map("nmap b<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlThin)
+
+        Call .Map("nmap bB ToggleBorderAll " & xlContinuous & " " & xlThick)
+        Call .Map("nmap bA ToggleBorderAround " & xlContinuous & " " & xlThick)
+        Call .Map("nmap bH ToggleBorderLeft " & xlContinuous & " " & xlThick)
+        Call .Map("nmap bJ ToggleBorderBottom " & xlContinuous & " " & xlThick)
+        Call .Map("nmap bK ToggleBorderTop " & xlContinuous & " " & xlThick)
+        Call .Map("nmap bL ToggleBorderRight " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Bb ToggleBorderAll " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Ba ToggleBorderAround " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Bh ToggleBorderLeft " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Bj ToggleBorderBottom " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Bk ToggleBorderTop " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Bl ToggleBorderRight " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Bia ToggleBorderInner " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Bis ToggleBorderInnerHorizontal " & xlContinuous & " " & xlThick)
+        Call .Map("nmap Biv ToggleBorderInnerVertical " & xlContinuous & " " & xlThick)
+        Call .Map("nmap B/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlThick)
+        Call .Map("nmap B<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlThick)
+
+        Call .Map("nmap bob ToggleBorderAll " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap boa ToggleBorderAround " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap boh ToggleBorderLeft " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap boj ToggleBorderBottom " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap bok ToggleBorderTop " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap bol ToggleBorderRight " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap boia ToggleBorderInner " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap bois ToggleBorderInnerHorizontal " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap boiv ToggleBorderInnerVertical " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap bo/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlHairline)
+        Call .Map("nmap bo<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlHairline)
+
+        Call .Map("nmap bmb ToggleBorderAll " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bma ToggleBorderAround " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bmh ToggleBorderLeft " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bmj ToggleBorderBottom " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bmk ToggleBorderTop " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bml ToggleBorderRight " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bmia ToggleBorderInner " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bmis ToggleBorderInnerHorizontal " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bmiv ToggleBorderInnerVertical " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bm/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlMedium)
+        Call .Map("nmap bm<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlMedium)
+
+        Call .Map("nmap btb ToggleBorderAll " & xlDouble & " " & xlThick)
+        Call .Map("nmap bta ToggleBorderAround " & xlDouble & " " & xlThick)
+        Call .Map("nmap bth ToggleBorderLeft " & xlDouble & " " & xlThick)
+        Call .Map("nmap btj ToggleBorderBottom " & xlDouble & " " & xlThick)
+        Call .Map("nmap btk ToggleBorderTop " & xlDouble & " " & xlThick)
+        Call .Map("nmap btl ToggleBorderRight " & xlDouble & " " & xlThick)
+        Call .Map("nmap btia ToggleBorderInner " & xlDouble & " " & xlThick)
+        Call .Map("nmap btis ToggleBorderInnerHorizontal " & xlDouble & " " & xlThick)
+        Call .Map("nmap btiv ToggleBorderInnerVertical " & xlDouble & " " & xlThick)
+        Call .Map("nmap bt/ ToggleBorderDiagonalUp " & xlDouble & " " & xlThick)
+        Call .Map("nmap bt<bslash> ToggleBorderDiagonalDown " & xlDouble & " " & xlThick)
+
+        Call .Map("nmap bdd DeleteBorderAll")
+        Call .Map("nmap bda DeleteBorderAround")
+        Call .Map("nmap bdh DeleteBorderLeft")
+        Call .Map("nmap bdj DeleteBorderBottom")
+        Call .Map("nmap bdk DeleteBorderTop")
+        Call .Map("nmap bdl DeleteBorderRight")
+        Call .Map("nmap bdia DeleteBorderInner")
+        Call .Map("nmap bdis DeleteBorderInnerHorizontal")
+        Call .Map("nmap bdiv DeleteBorderInnerVertical")
+        Call .Map("nmap bd/ DeleteBorderDiagonalUp")
+        Call .Map("nmap bd<bslash> DeleteBorderDiagonalDown")
+
+        Call .Map("nmap bcc SetBorderColorAll")
+        Call .Map("nmap bca SetBorderColorAround")
+        Call .Map("nmap bch SetBorderColorLeft")
+        Call .Map("nmap bcj SetBorderColorBottom")
+        Call .Map("nmap bck SetBorderColorTop")
+        Call .Map("nmap bcl SetBorderColorRight")
+        Call .Map("nmap bcia SetBorderColorInner")
+        Call .Map("nmap bcis SetBorderColorInnerHorizontal")
+        Call .Map("nmap bciv SetBorderColorInnerVertical")
+        Call .Map("nmap bc/ SetBorderColorDiagonalUp")
+        Call .Map("nmap bc<bslash> SetBorderColorDiagonalDown")
+
+
+        'Row
+        Call .Map("nmap r- NarrowRowsHeight")
+        Call .Map("nmap r+ WideRowsHeight")
+        Call .Map("nmap rr SelectRows")
+        Call .Map("nmap ra AppendRows")
+        Call .Map("nmap ri InsertRows")
+        Call .Map("nmap rd DeleteRows")
+        Call .Map("nmap ry YankRows")
+        Call .Map("nmap rx CutRows")
+        Call .Map("nmap rh HideRows")
+        Call .Map("nmap rH UnhideRows")
+        Call .Map("nmap rg GroupRows")
+        Call .Map("nmap ru UngroupRows")
+        Call .Map("nmap rf FoldRowsGroup")
+        Call .Map("nmap rs SpreadRowsGroup")
+        Call .Map("nmap rj AdjustRowsHeight")
+        Call .Map("nmap rw SetRowsHeight")
+
+
+        'Column
+        Call .Map("nmap c- NarrowColumnsWidth")
+        Call .Map("nmap c+ WideColumnsWidth")
+        Call .Map("nmap cc SelectColumns")
+        Call .Map("nmap ca AppendColumns")
+        Call .Map("nmap ci InsertColumns")
+        Call .Map("nmap cd DeleteColumns")
+        Call .Map("nmap cy YankColumns")
+        Call .Map("nmap cx CutColumns")
+        Call .Map("nmap ch HideColumns")
+        Call .Map("nmap cH UnhideColumns")
+        Call .Map("nmap cg GroupColumns")
+        Call .Map("nmap cu UngroupColumns")
+        Call .Map("nmap cf FoldColumnsGroup")
+        Call .Map("nmap cs SpreadColumnsGroup")
+        Call .Map("nmap cj AdjustColumnsWidth")
+        Call .Map("nmap cw SetColumnsWidth")
+
+
+        'Yank
+        Call .Map("nmap yr YankRows")
+        Call .Map("nmap yc YankColumns")
+        Call .Map("nmap ygg YankRows " & eTargetRowType.ToTopRows)
+        Call .Map("nmap yG YankRows " & eTargetRowType.ToBottomRows)
+        Call .Map("nmap y{ YankRows " & eTargetRowType.ToTopOfCurrentRegionRows)
+        Call .Map("nmap y} YankRows " & eTargetRowType.ToBottomOfCurrentRegionRows)
+        Call .Map("nmap y0 YankColumns " & eTargetColumnType.ToLeftEndColumns)
+        Call .Map("nmap y$ YankColumns " & eTargetColumnType.ToRightEndColumns)
+        Call .Map("nmap y^ YankColumns " & eTargetColumnType.ToLeftOfCurrentRegionColumns)
+        Call .Map("nmap yg$ YankColumns " & eTargetColumnType.ToRightOfCurrentRegionColumns)
+
+        Call .Map("nmap yh YankFromLeftCell")
+        Call .Map("nmap yj YankFromDownCell")
+        Call .Map("nmap yk YankFromUpCell")
+        Call .Map("nmap yl YankFromRightCell")
+        Call .Map("nmap Y YankAsPlaintext")
+
+
+        'Delete
+        Call .Map("nmap X DeleteValue")
+        Call .Map("nmap D DeleteValue")
+        Call .Map("nmap dd DeleteRows")
+        Call .Map("nmap dr DeleteRows")
+        Call .Map("nmap dc DeleteColumns")
+        Call .Map("nmap dgg DeleteRows " & eTargetRowType.ToTopRows)
+        Call .Map("nmap dG DeleteRows " & eTargetRowType.ToBottomRows)
+        Call .Map("nmap d{ DeleteRows " & eTargetRowType.ToTopOfCurrentRegionRows)
+        Call .Map("nmap d} DeleteRows " & eTargetRowType.ToBottomOfCurrentRegionRows)
+        Call .Map("nmap d0 DeleteColumns " & eTargetColumnType.ToLeftEndColumns)
+        Call .Map("nmap d$ DeleteColumns " & eTargetColumnType.ToRightEndColumns)
+        Call .Map("nmap d^ DeleteColumns " & eTargetColumnType.ToLeftOfCurrentRegionColumns)
+        Call .Map("nmap dg$ DeleteColumns " & eTargetColumnType.ToRightOfCurrentRegionColumns)
+
+        Call .Map("nmap dh DeleteToLeft")
+        Call .Map("nmap dj DeleteToUp")
+        Call .Map("nmap dk DeleteToUp")
+        Call .Map("nmap dl DeleteToLeft")
+
+
+        'Cut
+        Call .Map("nmap xr CutRows")
+        Call .Map("nmap xc CutColumns")
+        Call .Map("nmap xgg CutRows " & eTargetRowType.ToTopRows)
+        Call .Map("nmap xG CutRows " & eTargetRowType.ToBottomRows)
+        Call .Map("nmap x{ CutRows " & eTargetRowType.ToTopOfCurrentRegionRows)
+        Call .Map("nmap x} CutRows " & eTargetRowType.ToBottomOfCurrentRegionRows)
+        Call .Map("nmap x0 CutColumns " & eTargetColumnType.ToLeftEndColumns)
+        Call .Map("nmap x$ CutColumns " & eTargetColumnType.ToRightEndColumns)
+        Call .Map("nmap x^ CutColumns " & eTargetColumnType.ToLeftOfCurrentRegionColumns)
+        Call .Map("nmap xg$ CutColumns " & eTargetColumnType.ToRightOfCurrentRegionColumns)
+
+
+        'Paste
+        Call .Map("nmap p PasteSmart " & xlNext)
+        Call .Map("nmap P PasteSmart " & xlPrevious)
+        Call .Map("nmap gp PasteSpecial")
+        Call .Map("nmap U PasteValue")
+
+
+        'Font
+        Call .Map("nmap - DecreaseFontSize")
+        Call .Map("nmap + IncreaseFontSize")
+        Call .Map("nmap fn ChangeFontName")
+        Call .Map("nmap fs ChangeFontSize")
+        Call .Map("nmap fh AlignLeft")
+        Call .Map("nmap fj AlignBottom")
+        Call .Map("nmap fk AlignTop")
+        Call .Map("nmap fl AlignRight")
+        Call .Map("nmap fo AlignCenter")
+        Call .Map("nmap fm AlignMiddle")
+        Call .Map("nmap fb ToggleBold")
+        Call .Map("nmap fi ToggleItalic")
+        Call .Map("nmap fu ToggleUnderline")
+        Call .Map("nmap f- ToggleStrikethrough")
+        Call .Map("nmap ft ChangeFormat")
+        Call .Map("nmap ff ShowFontDialog")
+
+
+        'Color
+        Call .Map("nmap fc SmartFontColor")
+        Call .Map("nmap FC SmartFillColor")
+        Call .Map("nmap Fc SmartFillColor")
+        Call .Map("nmap bc ChangeShapeBorderColor")
+
+
+        'Comment
+        Call .Map("nmap Ci EditCellComment")
+        Call .Map("nmap Cc EditCellComment")
+        Call .Map("nmap Ce DeleteCellComment")
+        Call .Map("nmap Cx DeleteCellComment")
+        Call .Map("nmap Cd DeleteCellComment")
+        Call .Map("nmap CE DeleteCellCommentAll")
+        Call .Map("nmap CD DeleteCellCommentAll")
+        Call .Map("nmap Ca ToggleCellComment")
+        Call .Map("nmap Cr ShowCellComment")
+        Call .Map("nmap Cm HideCellComment")
+        Call .Map("nmap CA ToggleCellCommentAll")
+        Call .Map("nmap CR ShowCellCommentAll")
+        Call .Map("nmap CM HideCellCommentAll")
+        Call .Map("nmap CH HideCellCommentIndicator")
+        Call .Map("nmap Cn NextCommentedCell")
+        Call .Map("nmap Cp PrevCommentedCell")
+
+
+        'Find & Replace
+        Call .Map("nmap / ShowFindFollowLang")
+        Call .Map("nmap ? ShowFindNotFollowLang")
+        Call .Map("nmap n NextFoundCell")
+        Call .Map("nmap N PreviousFoundCell")
+        Call .Map("nmap R ShowReplaceWindow")
+        Call .Map("nmap * FindActiveValueNext")
+        Call .Map("nmap # FindActiveValuePrev")
+        Call .Map("nmap ]c NextSpecialCells " & xlCellTypeComments)
+        Call .Map("nmap [c PrevSpecialCells " & xlCellTypeComments)
+        Call .Map("nmap ]o NextSpecialCells " & xlCellTypeConstants)
+        Call .Map("nmap [o PrevSpecialCells " & xlCellTypeConstants)
+        Call .Map("nmap ]f NextSpecialCells " & xlCellTypeFormulas)
+        Call .Map("nmap [f PrevSpecialCells " & xlCellTypeFormulas)
+        Call .Map("nmap ]k NextSpecialCells " & xlCellTypeBlanks)
+        Call .Map("nmap [k PrevSpecialCells " & xlCellTypeBlanks)
+        Call .Map("nmap ]t NextSpecialCells " & xlCellTypeSameFormatConditions)
+        Call .Map("nmap [t PrevSpecialCells " & xlCellTypeSameFormatConditions)
+        Call .Map("nmap ]v NextSpecialCells " & xlCellTypeSameValidation)
+        Call .Map("nmap [v PrevSpecialCells " & xlCellTypeSameValidation)
+
+        Call .Map("nmap ]s NextShape")
+        Call .Map("nmap [s PrevShape")
+
+
+        'Scrolling
+        Call .Map("nmap <C-u> ScrollUpHalf")
+        Call .Map("nmap <C-d> ScrollDownHalf")
+        Call .Map("nmap <C-b> ScrollUp")
+        Call .Map("nmap <C-f> ScrollDown")
+        Call .Map("nmap <C-y> ScrollUp1Row")
+        Call .Map("nmap <C-e> ScrollDown1Row")
+        Call .Map("nmap zh ScrollLeft1Column")
+        Call .Map("nmap zl ScrollRight1Column")
+        Call .Map("nmap zH ScrollLeft")
+        Call .Map("nmap zL ScrollRight")
+        Call .Map("nmap zt ScrollCurrentTop")
+        Call .Map("nmap zz ScrollCurrentMiddle")
+        Call .Map("nmap zb ScrollCurrentBottom")
+        Call .Map("nmap zs ScrollCurrentLeft")
+        Call .Map("nmap zm ScrollCurrentCenter")
+        Call .Map("nmap ze ScrollCurrentRight")
+
+
+        'Worksheet Function
+        Call .Map("nmap e NextWorksheet")
+        Call .Map("nmap E PreviousWorksheet")
+
+        Call .Map("nmap ww ShowSheetPicker")
+        Call .Map("nmap ws ShowSheetPicker")
+        Call .Map("nmap wn NextWorksheet")
+        Call .Map("nmap wp PreviousWorksheet")
+        Call .Map("nmap wr RenameWorksheet")
+        Call .Map("nmap wh MoveWorksheetBack")
+        Call .Map("nmap wl MoveWorksheetForward")
+        Call .Map("nmap wi InsertWorksheet")
+        Call .Map("nmap wa AppendWorksheet")
+        Call .Map("nmap wd DeleteWorksheet")
+        Call .Map("nmap w0 ActivateLastWorksheet")
+        Call .Map("nmap w$ ActivateLastWorksheet")
+        Call .Map("nmap wc ChangeWorksheetTabColor")
+        Call .Map("nmap wy CloneWorksheet")
+        Call .Map("nmap we ExportWorksheet")
+        Call .Map("nmap w ActivateWorksheet")
+
+        Call .Map("nmap <cmd>printpreview PrintPreviewOfActiveSheet")
+
+
+        'Workbook Function
+        Call .Map("nmap <cmd>e OpenWorkbook")
+        Call .Map("nmap <cmd>e! ReopenActiveWorkbook")
+        Call .Map("nmap <cmd>w SaveWorkbook")
+        Call .Map("nmap <cmd>q CloseAskSaving")
+        Call .Map("nmap <cmd>q! CloseWithoutSaving")
+        Call .Map("nmap <cmd>wq CloseWithSaving")
+        Call .Map("nmap <cmd>x CloseWithSaving")
+        Call .Map("nmap <cmd>sav SaveAsNewWorkbook")
+        Call .Map("nmap <cmd>b ActivateWorkbook")
+        Call .Map("nmap <cmd>bn NextWorkbook")
+        Call .Map("nmap <cmd>bp PreviousWorkbook")
+
+        Call .Map("nmap ZZ CloseWithSaving")
+        Call .Map("nmap ZQ CloseWithoutSaving")
+        Call .Map("nmap ‾ ToggleReadOnly")
+        Call .Map("nmap ]b NextWorkbook")
+        Call .Map("nmap [b PreviousWorkbook")
+
+
+        'Useful Command
+        Call .Map("nmap u Undo_CtrlZ")
+        Call .Map("nmap <C-r> RedoExecute")
+        Call .Map("nmap . RepeatAction")
+        Call .Map("nmap m ZoomIn")
+        Call .Map("nmap M ZoomOut")
+        Call .Map("nmap % ZoomSpecifiedScale")
+        Call .Map("nmap <bslash> ShowContextMenu")
+
+        Call .Map("nmap <C-i> JumpNext")
+        Call .Map("nmap <C-o> JumpPrev")
+        Call .Map("nmap <cmd>cle ClearJumps")
+
+
+        'Other Commands
+        Call .Map("nmap zf ToggleFreezePanes")
+        Call .Map("nmap =v ToggleFormulaBar")
+        Call .Map("nmap gs ShowSummaryInfo")
+        Call .Map("nmap zp SetPrintArea")
+        Call .Map("nmap zP ClearPrintArea")
+        Call .Map("nmap @@ ShowMacroDialog")
+
+
+        'Count
+        Call .Map("nmap 1 ShowCmdForm " & "1")
+        Call .Map("nmap 2 ShowCmdForm " & "2")
+        Call .Map("nmap 3 ShowCmdForm " & "3")
+        Call .Map("nmap 4 ShowCmdForm " & "4")
+        Call .Map("nmap 5 ShowCmdForm " & "5")
+        Call .Map("nmap 6 ShowCmdForm " & "6")
+        Call .Map("nmap 7 ShowCmdForm " & "7")
+        Call .Map("nmap 8 ShowCmdForm " & "8")
+        Call .Map("nmap 9 ShowCmdForm " & "9")
+
+
+        'KeyMapping
+        Call .Map("nmap <C-[> <key><esc>")
+
+
+        'Visual Mode
+        Call .Map("vmap <Esc> StopVisualMode")
+        Call .Map("vmap <C-[> StopVisualMode")
+        Call .Map("vmap <S-0> SwapVisualBase")
+
+
+        'Shape Insert Mode
+        Call .Map("imap <Esc> ChangeToNormalMode")
+        Call .Map("imap <C-[> ChangeToNormalMode")
+    End With
 End Sub

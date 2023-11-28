@@ -29,12 +29,12 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
     'Entire
     If TargetType = Entire Then
         With rngSelection
-            If .Rows.Count > 1 Or gCount = 1 Then
+            If .Rows.Count > 1 Or gVim.Count1 = 1 Then
                 Set getTargetRows = .EntireRow
                 Exit Function
-            ElseIf gCount > 1 Then
+            ElseIf gVim.Count1 > 1 Then
                 startRow = .Row
-                endRow = .Row + gCount - 1
+                endRow = .Row + gVim.Count1 - 1
             End If
         End With
 
@@ -229,7 +229,7 @@ Function yankRows(Optional ByVal TargetType As TargetRowType = Entire)
     Call stopVisualMode
 
     Target.Copy
-    Set gLastYanked = Target
+    Set gVim.Vars.LastYanked = Target
 
     Exit Function
 
@@ -250,7 +250,7 @@ Function cutRows(Optional ByVal TargetType As TargetRowType = Entire)
     Call stopVisualMode
 
     Target.Cut
-    Set gLastYanked = Target
+    Set gVim.Vars.LastYanked = Target
 
     Exit Function
 
@@ -340,7 +340,7 @@ Function foldRowsGroup()
 
     targetRow = ActiveCell.Row
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call Application.ExecuteExcel4Macro("SHOW.DETAIL(1," & targetRow & ",FALSE)")
     Next i
     Exit Function
@@ -360,7 +360,7 @@ Function spreadRowsGroup()
 
     targetRow = ActiveCell.Row
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call Application.ExecuteExcel4Macro("SHOW.DETAIL(1," & targetRow & ",TRUE)")
     Next i
     Exit Function
@@ -375,8 +375,8 @@ Function adjustRowsHeight()
     Call repeatRegister("adjustRowsHeight")
     Call stopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
     Call keystroke(True, Alt_ + H_, O_, A_)
@@ -391,8 +391,8 @@ Function setRowsHeight()
 
     Call stopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
     Call keystroke(True, Alt_ + H_, O_, H_)
@@ -423,10 +423,10 @@ Function narrowRowsHeight()
         Set targetRows = ActiveCell.EntireRow
     End If
 
-    If currentHeight - gCount < 0 Then
+    If currentHeight - gVim.Count1 < 0 Then
         targetRows.EntireRow.RowHeight = 0
     Else
-        targetRows.EntireRow.RowHeight = currentHeight - gCount
+        targetRows.EntireRow.RowHeight = currentHeight - gVim.Count1
     End If
 
     Set targetRows = Nothing
@@ -457,10 +457,10 @@ Function wideRowsHeight()
         Set targetRows = ActiveCell.EntireRow
     End If
 
-    If currentHeight + gCount > 409.5 Then
+    If currentHeight + gVim.Count1 > 409.5 Then
         targetRows.EntireRow.RowHeight = 409.5
     Else
-        targetRows.EntireRow.RowHeight = currentHeight + gCount
+        targetRows.EntireRow.RowHeight = currentHeight + gVim.Count1
     End If
 
     Set targetRows = Nothing

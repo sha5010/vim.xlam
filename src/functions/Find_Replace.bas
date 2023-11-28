@@ -2,15 +2,44 @@ Attribute VB_Name = "F_Find_Replace"
 Option Explicit
 Option Private Module
 
-Function showFindFollowLang()
-    UF_FindForm.Show
+Function ShowFindFollowLang(Optional ByVal g As String) As Boolean
+    Dim searchStr As String
+    searchStr = UF_CmdLine.Launch("/", "Find", gVim.IsJapanese)
+
+    If searchStr <> CMDLINE_CANCELED Then
+        Call FindInner(searchStr)
+    End If
 End Function
 
-Function showFindNotFollowLang()
-    gLangJa = Not gLangJa
-    UF_FindForm.Show
-    gLangJa = Not gLangJa
+Function ShowFindNotFollowLang(Optional ByVal g As String) As Boolean
+    Dim searchStr As String
+    searchStr = UF_CmdLine.Launch("/", "Find", Not gVim.IsJapanese)
+
+    If searchStr <> CMDLINE_CANCELED Then
+        Call FindInner(searchStr)
+    End If
 End Function
+
+Private Sub FindInner(ByVal findString As String)
+    Dim t As Range
+
+    If findString = "" Then
+        Call NextFoundCell
+        Exit Sub
+    End If
+
+    Set t = ActiveSheet.Cells.Find(What:=findString, _
+                                   LookIn:=xlValues, _
+                                   LookAt:=xlPart, _
+                                   SearchOrder:=xlByColumns, _
+                                   MatchByte:=False)
+    If Not t Is Nothing Then
+        Call RecordToJumpList
+
+        ActiveWorkbook.ActiveSheet.Activate
+        t.Activate
+    End If
+End Sub
 
 Function nextFoundCell()
     On Error GoTo Catch
@@ -18,14 +47,14 @@ Function nextFoundCell()
     Dim t As Range
     Dim i As Integer
 
-    If gCount > 1 Then
+    If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
     End If
 
     Call recordToJumpList
 
-    For i = gCount To 1 Step -1
-        If gCount = 1 Then
+    For i = gVim.Count1 To 1 Step -1
+        If gVim.Count1 = 1 Then
             Application.ScreenUpdating = True
         End If
 
@@ -50,13 +79,13 @@ Function previousFoundCell()
     Dim t As Range
     Dim i As Integer
 
-    If gCount > 1 Then
+    If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
     End If
 
     Call recordToJumpList
 
-    For i = gCount To 1 Step -1
+    For i = gVim.Count1 To 1 Step -1
         If i = 1 Then
             Application.ScreenUpdating = True
         End If
@@ -110,7 +139,7 @@ Function findActiveValueNext()
         t.Activate
     End If
 
-    Call setStatusBarTemporarily("/" & findText, 2, disablePrefix:=True)
+    Call SetStatusBarTemporarily("/" & findText, 2000, disablePrefix:=True)
     Exit Function
 
 Catch:
@@ -148,7 +177,7 @@ Function findActiveValuePrev()
         t.Activate
     End If
 
-    Call setStatusBarTemporarily("?" & findText, 2, disablePrefix:=True)
+    Call SetStatusBarTemporarily("?" & findText, 2000, disablePrefix:=True)
     Exit Function
 
 Catch:
@@ -169,7 +198,7 @@ Function nextSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
     'Calculate next cell
     Set rngResultCell = ActiveCell
-    For i = 1 To (gCount - 1) Mod rngSpecialCells.Count + 1
+    For i = 1 To (gVim.Count1 - 1) Mod rngSpecialCells.Count + 1
         Set rngResultCell = determineCell(rngResultCell, rngSpecialCells, TypeValue, SearchOrder, xlNext)
     Next i
 
@@ -181,7 +210,7 @@ Function nextSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
 Catch:
     If Err.Number = 1004 Then
-        Call setStatusBarTemporarily("該当するセルが見つかりません。", 2)
+        Call SetStatusBarTemporarily("該当するセルが見つかりません。", 2000)
     Else
         Call errorHandler("nextSpecialCells")
     End If
@@ -201,7 +230,7 @@ Function prevSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
     'Calculate next cell
     Set rngResultCell = ActiveCell
-    For i = 1 To (gCount - 1) Mod rngSpecialCells.Count + 1
+    For i = 1 To (gVim.Count1 - 1) Mod rngSpecialCells.Count + 1
         Set rngResultCell = determineCell(rngResultCell, rngSpecialCells, TypeValue, SearchOrder, xlPrevious)
     Next i
 
@@ -212,9 +241,9 @@ Function prevSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
 Catch:
     If Err.Number = 1004 Then
-        Call setStatusBarTemporarily("該当するセルが見つかりません。", 2)
+        Call SetStatusBarTemporarily("該当するセルが見つかりません。", 2000)
     Else
-        Call errorHandler("prevSpecialCells")
+        Call ErrorHandler("PrevSpecialCells")
     End If
 End Function
 

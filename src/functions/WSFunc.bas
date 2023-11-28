@@ -68,8 +68,8 @@ Function renameWorksheet()
             End If
             .Worksheets(.ActiveSheet.Index).Name = ret
 
-            Call setStatusBarTemporarily("シート名を変更しました： """ & _
-                beforeName & """ → """ & ret & """", 3)
+            Call SetStatusBarTemporarily("シート名を変更しました： """ & _
+                beforeName & """ → """ & ret & """", 3000)
         End If
     End With
     Exit Function
@@ -89,7 +89,7 @@ Function moveWorksheetForward()
 
     With ActiveWorkbook
         idx = .ActiveSheet.Index
-        cnt = gCount
+        cnt = gVim.Count1
         n = .Worksheets.Count
         i = idx
         Do
@@ -131,7 +131,7 @@ Function moveWorksheetBack()
 
     With ActiveWorkbook
         idx = .ActiveSheet.Index
-        cnt = gCount
+        cnt = gVim.Count1
         n = .Worksheets.Count
         i = idx
         Do
@@ -201,20 +201,24 @@ Catch:
     Call errorHandler("deleteWorksheet")
 End Function
 
-Function activateWorksheet(ByVal n As String) As Boolean
+Function ActivateWorksheet(Optional ByVal sheetNum As String) As Boolean
     On Error GoTo Catch
 
-    Dim idx As Integer
-
-    If Not IsNumeric(n) Or InStr(n, ".") > 0 Then
+    If Len(sheetNum) = 0 Then
+        ActivateWorksheet = True
+        Exit Function
+    ElseIf sheetNum Like "*[!0-9]*" Then
         Exit Function
     End If
 
-    idx = CInt(n)
+    Dim idx As Long
+    idx = CLng(Right(sheetNum, 10))
 
     With ActiveWorkbook
-        If idx < 1 Or .Worksheets.Count < idx Then
-            Exit Function
+        If idx < 1 Then
+            idx = 1
+        ElseIf .Worksheets.Count < idx Then
+            idx = .Worksheets.Count
         End If
 
         If .Worksheets(idx).Visible <> xlSheetVisible Then
@@ -222,12 +226,11 @@ Function activateWorksheet(ByVal n As String) As Boolean
         End If
 
         .Worksheets(idx).Select
-        activateWorksheet = True
     End With
     Exit Function
 
 Catch:
-    Call errorHandler("activateWorksheet")
+    Call ErrorHandler("ActivateWorksheet")
 End Function
 
 Function activateFirstWorksheet()

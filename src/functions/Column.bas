@@ -29,12 +29,12 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
     'Entire
     If TargetType = Entire Then
         With rngSelection
-            If .Columns.Count > 1 Or gCount = 1 Then
+            If .Columns.Count > 1 Or gVim.Count1 = 1 Then
                 Set getTargetColumns = .EntireColumn
                 Exit Function
-            ElseIf gCount > 1 Then
+            ElseIf gVim.Count1 > 1 Then
                 startColumn = .Column
-                endColumn = .Column + gCount - 1
+                endColumn = .Column + gVim.Count1 - 1
             End If
         End With
 
@@ -229,7 +229,7 @@ Function yankColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     Call stopVisualMode
 
     Target.Copy
-    Set gLastYanked = Target
+    Set gVim.Vars.LastYanked = Target
 
     Exit Function
 
@@ -250,7 +250,7 @@ Function cutColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     Call stopVisualMode
 
     Target.Cut
-    Set gLastYanked = Target
+    Set gVim.Vars.LastYanked = Target
 
     Exit Function
 
@@ -341,7 +341,7 @@ Function foldColumnsGroup()
 
     targetColumn = ActiveCell.Column
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call Application.ExecuteExcel4Macro("SHOW.DETAIL(2," & targetColumn & ",FALSE)")
     Next i
     Exit Function
@@ -361,7 +361,7 @@ Function spreadColumnsGroup()
 
     targetColumn = ActiveCell.Column
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call Application.ExecuteExcel4Macro("SHOW.DETAIL(2," & targetColumn & ",TRUE)")
     Next i
     Exit Function
@@ -376,8 +376,8 @@ Function adjustColumnsWidth()
     Call repeatRegister("adjustColumnsWidth")
     Call stopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
     Call keystroke(True, Alt_ + H_, O_, I_)
@@ -392,8 +392,8 @@ Function setColumnsWidth()
 
     Call stopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
     Call keystroke(True, Alt_ + H_, O_, W_)
@@ -424,10 +424,10 @@ Function narrowColumnsWidth()
         Set targetColumns = ActiveCell.EntireColumn
     End If
 
-    If currentWidth - gCount < 0 Then
+    If currentWidth - gVim.Count1 < 0 Then
         targetColumns.EntireColumn.ColumnWidth = 0
     Else
-        targetColumns.EntireColumn.ColumnWidth = currentWidth - gCount
+        targetColumns.EntireColumn.ColumnWidth = currentWidth - gVim.Count1
     End If
 
     Set targetColumns = Nothing
@@ -458,10 +458,10 @@ Function wideColumnsWidth()
         Set targetColumns = ActiveCell.EntireColumn
     End If
 
-    If currentWidth + gCount > 255 Then
+    If currentWidth + gVim.Count1 > 255 Then
         targetColumns.EntireColumn.ColumnWidth = 255
     Else
-        targetColumns.EntireColumn.ColumnWidth = currentWidth + gCount
+        targetColumns.EntireColumn.ColumnWidth = currentWidth + gVim.Count1
     End If
 
     Set targetColumns = Nothing

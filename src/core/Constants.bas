@@ -5,6 +5,34 @@ Option Explicit
 Public Const KEYUP = &H2          'Key up
 Public Const EXTENDED_KEY = &H1   'For using extended keys
 
+Public Const LONG_MAX As Long = 2147483647
+Public Const DUMMY_PROCEDURE As String = "Dummy"
+Public Const SHOW_CMD_PROCEDURE As String = "ShowCmdForm"
+
+' KeyMap
+Public Const KEY_SEPARATOR As String = " - "
+Public Const KEY_SUMMARY As String = " [SUMMARY]"
+Public Const KEY_TEMP As String = " [TEMP]"
+Public Const KEY_TERM_SYMBOL As String = vbLf
+
+Public Const KEY_CMD As String = "<cmd>"    ' Must lower case
+Public Const KEY_REMAP As String = "<key>"  ' Must lower case
+
+' Modes
+Public Const MODE_DUMMY As String = "_"
+Public Const MODE_NORMAL As String = "n"
+Public Const MODE_VISUAL As String = "v"
+Public Const MODE_CMDLINE As String = "c"
+Public Const MODE_SHAPEINSERT As String = "i"
+
+' Cmdline
+Public Const CMDLINE_CANCELED As String = vbLf
+
+Public Enum eResultType
+    VBASendkeys = 1
+    VBAKeyCodes
+End Enum
+
 ' ref: https://learn.microsoft.com/windows/win32/inputdev/virtual-key-codes
 Public Enum eKey
     BackSpace_ = 8

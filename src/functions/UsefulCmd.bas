@@ -25,10 +25,10 @@ Function zoomIn()
 
     Dim afterZoomRate As Integer
 
-    If gCount > 1 Then
-        afterZoomRate = ActiveWindow.Zoom + gCount
+    If gVim.Count > 0 Then
+        afterZoomRate = ActiveWindow.Zoom + gVim.Count
     Else
-        afterZoomRate = ActiveWindow.Zoom + gCount * 10
+        afterZoomRate = ActiveWindow.Zoom + 10
     End If
 
     If afterZoomRate > 400 Then
@@ -49,10 +49,10 @@ Function zoomOut()
 
     Dim afterZoomRate As Integer
 
-    If gCount > 1 Then
-        afterZoomRate = ActiveWindow.Zoom - gCount
+    If gVim.Count > 0 Then
+        afterZoomRate = ActiveWindow.Zoom - gVim.Count
     Else
-        afterZoomRate = ActiveWindow.Zoom - gCount * 10
+        afterZoomRate = ActiveWindow.Zoom - 10
     End If
 
     If afterZoomRate < 10 Then
@@ -73,7 +73,7 @@ Function zoomSpecifiedScale()
 
     Dim zoomScale As Integer
 
-    Select Case gCount
+    Select Case gVim.Count1
         Case 1
             zoomScale = 100
         Case 2
@@ -96,7 +96,7 @@ Function zoomSpecifiedScale()
         Case Is > 400
             zoomScale = 400
         Case Is <= 400
-            zoomScale = gCount
+            zoomScale = gVim.Count1
     End Select
 
     ActiveWindow.Zoom = zoomScale
@@ -122,104 +122,6 @@ Function showSummaryInfo()
 
 Catch:
     Call errorHandler("showSummaryInfo")
-End Function
-
-Function jumpPrev()
-    On Error GoTo Catch
-
-    Dim t As Range
-    Dim wb As Workbook
-    Dim ws As Worksheet
-
-    Call stopVisualMode
-
-    If Not JumpList Is Nothing Then
-        Set t = JumpList.Back
-        If Not t Is Nothing Then
-            Set wb = t.Parent.Parent
-            Set ws = t.Parent
-
-            wb.Activate
-            ws.Activate
-            t.Select
-        Else
-            Call setStatusBarTemporarily("一番古い履歴です。", 1)
-        End If
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("jumpPrev")
-End Function
-
-Function jumpNext()
-    On Error GoTo Catch
-
-    Dim t As Range
-    Dim wb As Workbook
-    Dim ws As Worksheet
-
-    Call stopVisualMode
-
-    If Not JumpList Is Nothing Then
-        Set t = JumpList.Forward
-        If Not t Is Nothing Then
-            Set wb = t.Parent.Parent
-            Set ws = t.Parent
-
-            wb.Activate
-            ws.Activate
-            t.Select
-        Else
-            Call setStatusBarTemporarily("一番新しい履歴です。", 1)
-        End If
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("jumpNext")
-End Function
-
-Function clearJumps()
-    If Not JumpList Is Nothing Then
-        Call JumpList.ClearAll
-        Call setStatusBarTemporarily("ジャンプリストをクリアしました。", 2)
-    End If
-End Function
-
-Function recordToJumpList(Optional Target As Range)
-    On Error GoTo Catch
-
-    'JumpList が利用できるか検証
-    If JumpList Is Nothing Then
-        Exit Function
-    End If
-
-    'Target が未指定の場合は選択中のセル
-    If Target Is Nothing Then
-        If TypeName(Selection) = "Range" Then
-            Set Target = Selection
-        ElseIf Not ActiveCell Is Nothing Then
-            Set Target = ActiveCell
-        Else
-            Exit Function
-        End If
-    End If
-
-    '最新の記録と完全に一致しないなら記録する
-    If JumpList.Latest Is Nothing Then
-        Call JumpList.Add(Target)
-    ElseIf Target.Address <> JumpList.Latest.Address Then
-        Call JumpList.Add(Target)
-    ElseIf Target.Parent.Name <> JumpList.Latest.Parent.Name Then
-        Call JumpList.Add(Target)
-    ElseIf Target.Parent.Parent.FullName <> JumpList.Latest.Parent.Parent.FullName Then
-        Call JumpList.Add(Target)
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("recordToJumpList")
 End Function
 
 Function smartFillColor()

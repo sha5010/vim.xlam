@@ -64,13 +64,13 @@ Function scrollUpHalf()
     Dim scrollWidth As Integer
     Dim targetRow As Long
 
-    If gCount > 1 Then
+    If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
-        ActiveWindow.LargeScroll Up:=gCount ¥ 2
+        ActiveWindow.LargeScroll Up:=gVim.Count1 ¥ 2
         Application.ScreenUpdating = True
     End If
 
-    If (gCount And 1) = 1 Then
+    If (gVim.Count1 And 1) = 1 Then
         topRowVisible = ActiveWindow.VisibleRange.Row
 
         scrollWidth = ActiveWindow.VisibleRange.Rows.Count / 2
@@ -97,13 +97,13 @@ Function scrollDownHalf()
     Dim scrollWidth As Integer
     Dim targetRow As Long
 
-    If gCount > 1 Then
+    If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
-        ActiveWindow.LargeScroll Down:=gCount ¥ 2
+        ActiveWindow.LargeScroll Down:=gVim.Count1 ¥ 2
         Application.ScreenUpdating = True
     End If
 
-    If (gCount And 1) = 1 Then
+    If (gVim.Count1 And 1) = 1 Then
         topRowVisible = ActiveWindow.VisibleRange.Row
 
         scrollWidth = ActiveWindow.VisibleRange.Rows.Count / 2
@@ -125,49 +125,49 @@ End Function
 
 Function scrollUp()
     Application.ScreenUpdating = False
-    ActiveWindow.LargeScroll Up:=gCount
+    ActiveWindow.LargeScroll Up:=gVim.Count1
     Application.ScreenUpdating = True
     Call activateCellInVisibleRange
 End Function
 
 Function scrollDown()
     Application.ScreenUpdating = False
-    ActiveWindow.LargeScroll Down:=gCount
-    Call activateCellInVisibleRange
+    ActiveWindow.LargeScroll Down:=gVim.Count1
     Application.ScreenUpdating = True
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollLeft()
     Application.ScreenUpdating = False
-    ActiveWindow.LargeScroll ToLeft:=gCount
-    Call activateCellInVisibleRange
+    ActiveWindow.LargeScroll ToLeft:=gVim.Count1
     Application.ScreenUpdating = True
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollRight()
     Application.ScreenUpdating = False
-    ActiveWindow.LargeScroll ToRight:=gCount
-    Call activateCellInVisibleRange
+    ActiveWindow.LargeScroll ToRight:=gVim.Count1
     Application.ScreenUpdating = True
+    Call activateCellInVisibleRange
 End Function
 
 Function scrollUp1Row()
-    ActiveWindow.SmallScroll Up:=gCount
+    ActiveWindow.SmallScroll Up:=gVim.Count1
     Call activateCellInVisibleRange
 End Function
 
 Function scrollDown1Row()
-    ActiveWindow.SmallScroll Down:=gCount
+    ActiveWindow.SmallScroll Down:=gVim.Count1
     Call activateCellInVisibleRange
 End Function
 
 Function scrollLeft1Column()
-    ActiveWindow.SmallScroll ToLeft:=gCount
+    ActiveWindow.SmallScroll ToLeft:=gVim.Count1
     Call activateCellInVisibleRange
 End Function
 
 Function scrollRight1Column()
-    ActiveWindow.SmallScroll ToRight:=gCount
+    ActiveWindow.SmallScroll ToRight:=gVim.Count1
     Call activateCellInVisibleRange
 End Function
 
@@ -284,8 +284,8 @@ Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearch
 
         '下寄せ
         Case modeBottom
-            'SCROLL_OFFSET に収まらない範囲なら1行追加
-            If point - SCROLL_OFFSET > Rows(m).Top Then
+            'gVim.Config.ScrollOffset に収まらない範囲なら1行追加
+            If point - gVim.Config.ScrollOffset > Rows(m).Top Then
                 pointToRow = m + 1
             Else
                 pointToRow = m
@@ -462,14 +462,14 @@ Private Function getRealUsableWidth() As Double
 End Function
 
 Function scrollCurrentTop()
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top - getLengthWithZoomConsidered(SCROLL_OFFSET), modeTop)
+    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top - getLengthWithZoomConsidered(gVim.Config.ScrollOffset), modeTop)
 End Function
 
 Function scrollCurrentBottom()
     Dim uh As Double
     uh = getRealUsableHeight()
 
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height - getLengthWithZoomConsidered(uh - SCROLL_OFFSET), modeBottom)
+    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height - getLengthWithZoomConsidered(uh - gVim.Config.ScrollOffset), modeBottom)
 End Function
 
 Function scrollCurrentMiddle()

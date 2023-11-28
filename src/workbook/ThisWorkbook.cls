@@ -10,10 +10,9 @@ Attribute VB_Exposed = True
 Option Explicit
 
 Private Sub Workbook_AddinUninstall()
-    Call mapResetAll
+    Call C_Core.ExitVim
 End Sub
 
 Private Sub Workbook_Open()
-    gDebugMode = Not ThisWorkbook.IsAddin
-    Call C_Core.startVim
+    Call C_Core.StartVim
 End Sub

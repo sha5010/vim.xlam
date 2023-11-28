@@ -14,7 +14,7 @@ Function cutCell()
     Call keystroke(True, Ctrl_ + X_)
 
     If TypeName(Selection) = "Range" Then
-        Set gLastYanked = Selection
+        Set gVim.Vars.LastYanked = Selection
     End If
 End Function
 
@@ -23,7 +23,7 @@ Function yankCell()
     Call keystroke(True, Ctrl_ + C_)
 
     If TypeName(Selection) = "Range" Then
-        Set gLastYanked = Selection
+        Set gVim.Vars.LastYanked = Selection
     End If
 End Function
 
@@ -108,8 +108,8 @@ fallback:
             'Avoid freeze
             If (i And &HFFF) = 0 Then
                 'Show progress bar in status bar
-                Call setStatusBar("テキストをコピーしています...", _
-                                 Count:=i, Max:=UBound(aryX), ProgressBar:=True)
+                Call SetStatusBar("テキストをコピーしています...", _
+                                 currentCount:=i, maximumCount:=UBound(aryX), progressBar:=True)
 
                 currentTime = Timer
                 If currentTime < startTime Or currentTime - startTime > 2 Then
@@ -119,7 +119,7 @@ fallback:
             End If
         Next i
         resultText = Join(aryX, vbCrLf)
-        Call setStatusBar
+        Call SetStatusBar
     End If
 
     'Set to clipboard
@@ -128,13 +128,13 @@ fallback:
         .PutInClipboard
     End With
 
-    Call setStatusBarTemporarily("クリップボードにコピーしました。(" & _
-                                 LenB(StrConv(resultText, vbFromUnicode)) & " Bytes)", 3)
+    Call SetStatusBarTemporarily("クリップボードにコピーしました。(" & _
+                                 LenB(StrConv(resultText, vbFromUnicode)) & " Bytes)", 3000)
     Exit Function
 
 Catch:
     If Err.Number = 6 Then
-        Call setStatusBarTemporarily("選択セル数が多すぎます", 3)
+        Call SetStatusBarTemporarily("選択セル数が多すぎます", 3000)
     ElseIf Err.Number = 13 Then
         'Error from WorksheetFunction.Transpose
         Resume fallback
@@ -152,7 +152,7 @@ Function incrementText()
     Call keyupControlKeys
     Call releaseShiftKeys
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call keystrokeWithoutKeyup(Alt_ + H_, k6_)
     Next i
 
@@ -168,7 +168,7 @@ Function decrementText()
     Call keyupControlKeys
     Call releaseShiftKeys
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call keystrokeWithoutKeyup(Alt_ + H_, k5_)
     Next i
 
@@ -184,7 +184,7 @@ Function increaseDecimal()
     Call keyupControlKeys
     Call releaseShiftKeys
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call keystrokeWithoutKeyup(Alt_ + H_, k0_)
     Next i
 
@@ -200,7 +200,7 @@ Function decreaseDecimal()
     Call keyupControlKeys
     Call releaseShiftKeys
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call keystrokeWithoutKeyup(Alt_ + H_, k9_)
     Next i
 
@@ -214,11 +214,11 @@ Function insertCellsUp()
     Call stopVisualMode
 
     Application.ScreenUpdating = False
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, D_, Enter_)
+    Call KeyStroke(True, Ctrl_ + Shift_ + Semicoron_JIS_, D_, Enter_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -236,11 +236,11 @@ Function insertCellsDown()
         Selection.Offset(1, 0).Select
     End If
 
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, D_, Enter_)
+    Call KeyStroke(True, Ctrl_ + Shift_ + Semicoron_JIS_, D_, Enter_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -254,11 +254,11 @@ Function insertCellsLeft()
     Call stopVisualMode
 
     Application.ScreenUpdating = False
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, I_, Enter_)
+    Call KeyStroke(True, Ctrl_ + Shift_ + Semicoron_JIS_, I_, Enter_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -276,11 +276,11 @@ Function insertCellsRight()
         Selection.Offset(0, 1).Select
     End If
 
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call keystroke(True, Ctrl_ + Shift_ + Semicoron_, I_, Enter_)
+    Call KeyStroke(True, Ctrl_ + Shift_ + Semicoron_JIS_, I_, Enter_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -300,8 +300,8 @@ Function deleteToUp()
     Call stopVisualMode
 
     Application.ScreenUpdating = False
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
     Call keystroke(True, Ctrl_ + Minus_, U_, Enter_)
@@ -318,8 +318,8 @@ Function deleteToLeft()
     Call stopVisualMode
 
     Application.ScreenUpdating = False
-    If gCount > 1 Then
-        Selection.Resize(Selection.Rows.Count, gCount).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
     Call keystroke(True, Ctrl_ + Minus_, L_, Enter_)
@@ -401,17 +401,17 @@ Function unionSelectCells()
 
     Call stopVisualMode
 
-    If gExtendRange Is Nothing Then
-        Set gExtendRange = Selection
+    If gVim.Vars.ExtendRange Is Nothing Then
+        Set gVim.Vars.ExtendRange = Selection
 
-    ElseIf Not gExtendRange.Parent Is ActiveSheet Then
-        Call setStatusBarTemporarily("異なるシートで拡張選択はできないため、選択範囲は初期化されました。", 2)
-        Set gExtendRange = Selection
+    ElseIf Not gVim.Vars.ExtendRange.Parent Is ActiveSheet Then
+        Call SetStatusBarTemporarily("異なるシートで拡張選択はできないため、選択範囲は初期化されました。", 2000)
+        Set gVim.Vars.ExtendRange = Selection
 
     Else
         Set actCell = ActiveCell
-        Set gExtendRange = Union2(gExtendRange, Selection)
-        gExtendRange.Select
+        Set gVim.Vars.ExtendRange = Union2(gVim.Vars.ExtendRange, Selection)
+        gVim.Vars.ExtendRange.Select
         actCell.Activate
 
     End If
@@ -419,7 +419,7 @@ Function unionSelectCells()
 
 Catch:
     If Err.Number = 424 Then
-        Set gExtendRange = Selection
+        Set gVim.Vars.ExtendRange = Selection
     Else
         Call errorHandler("unionSelectCells")
     End If
@@ -434,24 +434,24 @@ Function exceptSelectCells()
 
     Call stopVisualMode
 
-    If Not gExtendRange Is Nothing Then
-        If Selection.Address = gExtendRange.Address Then
-            Set gExtendRange = Except2(gExtendRange, ActiveCell)
+    If Not gVim.Vars.ExtendRange Is Nothing Then
+        If Selection.Address = gVim.Vars.ExtendRange.Address Then
+            Set gVim.Vars.ExtendRange = Except2(gVim.Vars.ExtendRange, ActiveCell)
         Else
-            Set gExtendRange = Except2(gExtendRange, Selection)
+            Set gVim.Vars.ExtendRange = Except2(gVim.Vars.ExtendRange, Selection)
         End If
 
-        If Not gExtendRange Is Nothing Then
-            gExtendRange.Select
+        If Not gVim.Vars.ExtendRange Is Nothing Then
+            gVim.Vars.ExtendRange.Select
         Else
-            Call setStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2)
+            Call SetStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2000)
         End If
     End If
     Exit Function
 
 Catch:
     If Err.Number = 424 Then
-        Set gExtendRange = Nothing
+        Set gVim.Vars.ExtendRange = Nothing
     Else
         Call errorHandler("exceptSelectCells")
     End If
@@ -466,24 +466,24 @@ Function clearSelectCells()
 
     Call stopVisualMode
 
-    If Not gExtendRange Is Nothing Then
-        If Selection.Address = gExtendRange.Address Then
-            Set gExtendRange = Nothing
-            Call setStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2)
+    If Not gVim.Vars.ExtendRange Is Nothing Then
+        If Selection.Address = gVim.Vars.ExtendRange.Address Then
+            Set gVim.Vars.ExtendRange = Nothing
+            Call SetStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2000)
             Exit Function
         End If
     End If
 
     If Selection.Columns.Count > 1 Or Selection.Rows.Count > 1 Or Selection.Areas.Count > 1 Then
         ActiveCell.Select
-    ElseIf Not gExtendRange Is Nothing Then
-        gExtendRange.Select
+    ElseIf Not gVim.Vars.ExtendRange Is Nothing Then
+        gVim.Vars.ExtendRange.Select
     End If
     Exit Function
 
 Catch:
     If Err.Number = 424 Then
-        Set gExtendRange = Nothing
+        Set gVim.Vars.ExtendRange = Nothing
     Else
         Call errorHandler("clearSelectCells")
     End If
@@ -539,16 +539,14 @@ Function applyFlashFill()
     Exit Function
 Catch:
     If Err.Number = 1004 Then
-        Call applyAutoFill(fallback:=True)
+        Call ApplyAutoFillInner(fallback:=True)
     Else
         Call errorHandler("applyFlashFill")
     End If
 End Function
 
-Function applyAutoFill(Optional fallback As Boolean = False)
+Function ApplyAutoFill(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
-
-    Dim baseRange As Range
 
     If TypeName(Selection) <> "Range" Then
         Exit Function
@@ -556,11 +554,22 @@ Function applyAutoFill(Optional fallback As Boolean = False)
         Exit Function
     End If
 
-    If Not fallback Then
-        Call repeatRegister("applyAutoFill")
-    End If
+    Call RepeatRegister("ApplyAutoFill")
 
-    Set baseRange = determineBaseRange()
+    Call ApplyAutoFillInner
+
+    Exit Function
+
+Catch:
+    Call ErrorHandler("ApplyAutoFill")
+End Function
+
+Function ApplyAutoFillInner(Optional fallback As Boolean = False)
+    On Error GoTo Catch
+
+    Dim baseRange As Range
+
+    Set baseRange = DetermineBaseRange()
     If baseRange Is Nothing Then
         Exit Function
     End If
@@ -571,14 +580,14 @@ Function applyAutoFill(Optional fallback As Boolean = False)
         baseRange.AutoFill Selection
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
     Exit Function
 
 Catch:
-    Call errorHandler("applyAutoFill")
+    Call ErrorHandler("ApplyAutoFillInner")
 End Function
 
-Private Function determineBaseRange() As Range
+Private Function DetermineBaseRange() As Range
     On Error GoTo Catch
 
     Dim avgTop As Double
@@ -631,22 +640,22 @@ Private Function determineBaseRange() As Range
 
             Select Case avgMax
                 Case 0
-                    Call setStatusBarTemporarily("元となるデータを特定できません。", 3)
+                    Call SetStatusBarTemporarily("元となるデータを特定できません。", 3000)
                     Exit Function
                 Case avgTop
-                    Set determineBaseRange = Range(.Item(1), Cells(.Item(1).Row, .Item(.Count).Column))
-                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, TopToBottom, .Rows.Count - 1))
+                    Set DetermineBaseRange = Range(.Item(1), Cells(.Item(1).Row, .Item(.Count).Column))
+                    Set DetermineBaseRange = Range(DetermineBaseRange, InnerDataSearch(DetermineBaseRange, TopToBottom, .Rows.Count - 1))
                 Case avgLeft
-                    Set determineBaseRange = Range(.Item(1), Cells(.Item(.Count).Row, .Item(1).Column))
-                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, LeftToRight, .Columns.Count - 1))
+                    Set DetermineBaseRange = Range(.Item(1), Cells(.Item(.Count).Row, .Item(1).Column))
+                    Set DetermineBaseRange = Range(DetermineBaseRange, InnerDataSearch(DetermineBaseRange, LeftToRight, .Columns.Count - 1))
                 Case avgBottom
-                    Set determineBaseRange = Range(Cells(.Item(.Count).Row, .Item(1).Column), .Item(.Count))
-                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, BottomToTop, .Rows.Count - 1))
+                    Set DetermineBaseRange = Range(Cells(.Item(.Count).Row, .Item(1).Column), .Item(.Count))
+                    Set DetermineBaseRange = Range(DetermineBaseRange, InnerDataSearch(DetermineBaseRange, BottomToTop, .Rows.Count - 1))
                 Case avgRight
-                    Set determineBaseRange = Range(Cells(.Item(1).Row, .Item(.Count).Column), .Item(.Count))
-                    Set determineBaseRange = Range(determineBaseRange, innerDataSearch(determineBaseRange, RightToLeft, .Columns.Count - 1))
+                    Set DetermineBaseRange = Range(Cells(.Item(1).Row, .Item(.Count).Column), .Item(.Count))
+                    Set DetermineBaseRange = Range(DetermineBaseRange, InnerDataSearch(DetermineBaseRange, RightToLeft, .Columns.Count - 1))
                 Case Else
-                    Call debugPrint("Unexpected values: " & avgMax & ", " & avgTop & ", " & avgLeft & ", " & avgBottom & ", " & avgRight, "determineBaseRange")
+                    Call DebugPrint("Unexpected values: " & avgMax & ", " & avgTop & ", " & avgLeft & ", " & avgBottom & ", " & avgRight, "determineBaseRange")
                     Exit Function
             End Select
         End With
@@ -656,33 +665,33 @@ Private Function determineBaseRange() As Range
         If Selection.Item(1).Formula <> "" Then
             If Selection.Item(2).Formula <> "" Then
                 If Selection.Columns.Count > 1 Then
-                    Set determineBaseRange = Range(Selection.Item(1), Selection.Item(1).End(xlToRight))
+                    Set DetermineBaseRange = Range(Selection.Item(1), Selection.Item(1).End(xlToRight))
                 Else
-                    Set determineBaseRange = Range(Selection.Item(1), Selection.Item(1).End(xlDown))
+                    Set DetermineBaseRange = Range(Selection.Item(1), Selection.Item(1).End(xlDown))
                 End If
             Else
-                Set determineBaseRange = Selection.Item(1)
+                Set DetermineBaseRange = Selection.Item(1)
             End If
         ElseIf Selection.Item(Selection.Count).Formula <> "" Then
             If Selection.Item(Selection.Count - 1).Formula <> "" Then
                 If Selection.Columns.Count > 1 Then
-                    Set determineBaseRange = Range(Selection.Item(Selection.Count).End(xlToLeft), Selection.Item(Selection.Count))
+                    Set DetermineBaseRange = Range(Selection.Item(Selection.Count).End(xlToLeft), Selection.Item(Selection.Count))
                 Else
-                    Set determineBaseRange = Range(Selection.Item(Selection.Count).End(xlUp), Selection.Item(Selection.Count))
+                    Set DetermineBaseRange = Range(Selection.Item(Selection.Count).End(xlUp), Selection.Item(Selection.Count))
                 End If
             Else
-                Set determineBaseRange = Selection.Item(Selection.Count)
+                Set DetermineBaseRange = Selection.Item(Selection.Count)
             End If
         Else
             'there is no data at first and last
-            Call setStatusBarTemporarily("選択セルの先頭、又は末尾にデータがありません。", 3)
+            Call SetStatusBarTemporarily("選択セルの先頭、又は末尾にデータがありません。", 3000)
             Exit Function
         End If
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("determineBaseRange")
+    Call ErrorHandler("DetermineBaseRange")
 End Function
 
 Private Function innerDataSearch(ByVal targetRange As Range, _
@@ -767,62 +776,4 @@ Function insertFunction()
     Exit Function
 Catch:
     Call errorHandler("insertFunction")
-End Function
-
-Function toggleVisualMode()
-    On Error GoTo Catch
-
-    If X.VisualMode Then
-        Call stopVisualMode
-    Else
-        Call visualMap("toggleVisualMode")
-        Call X.StartVisualMode
-        Call setStatusBar(STATUS_PREFIX & "-- VISUAL (ESC to exit) --")
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("toggleVisualMode")
-End Function
-
-Function toggleVisualLine()
-    On Error GoTo Catch
-
-    If X.VisualLine Then
-        Call stopVisualMode
-    Else
-        Call visualMap("toggleVisualLine")
-        Call X.StartVisualLine
-        Call setStatusBar(STATUS_PREFIX & "-- VISUAL LINE (ESC to exit) --")
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("toggleVisualLine")
-End Function
-
-Private Function visualMap(ByVal funcName As String)
-    'Register toggleVisualMode to escape key
-    Call temporaryMap("{ESC}", funcName)
-    Call temporaryMap("^{[}", funcName)
-    Call temporaryMap("o", "swapVisualBase")
-End Function
-
-Function swapVisualBase()
-    If X.VisualMode Or X.VisualLine Then
-        Call X.SwapBase
-    End If
-End Function
-
-Function stopVisualMode()
-    If X.VisualMode Or X.VisualLine Then
-        'Unregister escape key
-        Call restoreAppliedMap("{ESC}")
-        Call restoreAppliedMap("^{[}")
-        Call restoreAppliedMap("o")
-
-        Call X.QuitVisualMode
-
-        Call setStatusBar("")
-    End If
 End Function

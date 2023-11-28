@@ -85,6 +85,7 @@ Function changeShapeBorderColor(Optional garbage As String, _
     Dim shp As ShapeRange
 
     If VarType(Selection) <> vbObject Then
+        ChangeShapeBorderColor = True
         Exit Function
     End If
 
@@ -112,7 +113,6 @@ Function changeShapeBorderColor(Optional garbage As String, _
     End If
 
     Set shp = Nothing
-    changeShapeBorderColor = True
     Exit Function
 
 Catch:
@@ -128,7 +128,7 @@ Function nextShape()
 
     If VarType(Selection) = vbObject Then
         Call keyupControlKeys
-        For i = 1 To gCount
+        For i = 1 To gVim.Count1
             Call keystrokeWithoutKeyup(Tab_)
         Next i
         Call unkeyupControlKeys
@@ -137,7 +137,7 @@ Function nextShape()
         If cnt = 0 Then
             Exit Function
         End If
-        ActiveSheet.Shapes((gCount - 1) Mod cnt + 1).Select
+        ActiveSheet.Shapes((gVim.Count1 - 1) Mod cnt + 1).Select
     End If
     Exit Function
 
@@ -154,7 +154,7 @@ Function prevShape()
 
     If VarType(Selection) = vbObject Then
         Call keyupControlKeys
-        For i = 1 To gCount
+        For i = 1 To gVim.Count1
             Call keystrokeWithoutKeyup(Shift_ + Tab_)
         Next i
         Call unkeyupControlKeys
@@ -163,7 +163,7 @@ Function prevShape()
         If cnt = 0 Then
             Exit Function
         End If
-        ActiveSheet.Shapes(cnt - (gCount - 1) Mod cnt).Select
+        ActiveSheet.Shapes(cnt - (gVim.Count1 - 1) Mod cnt).Select
     End If
     Exit Function
 
