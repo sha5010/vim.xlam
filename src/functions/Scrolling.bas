@@ -65,7 +65,9 @@ Function scrollUpHalf()
     Dim targetRow As Long
 
     If gCount > 1 Then
+        Application.ScreenUpdating = False
         ActiveWindow.LargeScroll Up:=gCount ¥ 2
+        Application.ScreenUpdating = True
     End If
 
     If (gCount And 1) = 1 Then
@@ -96,7 +98,9 @@ Function scrollDownHalf()
     Dim targetRow As Long
 
     If gCount > 1 Then
+        Application.ScreenUpdating = False
         ActiveWindow.LargeScroll Down:=gCount ¥ 2
+        Application.ScreenUpdating = True
     End If
 
     If (gCount And 1) = 1 Then
@@ -120,23 +124,31 @@ Catch:
 End Function
 
 Function scrollUp()
+    Application.ScreenUpdating = False
     ActiveWindow.LargeScroll Up:=gCount
+    Application.ScreenUpdating = True
     Call activateCellInVisibleRange
 End Function
 
 Function scrollDown()
+    Application.ScreenUpdating = False
     ActiveWindow.LargeScroll Down:=gCount
     Call activateCellInVisibleRange
+    Application.ScreenUpdating = True
 End Function
 
 Function scrollLeft()
+    Application.ScreenUpdating = False
     ActiveWindow.LargeScroll ToLeft:=gCount
     Call activateCellInVisibleRange
+    Application.ScreenUpdating = True
 End Function
 
 Function scrollRight()
+    Application.ScreenUpdating = False
     ActiveWindow.LargeScroll ToRight:=gCount
     Call activateCellInVisibleRange
+    Application.ScreenUpdating = True
 End Function
 
 Function scrollUp1Row()
