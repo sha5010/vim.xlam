@@ -77,7 +77,7 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
     ElseIf TargetType = ToRightOfCurrentRegionColumns Then
         With ActiveCell.CurrentRegion
             startColumn = ActiveCell.Column
-            endColumn = .Colmuns(.Columns.Count).Column
+            endColumn = .Columns(.Columns.Count).Column
         End With
 
         'Out of range
