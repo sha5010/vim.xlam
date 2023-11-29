@@ -20,8 +20,6 @@ Attribute cUserForm.VB_VarHelpID = -1
 
 Private cCmdBuffer As String
 Private cCmdBufferWithoutNumber As String
-Private cLastRunCommand As String
-Private cLastCmdBuffer As String
 Private cCount As Long
 Private cNumSeqFlag As Boolean
 
@@ -188,7 +186,6 @@ Private Function Run(ByVal cmd As String, _
         result = Application.Run(cmd, arg)
     Else
         result = Application.Run(cmd)
-        cLastRunCommand = cmd
     End If
 
     ' Close form if command was successful
@@ -235,8 +232,8 @@ End Sub
 Private Sub UserForm_Initialize()
     With Me
         .StartUpPosition = 0
-        .Top = 0
-        .Left = 0
+        .Top = Application.Top + Application.Height - Me.Height - 4
+        .Left = Application.Left + 4
     End With
 
     With Me.Label_Text
@@ -263,8 +260,6 @@ Private Sub ResetVars()
     gVim.Count = 0
     cCmdBuffer = ""
     cCmdBufferWithoutNumber = ""
-    cLastRunCommand = ""
-    cLastCmdBuffer = ""
     cNumSeqFlag = False
 End Sub
 
