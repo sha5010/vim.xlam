@@ -12,8 +12,8 @@ Option Explicit
 Public Parent As cls_Vim
 
 ' --- TEMPLATE ---
-'Public Property Get EVENT_NAME_OR_MESSAGE_TITLE() As String
-'    EVENT_NAME_OR_MESSAGE_TITLE = IIf(Parent.IsJapanese, _
+'Public Property Get EventNameOrMessageTitle() As String
+'    EventNameOrMessageTitle = IIf(Parent.IsJapanese, _
 '        "日本語のメッセージ (Japanese message)", _
 '        "English message")
 'End Property
