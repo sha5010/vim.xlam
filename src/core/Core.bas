@@ -12,7 +12,7 @@ Function StartVim(Optional ByVal g As String) As Boolean
         Set gVim = New cls_Vim
 
         ' Load default setting
-        Call DefaultMapping
+        Call DefaultConfig
 
         'Todo: Loading custom config
 
