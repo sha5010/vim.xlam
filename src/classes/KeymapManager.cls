@@ -715,7 +715,7 @@ End Sub
 ' * @param {Boolean} [firstKeyOnly] - Flag to include only the first key in the output.
 ' * @returns {String} - The converted key sequence in VBA-compatible format.
 ' */
-Private Function VimToVBA(ByVal lhs As String, ByVal sep As String, _
+Public Function VimToVBA(ByVal lhs As String, ByVal sep As String, _
                 Optional ByVal firstKeyOnly As Boolean = False, _
                 Optional ByVal resultType As eResultType = VBASendkeys) As String
 
