@@ -2,7 +2,7 @@ Attribute VB_Name = "F_Column"
 Option Explicit
 Option Private Module
 
-Enum TargetColumnType
+Enum eTargetColumnType
     Entire
     ToLeftEndColumns
     ToRightEndColumns
@@ -10,13 +10,13 @@ Enum TargetColumnType
     ToRightOfCurrentRegionColumns
 End Enum
 
-Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
+Private Function GetTargetColumns(ByVal TargetType As eTargetColumnType) As Range
     'Error handling
     On Error GoTo Catch
 
     'Return Nothing when selection is not Range
     If TypeName(Selection) <> "Range" Then
-        Set getTargetColumns = Nothing
+        Set GetTargetColumns = Nothing
         Exit Function
     End If
 
@@ -30,7 +30,7 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
     If TargetType = Entire Then
         With rngSelection
             If .Columns.Count > 1 Or gVim.Count1 = 1 Then
-                Set getTargetColumns = .EntireColumn
+                Set GetTargetColumns = .EntireColumn
                 Exit Function
             ElseIf gVim.Count1 > 1 Then
                 startColumn = .Column
@@ -45,7 +45,7 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
 
         'Out of range
         If startColumn > endColumn Then
-            Set getTargetColumns = Nothing
+            Set GetTargetColumns = Nothing
             Exit Function
         End If
 
@@ -58,7 +58,7 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
 
         'Out of range
         If startColumn > endColumn Then
-            Set getTargetColumns = Nothing
+            Set GetTargetColumns = Nothing
             Exit Function
         End If
 
@@ -69,7 +69,7 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
 
         'Out of range
         If startColumn > endColumn Then
-            Set getTargetColumns = Nothing
+            Set GetTargetColumns = Nothing
             Exit Function
         End If
 
@@ -82,7 +82,7 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
 
         'Out of range
         If startColumn > endColumn Then
-            Set getTargetColumns = Nothing
+            Set GetTargetColumns = Nothing
             Exit Function
         End If
 
@@ -93,63 +93,63 @@ Private Function getTargetColumns(ByVal TargetType As TargetColumnType) As Range
             endColumn = .Columns.Count
         End If
 
-        Set getTargetColumns = .Range(.Columns(startColumn), .Columns(endColumn))
+        Set GetTargetColumns = .Range(.Columns(startColumn), .Columns(endColumn))
     End With
     Exit Function
 
 Catch:
-    Set getTargetColumns = Nothing
-    Call errorHandler("getTargetColumns")
+    Set GetTargetColumns = Nothing
+    Call ErrorHandler("GetTargetColumns")
 End Function
 
-Private Function selectColumnsInternal(ByVal TargetType As TargetColumnType) As Boolean
+Private Function SelectColumnsInternal(ByVal TargetType As eTargetColumnType) As Boolean
     On Error GoTo Catch
 
     Dim savedCell As Range
     Dim Target As Range
 
-    Set Target = getTargetColumns(TargetType)
+    Set Target = GetTargetColumns(TargetType)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Set savedCell = ActiveCell
 
     Target.Select
     savedCell.Activate
 
-    selectColumnsInternal = True
+    SelectColumnsInternal = True
     Exit Function
 
 Catch:
-    Call errorHandler("selectColumnsInternal")
+    Call ErrorHandler("SelectColumnsInternal")
 End Function
 
-Function selectColumns(Optional ByVal TargetType As TargetColumnType = Entire)
+Function selectColumns(Optional ByVal TargetType As eTargetColumnType = Entire) As Boolean
     On Error GoTo Catch
 
-    Call selectColumnsInternal(TargetType)
+    Call SelectColumnsInternal(TargetType)
     Exit Function
 
 Catch:
-    Call errorHandler("selectColumns")
+    Call ErrorHandler("SelectColumns")
 End Function
 
-Function insertColumns()
+Function InsertColumns(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim savedCell As Range
     Dim Target As Range
 
-    Set Target = getTargetColumns(Entire)
+    Set Target = GetTargetColumns(Entire)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call repeatRegister("insertColumns")
-    Call stopVisualMode
+    Call RepeatRegister("InsertColumns")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
 
@@ -157,26 +157,26 @@ Function insertColumns()
     Target.Select
     savedCell.Activate
 
-    Call keystroke(True, Alt_ + I_, C_)
+    Call KeyStroke(True, Alt_ + I_, C_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("insertColumns")
+    Call ErrorHandler("InsertColumns")
 End Function
 
-Function appendColumns()
+Function AppendColumns(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim savedCell As Range
     Dim Target As Range
 
-    Set Target = getTargetColumns(Entire)
+    Set Target = GetTargetColumns(Entire)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call repeatRegister("appendColumns")
-    Call stopVisualMode
+    Call RepeatRegister("AppendColumns")
+    Call StopVisualMode
 
     Set savedCell = ActiveCell
 
@@ -190,43 +190,43 @@ Function appendColumns()
     Target.Select
     savedCell.Activate
 
-    Call keystroke(True, Alt_ + I_, C_)
+    Call KeyStroke(True, Alt_ + I_, C_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("appendColumns")
+    Call ErrorHandler("AppendColumns")
 End Function
 
-Function deleteColumns(Optional ByVal TargetType As TargetColumnType = Entire)
+Function DeleteColumns(Optional ByVal TargetType As eTargetColumnType = Entire) As Boolean
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
-    If selectColumnsInternal(TargetType) = False Then
+    If SelectColumnsInternal(TargetType) = False Then
         Application.ScreenUpdating = True
         Exit Function
     End If
 
-    Call repeatRegister("deleteColumns")
-    Call stopVisualMode
+    Call RepeatRegister("DeleteColumns")
+    Call StopVisualMode
 
-    Call keystroke(True, Ctrl_ + Minus_)
+    Call KeyStroke(True, Ctrl_ + Minus_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("deleteColumns")
+    Call ErrorHandler("DeleteColumns")
 End Function
 
-Function yankColumns(Optional ByVal TargetType As TargetColumnType = Entire)
+Function YankColumns(Optional ByVal TargetType As eTargetColumnType = Entire) As Boolean
     On Error GoTo Catch
 
     Dim Target As Range
 
-    Set Target = getTargetColumns(TargetType)
+    Set Target = GetTargetColumns(TargetType)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Target.Copy
     Set gVim.Vars.LastYanked = Target
@@ -234,20 +234,20 @@ Function yankColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     Exit Function
 
 Catch:
-    Call errorHandler("yankColumns")
+    Call ErrorHandler("YankColumns")
 End Function
 
-Function cutColumns(Optional ByVal TargetType As TargetColumnType = Entire)
+Function CutColumns(Optional ByVal TargetType As eTargetColumnType = Entire) As Boolean
     On Error GoTo Catch
 
     Dim Target As Range
 
-    Set Target = getTargetColumns(TargetType)
+    Set Target = GetTargetColumns(TargetType)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Target.Cut
     Set gVim.Vars.LastYanked = Target
@@ -255,86 +255,86 @@ Function cutColumns(Optional ByVal TargetType As TargetColumnType = Entire)
     Exit Function
 
 Catch:
-    Call errorHandler("cutColumns")
+    Call ErrorHandler("CutColumns")
 End Function
 
-Function hideColumns()
+Function HideColumns(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    If selectColumnsInternal(Entire) = False Then
+    If SelectColumnsInternal(Entire) = False Then
         Exit Function
     End If
 
-    Call repeatRegister("hideColumns")
-    Call stopVisualMode
+    Call RepeatRegister("HideColumns")
+    Call StopVisualMode
 
-    Call keystroke(True, Ctrl_ + k0_)
+    Call KeyStroke(True, Ctrl_ + k0_)
 
 Catch:
-    Call errorHandler("hideColumns")
+    Call ErrorHandler("HideColumns")
 End Function
 
-Function unhideColumns()
+Function UnhideColumns(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    If selectColumnsInternal(Entire) = False Then
+    If SelectColumnsInternal(Entire) = False Then
         Exit Function
     End If
 
-    Call repeatRegister("unhideColumns")
-    Call stopVisualMode
+    Call RepeatRegister("UnhideColumns")
+    Call StopVisualMode
 
     'ref: https://excel.nj-clucker.com/ctrl-shift-0-not-working/
-    Call keystroke(True, Ctrl_ + Shift_ + k0_)
+    Call KeyStroke(True, Ctrl_ + Shift_ + k0_)
     Exit Function
 
 Catch:
-    Call errorHandler("unhideColumns")
+    Call ErrorHandler("UnhideColumns")
 End Function
 
-Function groupColumns()
+Function GroupColumns(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
-    If selectColumnsInternal(Entire) = False Then
+    If SelectColumnsInternal(Entire) = False Then
         Application.ScreenUpdating = True
         Exit Function
     End If
 
-    Call repeatRegister("groupColumns")
-    Call stopVisualMode
+    Call RepeatRegister("GroupColumns")
+    Call StopVisualMode
 
-    Call keystroke(True, Alt_ + Shift_ + Right_)
+    Call KeyStroke(True, Alt_ + Shift_ + Right_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("groupColumns")
+    Call ErrorHandler("GroupColumns")
 End Function
 
-Function ungroupColumns()
+Function UngroupColumns(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
-    If selectColumnsInternal(Entire) = False Then
+    If SelectColumnsInternal(Entire) = False Then
         Application.ScreenUpdating = True
         Exit Function
     End If
 
-    Call repeatRegister("ungroupColumns")
-    Call stopVisualMode
+    Call RepeatRegister("UngroupColumns")
+    Call StopVisualMode
 
-    Call keystroke(True, Alt_ + Shift_ + Left_)
+    Call KeyStroke(True, Alt_ + Shift_ + Left_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("ungroupColumns")
+    Call ErrorHandler("UngroupColumns")
 End Function
 
-Function foldColumnsGroup()
+Function FoldColumnsGroup(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("foldColumnsGroup")
-    Call stopVisualMode
+    Call RepeatRegister("FoldColumnsGroup")
+    Call StopVisualMode
 
     Dim targetColumn As Long
     Dim i As Integer
@@ -347,14 +347,14 @@ Function foldColumnsGroup()
     Exit Function
 
 Catch:
-    Call errorHandler("foldColumnsGroup")
+    Call ErrorHandler("FoldColumnsGroup")
 End Function
 
-Function spreadColumnsGroup()
+Function SpreadColumnsGroup(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("spreadColumnsGroup")
-    Call stopVisualMode
+    Call RepeatRegister("SpreadColumnsGroup")
+    Call StopVisualMode
 
     Dim targetColumn As Long
     Dim i As Integer
@@ -367,47 +367,47 @@ Function spreadColumnsGroup()
     Exit Function
 
 Catch:
-    Call errorHandler("spreadColumnsGroup")
+    Call ErrorHandler("SpreadColumnsGroup")
 End Function
 
-Function adjustColumnsWidth()
+Function AdjustColumnsWidth(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("adjustColumnsWidth")
-    Call stopVisualMode
+    Call RepeatRegister("AdjustColumnsWidth")
+    Call StopVisualMode
 
     If gVim.Count1 > 1 Then
         Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call keystroke(True, Alt_ + H_, O_, I_)
+    Call KeyStroke(True, Alt_ + H_, O_, I_)
     Exit Function
 
 Catch:
-    Call errorHandler("adjustColumnsWidth")
+    Call ErrorHandler("AdjustColumnsWidth")
 End Function
 
-Function setColumnsWidth()
+Function SetColumnsWidth(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     If gVim.Count1 > 1 Then
         Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call keystroke(True, Alt_ + H_, O_, W_)
+    Call KeyStroke(True, Alt_ + H_, O_, W_)
     Exit Function
 
 Catch:
-    Call errorHandler("setColumnsWidth")
+    Call ErrorHandler("SetColumnsWidth")
 End Function
 
-Function narrowColumnsWidth()
+Function NarrowColumnsWidth(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("narrowColumnsWidth")
-    Call stopVisualMode
+    Call RepeatRegister("NarrowColumnsWidth")
+    Call StopVisualMode
 
     Dim currentWidth As Double
     Dim targetColumns As Range
@@ -434,14 +434,14 @@ Function narrowColumnsWidth()
     Exit Function
 
 Catch:
-    Call errorHandler("narrowColumnsWidth")
+    Call ErrorHandler("NarrowColumnsWidth")
 End Function
 
-Function wideColumnsWidth()
+Function WideColumnsWidth(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("wideColumnsWidth")
-    Call stopVisualMode
+    Call RepeatRegister("WideColumnsWidth")
+    Call StopVisualMode
 
     Dim currentWidth As Double
     Dim targetColumns As Range
@@ -468,5 +468,5 @@ Function wideColumnsWidth()
     Exit Function
 
 Catch:
-    Call errorHandler("wideColumnsWidth")
+    Call ErrorHandler("WideColumnsWidth")
 End Function

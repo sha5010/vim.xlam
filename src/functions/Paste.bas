@@ -1,39 +1,39 @@
 Attribute VB_Name = "F_Paste"
 Option Explicit
 
-Function pasteSmart(Optional ByVal PasteDirection As XlSearchDirection = xlNext)
+Function PasteSmart(Optional ByVal PasteDirection As XlSearchDirection = xlNext) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("pasteSmart")
-    Call stopVisualMode
+    Call RepeatRegister("PasteSmart")
+    Call StopVisualMode
 
     If Application.CutCopyMode = 0 Then 'Empty
         Set gVim.Vars.LastYanked = Nothing
     End If
 
     If gVim.Vars.LastYanked Is Nothing Then
-        Call paste_CtrlV
+        Call Paste_CtrlV
         Exit Function
     End If
 
     If gVim.Vars.LastYanked.Rows.Count = gVim.Vars.LastYanked.Parent.Rows.Count Then
-        Call pasteColumns(PasteDirection)
+        Call PasteColumns(PasteDirection)
     ElseIf gVim.Vars.LastYanked.Columns.Count = gVim.Vars.LastYanked.Parent.Columns.Count Then
-        Call pasteRows(PasteDirection)
+        Call PasteRows(PasteDirection)
     Else
-        Call paste_CtrlV
+        Call Paste_CtrlV
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("pasteSmart")
+    Call ErrorHandler("PasteSmart")
 End Function
 
-Private Function paste_CtrlV()
-    Call keystroke(True, Ctrl_ + V_)
+Private Function Paste_CtrlV()
+    Call KeyStroke(True, Ctrl_ + V_)
 End Function
 
-Private Function pasteRows(ByVal PasteDirection As XlSearchDirection)
+Private Function PasteRows(ByVal PasteDirection As XlSearchDirection)
     On Error GoTo Catch
 
     Dim yankedRows As Long
@@ -51,7 +51,7 @@ Private Function pasteRows(ByVal PasteDirection As XlSearchDirection)
 
         .Range(.Rows(startRow), .Rows(endRow)).Select
 
-        Call keystroke(True, Ctrl_ + NumpadAdd_)
+        Call KeyStroke(True, Ctrl_ + NumpadAdd_)
     End With
 
     If Application.CutCopyMode = xlCopy Then
@@ -60,10 +60,10 @@ Private Function pasteRows(ByVal PasteDirection As XlSearchDirection)
     Exit Function
 
 Catch:
-    Call errorHandler("pasteRows")
+    Call ErrorHandler("PasteRows")
 End Function
 
-Private Function pasteColumns(ByVal PasteDirection As XlSearchDirection)
+Private Function PasteColumns(ByVal PasteDirection As XlSearchDirection)
     On Error GoTo Catch
 
     Dim yankedColumns As Long
@@ -81,7 +81,7 @@ Private Function pasteColumns(ByVal PasteDirection As XlSearchDirection)
 
         .Range(.Columns(startColumn), .Columns(endColumn)).Select
 
-        Call keystroke(True, Ctrl_ + NumpadAdd_)
+        Call KeyStroke(True, Ctrl_ + NumpadAdd_)
     End With
 
     If Application.CutCopyMode = xlCopy Then
@@ -90,14 +90,14 @@ Private Function pasteColumns(ByVal PasteDirection As XlSearchDirection)
     Exit Function
 
 Catch:
-    Call errorHandler("pasteColumns")
+    Call ErrorHandler("PasteColumns")
 End Function
 
-Function pasteValue()
+Function PasteValue(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("pasteValue")
-    Call stopVisualMode
+    Call RepeatRegister("PasteValue")
+    Call StopVisualMode
 
     Dim cb As Variant
     Dim cbType As Integer
@@ -110,30 +110,30 @@ Function pasteValue()
     cbType = cb(2)
 
     If Application.CutCopyMode > 0 Then 'Cells
-        Call keystroke(True, Alt_ + H_, V_, V_)
+        Call KeyStroke(True, Alt_ + H_, V_, V_)
 
     Else
         Select Case cbType
             Case xlClipboardFormatText
-                Call keystroke(True, Ctrl_ + V_)
+                Call KeyStroke(True, Ctrl_ + V_)
             Case xlClipboardFormatRTF
-                Call keystroke(True, Alt_ + H_, V_, T_)
+                Call KeyStroke(True, Alt_ + H_, V_, T_)
             Case xlHtml
-                Call keystroke(True, Alt_ + H_, V_, S_, End_, Enter_)
+                Call KeyStroke(True, Alt_ + H_, V_, S_, End_, Enter_)
             Case Else
-                Call debugPrint("Unknown ClipboardType: " & cbType, "pasteValue")
+                Call DebugPrint("Unknown ClipboardType: " & cbType, "PasteValue")
         End Select
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("pasteValue")
+    Call ErrorHandler("PasteValue")
 End Function
 
-Function pasteSpecial()
+Function PasteSpecial(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     If Application.ClipboardFormats(1) = -1 Then
         Call SetStatusBarTemporarily("クリップボードが空です。", 2000)
@@ -144,5 +144,5 @@ Function pasteSpecial()
     Exit Function
 
 Catch:
-    Call errorHandler("pasteSpecial")
+    Call ErrorHandler("PasteSpecial")
 End Function

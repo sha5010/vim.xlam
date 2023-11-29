@@ -2,19 +2,19 @@ Attribute VB_Name = "F_Scrolling"
 Option Explicit
 Option Private Module
 
-Private Enum rowSearchMode
+Private Enum eRowSearchMode
     modeTop = -1
     modeMiddle = 0
     modeBottom = 1
 End Enum
 
-Private Enum columnSearchMode
+Private Enum eColumnSearchMode
     modeLeft = -1
     modeCenter = 0
     modeRight = 1
 End Enum
 
-Private Function activateCellInVisibleRange()
+Private Function ActivateCellInVisibleRange()
     On Error GoTo Catch
 
     Dim targetRow As Long
@@ -27,9 +27,9 @@ Private Function activateCellInVisibleRange()
 
     With ActiveWindow.VisibleRange
         visibleTop = .Item(1).Row
-        visibleBottom = pointToRow(.Item(.Count).Top - 1, xlNone)
+        visibleBottom = PointToRow(.Item(.Count).Top - 1, xlNone)
         visibleLeft = .Item(1).Column
-        visibleRight = pointToColumn(.Item(.Count).Left - 1, xlNone)
+        visibleRight = PointToColumn(.Item(.Count).Left - 1, xlNone)
     End With
 
     If targetRow < visibleTop Then
@@ -54,10 +54,10 @@ Private Function activateCellInVisibleRange()
     Exit Function
 
 Catch:
-    Call errorHandler("activateCellInVisibleRange")
+    Call ErrorHandler("ActivateCellInVisibleRange")
 End Function
 
-Function scrollUpHalf()
+Function ScrollUpHalf(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim topRowVisible As Long
@@ -83,14 +83,14 @@ Function scrollUpHalf()
         ActiveWindow.SmallScroll Up:=scrollWidth
     End If
 
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
     Exit Function
 
 Catch:
-    Call errorHandler("scrollUpHalf")
+    Call ErrorHandler("ScrollUpHalf")
 End Function
 
-Function scrollDownHalf()
+Function ScrollDownHalf(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim topRowVisible As Long
@@ -116,62 +116,62 @@ Function scrollDownHalf()
         ActiveWindow.SmallScroll Down:=scrollWidth
     End If
 
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
     Exit Function
 
 Catch:
-    Call errorHandler("scrollDownHalf")
+    Call ErrorHandler("ScrollDownHalf")
 End Function
 
-Function scrollUp()
+Function ScrollUp(Optional ByVal g As String) As Boolean
     Application.ScreenUpdating = False
     ActiveWindow.LargeScroll Up:=gVim.Count1
     Application.ScreenUpdating = True
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Function scrollDown()
+Function ScrollDown(Optional ByVal g As String) As Boolean
     Application.ScreenUpdating = False
     ActiveWindow.LargeScroll Down:=gVim.Count1
     Application.ScreenUpdating = True
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Function scrollLeft()
+Function ScrollLeft(Optional ByVal g As String) As Boolean
     Application.ScreenUpdating = False
     ActiveWindow.LargeScroll ToLeft:=gVim.Count1
     Application.ScreenUpdating = True
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Function scrollRight()
+Function ScrollRight(Optional ByVal g As String) As Boolean
     Application.ScreenUpdating = False
     ActiveWindow.LargeScroll ToRight:=gVim.Count1
     Application.ScreenUpdating = True
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Function scrollUp1Row()
+Function ScrollUp1Row(Optional ByVal g As String) As Boolean
     ActiveWindow.SmallScroll Up:=gVim.Count1
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Function scrollDown1Row()
+Function ScrollDown1Row(Optional ByVal g As String) As Boolean
     ActiveWindow.SmallScroll Down:=gVim.Count1
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Function scrollLeft1Column()
+Function ScrollLeft1Column(Optional ByVal g As String) As Boolean
     ActiveWindow.SmallScroll ToLeft:=gVim.Count1
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Function scrollRight1Column()
+Function ScrollRight1Column(Optional ByVal g As String) As Boolean
     ActiveWindow.SmallScroll ToRight:=gVim.Count1
-    Call activateCellInVisibleRange
+    Call ActivateCellInVisibleRange
 End Function
 
-Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearchMode) As Long
+Private Function PointToRow(ByVal point As Double, ByVal searchMode As eRowSearchMode) As Long
     On Error GoTo Catch
 
     Dim avg As Double
@@ -186,10 +186,10 @@ Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearch
 
     '範囲外のケースを省く
     If point > Rows(Rows.Count).Top Then
-        pointToRow = Rows.Count
+        PointToRow = Rows.Count
         Exit Function
     ElseIf point <= 0 Then
-        pointToRow = 1
+        PointToRow = 1
         Exit Function
     End If
 
@@ -268,41 +268,41 @@ Private Function pointToRow(ByVal point As Double, ByVal searchMode As rowSearch
         Case modeMiddle
             '1行追加することで差分の絶対値が近くなる方を選ぶ
             If (point - Rows(m).Top) >= Rows(m).Height / 2 Then
-                pointToRow = m + 1
+                PointToRow = m + 1
             Else
-                pointToRow = m
+                PointToRow = m
             End If
 
         '上寄せ
         Case modeTop
             'ピッタリでないなら1行追加
             If point > Rows(m).Top Then
-                pointToRow = m + 1
+                PointToRow = m + 1
             Else
-                pointToRow = m
+                PointToRow = m
             End If
 
         '下寄せ
         Case modeBottom
             'gVim.Config.ScrollOffset に収まらない範囲なら1行追加
             If point - gVim.Config.ScrollOffset > Rows(m).Top Then
-                pointToRow = m + 1
+                PointToRow = m + 1
             Else
-                pointToRow = m
+                PointToRow = m
             End If
 
         '例外
         Case Else
-            pointToRow = m
+            PointToRow = m
 
     End Select
     Exit Function
 
 Catch:
-    Call errorHandler("pointToRow")
+    Call ErrorHandler("pointToRow")
 End Function
 
-Private Function pointToColumn(ByVal point As Double, ByVal searchMode As columnSearchMode) As Long
+Private Function PointToColumn(ByVal point As Double, ByVal searchMode As eColumnSearchMode) As Long
     On Error GoTo Catch
 
     Dim avg As Double
@@ -317,10 +317,10 @@ Private Function pointToColumn(ByVal point As Double, ByVal searchMode As column
 
     '範囲外のケースを省く
     If point > Columns(Columns.Count).Left Then
-        pointToColumn = Columns.Count
+        PointToColumn = Columns.Count
         Exit Function
     ElseIf point <= 0 Then
-        pointToColumn = 1
+        PointToColumn = 1
         Exit Function
     End If
 
@@ -399,31 +399,31 @@ Private Function pointToColumn(ByVal point As Double, ByVal searchMode As column
         Case modeCenter
             '1列追加することで差分の絶対値が近くなる方を選ぶ
             If (point - Columns(m).Left) >= Columns(m).Width / 2 Then
-                pointToColumn = m + 1
+                PointToColumn = m + 1
             Else
-                pointToColumn = m
+                PointToColumn = m
             End If
 
         '左寄せ, 右寄せ
         Case modeLeft, modeRight
             'ピッタリでないなら1列追加
             If point > Columns(m).Left Then
-                pointToColumn = m + 1
+                PointToColumn = m + 1
             Else
-                pointToColumn = m
+                PointToColumn = m
             End If
 
         '例外
         Case Else
-            pointToColumn = m
+            PointToColumn = m
     End Select
     Exit Function
 
 Catch:
-    Call errorHandler("pointToColumn")
+    Call ErrorHandler("pointToColumn")
 End Function
 
-Private Function getLengthWithZoomConsidered(ByVal Length As Double) As Double
+Private Function GetLengthWithZoomConsidered(ByVal Length As Double) As Double
     'Zoomを考慮した長さを取得
     Dim rate As Double
 
@@ -432,18 +432,18 @@ Private Function getLengthWithZoomConsidered(ByVal Length As Double) As Double
     Else
         rate = 103.32 / ActiveWindow.Zoom - 0.05
     End If
-    getLengthWithZoomConsidered = Length * rate
+    GetLengthWithZoomConsidered = Length * rate
 End Function
 
-Private Function getRealUsableHeight() As Double
+Private Function GetRealUsableHeight() As Double
     If ActiveWindow.DisplayHeadings Then
-        getRealUsableHeight = ActiveWindow.UsableHeight - ActiveSheet.StandardHeight
+        GetRealUsableHeight = ActiveWindow.UsableHeight - ActiveSheet.StandardHeight
     Else
-        getRealUsableHeight = ActiveWindow.UsableHeight
+        GetRealUsableHeight = ActiveWindow.UsableHeight
     End If
 End Function
 
-Private Function getRealUsableWidth() As Double
+Private Function GetRealUsableWidth() As Double
     Dim maxVisibleRow As Long
     Dim headingWidth As Double
 
@@ -455,44 +455,44 @@ Private Function getRealUsableWidth() As Double
             headingWidth = headingWidth + 6.75 * (Len(CStr(maxVisibleRow)) - 3)
         End If
 
-        getRealUsableWidth = ActiveWindow.UsableWidth - headingWidth
+        GetRealUsableWidth = ActiveWindow.UsableWidth - headingWidth
     Else
-        getRealUsableWidth = ActiveWindow.UsableWidth
+        GetRealUsableWidth = ActiveWindow.UsableWidth
     End If
 End Function
 
-Function scrollCurrentTop()
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top - getLengthWithZoomConsidered(gVim.Config.ScrollOffset), modeTop)
+Function ScrollCurrentTop(Optional ByVal g As String) As Boolean
+    ActiveWindow.ScrollRow = PointToRow(ActiveCell.Top - GetLengthWithZoomConsidered(gVim.Config.ScrollOffset), modeTop)
 End Function
 
-Function scrollCurrentBottom()
+Function ScrollCurrentBottom(Optional ByVal g As String) As Boolean
     Dim uh As Double
-    uh = getRealUsableHeight()
+    uh = GetRealUsableHeight()
 
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height - getLengthWithZoomConsidered(uh - gVim.Config.ScrollOffset), modeBottom)
+    ActiveWindow.ScrollRow = PointToRow(ActiveCell.Top + ActiveCell.Height - GetLengthWithZoomConsidered(uh - gVim.Config.ScrollOffset), modeBottom)
 End Function
 
-Function scrollCurrentMiddle()
+Function ScrollCurrentMiddle(Optional ByVal g As String) As Boolean
     Dim uh As Double
-    uh = getRealUsableHeight()
+    uh = GetRealUsableHeight()
 
-    ActiveWindow.ScrollRow = pointToRow(ActiveCell.Top + ActiveCell.Height / 2 - getLengthWithZoomConsidered(uh) / 2, modeMiddle)
+    ActiveWindow.ScrollRow = PointToRow(ActiveCell.Top + ActiveCell.Height / 2 - GetLengthWithZoomConsidered(uh) / 2, modeMiddle)
 End Function
 
-Function scrollCurrentLeft()
+Function ScrollCurrentLeft(Optional ByVal g As String) As Boolean
     ActiveWindow.ScrollColumn = ActiveCell.Column
 End Function
 
-Function scrollCurrentRight()
+Function ScrollCurrentRight(Optional ByVal g As String) As Boolean
     Dim uw As Double
-    uw = getRealUsableWidth()
+    uw = GetRealUsableWidth()
 
-    ActiveWindow.ScrollColumn = pointToColumn(ActiveCell.Left + ActiveCell.Width - getLengthWithZoomConsidered(uw), modeRight)
+    ActiveWindow.ScrollColumn = PointToColumn(ActiveCell.Left + ActiveCell.Width - GetLengthWithZoomConsidered(uw), modeRight)
 End Function
 
-Function scrollCurrentCenter()
+Function ScrollCurrentCenter(Optional ByVal g As String) As Boolean
     Dim uw As Double
-    uw = getRealUsableWidth()
+    uw = GetRealUsableWidth()
 
-    ActiveWindow.ScrollColumn = pointToColumn(ActiveCell.Left + ActiveCell.Width / 2 - getLengthWithZoomConsidered(uw) / 2, modeCenter)
+    ActiveWindow.ScrollColumn = PointToColumn(ActiveCell.Left + ActiveCell.Width / 2 - GetLengthWithZoomConsidered(uw) / 2, modeCenter)
 End Function

@@ -2,25 +2,25 @@ Attribute VB_Name = "F_Comment"
 Option Explicit
 Option Private Module
 
-Function editCellComment()
-    Call repeatRegister("editCellComment")
-    Call stopVisualMode
+Function EditCellComment(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("EditCellComment")
+    Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
-        Call keystroke(True, Shift_ + F2_)
+        Call KeyStroke(True, Shift_ + F2_)
     End If
 End Function
 
-Function deleteCellComment()
-    Call repeatRegister("deleteCellComment")
-    Call stopVisualMode
+Function DeleteCellComment(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteCellComment")
+    Call StopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
-        Call keystroke(True, Alt_ + R_, D_)
+        Call KeyStroke(True, Alt_ + R_, D_)
     End If
 End Function
 
-Function deleteCellCommentAll()
+Function DeleteCellCommentAll(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim cmt As Comment
@@ -43,14 +43,14 @@ Function deleteCellCommentAll()
     Exit Function
 
 Catch:
-    Call errorHandler("deleteCellCommentAll")
+    Call ErrorHandler("DeleteCellCommentAll")
 End Function
 
-Function toggleCellComment()
+Function ToggleCellComment(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("toggleCellComment")
-    Call stopVisualMode
+    Call RepeatRegister("ToggleCellComment")
+    Call StopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         Application.CommandBars.ExecuteMso "ReviewShowOrHideComment"
@@ -58,14 +58,14 @@ Function toggleCellComment()
     Exit Function
 
 Catch:
-    Call errorHandler("toggleCellComment")
+    Call ErrorHandler("ToggleCellComment")
 End Function
 
-Function hideCellComment()
+Function HideCellComment(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("hideCellComment")
-    Call stopVisualMode
+    Call RepeatRegister("HideCellComment")
+    Call StopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = False
@@ -73,14 +73,14 @@ Function hideCellComment()
     Exit Function
 
 Catch:
-    Call errorHandler("hideCellComment")
+    Call ErrorHandler("HideCellComment")
 End Function
 
-Function showCellComment()
+Function ShowCellComment(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("showCellComment")
-    Call stopVisualMode
+    Call RepeatRegister("ShowCellComment")
+    Call StopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
         ActiveCell.Comment.Visible = True
@@ -88,32 +88,32 @@ Function showCellComment()
     Exit Function
 
 Catch:
-    Call errorHandler("showCellComment")
+    Call ErrorHandler("ShowCellComment")
 End Function
 
-Function toggleCellCommentAll()
+Function ToggleCellCommentAll(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Application.CommandBars.ExecuteMso "ReviewShowAllComments"
     Exit Function
 
 Catch:
-    Call errorHandler("toggleCellCommentAll")
+    Call ErrorHandler("ToggleCellCommentAll")
 End Function
 
-Function hideCellCommentAll()
+Function HideCellCommentAll(Optional ByVal g As String) As Boolean
     Application.DisplayCommentIndicator = xlCommentIndicatorOnly
 End Function
 
-Function showCellCommentAll()
+Function ShowCellCommentAll(Optional ByVal g As String) As Boolean
     Application.DisplayCommentIndicator = xlCommentAndIndicator
 End Function
 
-Function hideCellCommentIndicator()
+Function HideCellCommentIndicator(Optional ByVal g As String) As Boolean
     Application.DisplayCommentIndicator = xlNoIndicator
 End Function
 
-Function nextCommentedCell()
+Function NextCommentedCell(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim buf As Boolean
@@ -123,7 +123,7 @@ Function nextCommentedCell()
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     'もともとの値を取得
     buf = Application.DisplayAlerts
@@ -134,10 +134,10 @@ Function nextCommentedCell()
     Exit Function
 
 Catch:
-    Call errorHandler("nextCommentedCell")
+    Call ErrorHandler("NextCommentedCell")
 End Function
 
-Function prevCommentedCell()
+Function PrevCommentedCell(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim buf As Boolean
@@ -147,7 +147,7 @@ Function prevCommentedCell()
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     'もともとの値を取得
     buf = Application.DisplayAlerts
@@ -158,5 +158,5 @@ Function prevCommentedCell()
     Exit Function
 
 Catch:
-    Call errorHandler("prevCommentedCell")
+    Call ErrorHandler("PrevCommentedCell")
 End Function

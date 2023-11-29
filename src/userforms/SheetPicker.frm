@@ -109,7 +109,7 @@ Private Sub Rename_Sheet(ByVal n As Integer)
                 Exit Sub
 
             '新しい名前のシートがすでに存在する場合はエラー
-            ElseIf isSheetExists(ret) Then
+            ElseIf IsSheetExists(ret) Then
                 MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
                 Exit Sub
             End If
@@ -143,7 +143,7 @@ Private Sub Delete_Sheet(ByVal n As Integer)
     End If
 
     '対象シートが最後の可視シートの場合はエラー
-    If ActiveSheet.Visible = xlSheetVisible And getVisibleSheetsCount() = 1 Then
+    If ActiveSheet.Visible = xlSheetVisible And GetVisibleSheetsCount() = 1 Then
         MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
         Exit Sub
     End If
@@ -387,7 +387,7 @@ Private Sub MakeList()
     Exit Sub
 
 Catch:
-    If errorHandler("MakeList in UF_SheetPicker") Then
+    If ErrorHandler("MakeList in UF_SheetPicker") Then
         Unload Me
     End If
 End Sub

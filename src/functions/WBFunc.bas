@@ -2,34 +2,34 @@ Attribute VB_Name = "F_WBFunc"
 Option Explicit
 Option Private Module
 
-Function closeAskSaving()
+Function CloseAskSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close
     Exit Function
 
 Catch:
-    Call errorHandler("closeAskSaving")
+    Call ErrorHandler("CloseAskSaving")
 End Function
 
-Function closeWithoutSaving()
+Function CloseWithoutSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close False
     Exit Function
 
 Catch:
-    Call errorHandler("closeWithoutSaving")
+    Call ErrorHandler("CloseWithoutSaving")
 End Function
 
-Function closeWithSaving()
+Function CloseWithSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close True
     Exit Function
 
 Catch:
-    Call errorHandler("closeWithSaving")
+    Call ErrorHandler("CloseWithSaving")
 End Function
 
-Function saveWorkbook()
+Function SaveWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     If ActiveWorkbook.Path = "" Then
@@ -42,28 +42,28 @@ Function saveWorkbook()
     Exit Function
 
 Catch:
-    Call errorHandler("saveWorkbook")
+    Call ErrorHandler("SaveWorkbook")
 End Function
 
-Function saveAsNewWorkbook()
+Function SaveAsNewWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.CommandBars.ExecuteMso "FileSaveAs"
     Exit Function
 
 Catch:
-    Call errorHandler("saveAsNewWorkbook")
+    Call ErrorHandler("SaveAsNewWorkbook")
 End Function
 
-Function openWorkbook()
+Function OpenWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.CommandBars.ExecuteMso "FileOpenUsingBackstage"
     Exit Function
 
 Catch:
-    Call errorHandler("openWorkbook")
+    Call ErrorHandler("OpenWorkbook")
 End Function
 
-Function reopenActiveWorkbook()
+Function ReopenActiveWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim wbFullName As String
@@ -91,7 +91,7 @@ Function reopenActiveWorkbook()
     Exit Function
 
 Catch:
-    Call errorHandler("reopenActiveWorkbook")
+    Call ErrorHandler("ReopenActiveWorkbook")
 End Function
 
 Function ActivateWorkbook(Optional ByVal arg As String) As Boolean
@@ -128,13 +128,13 @@ Catch:
     Call ErrorHandler("ActivateWorkbook")
 End Function
 
-Function nextWorkbook()
+Function NextWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
     Dim idx As Integer
 
-    idx = getWorkbookIndex(ActiveWorkbook)
+    idx = GetWorkbookIndex(ActiveWorkbook)
     For i = 1 To Workbooks.Count
         idx = (idx Mod Workbooks.Count) + 1
         If Windows(Workbooks(idx).Name).Visible Then
@@ -145,16 +145,16 @@ Function nextWorkbook()
     Exit Function
 
 Catch:
-    Call errorHandler("nextWorkbook")
+    Call ErrorHandler("NextWorkbook")
 End Function
 
-Function previousWorkbook()
+Function PreviousWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
     Dim idx As Integer
 
-    idx = getWorkbookIndex(ActiveWorkbook)
+    idx = GetWorkbookIndex(ActiveWorkbook)
     For i = 1 To Workbooks.Count
         idx = ((idx - 2 + Workbooks.Count) Mod Workbooks.Count) + 1
         If Windows(Workbooks(idx).Name).Visible Then
@@ -165,10 +165,10 @@ Function previousWorkbook()
     Exit Function
 
 Catch:
-    Call errorHandler("previousWorkbook")
+    Call ErrorHandler("PreviousWorkbook")
 End Function
 
-Function toggleReadOnly()
+Function ToggleReadOnly(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim ret As VbMsgBoxResult
@@ -197,5 +197,5 @@ Function toggleReadOnly()
     Exit Function
 
 Catch:
-    Call errorHandler("toggleReadOnly")
+    Call ErrorHandler("ToggleReadOnly")
 End Function

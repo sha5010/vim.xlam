@@ -2,7 +2,7 @@ Attribute VB_Name = "F_Shapes"
 Option Explicit
 Option Private Module
 
-Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
+Function ChangeShapeFillColor(Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
     Dim shp As ShapeRange
@@ -14,7 +14,7 @@ Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
     Set shp = Selection.ShapeRange
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.ShowColorPicker()
     End If
 
     If Not resultColor Is Nothing Then
@@ -30,7 +30,7 @@ Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
                 .ForeColor.RGB = resultColor.Color
             End If
 
-            Call repeatRegister("changeShapeFillColor", resultColor)
+            Call RepeatRegister("ChangeShapeFillColor", resultColor)
         End With
     End If
 
@@ -38,10 +38,10 @@ Function changeShapeFillColor(Optional ByVal resultColor As cls_FontColor)
     Exit Function
 
 Catch:
-    Call errorHandler("changeShapeFillColor")
+    Call ErrorHandler("ChangeShapeFillColor")
 End Function
 
-Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
+Function ChangeShapeFontColor(Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
     Dim shp As ShapeRange
@@ -53,7 +53,7 @@ Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
     Set shp = Selection.ShapeRange
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.ShowColorPicker()
     End If
 
     If Not resultColor Is Nothing Then
@@ -67,7 +67,7 @@ Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
                 .RGB = resultColor.Color
             End If
 
-            Call repeatRegister("changeShapeFontColor", resultColor)
+            Call RepeatRegister("ChangeShapeFontColor", resultColor)
         End With
     End If
 
@@ -75,10 +75,10 @@ Function changeShapeFontColor(Optional ByVal resultColor As cls_FontColor)
     Exit Function
 
 Catch:
-    Call errorHandler("changeShapeFontColor")
+    Call ErrorHandler("ChangeShapeFontColor")
 End Function
 
-Function changeShapeBorderColor(Optional garbage As String, _
+Function ChangeShapeBorderColor(Optional garbage As String, _
                                 Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
@@ -92,7 +92,7 @@ Function changeShapeBorderColor(Optional garbage As String, _
     Set shp = Selection.ShapeRange
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.ShowColorPicker()
     End If
 
     If Not resultColor Is Nothing Then
@@ -108,7 +108,7 @@ Function changeShapeBorderColor(Optional garbage As String, _
                 .ForeColor.RGB = resultColor.Color
             End If
 
-            Call repeatRegister("changeShapeBorderColor", "", resultColor)
+            Call RepeatRegister("ChangeShapeBorderColor", "", resultColor)
         End With
     End If
 
@@ -116,10 +116,10 @@ Function changeShapeBorderColor(Optional garbage As String, _
     Exit Function
 
 Catch:
-    Call errorHandler("changeShapeBorderColor")
+    Call ErrorHandler("ChangeShapeBorderColor")
 End Function
 
-Function nextShape()
+Function NextShape(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Long
@@ -127,11 +127,11 @@ Function nextShape()
     Dim shp As Shape
 
     If VarType(Selection) = vbObject Then
-        Call keyupControlKeys
+        Call KeyUpControlKeys
         For i = 1 To gVim.Count1
-            Call keystrokeWithoutKeyup(Tab_)
+            Call KeyStrokeWithoutKeyup(Tab_)
         Next i
-        Call unkeyupControlKeys
+        Call UnkeyUpControlKeys
     Else
         cnt = ActiveSheet.Shapes.Count
         If cnt = 0 Then
@@ -142,10 +142,10 @@ Function nextShape()
     Exit Function
 
 Catch:
-    Call errorHandler("nextShape")
+    Call ErrorHandler("NextShape")
 End Function
 
-Function prevShape()
+Function PrevShape(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Long
@@ -153,11 +153,11 @@ Function prevShape()
     Dim shp As Shape
 
     If VarType(Selection) = vbObject Then
-        Call keyupControlKeys
+        Call KeyUpControlKeys
         For i = 1 To gVim.Count1
-            Call keystrokeWithoutKeyup(Shift_ + Tab_)
+            Call KeyStrokeWithoutKeyup(Shift_ + Tab_)
         Next i
-        Call unkeyupControlKeys
+        Call UnkeyUpControlKeys
     Else
         cnt = ActiveSheet.Shapes.Count
         If cnt = 0 Then
@@ -168,5 +168,5 @@ Function prevShape()
     Exit Function
 
 Catch:
-    Call errorHandler("prevShape")
+    Call ErrorHandler("PrevShape")
 End Function

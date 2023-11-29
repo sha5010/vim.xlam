@@ -2,7 +2,7 @@ Attribute VB_Name = "F_WSFunc"
 Option Explicit
 Option Private Module
 
-Function nextWorksheet()
+Function NextWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
@@ -20,11 +20,11 @@ Function nextWorksheet()
     Exit Function
 
 Catch:
-    Call keystroke(True, Ctrl_ + PageDown_)
-    Call errorHandler("nextWorksheet")
+    Call KeyStroke(True, Ctrl_ + PageDown_)
+    Call ErrorHandler("NextWorksheet")
 End Function
 
-Function previousWorksheet()
+Function PreviousWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
@@ -42,11 +42,11 @@ Function previousWorksheet()
     Exit Function
 
 Catch:
-    Call keystroke(True, Ctrl_ + PageUp_)
-    Call errorHandler("previousWorksheet")
+    Call KeyStroke(True, Ctrl_ + PageUp_)
+    Call ErrorHandler("PreviousWorksheet")
 End Function
 
-Function renameWorksheet()
+Function RenameWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim ret As String
@@ -62,7 +62,7 @@ Function renameWorksheet()
                 Exit Function
 
             'Error when new sheet name already exists
-            ElseIf isSheetExists(ret) Then
+            ElseIf IsSheetExists(ret) Then
                 MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
                 Exit Function
             End If
@@ -75,10 +75,10 @@ Function renameWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("renameWorksheet")
+    Call ErrorHandler("RenameWorksheet")
 End Function
 
-Function moveWorksheetForward()
+Function MoveWorksheetForward(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -117,10 +117,10 @@ Function moveWorksheetForward()
     Exit Function
 
 Catch:
-    Call errorHandler("moveWorksheetBack")
+    Call ErrorHandler("MoveWorksheetBack")
 End Function
 
-Function moveWorksheetBack()
+Function MoveWorksheetBack(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -160,10 +160,10 @@ Function moveWorksheetBack()
     Exit Function
 
 Catch:
-    Call errorHandler("moveWorksheetBack")
+    Call ErrorHandler("MoveWorksheetBack")
 End Function
 
-Function insertWorksheet()
+Function InsertWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     With ActiveWorkbook
         .Worksheets.Add Before:=.ActiveSheet
@@ -171,10 +171,10 @@ Function insertWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("insertWorksheet")
+    Call ErrorHandler("InsertWorksheet")
 End Function
 
-Function appendWorksheet()
+Function AppendWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     With ActiveWorkbook
         .Worksheets.Add After:=.ActiveSheet
@@ -182,14 +182,14 @@ Function appendWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("appendWorksheet")
+    Call ErrorHandler("AppendWorksheet")
 End Function
 
-Function deleteWorksheet()
+Function DeleteWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     'error if target sheet is last visible one
-    If ActiveSheet.Visible = xlSheetVisible And getVisibleSheetsCount() = 1 Then
+    If ActiveSheet.Visible = xlSheetVisible And GetVisibleSheetsCount() = 1 Then
         MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
         Exit Function
     End If
@@ -198,7 +198,7 @@ Function deleteWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("deleteWorksheet")
+    Call ErrorHandler("DeleteWorksheet")
 End Function
 
 Function ActivateWorksheet(Optional ByVal sheetNum As String) As Boolean
@@ -233,7 +233,7 @@ Catch:
     Call ErrorHandler("ActivateWorksheet")
 End Function
 
-Function activateFirstWorksheet()
+Function ActivateFirstWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
@@ -249,10 +249,10 @@ Function activateFirstWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("activateFirstWorksheet")
+    Call ErrorHandler("ActivateFirstWorksheet")
 End Function
 
-Function activateLastWorksheet()
+Function ActivateLastWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
@@ -268,10 +268,10 @@ Function activateLastWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("activateLastWorksheet")
+    Call ErrorHandler("ActivateLastWorksheet")
 End Function
 
-Function cloneWorksheet()
+Function CloneWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     ActiveSheet.Copy After:=ActiveSheet
@@ -279,14 +279,14 @@ Function cloneWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("cloneWorksheet")
+    Call ErrorHandler("CloneWorksheet")
 End Function
 
-Function showSheetPicker()
+Function ShowSheetPicker(Optional ByVal g As String) As Boolean
     UF_SheetPicker.Show
 End Function
 
-Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
+Function ChangeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
     If ActiveSheet Is Nothing Then
@@ -294,7 +294,7 @@ Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
     End If
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.ShowColorPicker()
     End If
 
     If Not resultColor Is Nothing Then
@@ -308,29 +308,29 @@ Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
                 .Color = resultColor.Color
             End If
 
-            Call repeatRegister("changeWorksheetTabColor", resultColor)
+            Call RepeatRegister("ChangeWorksheetTabColor", resultColor)
         End With
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("changeWorksheetTabColor")
+    Call ErrorHandler("ChangeWorksheetTabColor")
 End Function
 
-Function exportWorksheet()
+Function ExportWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.Dialogs(xlDialogWorkbookCopy).Show
     Exit Function
 
 Catch:
-    Call errorHandler("exportWorksheet")
+    Call ErrorHandler("ExportWorksheet")
 End Function
 
-Function printPreviewOfActiveSheet()
+Function PrintPreviewOfActiveSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveSheet.PrintPreview
     Exit Function
 
 Catch:
-    Call errorHandler("printPreviewOfActiveSheet")
+    Call ErrorHandler("PrintPreviewOfActiveSheet")
 End Function

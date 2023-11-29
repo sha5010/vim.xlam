@@ -2,7 +2,7 @@ Attribute VB_Name = "F_Moving"
 Option Explicit
 Option Private Module
 
-Function moveUp()
+Function MoveUp()
     Dim r As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
@@ -16,7 +16,7 @@ Function moveUp()
     End If
 End Function
 
-Function moveDown()
+Function MoveDown()
     Dim r As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
@@ -30,7 +30,7 @@ Function moveDown()
     End If
 End Function
 
-Function moveLeft()
+Function MoveLeft()
     Dim c As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
@@ -44,7 +44,7 @@ Function moveLeft()
     End If
 End Function
 
-Function moveRight()
+Function MoveRight()
     Dim c As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
@@ -193,7 +193,7 @@ Catch:
     Call ErrorHandler("ResizeInner")
 End Function
 
-Function moveUpWithShift()
+Function MoveUpWithShift()
     Dim r As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
@@ -211,7 +211,7 @@ Function moveUpWithShift()
     End If
 End Function
 
-Function moveDownWithShift()
+Function MoveDownWithShift()
     Dim r As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
@@ -229,7 +229,7 @@ Function moveDownWithShift()
     End If
 End Function
 
-Function moveLeftWithShift()
+Function MoveLeftWithShift()
     Dim c As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
@@ -247,7 +247,7 @@ Function moveLeftWithShift()
     End If
 End Function
 
-Function moveRightWithShift()
+Function MoveRightWithShift()
     Dim c As Long
     If gVim.Count1 = 1 Then
         keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
@@ -265,10 +265,10 @@ Function moveRightWithShift()
     End If
 End Function
 
-Function moveToTopRow()
+Function MoveToTopRow(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         If gVim.Count1 = 1 Then
@@ -280,13 +280,13 @@ Function moveToTopRow()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToTopRow")
+    Call ErrorHandler("MoveToTopRow")
 End Function
 
-Function moveToLastRow()
+Function MoveToLastRow(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         If gVim.Count1 = 1 Then
@@ -298,13 +298,13 @@ Function moveToLastRow()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToLastRow")
+    Call ErrorHandler("MoveToLastRow")
 End Function
 
-Function moveToNthColumn()
+Function MoveToNthColumn(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     If gVim.Count1 > ActiveSheet.Columns.Count Then
         gVim.Count1 = ActiveSheet.Columns.Count
@@ -316,13 +316,13 @@ Function moveToNthColumn()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToNthColumn")
+    Call ErrorHandler("MoveToNthColumn")
 End Function
 
-Function moveToFirstColumn()
+Function MoveToFirstColumn(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, 1).Select
@@ -330,13 +330,13 @@ Function moveToFirstColumn()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToFirstColumn")
+    Call ErrorHandler("MoveToFirstColumn")
 End Function
 
-Function moveToLeftEnd()
+Function MoveToLeftEnd(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, .UsedRange.Item(1).Column).Select
@@ -344,13 +344,13 @@ Function moveToLeftEnd()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToLeftEnd")
+    Call ErrorHandler("MoveToLeftEnd")
 End Function
 
-Function moveToRightEnd()
+Function MoveToRightEnd(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, .UsedRange.Item(.UsedRange.Count).Column).Select
@@ -358,13 +358,13 @@ Function moveToRightEnd()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToRightEnd")
+    Call ErrorHandler("MoveToRightEnd")
 End Function
 
-Function moveToTopOfCurrentRegion()
+Function MoveToTopOfCurrentRegion(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     Dim targetRow As Long
 
@@ -379,13 +379,13 @@ Function moveToTopOfCurrentRegion()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToTopOfCurrentRegion")
+    Call ErrorHandler("MoveToTopOfCurrentRegion")
 End Function
 
-Function moveToBottomOfCurrentRegion()
+Function MoveToBottomOfCurrentRegion(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     Dim targetRow As Long
 
@@ -400,13 +400,13 @@ Function moveToBottomOfCurrentRegion()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToBottomOfCurrentRegion")
+    Call ErrorHandler("MoveToBottomOfCurrentRegion")
 End Function
 
-Function moveToA1()
+Function MoveToA1(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(1, 1).Select
@@ -414,7 +414,7 @@ Function moveToA1()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToA1")
+    Call ErrorHandler("MoveToA1")
 End Function
 
 Function MoveToSpecifiedCell(Optional ByVal g As String) As Boolean
@@ -470,7 +470,7 @@ Function MoveToSpecifiedRow(Optional ByVal lineNum As String) As Boolean
             n = ActiveSheet.Rows.Count
         End If
 
-        Call recordToJumpList
+        Call RecordToJumpList
 
         ActiveSheet.Cells(CLng(n), ActiveCell.Column).Select
         MoveToSpecifiedRow = False  ' Set return value to False (= Done)

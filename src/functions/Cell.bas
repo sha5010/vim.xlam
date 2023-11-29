@@ -2,52 +2,52 @@ Attribute VB_Name = "F_Cell"
 Option Explicit
 Option Private Module
 
-Private Enum searchMode
+Private Enum eSearchMode
     TopToBottom = 1
     LeftToRight
     BottomToTop
     RightToLeft
 End Enum
 
-Function cutCell()
-    Call stopVisualMode
-    Call keystroke(True, Ctrl_ + X_)
+Function CutCell(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
+    Call KeyStroke(True, Ctrl_ + X_)
 
     If TypeName(Selection) = "Range" Then
         Set gVim.Vars.LastYanked = Selection
     End If
 End Function
 
-Function yankCell()
-    Call stopVisualMode
-    Call keystroke(True, Ctrl_ + C_)
+Function YankCell(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
+    Call KeyStroke(True, Ctrl_ + C_)
 
     If TypeName(Selection) = "Range" Then
         Set gVim.Vars.LastYanked = Selection
     End If
 End Function
 
-Function yankFromUpCell()
-    Call repeatRegister("yankFromUpCell")
-    Call keystroke(True, Alt_ + H_, F_, I_, D_)
+Function YankFromUpCell(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("YankFromUpCell")
+    Call KeyStroke(True, Alt_ + H_, F_, I_, D_)
 End Function
 
-Function yankFromDownCell()
-    Call repeatRegister("yankFromDownCell")
-    Call keystroke(True, Alt_ + H_, F_, I_, U_)
+Function YankFromDownCell(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("YankFromDownCell")
+    Call KeyStroke(True, Alt_ + H_, F_, I_, U_)
 End Function
 
-Function yankFromLeftCell()
-    Call repeatRegister("yankFromLeftCell")
-    Call keystroke(True, Alt_ + H_, F_, I_, R_)
+Function YankFromLeftCell(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("YankFromLeftCell")
+    Call KeyStroke(True, Alt_ + H_, F_, I_, R_)
 End Function
 
-Function yankFromRightCell()
-    Call repeatRegister("yankFromRightCell")
-    Call keystroke(True, Alt_ + H_, F_, I_, L_)
+Function YankFromRightCell(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("YankFromRightCell")
+    Call KeyStroke(True, Alt_ + H_, F_, I_, L_)
 End Function
 
-Function yankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab)
+Function YankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab) As Boolean
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
@@ -59,7 +59,7 @@ Function yankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab)
         Err.Raise 6
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Dim resultText As String
     Dim aryTarget As Variant
@@ -139,79 +139,79 @@ Catch:
         'Error from WorksheetFunction.Transpose
         Resume fallback
     Else
-        Call errorHandler("yankAsPlaintext")
+        Call ErrorHandler("YankAsPlaintext")
     End If
 End Function
 
-Function incrementText()
-    Call repeatRegister("incrementText")
-    Call stopVisualMode
+Function IncrementText(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("IncrementText")
+    Call StopVisualMode
 
     Dim i As Integer
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
+    Call KeyUpControlKeys
+    Call ReleaseShiftKeys
 
     For i = 1 To gVim.Count1
-        Call keystrokeWithoutKeyup(Alt_ + H_, k6_)
+        Call KeyStrokeWithoutKeyup(Alt_ + H_, k6_)
     Next i
 
-    Call unkeyupControlKeys
+    Call UnkeyUpControlKeys
 End Function
 
-Function decrementText()
-    Call repeatRegister("decrementText")
-    Call stopVisualMode
+Function DecrementText(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DecrementText")
+    Call StopVisualMode
 
     Dim i As Integer
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
+    Call KeyUpControlKeys
+    Call ReleaseShiftKeys
 
     For i = 1 To gVim.Count1
-        Call keystrokeWithoutKeyup(Alt_ + H_, k5_)
+        Call KeyStrokeWithoutKeyup(Alt_ + H_, k5_)
     Next i
 
-    Call unkeyupControlKeys
+    Call UnkeyUpControlKeys
 End Function
 
-Function increaseDecimal()
-    Call repeatRegister("increaseDecimal")
-    Call stopVisualMode
+Function IncreaseDecimal(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("IncreaseDecimal")
+    Call StopVisualMode
 
     Dim i As Integer
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
+    Call KeyUpControlKeys
+    Call ReleaseShiftKeys
 
     For i = 1 To gVim.Count1
-        Call keystrokeWithoutKeyup(Alt_ + H_, k0_)
+        Call KeyStrokeWithoutKeyup(Alt_ + H_, k0_)
     Next i
 
-    Call unkeyupControlKeys
+    Call UnkeyUpControlKeys
 End Function
 
-Function decreaseDecimal()
-    Call repeatRegister("decreaseDecimal")
-    Call stopVisualMode
+Function DecreaseDecimal(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DecreaseDecimal")
+    Call StopVisualMode
 
     Dim i As Integer
 
-    Call keyupControlKeys
-    Call releaseShiftKeys
+    Call KeyUpControlKeys
+    Call ReleaseShiftKeys
 
     For i = 1 To gVim.Count1
-        Call keystrokeWithoutKeyup(Alt_ + H_, k9_)
+        Call KeyStrokeWithoutKeyup(Alt_ + H_, k9_)
     Next i
 
-    Call unkeyupControlKeys
+    Call UnkeyUpControlKeys
 End Function
 
-Function insertCellsUp()
+Function InsertCellsUp(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("insertCellsUp")
-    Call stopVisualMode
+    Call RepeatRegister("InsertCellsUp")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
     If gVim.Count1 > 1 Then
@@ -222,14 +222,14 @@ Function insertCellsUp()
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("insertCellsUp")
+    Call ErrorHandler("InsertCellsUp")
 End Function
 
-Function insertCellsDown()
+Function InsertCellsDown(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("insertCellsDown")
-    Call stopVisualMode
+    Call RepeatRegister("InsertCellsDown")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
     If Selection.Row < ActiveSheet.Rows.Count Then
@@ -244,14 +244,14 @@ Function insertCellsDown()
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("insertCellsDown")
+    Call ErrorHandler("InsertCellsDown")
 End Function
 
-Function insertCellsLeft()
+Function InsertCellsLeft(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("insertCellsLeft")
-    Call stopVisualMode
+    Call RepeatRegister("InsertCellsLeft")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
     If gVim.Count1 > 1 Then
@@ -262,14 +262,14 @@ Function insertCellsLeft()
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("insertCellsLeft")
+    Call ErrorHandler("InsertCellsLeft")
 End Function
 
-Function insertCellsRight()
+Function InsertCellsRight(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("insertCellsRight")
-    Call stopVisualMode
+    Call RepeatRegister("InsertCellsRight")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
     If Selection.Column < ActiveSheet.Columns.Count Then
@@ -284,59 +284,59 @@ Function insertCellsRight()
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("insertCellsRight")
+    Call ErrorHandler("InsertCellsRight")
 End Function
 
-Function deleteValue()
-    Call repeatRegister("deleteValue")
-    Call stopVisualMode
-    Call keystroke(True, Delete_)
+Function DeleteValue(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteValue")
+    Call StopVisualMode
+    Call KeyStroke(True, Delete_)
 End Function
 
-Function deleteToUp()
+Function DeleteToUp(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("deleteToUp")
-    Call stopVisualMode
+    Call RepeatRegister("DeleteToUp")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
     If gVim.Count1 > 1 Then
         Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call keystroke(True, Ctrl_ + Minus_, U_, Enter_)
+    Call KeyStroke(True, Ctrl_ + Minus_, U_, Enter_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("deleteToUp")
+    Call ErrorHandler("DeleteToUp")
 End Function
 
-Function deleteToLeft()
+Function DeleteToLeft(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("deleteToLeft")
-    Call stopVisualMode
+    Call RepeatRegister("DeleteToLeft")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
     If gVim.Count1 > 1 Then
         Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call keystroke(True, Ctrl_ + Minus_, L_, Enter_)
+    Call KeyStroke(True, Ctrl_ + Minus_, L_, Enter_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("deleteToLeft")
+    Call ErrorHandler("DeleteToLeft")
 End Function
 
-Function toggleWrapText()
-    Call stopVisualMode
-    Call keystroke(True, Alt_ + H_, W_)
+Function ToggleWrapText(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
+    Call KeyStroke(True, Alt_ + H_, W_)
 End Function
 
-Function toggleMergeCells()
-    Call repeatRegister("toggleMergeCells")
-    Call stopVisualMode
+Function ToggleMergeCells(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("ToggleMergeCells")
+    Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
         If Not ActiveCell.MergeCells And Selection.Count = 1 Then
@@ -344,21 +344,21 @@ Function toggleMergeCells()
         End If
 
         If ActiveCell.MergeCells Then
-            Call keystroke(True, Alt_ + H_, M_, U_)
+            Call KeyStroke(True, Alt_ + H_, M_, U_)
         Else
-            Call keystroke(True, Alt_ + H_, M_, M_)
+            Call KeyStroke(True, Alt_ + H_, M_, M_)
         End If
     End If
 End Function
 
-Function applyCommaStyle()
-    Call repeatRegister("applyCommaStyle")
-    Call stopVisualMode
+Function ApplyCommaStyle(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("ApplyCommaStyle")
+    Call StopVisualMode
 
-    Call keystroke(True, Alt_ + H_, K_)
+    Call KeyStroke(True, Alt_ + H_, K_)
 End Function
 
-Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
+Function ChangeInteriorColor(Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
@@ -366,7 +366,7 @@ Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
     End If
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.ShowColorPicker()
     End If
 
     If Not resultColor Is Nothing Then
@@ -381,16 +381,16 @@ Function changeInteriorColor(Optional ByVal resultColor As cls_FontColor)
             End If
         End With
 
-        Call repeatRegister("changeInteriorColor", resultColor)
-        Call stopVisualMode
+        Call RepeatRegister("ChangeInteriorColor", resultColor)
+        Call StopVisualMode
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("changeInteriorColor")
+    Call ErrorHandler("ChangeInteriorColor")
 End Function
 
-Function unionSelectCells()
+Function UnionSelectCells(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim actCell As Range
@@ -399,7 +399,7 @@ Function unionSelectCells()
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     If gVim.Vars.ExtendRange Is Nothing Then
         Set gVim.Vars.ExtendRange = Selection
@@ -421,18 +421,18 @@ Catch:
     If Err.Number = 424 Then
         Set gVim.Vars.ExtendRange = Selection
     Else
-        Call errorHandler("unionSelectCells")
+        Call ErrorHandler("UnionSelectCells")
     End If
 End Function
 
-Function exceptSelectCells()
+Function ExceptSelectCells(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     If Not gVim.Vars.ExtendRange Is Nothing Then
         If Selection.Address = gVim.Vars.ExtendRange.Address Then
@@ -453,18 +453,18 @@ Catch:
     If Err.Number = 424 Then
         Set gVim.Vars.ExtendRange = Nothing
     Else
-        Call errorHandler("exceptSelectCells")
+        Call ErrorHandler("ExceptSelectCells")
     End If
 End Function
 
-Function clearSelectCells()
+Function ClearSelectCells(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     If Not gVim.Vars.ExtendRange Is Nothing Then
         If Selection.Address = gVim.Vars.ExtendRange.Address Then
@@ -485,11 +485,11 @@ Catch:
     If Err.Number = 424 Then
         Set gVim.Vars.ExtendRange = Nothing
     Else
-        Call errorHandler("clearSelectCells")
+        Call ErrorHandler("ClearSelectCells")
     End If
 End Function
 
-Function followHyperlinkOfActiveCell()
+Function FollowHyperlinkOfActiveCell(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
@@ -504,13 +504,13 @@ Function followHyperlinkOfActiveCell()
     Exit Function
 
 Catch:
-    Call errorHandler("followHyperlinkOfActiveCell")
+    Call ErrorHandler("FollowHyperlinkOfActiveCell")
 End Function
 
-Function changeSelectedCells(ByVal Value As String)
+Function ChangeSelectedCells(ByVal Value As String) As Boolean
     On Error GoTo Catch
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
         Selection.Value = Value
@@ -520,28 +520,28 @@ Function changeSelectedCells(ByVal Value As String)
     Exit Function
 
 Catch:
-    Call errorHandler("changeSelectedCells")
+    Call ErrorHandler("ChangeSelectedCells")
 End Function
 
-Function applyFlashFill()
+Function ApplyFlashFill(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
 
-    Call repeatRegister("applyFlashFill")
+    Call RepeatRegister("ApplyFlashFill")
 
     Selection.FlashFill
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Exit Function
 Catch:
     If Err.Number = 1004 Then
         Call ApplyAutoFillInner(fallback:=True)
     Else
-        Call errorHandler("applyFlashFill")
+        Call ErrorHandler("ApplyFlashFill")
     End If
 End Function
 
@@ -694,8 +694,8 @@ Catch:
     Call ErrorHandler("DetermineBaseRange")
 End Function
 
-Private Function innerDataSearch(ByVal targetRange As Range, _
-                                 ByVal searchMode As searchMode, _
+Private Function InnerDataSearch(ByVal targetRange As Range, _
+                                 ByVal searchMode As eSearchMode, _
                                  ByVal searchLimit As Long, _
                                  Optional ByVal searchCount As Long = 0, _
                                  Optional ByVal expectCells As Long = 0) As Range
@@ -706,7 +706,7 @@ Private Function innerDataSearch(ByVal targetRange As Range, _
     Dim nonBlankCells As Long
 
     If searchCount > searchLimit Then
-        Set innerDataSearch = targetRange
+        Set InnerDataSearch = targetRange
         Exit Function
     End If
 
@@ -724,56 +724,56 @@ Private Function innerDataSearch(ByVal targetRange As Range, _
     nonBlankCells = WorksheetFunction.CountA(targetRange)
 
     If searchCount = 0 Or expectCells = nonBlankCells Then
-        Set innerDataSearch = innerDataSearch(targetRange.Offset(rowOff, columnOff), searchMode, searchLimit, searchCount + 1, nonBlankCells)
+        Set InnerDataSearch = InnerDataSearch(targetRange.Offset(rowOff, columnOff), searchMode, searchLimit, searchCount + 1, nonBlankCells)
 
-        If innerDataSearch Is Nothing Then
-            Set innerDataSearch = targetRange
+        If InnerDataSearch Is Nothing Then
+            Set InnerDataSearch = targetRange
         End If
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("innerDataSearch")
+    Call ErrorHandler("InnerDataSearch")
 End Function
 
-Private Function autoSumInner(ByVal lastKey As Long)
+Private Function AutoSumInner(ByVal lastKey As Long)
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
 
-    Call keystroke(True, Alt_ + M_, U_, lastKey)
+    Call KeyStroke(True, Alt_ + M_, U_, lastKey)
 
     Exit Function
 Catch:
-    Call errorHandler("autoSumInner")
+    Call ErrorHandler("AutoSumInner")
 End Function
 
-Function autoSum()
-    Call autoSumInner(S_)
+Function AutoSum(Optional ByVal g As String) As Boolean
+    Call AutoSumInner(S_)
 End Function
 
-Function autoAverage()
-    Call autoSumInner(A_)
+Function AutoAverage(Optional ByVal g As String) As Boolean
+    Call AutoSumInner(A_)
 End Function
 
-Function autoCount()
-    Call autoSumInner(C_)
+Function AutoCount(Optional ByVal g As String) As Boolean
+    Call AutoSumInner(C_)
 End Function
 
-Function autoMax()
-    Call autoSumInner(M_)
+Function AutoMax(Optional ByVal g As String) As Boolean
+    Call AutoSumInner(M_)
 End Function
 
-Function autoMin()
-    Call autoSumInner(I_)
+Function AutoMin(Optional ByVal g As String) As Boolean
+    Call AutoSumInner(I_)
 End Function
 
-Function insertFunction()
+Function InsertFunction(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.CommandBars.ExecuteMso "AutoSumMoreFunctions"
     Exit Function
 Catch:
-    Call errorHandler("insertFunction")
+    Call ErrorHandler("InsertFunction")
 End Function

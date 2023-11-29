@@ -2,25 +2,25 @@ Attribute VB_Name = "F_UsefulCmd"
 Option Explicit
 Option Private Module
 
-Function undo_CtrlZ()
-    Call keystroke(True, Ctrl_ + Z_)
+Function Undo_CtrlZ(Optional ByVal g As String) As Boolean
+    Call KeyStroke(True, Ctrl_ + Z_)
 End Function
 
-Function redoExecute()
+Function RedoExecute(Optional ByVal g As String) As Boolean
     On Error Resume Next
     Application.CommandBars.ExecuteMso "Redo"
 End Function
 
-Function toggleFreezePanes()
+Function ToggleFreezePanes(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWindow.FreezePanes = Not ActiveWindow.FreezePanes
     Exit Function
 
 Catch:
-    Call errorHandler("toggleFreezePanes")
+    Call ErrorHandler("ToggleFreezePanes")
 End Function
 
-Function zoomIn()
+Function ZoomIn(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim afterZoomRate As Integer
@@ -39,12 +39,12 @@ Function zoomIn()
     Exit Function
 
 Catch:
-    If errorHandler("zoomIn") Then
-        Call keystroke(True, Ctrl_ + Shift_ + Alt_ + Minus_)
+    If ErrorHandler("ZoomIn") Then
+        Call KeyStroke(True, Ctrl_ + Shift_ + Alt_ + Minus_)
     End If
 End Function
 
-Function zoomOut()
+Function ZoomOut(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim afterZoomRate As Integer
@@ -63,12 +63,12 @@ Function zoomOut()
     Exit Function
 
 Catch:
-    If errorHandler("zoomOut") Then
-        Call keystroke(True, Ctrl_ + Alt_ + Minus_)
+    If ErrorHandler("ZoomOut") Then
+        Call KeyStroke(True, Ctrl_ + Alt_ + Minus_)
     End If
 End Function
 
-Function zoomSpecifiedScale()
+Function ZoomSpecifiedScale(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim zoomScale As Integer
@@ -103,67 +103,67 @@ Function zoomSpecifiedScale()
     Exit Function
 
 Catch:
-    Call errorHandler("zoomSpecifiedScale")
+    Call ErrorHandler("ZoomSpecifiedScale")
 End Function
 
-Function toggleFormulaBar()
+Function ToggleFormulaBar(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.DisplayFormulaBar = Not Application.DisplayFormulaBar
     Exit Function
 
 Catch:
-    Call errorHandler("toggleFormulaBar")
+    Call ErrorHandler("ToggleFormulaBar")
 End Function
 
-Function showSummaryInfo()
+Function ShowSummaryInfo(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.Dialogs(xlDialogSummaryInfo).Show
     Exit Function
 
 Catch:
-    Call errorHandler("showSummaryInfo")
+    Call ErrorHandler("ShowSummaryInfo")
 End Function
 
-Function smartFillColor()
-    Call stopVisualMode
+Function SmartFillColor(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
-        Call changeInteriorColor
+        Call ChangeInteriorColor
     ElseIf VarType(Selection) = vbObject Then
-        Call changeShapeFillColor
+        Call ChangeShapeFillColor
     End If
 End Function
 
-Function smartFontColor()
-    Call stopVisualMode
+Function SmartFontColor(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
-        Call changeFontColor
+        Call ChangeFontColor
     ElseIf VarType(Selection) = vbObject Then
-        Call changeShapeFontColor
+        Call ChangeShapeFontColor
     End If
 End Function
 
-Function showContextMenu()
+Function ShowContextMenu(Optional ByVal g As String) As Boolean
     'Send Shift+F10
-    Call keystroke(True, Shift_ + F10_)
+    Call KeyStroke(True, Shift_ + F10_)
 End Function
 
-Function showMacroDialog()
+Function ShowMacroDialog(Optional ByVal g As String) As Boolean
     'Send Alt+F8
-    Call keystroke(True, Alt_ + F8_, Tab_)
+    Call KeyStroke(True, Alt_ + F8_, Tab_)
 End Function
 
-Function setPrintArea()
-    Call stopVisualMode
+Function SetPrintArea(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     'Send Alt + P, R, S
-    Call keystroke(True, Alt_ + P_, R_, S_)
+    Call KeyStroke(True, Alt_ + P_, R_, S_)
 End Function
 
-Function clearPrintArea()
-    Call stopVisualMode
+Function ClearPrintArea(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     'Send Alt + P, R, C
-    Call keystroke(True, Alt_ + P_, R_, C_)
+    Call KeyStroke(True, Alt_ + P_, R_, C_)
 End Function
