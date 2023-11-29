@@ -18,7 +18,7 @@ Private cModes As cls_Modes                 ' Defined modes
 Private cConfig As cls_Config               ' Loaded configs
 Private cKeyMap As cls_KeymapManager        ' Keymap manager
 
-Private cJumpList As cls_MainArena           ' Hold jumplist
+Private cJumpList As cls_DblCircList        ' Hold jumplist
 
 '/*
 ' * Initializes the Vim class with default configurations and components.
@@ -78,7 +78,7 @@ Public Property Let Enabled(ByVal arg As Boolean)
     If cIsEnabled Then
         'Make enable
         If cJumpList Is Nothing Then
-            Set cJumpList = New cls_MainArena
+            Set cJumpList = New cls_DblCircList
             cJumpList.Max = Me.Config.MaxHistories
         End If
 
@@ -159,7 +159,7 @@ End Property
 ' *
 ' * @returns {cls_MainArena} - The jumplist manager.
 ' */
-Public Property Get JumpList() As cls_MainArena
+Public Property Get JumpList() As cls_DblCircList
     Set JumpList = cJumpList
 End Property
 
