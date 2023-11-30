@@ -89,3 +89,117 @@ Public Property Get ClearedJumplist() As String
         "ジャンプリストをクリアしました。", _
         "Jumplist cleared.")
 End Property
+
+Public Property Get YankInProgress() As String
+    YankInProgress = IIf(Parent.IsJapanese, _
+        "テキストをコピーしています...", _
+        "Copying text...")
+End Property
+
+Public Property Get YankDone() As String
+    YankDone = IIf(Parent.IsJapanese, _
+        "クリップボードにコピーしました｡", _
+        "Copied to clipboard. ")
+End Property
+
+Public Property Get TooManyCells() As String
+    TooManyCells = IIf(Parent.IsJapanese, _
+        "選択セル数が多すぎます。", _
+        "Too many cells selected.")
+End Property
+
+Public Property Get InitializedExtendedSelection() As String
+    InitializedExtendedSelection = IIf(Parent.IsJapanese, _
+        "異なるシートで拡張選択はできないため、選択範囲は初期化されました。", _
+        "The selection was initialized because extended selections cannot be made on different sheets.")
+End Property
+
+Public Property Get ClearedExtendedSelection() As String
+    ClearedExtendedSelection = IIf(Parent.IsJapanese, _
+        "保存されている拡張選択範囲をクリアしました。", _
+        "Saved extended selection has been cleared.")
+End Property
+
+Public Property Get UnableIdentifySource() As String
+    UnableIdentifySource = IIf(Parent.IsJapanese, _
+        "元となるデータを特定できません。", _
+        "Unable to identify the source data.")
+End Property
+
+Public Property Get NoDataInSelectedCells() As String
+    NoDataInSelectedCells = IIf(Parent.IsJapanese, _
+        "選択セルの先頭、または末尾にデータがありません。", _
+        "There is no data at the beginning or end of the selected cell.")
+End Property
+
+Public Property Get ConfirmToDeleteAllComments() As String
+    ConfirmToDeleteAllComments = IIf(Parent.IsJapanese, _
+        "アクティブシート上のすべてのコメントを削除します。よろしいですか?" & vbLf & "　※この操作は取り消せません。", _
+        "Delete all comments on the active sheet. Are you sure?" & vbLf & "  * THIS ACTION CANNOT BE UNDONE.")
+End Property
+
+Public Property Get NoMatchingCell() As String
+    NoMatchingCell = IIf(Parent.IsJapanese, _
+        "該当するセルが見つかりません。", _
+        "No matching cell found.")
+End Property
+
+Public Property Get EmptyClipboard() As String
+    EmptyClipboard = IIf(Parent.IsJapanese, _
+        "クリップボードが空です。", _
+        "Clipboard is empty.")
+End Property
+
+Public Property Get ConfirmToSaveBeforeReopening() As String
+    ConfirmToSaveBeforeReopening = IIf(Parent.IsJapanese, _
+        "ファイルを開き直す前に、編集内容を保存しますか?", _
+        "Do you want to save your edits before reopening the file?")
+End Property
+
+Public Property Get ConfirmToSaveBeforeSwitchReadonly() As String
+    ConfirmToSaveBeforeSwitchReadonly = IIf(Parent.IsJapanese, _
+        "読み取り専用の切り替えを行う前に、編集内容を保存しますか?", _
+        "Do you want to save your edits before switching to read-only?")
+End Property
+
+Public Property Get EnterNewSheetName() As String
+    EnterNewSheetName = IIf(Parent.IsJapanese, _
+        "新しいシート名を入力してください。", _
+        "Please enter a new sheet name.")
+End Property
+
+Public Property Get RenameSheetTitle() As String
+    RenameSheetTitle = IIf(Parent.IsJapanese, _
+        "シート名の変更", _
+        "Rename sheet")
+End Property
+
+Public Function SheetAlreadyExists(ByVal sheetName As String) As String
+    SheetAlreadyExists = IIf(Parent.IsJapanese, _
+        "すでに """ & sheetName & """ シートが存在します。", _
+        "There is already a """ & sheetName & """ sheet.")
+End Function
+
+Public Property Get ChangedSheetName() As String
+    ChangedSheetName = IIf(Parent.IsJapanese, _
+        "シート名を変更しました", _
+        "Sheet name has been changed")
+End Property
+
+Public Property Get DeleteOrHideAllSheets() As String
+    DeleteOrHideAllSheets = IIf(Parent.IsJapanese, _
+        "シートをすべて削除、または非表示にすることはできません。", _
+        "You cannot delete or hide all sheets.")
+End Property
+
+Public Property Get HideAllSheets() As String
+    HideAllSheets = IIf(Parent.IsJapanese, _
+        "すべてのシートを非表示にすることはできません。", _
+        "You cannnot hide all sheets.")
+End Property
+
+Public Property Get CannotDeleteVeryHiddenSheet() As String
+    CannotDeleteVeryHiddenSheet = IIf(Parent.IsJapanese, _
+        "VeryHidden のシートは消すことができません。" & vbLf & "非表示を解除してから再実行してください｡ ", _
+        "The 'VeryHidden' sheet cannot be deleted." & vbLf & "Please unhide it and try again.")
+End Property

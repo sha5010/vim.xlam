@@ -210,7 +210,7 @@ Function NextSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
 Catch:
     If Err.Number = 1004 Then
-        Call SetStatusBarTemporarily("該当するセルが見つかりません。", 2000)
+        Call SetStatusBarTemporarily(gVim.Msg.NoMatchingCell, 2000)
     Else
         Call ErrorHandler("NextSpecialCells")
     End If
@@ -241,7 +241,7 @@ Function PrevSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
 Catch:
     If Err.Number = 1004 Then
-        Call SetStatusBarTemporarily("該当するセルが見つかりません。", 2000)
+        Call SetStatusBarTemporarily(gVim.Msg.NoMatchingCell, 2000)
     Else
         Call ErrorHandler("PrevSpecialCells")
     End If

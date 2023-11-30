@@ -108,7 +108,7 @@ fallback:
             'Avoid freeze
             If (i And &HFFF) = 0 Then
                 'Show progress bar in status bar
-                Call SetStatusBar("テキストをコピーしています...", _
+                Call SetStatusBar(gVim.Msg.YankInProgress, _
                                  currentCount:=i, maximumCount:=UBound(aryX), progressBar:=True)
 
                 currentTime = Timer
@@ -128,13 +128,13 @@ fallback:
         .PutInClipboard
     End With
 
-    Call SetStatusBarTemporarily("クリップボードにコピーしました。(" & _
+    Call SetStatusBarTemporarily(gVim.Msg.YankDone & "(" & _
                                  LenB(StrConv(resultText, vbFromUnicode)) & " Bytes)", 3000)
     Exit Function
 
 Catch:
     If Err.Number = 6 Then
-        Call SetStatusBarTemporarily("選択セル数が多すぎます", 3000)
+        Call SetStatusBarTemporarily(gVim.Msg.TooManyCells, 3000)
     ElseIf Err.Number = 13 Then
         'Error from WorksheetFunction.Transpose
         Resume fallback
@@ -405,7 +405,7 @@ Function UnionSelectCells(Optional ByVal g As String) As Boolean
         Set gVim.Vars.ExtendRange = Selection
 
     ElseIf Not gVim.Vars.ExtendRange.Parent Is ActiveSheet Then
-        Call SetStatusBarTemporarily("異なるシートで拡張選択はできないため、選択範囲は初期化されました。", 2000)
+        Call SetStatusBarTemporarily(gVim.Msg.InitializedExtendedSelection, 2000)
         Set gVim.Vars.ExtendRange = Selection
 
     Else
@@ -444,7 +444,7 @@ Function ExceptSelectCells(Optional ByVal g As String) As Boolean
         If Not gVim.Vars.ExtendRange Is Nothing Then
             gVim.Vars.ExtendRange.Select
         Else
-            Call SetStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2000)
+            Call SetStatusBarTemporarily(gVim.Msg.ClearedExtendedSelection, 2000)
         End If
     End If
     Exit Function
@@ -469,7 +469,7 @@ Function ClearSelectCells(Optional ByVal g As String) As Boolean
     If Not gVim.Vars.ExtendRange Is Nothing Then
         If Selection.Address = gVim.Vars.ExtendRange.Address Then
             Set gVim.Vars.ExtendRange = Nothing
-            Call SetStatusBarTemporarily("保存されている拡張選択範囲をクリアしました。", 2000)
+            Call SetStatusBarTemporarily(gVim.Msg.ClearedExtendedSelection, 2000)
             Exit Function
         End If
     End If
@@ -640,7 +640,7 @@ Private Function DetermineBaseRange() As Range
 
             Select Case avgMax
                 Case 0
-                    Call SetStatusBarTemporarily("元となるデータを特定できません。", 3000)
+                    Call SetStatusBarTemporarily(gVim.Msg.UnableIdentifySource, 3000)
                     Exit Function
                 Case avgTop
                     Set DetermineBaseRange = Range(.Item(1), Cells(.Item(1).Row, .Item(.Count).Column))
@@ -684,7 +684,7 @@ Private Function DetermineBaseRange() As Range
             End If
         Else
             'there is no data at first and last
-            Call SetStatusBarTemporarily("選択セルの先頭、又は末尾にデータがありません。", 3000)
+            Call SetStatusBarTemporarily(gVim.Msg.NoDataInSelectedCells, 3000)
             Exit Function
         End If
     End If

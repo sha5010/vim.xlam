@@ -54,7 +54,7 @@ Function RenameWorksheet(Optional ByVal g As String) As Boolean
 
     With ActiveWorkbook
         beforeName = .ActiveSheet.Name
-        ret = InputBox("新しいシート名を入力してください。", "シート名の変更", beforeName)
+        ret = InputBox(gVim.Msg.EnterNewSheetName, gVim.Msg.RenameSheetTitle, beforeName)
 
         If ret <> "" Then
             'Exit if same name
@@ -63,13 +63,13 @@ Function RenameWorksheet(Optional ByVal g As String) As Boolean
 
             'Error when new sheet name already exists
             ElseIf IsSheetExists(ret) Then
-                MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
+                MsgBox gVim.Msg.SheetAlreadyExists(ret), vbExclamation
                 Exit Function
             End If
             .Worksheets(.ActiveSheet.Index).Name = ret
 
-            Call SetStatusBarTemporarily("シート名を変更しました： """ & _
-                beforeName & """ → """ & ret & """", 3000)
+            Call SetStatusBarTemporarily(gVim.Msg.ChangedSheetName & _
+                ": """ & beforeName & """ -> """ & ret & """", 3000)
         End If
     End With
     Exit Function
@@ -190,7 +190,7 @@ Function DeleteWorksheet(Optional ByVal g As String) As Boolean
 
     'error if target sheet is last visible one
     If ActiveSheet.Visible = xlSheetVisible And GetVisibleSheetsCount() = 1 Then
-        MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
+        MsgBox gVim.Msg.DeleteOrHideAllSheets, vbExclamation
         Exit Function
     End If
 

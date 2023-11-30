@@ -136,7 +136,7 @@ Function PasteSpecial(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     If Application.ClipboardFormats(1) = -1 Then
-        Call SetStatusBarTemporarily("クリップボードが空です。", 2000)
+        Call SetStatusBarTemporarily(gVim.Msg.EmptyClipboard, 2000)
     Else
         On Error Resume Next
         Application.Dialogs(xlDialogPasteSpecial).Show

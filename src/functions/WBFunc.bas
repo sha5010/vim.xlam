@@ -74,7 +74,7 @@ Function ReopenActiveWorkbook(Optional ByVal g As String) As Boolean
     End If
 
     If Not ActiveWorkbook.Saved Then
-        ret = MsgBox("ファイルを開き直す前に、編集内容を保存しますか?", vbYesNoCancel + vbQuestion)
+        ret = MsgBox(gVim.Msg.ConfirmToSaveBeforeReopening, vbYesNoCancel + vbQuestion)
         If ret = vbCancel Then
             Exit Function
         ElseIf ret = vbNo Then
@@ -182,7 +182,7 @@ Function ToggleReadOnly(Optional ByVal g As String) As Boolean
         Call ActiveWorkbook.ChangeFileAccess(xlReadWrite)
     Else
         If Not ActiveWorkbook.Saved Then
-            ret = MsgBox("読み取り専用の切り替えを行う前に、編集内容を保存しますか?", vbYesNoCancel + vbQuestion)
+            ret = MsgBox(gVim.Msg.ConfirmToSaveBeforeSwitchReadonly, vbYesNoCancel + vbQuestion)
             If ret = vbCancel Then
                 Exit Function
             ElseIf ret = vbNo Then
