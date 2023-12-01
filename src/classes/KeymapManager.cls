@@ -1310,8 +1310,13 @@ Public Sub BindAll()
         If Parent.Mode.CheckBits(cOnKeyMap(key), currentModeBit) Then
             ' Create the lazy load procedure for the key
             Dim lazyLoadProcedure As String
-            lazyLoadProcedure = Replace(key, "{'}", "{''}")
-            lazyLoadProcedure = Replace(lazyLoadProcedure, "{""}", "{""""}")
+            If key = "{226}" Then
+                lazyLoadProcedure = "{¥}"
+            Else
+                lazyLoadProcedure = Replace(key, "{'}", "{''}")
+                lazyLoadProcedure = Replace(lazyLoadProcedure, "{""}", "{""""}")
+            End If
+
             lazyLoadProcedure = "'LazyLoad """ & lazyLoadProcedure & """'"
 
             Application.OnKey key, lazyLoadProcedure
