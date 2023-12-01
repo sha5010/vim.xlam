@@ -15,6 +15,10 @@ Sub RepeatRegister(ByVal funcName As String, ParamArray args() As Variant)
 End Sub
 
 Function RepeatAction(Optional ByVal g As String) As Boolean
+    If pSavedFuncName = "" Then
+        Exit Function
+    End If
+
     ' Restore g:count
     gVim.Count = pSavedCount
 
