@@ -160,9 +160,10 @@ Public Sub Map(ByVal mapStr As String)
             spaceIndex = InStr(lastSpaceIndex, mapStr, " ")
         End If
 
-        ' Check for syntax error (missing parameters)
+        ' Exit for loop if space missing
         If spaceIndex = 0 Then
-            Err.Raise 50000, Description:="Syntax error: parameters are missing"
+            buf(i) = Mid(mapStr, lastSpaceIndex)
+            Exit For
         End If
 
         ' Extract the current part of the string
@@ -185,6 +186,17 @@ Public Sub Map(ByVal mapStr As String)
 
     ' Extract mode (remove "map" and use MODE_NORMAL if unspecified)
     Dim mode_ As String: mode_ = Replace(buf(0), "map", "")
+    Dim unmap As Boolean: unmap = False
+
+    If mode_ Like "*un" Then
+        ' Unmap
+        unmap = True
+        mode_ = Replace(mode_, "un", "")
+    ElseIf buf(2) = "" Then
+        ' Check for syntax error (missing parameters)
+        Err.Raise 50000, Description:="Syntax error: parameters are missing"
+    End If
+
     If Len(mode_) > 1 Then
         Err.Raise 50000, Description:="Syntax error: mode indicator must be 1 character"
     ElseIf mode_ = "" Then
@@ -214,7 +226,13 @@ Public Sub Map(ByVal mapStr As String)
         firstKey = VimToVBA(buf(1), KEY_SEPARATOR, True)
 
         ' This is necessary for Ctrl-series OnKey to work (not mapped by default)
-        Call RegisterOnKey(mode_, firstKey)
+        Call RegisterOnKey(mode_, firstKey, unmap:=unmap)
+    End If
+
+    ' Unmap
+    If unmap Then
+        Call Del_(mode_, lhs, cmdLine)
+        Exit Sub
     End If
 
     ' Third element (rhs)
@@ -227,6 +245,76 @@ Public Sub Map(ByVal mapStr As String)
         cKeyMap(strKey) = cKeyMap(strKey) & strValue
     Else
         cKeyMap.Add strKey, strValue
+    End If
+End Sub
+
+'/*
+' * Removes a key mapping from the keymap table.
+' *
+' * @param {String} mode_ - The mode of the key mapping.
+' * @param {String} lhs - The left-hand side key of the mapping.
+' * @param {Boolean} [cmdLine=False] - Flag to indicate if the mapping is for command line mode.
+' */
+Public Sub Del_(ByVal mode_ As String, ByVal lhs As String, _
+       Optional ByVal cmdLine As Boolean = False)
+    ' Make dictionary key
+    Dim lhsKey As String
+    Dim strKey As String
+    Dim keyPrefix As String: keyPrefix = mode_ & KEY_SEPARATOR
+    Dim firstKey As String: firstKey = ""
+    Dim sepIndex As Long: sepIndex = 0
+
+    If cmdLine Then
+        lhsKey = lhs
+    Else
+        ' Convert Vim style key to SendKeys style
+        lhsKey = VimToVBA(lhs, KEY_SEPARATOR)
+
+        sepIndex = InStr(lhsKey, KEY_SEPARATOR)
+        firstKey = lhsKey
+        If sepIndex > 0 Then
+            firstKey = Left(lhsKey, sepIndex - 1)
+        End If
+    End If
+    strKey = keyPrefix & lhsKey
+
+    ' Delete the key mapping from the keymap table
+    If cKeyMap.Exists(strKey) Then
+        cKeyMap.Remove strKey
+    End If
+
+    ' For mappings with two or more keys, delete from SUMMARY
+    If sepIndex > 0 Or cmdLine Then
+        strKey = keyPrefix
+        If Not cmdLine Then
+            strKey = strKey & firstKey
+        End If
+        strKey = strKey & KEY_SUMMARY
+
+        If cKeyMap.Exists(strKey) Then
+            cKeyMap(strKey) = Replace(cKeyMap(strKey), KEY_TERM_SYMBOL & lhsKey, "")
+        End If
+    End If
+
+    ' Delete from TEMP keymap
+    strKey = mode_ & KEY_SEPARATOR & firstKey & KEY_TEMP
+
+    If cKeyMap.Exists(strKey) Then
+        Dim searchStr As String: searchStr = lhs & " " ' & rhs & KEY_TERM_SYMBOL
+        Dim searchIdx As Long: searchIdx = InStr(cKeyMap(strKey), searchStr)
+
+        If searchIdx > 0 Then
+            Dim termIdx As Long: termIdx = InStr(searchIdx, cKeyMap(strKey), KEY_TERM_SYMBOL)
+            If termIdx = 0 Then
+                cKeyMap(strKey) = ""
+            Else
+                cKeyMap(strKey) = Replace(cKeyMap(strKey), Mid(cKeyMap(strKey), searchIdx, termIdx - searchIdx + 1), "")
+            End If
+
+            If Len(cKeyMap(strKey)) = 0 Then
+                cKeyMap.Remove strKey
+            End If
+        End If
     End If
 End Sub
 
@@ -573,22 +661,29 @@ Private Function SearchSuggestKeys(ByVal key As String, ByVal mode_ As String, _
 End Function
 
 '/*
-' * Registers the specified key in the OnKeyMap table.
+' * Registers or remove the specified key in the OnKeyMap table.
 ' *
 ' * @param {String} mode_ - The mode to register.
 ' * @param {String} firstKey - The first key to register.
+' * @param {Boolean} [unmap=False] - Flag to unmap
 ' */
-Private Sub RegisterOnKey(ByVal mode_ As String, ByVal firstKey As String)
+Private Sub RegisterOnKey(ByVal mode_ As String, ByVal firstKey As String, Optional ByVal unmap As Boolean = False)
     If cOnKeyMap.Count = 0 Then
         Call InitDummyKey
     End If
 
     Dim targetModeBit As Long: targetModeBit = Parent.Mode.ModeBit(mode_)
 
-    If cOnKeyMap.Exists(firstKey) Then
-        cOnKeyMap(firstKey) = cOnKeyMap(firstKey) Or targetModeBit
+    If unmap Then
+        If cOnKeyMap.Exists(firstKey) Then
+            cOnKeyMap(firstKey) = cOnKeyMap(firstKey) And (Not targetModeBit)
+        End If
     Else
-        cOnKeyMap.Add firstKey, targetModeBit
+        If cOnKeyMap.Exists(firstKey) Then
+            cOnKeyMap(firstKey) = cOnKeyMap(firstKey) Or targetModeBit
+        Else
+            cOnKeyMap.Add firstKey, targetModeBit
+        End If
     End If
 End Sub
 
