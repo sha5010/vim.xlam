@@ -36,6 +36,8 @@ Private REDIRECT_TABLE_JIS As Dictionary
 Public Sub Set_(ByRef mode_ As String, ByRef lhs As String, ByRef rhs As String, _
                 ByVal reMap As Boolean, ByVal cmdLine As Boolean, ParamArray args())
 
+    On Error GoTo Catch
+
     ' Check the mode
     If Not Parent.Mode.Exists(mode_) And Not cmdLine Then
         Err.Raise 50000, Description:="Unsupported mode: " & mode_
@@ -98,6 +100,10 @@ Public Sub Set_(ByRef mode_ As String, ByRef lhs As String, ByRef rhs As String,
             cKeyMap.Add strKey, KEY_TERM_SYMBOL & lhsKey
         End If
     End If
+    Exit Sub
+
+Catch:
+    Call ErrorHandler("KeymapManager.Set_")
 End Sub
 
 '/*
@@ -142,6 +148,8 @@ End Function
 ' */
 Public Sub Map(ByVal mapStr As String)
     ' <mode>map [<cmd>]<lhs> [<key>]<rhs>
+
+    On Error GoTo Catch
 
     ' Split the string into parts based on spaces (using InStr for optimization).
     Dim buf(0 To 2) As String
@@ -246,6 +254,10 @@ Public Sub Map(ByVal mapStr As String)
     Else
         cKeyMap.Add strKey, strValue
     End If
+    Exit Sub
+
+Catch:
+    Call ErrorHandler("KeymapManager.Map")
 End Sub
 
 '/*
@@ -388,6 +400,8 @@ End Sub
 ' * @returns {Variant()} - An array of parsed arguments.
 ' */
 Private Function ParseArgsString(ByRef rhs As String) As Variant()
+    On Error GoTo Catch
+
     ' Initialize variables
     Dim spaceIndex As Long: spaceIndex = InStr(rhs, " ")
     Dim quoteIndex As Long: quoteIndex = InStr(rhs, """")
@@ -492,6 +506,11 @@ Private Function ParseArgsString(ByRef rhs As String) As Variant()
 
     ' Return the parsed arguments array
     ParseArgsString = ret
+
+    Exit Function
+
+Catch:
+    Call ErrorHandler("KeymapManager.ParseArgsString")
 End Function
 
 '/*

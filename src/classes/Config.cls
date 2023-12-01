@@ -113,13 +113,19 @@ End Sub
 ' * @return {Variant} - config value or default value
 ' */
 Public Function Get_(ByRef keyName As String, Optional ByVal defaultValue As Variant) As Variant
+    On Error GoTo Catch
+
     If cConfig.Exists(keyName) Then
         Get_ = cConfig(keyName)
     ElseIf Not defaultValue = Empty Then
         Get_ = defaultValue
     Else
-        Err.Raise 50000, Description:="Config key does not exists"
+        Err.Raise 50000, Description:="Config key """ & keyName & """ does not exist"
     End If
+    Exit Function
+
+Catch:
+    Call ErrorHandler("Config.Get_")
 End Function
 
 '/**
@@ -129,6 +135,8 @@ End Function
 ' * @param {Variant} arg - config value
 ' */
 Public Sub Set_(ByRef keyName As String, ByVal arg As Variant)
+    On Error GoTo Catch
+
     Select Case LCase(keyName)
         Case STATUS_PREFIX: StatusPrefix = arg
         Case VIM_TOGGLE_KEY: VimToggleKey = arg
@@ -139,8 +147,12 @@ Public Sub Set_(ByRef keyName As String, ByVal arg As Variant)
         Case DEBUG_MODE: DebugMode = arg
 
         Case Else
-            Err.Raise 50000, Description:="Config key does not exists"
+            Err.Raise 50000, Description:="Config key """ & keyName & """ does not exist"
     End Select
+    Exit Sub
+
+Catch:
+    Call ErrorHandler("Config.Set_")
 End Sub
 
 Public Sub LoadCustomConfig(Optional ByVal configFilePath As String)
