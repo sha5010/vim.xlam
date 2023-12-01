@@ -14,6 +14,13 @@ Option Private Module
     Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 #End If
 
+Private pHoldCtrlLeft As Boolean
+Private pHoldCtrlRight As Boolean
+Private pHoldShiftLeft As Boolean
+Private pHoldShiftRight As Boolean
+Private pHoldAltLeft As Boolean
+Private pHoldAltRight As Boolean
+
 '/*
 ' * Simulates a keystroke for a single key.
 ' *
@@ -32,19 +39,53 @@ Private Sub StrokeSingleKey(ByVal key As Long)
     ' Extracting the actual key code
     key = key And &HFF
 
+    ' Get current key status
+    pHoldShiftLeft = (GetKeyState(ShiftLeft_) And &H8000) <> 0
+    pHoldShiftRight = (GetKeyState(ShiftRight_) And &H8000) <> 0
+    pHoldCtrlLeft = (GetKeyState(CtrlLeft_) And &H8000) <> 0
+    pHoldCtrlRight = (GetKeyState(CtrlRight_) And &H8000) <> 0
+    pHoldAltLeft = (GetKeyState(AltLeft_) And &H8000) <> 0
+    pHoldAltRight = (GetKeyState(AltRight_) And &H8000) <> 0
+
     ' Simulating keydown for modifier keys
-    If Ctrl Then keybd_event vbKeyControl, 0, 0, 0
-    If Shift Then keybd_event vbKeyShift, 0, 0, 0
-    If Alt Then keybd_event vbKeyMenu, 0, 0, 0
+    If Alt Then
+        keybd_event vbKeyMenu, 0, 0, 0
+    Else
+        If pHoldAltRight Then keybd_event AltRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        If pHoldAltLeft Then keybd_event AltLeft_, 0, KEYUP, 0
+    End If
+
+    If Ctrl Then
+        keybd_event vbKeyControl, 0, 0, 0
+    Else
+        If pHoldCtrlRight Then keybd_event CtrlRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, KEYUP, 0
+    End If
+
+    If Shift Then
+        keybd_event vbKeyShift, 0, 0, 0
+    Else
+        If pHoldShiftRight Then keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, KEYUP, 0
+    End If
 
     ' Simulating key stroke for the specified key
     keybd_event key, 0, 0, 0
     keybd_event key, 0, KEYUP, 0
 
     ' Simulating keyup for modifier keys
-    If Alt Then keybd_event vbKeyMenu, 0, KEYUP, 0
-    If Shift Then keybd_event vbKeyShift, 0, KEYUP, 0
-    If Ctrl Then keybd_event vbKeyControl, 0, KEYUP, 0
+    If pHoldAltLeft Then keybd_event AltLeft_, 0, 0, 0
+    If pHoldAltRight Then keybd_event AltRight_, 0, 0, 0
+    If Not pHoldAltLeft And Not pHoldAltRight And Alt Then keybd_event vbKeyMenu, 0, KEYUP, 0
+
+    If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, 0, 0
+    If pHoldShiftRight Then keybd_event ShiftRight_, 0, 0, 0
+    If Not pHoldAltLeft And Not pHoldAltRight And Shift Then keybd_event vbKeyShift, 0, KEYUP, 0
+
+    If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, 0, 0
+    If pHoldCtrlRight Then keybd_event CtrlRight_, 0, 0, 0
+    If Not pHoldCtrlLeft And Not pHoldCtrlRight And Ctrl Then keybd_event vbKeyControl, 0, KEYUP, 0
+
 End Sub
 
 '/*
@@ -66,77 +107,70 @@ End Sub
 ' * Press the specified keys in order. (Release Ctrl/Alt keys)
 ' * Note: Not suitable for keys that need to be held down
 ' *
-' * @param {Boolean} releaseShiftKey - Flag to release the Shift key before simulating other keys.
 ' * @param {eKey, ...} strokeKeys - An array of key codes for the desired keys.
 ' * @example: To press Alt + H and then I
-' *     Call KeyStroke(True, Alt_ + H_, I_)
+' *     Call KeyStroke(Alt_ + H_, I_)
 ' */
-Sub KeyStroke(ByVal releaseShiftKey As Boolean, ParamArray strokeKeys() As Variant)
+Sub KeyStroke(ParamArray strokeKeys() As Variant)
     Dim i As Long
-
-    Call KeyUpControlKeys
-
-    If releaseShiftKey Then
-        Call ReleaseShiftKeys
-    End If
 
     For i = LBound(strokeKeys) To UBound(strokeKeys)
         Call StrokeSingleKey(strokeKeys(i))
     Next i
-
-    Call UnkeyUpControlKeys
-End Sub
-
-'/*
-' * Releases the Shift key based on its state.
-' */
-Sub ReleaseShiftKeys()
-    If GetKeyState(ShiftLeft_) > 0 Then
-        keybd_event ShiftLeft_, 0, KEYUP, 0
-    ElseIf GetKeyState(ShiftRight_) > 0 Then
-        keybd_event ShiftRight_, 0, KEYUP, 0
-    Else
-        keybd_event vbKeyShift, 0, KEYUP, 0
-    End If
 End Sub
 
 '/*
 ' * Simulates keyup events for various control keys.
 ' */
 Sub KeyUpControlKeys()
-    keybd_event ShiftLeft_, 0, KEYUP, 0
-    keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
-    keybd_event CtrlLeft_, 0, KEYUP, 0
-    keybd_event CtrlRight_, 0, EXTENDED_KEY Or KEYUP, 0
-    keybd_event AltLeft_, 0, KEYUP, 0
-    keybd_event AltRight_, 0, EXTENDED_KEY Or KEYUP, 0
+    pHoldCtrlLeft = False
+    pHoldCtrlRight = False
+    pHoldShiftLeft = False
+    pHoldShiftRight = False
+    pHoldAltLeft = False
+    pHoldAltRight = False
+
+    If (GetKeyState(ShiftLeft_) And &H8000) <> 0 Then
+        keybd_event ShiftLeft_, 0, KEYUP, 0
+        pHoldShiftLeft = True
+    End If
+    If (GetKeyState(ShiftRight_) And &H8000) <> 0 Then
+        keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        pHoldShiftRight = True
+    End If
+    If (GetKeyState(CtrlLeft_) And &H8000) <> 0 Then
+        keybd_event CtrlLeft_, 0, KEYUP, 0
+        pHoldCtrlLeft = True
+    End If
+    If (GetKeyState(CtrlRight_) And &H8000) <> 0 Then
+        keybd_event CtrlRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        pHoldCtrlRight = True
+    End If
+    If (GetKeyState(AltLeft_) And &H8000) <> 0 Then
+        keybd_event AltLeft_, 0, KEYUP, 0
+        pHoldAltLeft = True
+    End If
+    If (GetKeyState(AltRight_) And &H8000) <> 0 Then
+        keybd_event AltRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        pHoldAltRight = True
+    End If
 End Sub
 
 '/*
 ' * Simulates keyup events for control keys based on their current state.
 ' */
 Sub UnkeyUpControlKeys()
-    If (GetKeyState(ShiftLeft_) And &H8000) <> 0 Then
-        keybd_event ShiftLeft_, 0, 0, 0
-    ElseIf (GetKeyState(ShiftRight_) And &H8000) <> 0 Then
-        keybd_event ShiftRight_, 0, EXTENDED_KEY, 0
-    ElseIf (GetKeyState(vbKeyShift) And &H8000) <> 0 Then
-        keybd_event vbKeyShift, 0, 0, 0
-    End If
+    If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, 0, 0
+    If pHoldShiftRight Then keybd_event ShiftRight_, 0, EXTENDED_KEY, 0
+    If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, 0, 0
+    If pHoldCtrlRight Then keybd_event CtrlRight_, 0, EXTENDED_KEY, 0
+    If pHoldAltLeft Then keybd_event AltLeft_, 0, 0, 0
+    If pHoldAltRight Then keybd_event AltRight_, 0, EXTENDED_KEY, 0
 
-    If (GetKeyState(CtrlLeft_) And &H8000) <> 0 Then
-        keybd_event CtrlLeft_, 0, 0, 0
-    ElseIf (GetKeyState(CtrlRight_) And &H8000) <> 0 Then
-        keybd_event CtrlRight_, 0, EXTENDED_KEY, 0
-    ElseIf (GetKeyState(vbKeyControl) And &H8000) <> 0 Then
-        keybd_event vbKeyControl, 0, 0, 0
-    End If
-
-    If (GetKeyState(AltLeft_) And &H8000) <> 0 Then
-        keybd_event AltLeft_, 0, 0, 0
-    ElseIf (GetKeyState(AltRight_) And &H8000) <> 0 Then
-        keybd_event AltRight_, 0, EXTENDED_KEY, 0
-    ElseIf (GetKeyState(vbKeyMenu) And &H8000) <> 0 Then
-        keybd_event vbKeyMenu, 0, 0, 0
-    End If
+    pHoldCtrlLeft = False
+    pHoldCtrlRight = False
+    pHoldShiftLeft = False
+    pHoldShiftRight = False
+    pHoldAltLeft = False
+    pHoldAltRight = False
 End Sub

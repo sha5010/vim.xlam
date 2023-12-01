@@ -32,7 +32,6 @@ Function LazyLoad(ByVal key As String) As Boolean
         Application.OnKey key
 
         Call KeyUpControlKeys
-        Call ReleaseShiftKeys
         Application.SendKeys key
         Call UnkeyUpControlKeys
         Exit Function

@@ -20,7 +20,7 @@ Function NextWorksheet(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call KeyStroke(True, Ctrl_ + PageDown_)
+    Call KeyStroke(Ctrl_ + PageDown_)
     Call ErrorHandler("NextWorksheet")
 End Function
 
@@ -42,7 +42,7 @@ Function PreviousWorksheet(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call KeyStroke(True, Ctrl_ + PageUp_)
+    Call KeyStroke(Ctrl_ + PageUp_)
     Call ErrorHandler("PreviousWorksheet")
 End Function
 

@@ -69,7 +69,7 @@ Public Sub Set_(ByRef mode_ As String, ByRef lhs As String, ByRef rhs As String,
     ' Make dict value
     Dim strValue As String
     If reMap Then
-        strValue = "'KeyStroke True," & VimToVBA(rhs, ",", resultType:=VBAKeyCodes) & "'"
+        strValue = "'KeyStroke " & VimToVBA(rhs, ",", resultType:=VBAKeyCodes) & "'"
     ElseIf rhs = "" Then
         ' Unmap
         strValue = ""

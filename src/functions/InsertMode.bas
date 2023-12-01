@@ -5,9 +5,9 @@ Option Private Module
 Function InsertWithIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
         Call ChangeToShapeInsertMode
-        Call KeyStroke(True, Space_, BackSpace_, Ctrl_ + Home_, IME_On_)
+        Call KeyStroke(Space_, BackSpace_, Ctrl_ + Home_, IME_On_)
     Else
-        Call KeyStroke(True, F2_, Ctrl_ + Home_, IME_On_)
+        Call KeyStroke(F2_, Ctrl_ + Home_, IME_On_)
         Call StartEditing
 
         Application.OnTime Now + 0.1 / 86400, "DisableIME"
@@ -17,9 +17,9 @@ End Function
 Function InsertWithoutIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
         Call ChangeToShapeInsertMode
-        Call KeyStroke(True, Space_, BackSpace_, Ctrl_ + Home_)
+        Call KeyStroke(Space_, BackSpace_, Ctrl_ + Home_)
     Else
-        Call KeyStroke(True, F2_, Ctrl_ + Home_)
+        Call KeyStroke(F2_, Ctrl_ + Home_)
         Call StartEditing
 
         Application.OnTime Now + 0.1 / 86400, "DisableIME"
@@ -29,9 +29,9 @@ End Function
 Function AppendWithIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
         Call ChangeToShapeInsertMode
-        Call KeyStroke(True, Space_, BackSpace_, IME_On_)
+        Call KeyStroke(Space_, BackSpace_, IME_On_)
     Else
-        Call KeyStroke(True, F2_, IME_On_)
+        Call KeyStroke(F2_, IME_On_)
         Call StartEditing
 
         Application.OnTime Now + 0.1 / 86400, "DisableIME"
@@ -41,9 +41,9 @@ End Function
 Function AppendWithoutIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
         Call ChangeToShapeInsertMode
-        Call KeyStroke(True, Space_, BackSpace_)
+        Call KeyStroke(Space_, BackSpace_)
     Else
-        Call KeyStroke(True, F2_)
+        Call KeyStroke(F2_)
         Call StartEditing
 
         Application.OnTime Now + 0.1 / 86400, "DisableIME"
@@ -53,9 +53,9 @@ End Function
 Function SubstituteWithIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
         Call ChangeToShapeInsertMode
-        Call KeyStroke(True, Enter_, Delete_, IME_On_)
+        Call KeyStroke(Enter_, Delete_, IME_On_)
     Else
-        Call KeyStroke(True, BackSpace_, F2_, IME_On_)
+        Call KeyStroke(BackSpace_, F2_, IME_On_)
         Call StartEditing
 
         Application.OnTime Now + 0.1 / 86400, "DisableIME"
@@ -65,9 +65,9 @@ End Function
 Function SubstituteWithoutIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
         Call ChangeToShapeInsertMode
-        Call KeyStroke(True, Enter_, Delete_)
+        Call KeyStroke(Enter_, Delete_)
     Else
-        Call KeyStroke(True, BackSpace_, F2_)
+        Call KeyStroke(BackSpace_, F2_)
         Call StartEditing
 
         Application.OnTime Now + 0.1 / 86400, "DisableIME"

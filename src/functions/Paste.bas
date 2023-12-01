@@ -30,7 +30,7 @@ Catch:
 End Function
 
 Private Function Paste_CtrlV()
-    Call KeyStroke(True, Ctrl_ + V_)
+    Call KeyStroke(Ctrl_ + V_)
 End Function
 
 Private Function PasteRows(ByVal PasteDirection As XlSearchDirection)
@@ -51,7 +51,7 @@ Private Function PasteRows(ByVal PasteDirection As XlSearchDirection)
 
         .Range(.Rows(startRow), .Rows(endRow)).Select
 
-        Call KeyStroke(True, Ctrl_ + NumpadAdd_)
+        Call KeyStroke(Ctrl_ + NumpadAdd_)
     End With
 
     If Application.CutCopyMode = xlCopy Then
@@ -81,7 +81,7 @@ Private Function PasteColumns(ByVal PasteDirection As XlSearchDirection)
 
         .Range(.Columns(startColumn), .Columns(endColumn)).Select
 
-        Call KeyStroke(True, Ctrl_ + NumpadAdd_)
+        Call KeyStroke(Ctrl_ + NumpadAdd_)
     End With
 
     If Application.CutCopyMode = xlCopy Then
@@ -110,16 +110,16 @@ Function PasteValue(Optional ByVal g As String) As Boolean
     cbType = cb(2)
 
     If Application.CutCopyMode > 0 Then 'Cells
-        Call KeyStroke(True, Alt_ + H_, V_, V_)
+        Call KeyStroke(Alt_ + H_, V_, V_)
 
     Else
         Select Case cbType
             Case xlClipboardFormatText
-                Call KeyStroke(True, Ctrl_ + V_)
+                Call KeyStroke(Ctrl_ + V_)
             Case xlClipboardFormatRTF
-                Call KeyStroke(True, Alt_ + H_, V_, T_)
+                Call KeyStroke(Alt_ + H_, V_, T_)
             Case xlHtml
-                Call KeyStroke(True, Alt_ + H_, V_, S_, End_, Enter_)
+                Call KeyStroke(Alt_ + H_, V_, S_, End_, Enter_)
             Case Else
                 Call DebugPrint("Unknown ClipboardType: " & cbType, "PasteValue")
         End Select

@@ -7,7 +7,7 @@ Function EditCellComment(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
-        Call KeyStroke(True, Shift_ + F2_)
+        Call KeyStroke(Shift_ + F2_)
     End If
 End Function
 
@@ -16,7 +16,7 @@ Function DeleteCellComment(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
-        Call KeyStroke(True, Alt_ + R_, D_)
+        Call KeyStroke(Alt_ + R_, D_)
     End If
 End Function
 

@@ -157,7 +157,7 @@ Function InsertRows(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(True, Alt_ + I_, R_)
+    Call KeyStroke(Alt_ + I_, R_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -190,7 +190,7 @@ Function AppendRows(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(True, Alt_ + I_, R_)
+    Call KeyStroke(Alt_ + I_, R_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -209,7 +209,7 @@ Function DeleteRows(Optional ByVal TargetType As eTargetRowType = Entire) As Boo
     Call RepeatRegister("DeleteRows")
     Call StopVisualMode
 
-    Call KeyStroke(True, Ctrl_ + Minus_)
+    Call KeyStroke(Ctrl_ + Minus_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -268,7 +268,7 @@ Function HideRows(Optional ByVal g As String) As Boolean
     Call RepeatRegister("HideRows")
     Call StopVisualMode
 
-    Call KeyStroke(True, Ctrl_ + k9_)
+    Call KeyStroke(Ctrl_ + k9_)
 
 Catch:
     Call ErrorHandler("HideRows")
@@ -284,7 +284,7 @@ Function UnhideRows(Optional ByVal g As String) As Boolean
     Call RepeatRegister("UnhideRows")
     Call StopVisualMode
 
-    Call KeyStroke(True, Ctrl_ + Shift_ + k9_)
+    Call KeyStroke(Ctrl_ + Shift_ + k9_)
     Exit Function
 
 Catch:
@@ -303,7 +303,7 @@ Function GroupRows(Optional ByVal g As String) As Boolean
     Call RepeatRegister("GroupRows")
     Call StopVisualMode
 
-    Call KeyStroke(True, Alt_ + Shift_ + Right_)
+    Call KeyStroke(Alt_ + Shift_ + Right_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -322,7 +322,7 @@ Function UngroupRows(Optional ByVal g As String) As Boolean
     Call RepeatRegister("UngroupRows")
     Call StopVisualMode
 
-    Call KeyStroke(True, Alt_ + Shift_ + Left_)
+    Call KeyStroke(Alt_ + Shift_ + Left_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -379,7 +379,7 @@ Function AdjustRowsHeight(Optional ByVal g As String) As Boolean
         Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call KeyStroke(True, Alt_ + H_, O_, A_)
+    Call KeyStroke(Alt_ + H_, O_, A_)
     Exit Function
 
 Catch:
@@ -395,7 +395,7 @@ Function SetRowsHeight(Optional ByVal g As String) As Boolean
         Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call KeyStroke(True, Alt_ + H_, O_, H_)
+    Call KeyStroke(Alt_ + H_, O_, H_)
     Exit Function
 
 Catch:

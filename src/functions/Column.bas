@@ -157,7 +157,7 @@ Function InsertColumns(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(True, Alt_ + I_, C_)
+    Call KeyStroke(Alt_ + I_, C_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -190,7 +190,7 @@ Function AppendColumns(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(True, Alt_ + I_, C_)
+    Call KeyStroke(Alt_ + I_, C_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -209,7 +209,7 @@ Function DeleteColumns(Optional ByVal TargetType As eTargetColumnType = Entire) 
     Call RepeatRegister("DeleteColumns")
     Call StopVisualMode
 
-    Call KeyStroke(True, Ctrl_ + Minus_)
+    Call KeyStroke(Ctrl_ + Minus_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -268,7 +268,7 @@ Function HideColumns(Optional ByVal g As String) As Boolean
     Call RepeatRegister("HideColumns")
     Call StopVisualMode
 
-    Call KeyStroke(True, Ctrl_ + k0_)
+    Call KeyStroke(Ctrl_ + k0_)
 
 Catch:
     Call ErrorHandler("HideColumns")
@@ -285,7 +285,7 @@ Function UnhideColumns(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     'ref: https://excel.nj-clucker.com/ctrl-shift-0-not-working/
-    Call KeyStroke(True, Ctrl_ + Shift_ + k0_)
+    Call KeyStroke(Ctrl_ + Shift_ + k0_)
     Exit Function
 
 Catch:
@@ -304,7 +304,7 @@ Function GroupColumns(Optional ByVal g As String) As Boolean
     Call RepeatRegister("GroupColumns")
     Call StopVisualMode
 
-    Call KeyStroke(True, Alt_ + Shift_ + Right_)
+    Call KeyStroke(Alt_ + Shift_ + Right_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -323,7 +323,7 @@ Function UngroupColumns(Optional ByVal g As String) As Boolean
     Call RepeatRegister("UngroupColumns")
     Call StopVisualMode
 
-    Call KeyStroke(True, Alt_ + Shift_ + Left_)
+    Call KeyStroke(Alt_ + Shift_ + Left_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -380,7 +380,7 @@ Function AdjustColumnsWidth(Optional ByVal g As String) As Boolean
         Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call KeyStroke(True, Alt_ + H_, O_, I_)
+    Call KeyStroke(Alt_ + H_, O_, I_)
     Exit Function
 
 Catch:
@@ -396,7 +396,7 @@ Function SetColumnsWidth(Optional ByVal g As String) As Boolean
         Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call KeyStroke(True, Alt_ + H_, O_, W_)
+    Call KeyStroke(Alt_ + H_, O_, W_)
     Exit Function
 
 Catch:

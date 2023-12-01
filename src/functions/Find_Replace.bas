@@ -106,7 +106,7 @@ Catch:
 End Function
 
 Function ShowReplaceWindow(Optional ByVal g As String) As Boolean
-    Call KeyStroke(True, Alt_ + E_, E_)
+    Call KeyStroke(Alt_ + E_, E_)
 End Function
 
 Function FindActiveValueNext(Optional ByVal g As String) As Boolean

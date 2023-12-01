@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 Function Undo_CtrlZ(Optional ByVal g As String) As Boolean
-    Call KeyStroke(True, Ctrl_ + Z_)
+    Call KeyStroke(Ctrl_ + Z_)
 End Function
 
 Function RedoExecute(Optional ByVal g As String) As Boolean
@@ -40,7 +40,7 @@ Function ZoomIn(Optional ByVal g As String) As Boolean
 
 Catch:
     If ErrorHandler("ZoomIn") Then
-        Call KeyStroke(True, Ctrl_ + Shift_ + Alt_ + Minus_)
+        Call KeyStroke(Ctrl_ + Shift_ + Alt_ + Minus_)
     End If
 End Function
 
@@ -64,7 +64,7 @@ Function ZoomOut(Optional ByVal g As String) As Boolean
 
 Catch:
     If ErrorHandler("ZoomOut") Then
-        Call KeyStroke(True, Ctrl_ + Alt_ + Minus_)
+        Call KeyStroke(Ctrl_ + Alt_ + Minus_)
     End If
 End Function
 
@@ -146,24 +146,24 @@ End Function
 
 Function ShowContextMenu(Optional ByVal g As String) As Boolean
     'Send Shift+F10
-    Call KeyStroke(True, Shift_ + F10_)
+    Call KeyStroke(Shift_ + F10_)
 End Function
 
 Function ShowMacroDialog(Optional ByVal g As String) As Boolean
     'Send Alt+F8
-    Call KeyStroke(True, Alt_ + F8_, Tab_)
+    Call KeyStroke(Alt_ + F8_, Tab_)
 End Function
 
 Function SetPrintArea(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     'Send Alt + P, R, S
-    Call KeyStroke(True, Alt_ + P_, R_, S_)
+    Call KeyStroke(Alt_ + P_, R_, S_)
 End Function
 
 Function ClearPrintArea(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     'Send Alt + P, R, C
-    Call KeyStroke(True, Alt_ + P_, R_, C_)
+    Call KeyStroke(Alt_ + P_, R_, C_)
 End Function

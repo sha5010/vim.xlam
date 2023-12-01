@@ -127,11 +127,9 @@ Function NextShape(Optional ByVal g As String) As Boolean
     Dim shp As Shape
 
     If VarType(Selection) = vbObject Then
-        Call KeyUpControlKeys
         For i = 1 To gVim.Count1
-            Call KeyStrokeWithoutKeyup(Tab_)
+            Call KeyStroke(Tab_)
         Next i
-        Call UnkeyUpControlKeys
     Else
         cnt = ActiveSheet.Shapes.Count
         If cnt = 0 Then
@@ -153,11 +151,9 @@ Function PrevShape(Optional ByVal g As String) As Boolean
     Dim shp As Shape
 
     If VarType(Selection) = vbObject Then
-        Call KeyUpControlKeys
         For i = 1 To gVim.Count1
-            Call KeyStrokeWithoutKeyup(Shift_ + Tab_)
+            Call KeyStroke(Shift_ + Tab_)
         Next i
-        Call UnkeyUpControlKeys
     Else
         cnt = ActiveSheet.Shapes.Count
         If cnt = 0 Then
