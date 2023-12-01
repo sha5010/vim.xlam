@@ -49,6 +49,9 @@ End Sub
 ' * Cleans up resources and disables Vim addin when the class is terminated.
 ' */
 Public Sub Quit()
+    ' Flag to quit
+    cCount = -1
+
     Me.Enabled = False
     Application.OnKey cConfig.VimToggleKey
 
@@ -73,10 +76,11 @@ Public Property Let Enabled(ByVal arg As Boolean)
     Dim statusMsg As String
 
     cIsEnabled = arg
-    cCount = 0
 
     If cIsEnabled Then
         'Make enable
+        cCount = 0
+
         If cJumpList Is Nothing Then
             Set cJumpList = New cls_DblCircList
             cJumpList.Max = Me.Config.MaxHistories
@@ -92,7 +96,7 @@ Public Property Let Enabled(ByVal arg As Boolean)
 
     Application.OnKey Me.Config.VimToggleKey, "ToggleVim"
 
-    If Not gVim Is Nothing Then
+    If Not gVim Is Nothing And cCount <> -1 Then
         If cIsEnabled Then
             statusMsg = cMsg.VimStarted
         Else
