@@ -483,7 +483,7 @@ Sub DefaultConfig()
         'Visual Mode
         .Map "vmap <Esc> StopVisualMode"
         .Map "vmap <C-[> StopVisualMode"
-        .Map "vmap <S-0> SwapVisualBase"
+        .Map "vmap <C-.> SwapVisualBase"
 
 
         'Shape Insert Mode
