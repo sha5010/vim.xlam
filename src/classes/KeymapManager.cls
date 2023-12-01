@@ -821,6 +821,15 @@ Private Sub Class_Initialize()
     Set cOnKeyMap = New Dictionary
 End Sub
 
+Private Sub Class_Terminate()
+    Set cKeyMap = Nothing
+    Set cOnKeyMap = Nothing
+    Set REDIRECT_TABLE_US = Nothing
+    Set REDIRECT_TABLE_JIS = Nothing
+    Set Parent = Nothing
+End Sub
+
+
 '/*
 ' * Converts Vim-style key sequences to VBA-compatible SendKeys format.
 ' *

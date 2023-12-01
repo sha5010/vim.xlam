@@ -46,6 +46,12 @@ Private Sub Class_Initialize()
     Call Change(MODE_NORMAL)
 End Sub
 
+Private Sub Class_Terminate()
+    Call ClearAppInstances
+    Set Parent = Nothing
+End Sub
+
+
 '/*
 ' * Gets the current mode.
 ' *

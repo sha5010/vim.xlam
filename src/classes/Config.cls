@@ -103,6 +103,7 @@ End Sub
 
 Private Sub Class_Terminate()
     Set cConfig = Nothing
+    Set Parent = Nothing
 End Sub
 
 '/**
