@@ -211,6 +211,10 @@ End Function
 Public Property Get Current() As Variant
     If CurrentChunk Is MainArena Then
         Current = Empty
+    ElseIf Not IsAlive(CurrentChunk) Then
+        Current = Empty
+        Call Unlink(CurrentChunk)
+        Set CurrentChunk = MainArena
     Else
         With CurrentChunk
             If IsObject(.Content) Or VarType(.Content) = vbDataObject Then
