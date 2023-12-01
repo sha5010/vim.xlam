@@ -14,6 +14,9 @@ Public Parent As cls_Vim
 'config dictionary
 Private cConfig As Dictionary
 
+'custom config filename
+Private Const CUSTOM_CONFIG = "_vimxlamrc"
+
 'keyname
 Private Const STATUS_PREFIX = "statusprefix"
 Private Const VIM_TOGGLE_KEY = "togglekey"
@@ -138,4 +141,93 @@ Public Sub Set_(ByRef keyName As String, ByVal arg As Variant)
         Case Else
             Err.Raise 50000, Description:="Config key does not exists"
     End Select
+End Sub
+
+Public Sub LoadCustomConfig(Optional ByVal configFilePath As String)
+    If configFilePath = "" Then
+        configFilePath = ThisWorkbook.Path & "¥" & CUSTOM_CONFIG
+    End If
+
+    ' Check file exists
+    If Dir(configFilePath) = "" Then
+        Exit Sub
+    End If
+
+    ' Load file
+    Dim fileNum As Long: fileNum = FreeFile()
+    Dim bufByte() As Byte
+
+    Open configFilePath For Binary As #fileNum
+        ReDim bufByte(LOF(fileNum))
+        Get #fileNum, , bufByte
+    Close #fileNum
+
+    ' Convert to unicode
+    Dim loadedText As String
+    loadedText = StrConv(bufByte(), vbUnicode)
+
+    ' Split into lines
+    loadedText = Replace(loadedText, vbCrLf, vbLf)
+
+    Dim lines() As String
+    lines = Split(loadedText, vbLf)
+
+    ' Process by 1 line
+    Dim i As Long
+    For i = LBound(lines) To UBound(lines)
+        Call ParseConfig(lines(i))
+    Next i
+End Sub
+
+Private Sub ParseConfig(ByRef configStr As String)
+    On Error GoTo Catch
+
+    configStr = LTrim(configStr)
+
+    ' Ignore lines beginning with "#"
+    If configStr Like "#*" Then
+        Exit Sub
+    End If
+
+    ' Parse "set" config
+    If configStr Like "set *" Then
+        Dim configKey As String
+        Dim arg As Variant
+
+        ' set noXXXX
+        If configStr Like "set no*" Then
+            configKey = RTrim(Mid(configStr, 7))
+            If cConfig.Exists(configKey) Then
+                Call Set_(configKey, False)
+                Exit Sub
+            End If
+        End If
+
+        ' set XXXX=YYYY
+        If configStr Like "set *=*" Then
+            Dim equalIndex As Long: equalIndex = InStr(configStr, "=")
+            configKey = Mid(configStr, 5, equalIndex - 5)
+            arg = Mid(configStr, equalIndex + 1)
+            If cConfig.Exists(configKey) Then
+                Call Set_(configKey, arg)
+                Exit Sub
+            End If
+
+        ' set XXXX
+        Else
+            configKey = RTrim(Mid(configStr, 5))
+            If cConfig.Exists(configKey) Then
+                Call Set_(configKey, True)
+                Exit Sub
+            End If
+        End If
+    End If
+
+    ' Parse "map" config
+    If configStr Like "*map *" Then
+        Call Parent.KeyMap.Map(configStr)
+    End If
+
+    Exit Sub
+Catch:
 End Sub

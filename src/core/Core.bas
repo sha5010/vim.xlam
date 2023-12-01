@@ -14,8 +14,8 @@ Function StartVim(Optional ByVal g As String) As Boolean
         ' Load default setting
         Call DefaultConfig
 
-        'Todo: Loading custom config
-
+        'Load custom config
+        Call gVim.Config.LoadCustomConfig
     End If
 
     ' Enable Vim addin
