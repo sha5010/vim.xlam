@@ -312,7 +312,7 @@ Public Sub Del_(ByVal mode_ As String, ByVal lhs As String, _
     strKey = mode_ & KEY_SEPARATOR & firstKey & KEY_TEMP
 
     If cKeyMap.Exists(strKey) Then
-        Dim searchStr As String: searchStr = lhs & " " ' & rhs & KEY_TERM_SYMBOL
+        Dim searchStr As String: searchStr = lhs & " "
         Dim searchIdx As Long: searchIdx = InStr(cKeyMap(strKey), searchStr)
 
         If searchIdx > 0 Then
@@ -1107,19 +1107,19 @@ Public Function ConvertSendKeysStyle(ByVal key As String, _
              "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12", "f13", "f14", "f15", "f16"
             ConvertSendKeysStyle = "{" & UCase(key) & "}"
         Case "nl", "cr", "return", "enter"
-            ConvertSendKeysStyle = "{" & "ENTER" & "}"
+            ConvertSendKeysStyle = "{ENTER}"
         Case "space"
-            ConvertSendKeysStyle = "{" & " " & "}"
+            ConvertSendKeysStyle = "{ }"
         Case "lt"
-            ConvertSendKeysStyle = "{" & "<" & "}"
+            ConvertSendKeysStyle = "{<}"
         Case "bslash"
-            ConvertSendKeysStyle = "{" & "¥" & "}"
+            ConvertSendKeysStyle = "{¥}"
         Case "bar"
-            ConvertSendKeysStyle = "{" & "|" & "}"
+            ConvertSendKeysStyle = "{|}"
         Case "pageup"
-            ConvertSendKeysStyle = "{" & "PGUP" & "}"
+            ConvertSendKeysStyle = "{PGUP}"
         Case "pagedown"
-            ConvertSendKeysStyle = "{" & "PGDN" & "}"
+            ConvertSendKeysStyle = "{PGDN}"
         Case Else
             Err.Raise 50000, Description:="Unsupported key name: " & key
         End Select
