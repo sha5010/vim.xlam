@@ -1,0 +1,82 @@
+# ==================== vim.xlam config file ====================
+# [Japanese]
+# この設定ファイルでデフォルトの設定をカスタマイズできます。
+# ご自身の環境や好みに合わせて設定し、vim.xlam と同じディレクトリに
+# `_vimxlamrc` というファイル名で保存してください。
+#
+# *** 設定ファイルについて ***
+# - `#` で始まる行や空行は無視されます
+# - `set` で始まる行は、定義された設定値を変更できます
+#   - デフォルト値をコメントで記載しているので適宜変更してください
+# - `map` または `unmap` を含む行は、キーマップの設定を変更できます
+#   - Syntax に記載された文法を守ってください
+# - ファイルエンコーディングは Shift-JIS で保存してください
+#
+# [English]
+# This configuration file allows you to customize default settings.
+# Customize it according to your environment and preferences, and
+# save it in the same directory as vim.xlam with the filename `_vimxlamrc`.
+#
+# *** About Configuration File ***
+# - Lines starting with `#` or blank lines are ignored.
+# - Lines starting with `set` allow you to modify defined configuration values.
+#   - Please change them as needed, keeping the default values in the comments.
+# - Lines containing `map` or `unmap` allow you to modify key mappings.
+#   - Please adhere to the syntax specified in the Syntax section.
+
+
+# ====================        Config        ====================
+### Temporary message prefix
+# set statusprefix=vim.xlam: 
+
+### Enable/Disable key
+# set togglekey=<C-m>
+
+### Scroll offset
+# set scrolloff=54
+
+### Maximum number of JumpHistory
+# set jumplisthistory=100
+
+### 日本語(japanese) / English (nojapanese)
+# set japanese
+
+### JIS keyboard(jiskeyboard) / US keyboard(nojiskeyboard)
+# set jiskeyboard
+
+### Debug mode (on: debug / off: nodebug)
+# set nodebug
+
+
+# ====================       Keymaps        ====================
+# Syntax
+# --------------------------------------------------------------
+# [n|v|c|i]map [<cmd>]{lhs} [<key>]{rhs} [arg1] [arg2] [...]
+#  ^^^^^^^      ^^^^^ ^^^^^  ^^^^^ ^^^^^  ^^^^^^^^^^^^^^^^^
+#    |            |     |      |     |     `- args: Arguments of the function specified by {rhs}
+#    |            |     |      |     `------- rhs : Function name to be execute
+#    |            |     |      `------------- key : Flag to simulate keys with {rhs}
+#    |            |     `-------------------- lhs : Key sequence (vim style)
+#    |            `-------------------------- cmd : Flag to enable in command mode (plain text)
+#    `--------------------------------------- mode: Specify pre-defined mode ("n" if omitted)
+#
+# [n|v|c|i]unmap [<cmd>]{lhs}
+#          ^^^^^
+#           `--- disable mapping
+#
+# --------------------------------------------------------------
+# Modes
+# --------------------------------------------------------------
+# n: NORMAL  v: VISUAL  c: CMDLINE  i: SHAPE_INSERT
+#
+# --------------------------------------------------------------
+# Examples
+# --------------------------------------------------------------
+# nmap <C-p> ToggleLang
+# nmap <cmd>debug ToggleDebugMode
+# nmap yy YankCell
+# nmap bb ToggleBorderAll 1 2
+# nmap 1 ShowCmdForm "1"
+# vmap <C-.> SwapVisualBase
+# cmap <C-w> <key><C-BS>
+# nunmap <C-f>
