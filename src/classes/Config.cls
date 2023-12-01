@@ -185,7 +185,7 @@ Private Sub ParseConfig(ByRef configStr As String)
     configStr = LTrim(configStr)
 
     ' Ignore lines beginning with "#"
-    If configStr Like "#*" Then
+    If configStr Like "[#]*" Then
         Exit Sub
     End If
 
