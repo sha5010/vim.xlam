@@ -191,8 +191,15 @@ Private Function Run(ByVal cmd As String, _
     ' Close form if command was successful
     If Not result Then
         Run = True
-        Call QuitForm
+
+        ' Reset vars manually because form has already closed
+        cCount = 0
+        cCmdBuffer = ""
+        cCmdBufferWithoutNumber = ""
+        cNumSeqFlag = False
     End If
+
+    gVim.Count = 0
     Exit Function
 
 Catch:
