@@ -158,7 +158,22 @@ End Sub
 
 Public Sub LoadCustomConfig(Optional ByVal configFilePath As String)
     If configFilePath = "" Then
-        configFilePath = ThisWorkbook.Path & "¥" & CUSTOM_CONFIG
+        configFilePath = ThisWorkbook.Path
+
+        If configFilePath Like "https://*" Then
+            Dim sepIndex As Long
+            If configFilePath Like "*my.sharepoint.com/*" Then
+                sepIndex = InStr(configFilePath, "/Documents/")
+                configFilePath = Mid(configFilePath, sepIndex + 10)
+            Else
+                sepIndex = InStr(10, configFilePath, "/")
+                sepIndex = InStr(sepIndex + 1, configFilePath, "/")
+                configFilePath = Mid(configFilePath, sepIndex)
+            End If
+            configFilePath = Environ("OneDrive") & Replace(configFilePath, "/", "¥")
+        End If
+
+        configFilePath = configFilePath & "¥" & CUSTOM_CONFIG
     End If
 
     ' Check file exists
