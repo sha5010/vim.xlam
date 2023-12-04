@@ -5,13 +5,21 @@ Option Private Module
 Function IncreaseFontSize(Optional ByVal g As String) As Boolean
     Call RepeatRegister("IncreaseFontSize")
     Call StopVisualMode
-    Call KeyStroke(Alt_ + H_, F_, G_)
+
+    Dim i As Long
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Alt_ + H_, F_, G_)
+    Next i
 End Function
 
 Function DecreaseFontSize(Optional ByVal g As String) As Boolean
     Call RepeatRegister("DecreaseFontSize")
     Call StopVisualMode
-    Call KeyStroke(Alt_ + H_, F_, K_)
+
+    Dim i As Long
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Alt_ + H_, F_, K_)
+    Next i
 End Function
 
 Function ChangeFontName(Optional ByVal g As String) As Boolean

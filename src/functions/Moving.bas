@@ -271,7 +271,7 @@ Function MoveToTopRow(Optional ByVal g As String) As Boolean
     Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
-        If gVim.Count1 = 1 Then
+        If gVim.Count = 0 Then
             .Cells(1, ActiveCell.Column).Select
         Else
             .Cells(gVim.Count1, ActiveCell.Column).Select
@@ -289,7 +289,7 @@ Function MoveToLastRow(Optional ByVal g As String) As Boolean
     Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
-        If gVim.Count1 = 1 Then
+        If gVim.Count = 0 Then
             .Cells(.UsedRange.Item(.UsedRange.Count).Row, ActiveCell.Column).Select
         Else
             .Cells(gVim.Count1, ActiveCell.Column).Select
@@ -308,8 +308,6 @@ Function MoveToNthColumn(Optional ByVal g As String) As Boolean
 
     If gVim.Count1 > ActiveSheet.Columns.Count Then
         gVim.Count1 = ActiveSheet.Columns.Count
-    ElseIf gVim.Count1 < 1 Then
-        gVim.Count1 = 1
     End If
 
     ActiveSheet.Cells(ActiveCell.Row, gVim.Count1).Select

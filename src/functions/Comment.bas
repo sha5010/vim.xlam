@@ -112,7 +112,7 @@ Function HideCellCommentIndicator(Optional ByVal g As String) As Boolean
     Application.DisplayCommentIndicator = xlNoIndicator
 End Function
 
-Function NextCommentedCell(Optional ByVal g As String) As Boolean
+Function NextComment(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim buf As Boolean
@@ -126,17 +126,24 @@ Function NextCommentedCell(Optional ByVal g As String) As Boolean
 
     'もともとの値を取得
     buf = Application.DisplayAlerts
-
     Application.DisplayAlerts = False
+    Application.ScreenUpdating = False
+
+    Dim i As Long
+    For i = 1 To gVim.Count1 - 1
+        Application.CommandBars.ExecuteMso "ReviewNextComment"
+    Next i
+
+    Application.ScreenUpdating = True
     Application.CommandBars.ExecuteMso "ReviewNextComment"
     Application.DisplayAlerts = buf
     Exit Function
 
 Catch:
-    Call ErrorHandler("NextCommentedCell")
+    Call ErrorHandler("NextComment")
 End Function
 
-Function PrevCommentedCell(Optional ByVal g As String) As Boolean
+Function PrevComment(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim buf As Boolean
@@ -150,12 +157,19 @@ Function PrevCommentedCell(Optional ByVal g As String) As Boolean
 
     'もともとの値を取得
     buf = Application.DisplayAlerts
-
     Application.DisplayAlerts = False
+    Application.ScreenUpdating = False
+
+    Dim i As Long
+    For i = 1 To gVim.Count1
+        Application.CommandBars.ExecuteMso "ReviewPreviousComment"
+    Next i
+
+    Application.ScreenUpdating = True
     Application.CommandBars.ExecuteMso "ReviewPreviousComment"
     Application.DisplayAlerts = buf
     Exit Function
 
 Catch:
-    Call ErrorHandler("PrevCommentedCell")
+    Call ErrorHandler("PrevComment")
 End Function

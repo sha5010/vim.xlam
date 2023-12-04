@@ -64,11 +64,11 @@ Private Sub JumpInner(ByVal isNext As Boolean)
 
     ' Check if the jump list is available
     If Not gVim.JumpList Is Nothing Then
+        Dim i As Long
         Dim isAfterJumped As Boolean
         isAfterJumped = (TypeOf gVim.JumpList.Current Is Range And TypeOf Selection Is Range)
 
         If isAfterJumped Then
-            Dim i As Long
 
             For i = 1 To 3
                 Select Case i
@@ -86,12 +86,22 @@ Private Sub JumpInner(ByVal isNext As Boolean)
         End If
 
         Dim targetRange As Range
-        ' Get the next or previous target range from the jump list
-        If isNext Then
-            Set targetRange = gVim.JumpList.Forward
-        Else
-            Set targetRange = gVim.JumpList.Back
-        End If
+
+        For i = 1 To gVim.Count1
+            ' Get the next or previous target range from the jump list
+            If isNext Then
+                Set targetRange = gVim.JumpList.Forward
+            Else
+                Set targetRange = gVim.JumpList.Back
+            End If
+
+            If targetRange Is Nothing Then
+                If i > 1 Then
+                    Set targetRange = gVim.JumpList.Current
+                End If
+                Exit For
+            End If
+        Next i
 
         ' Check if the target range is not empty
         If Not targetRange Is Nothing Then

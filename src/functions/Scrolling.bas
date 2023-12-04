@@ -462,10 +462,17 @@ Private Function GetRealUsableWidth() As Double
 End Function
 
 Function ScrollCurrentTop(Optional ByVal g As String) As Boolean
+    If gVim.Count > 0 Then
+        Call MoveToSpecifiedRow(CStr(gVim.Count))
+    End If
     ActiveWindow.ScrollRow = PointToRow(ActiveCell.Top - GetLengthWithZoomConsidered(gVim.Config.ScrollOffset), modeTop)
 End Function
 
 Function ScrollCurrentBottom(Optional ByVal g As String) As Boolean
+    If gVim.Count > 0 Then
+        Call MoveToSpecifiedRow(CStr(gVim.Count))
+    End If
+
     Dim uh As Double
     uh = GetRealUsableHeight()
 
@@ -473,6 +480,10 @@ Function ScrollCurrentBottom(Optional ByVal g As String) As Boolean
 End Function
 
 Function ScrollCurrentMiddle(Optional ByVal g As String) As Boolean
+    If gVim.Count > 0 Then
+        Call MoveToSpecifiedRow(CStr(gVim.Count))
+    End If
+
     Dim uh As Double
     uh = GetRealUsableHeight()
 
@@ -480,10 +491,18 @@ Function ScrollCurrentMiddle(Optional ByVal g As String) As Boolean
 End Function
 
 Function ScrollCurrentLeft(Optional ByVal g As String) As Boolean
+    If gVim.Count > 0 Then
+        Call MoveToNthColumn
+    End If
+
     ActiveWindow.ScrollColumn = ActiveCell.Column
 End Function
 
 Function ScrollCurrentRight(Optional ByVal g As String) As Boolean
+    If gVim.Count > 0 Then
+        Call MoveToNthColumn
+    End If
+
     Dim uw As Double
     uw = GetRealUsableWidth()
 
@@ -491,6 +510,10 @@ Function ScrollCurrentRight(Optional ByVal g As String) As Boolean
 End Function
 
 Function ScrollCurrentCenter(Optional ByVal g As String) As Boolean
+    If gVim.Count > 0 Then
+        Call MoveToNthColumn
+    End If
+
     Dim uw As Double
     uw = GetRealUsableWidth()
 

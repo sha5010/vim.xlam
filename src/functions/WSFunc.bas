@@ -5,44 +5,64 @@ Option Private Module
 Function NextWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
+    Dim i As Long
 
     With ActiveWorkbook
-        i = .ActiveSheet.Index - 1
-        Do
-            i = (i + 1) Mod .Worksheets.Count
-            If .Worksheets(i + 1).Visible = xlSheetVisible Then
-                .Worksheets(i + 1).Activate
-                Exit Function
+        i = .ActiveSheet.Index
+        Dim cnt As Long: cnt = gVim.Count1
+
+        Do While cnt > 0
+            i = (i Mod .Worksheets.Count) + 1
+            If .Worksheets(i).Visible = xlSheetVisible Then
+                cnt = cnt - 1
+            End If
+
+            If i = .ActiveSheet.Index Then
+                Dim visibleSheets As Long
+                visibleSheets = gVim.Count1 - cnt
+                cnt = cnt Mod visibleSheets
             End If
         Loop
+        .Worksheets(i).Activate
     End With
     Exit Function
 
 Catch:
-    Call KeyStroke(Ctrl_ + PageDown_)
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Ctrl_ + PageDown_)
+    Next i
     Call ErrorHandler("NextWorksheet")
 End Function
 
 Function PreviousWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
+    Dim i As Long
 
     With ActiveWorkbook
-        i = .ActiveSheet.Index - 1
-        Do
-            i = (i - 1 + .Worksheets.Count) Mod .Worksheets.Count
-            If .Worksheets(i + 1).Visible = xlSheetVisible Then
-                .Worksheets(i + 1).Activate
-                Exit Function
+        i = .ActiveSheet.Index
+        Dim cnt As Long: cnt = gVim.Count1
+
+        Do While cnt > 0
+            i = ((i - 2 + .Worksheets.Count) Mod .Worksheets.Count) + 1
+            If .Worksheets(i).Visible = xlSheetVisible Then
+                cnt = cnt - 1
+            End If
+
+            If i = .ActiveSheet.Index Then
+                Dim visibleSheets As Long
+                visibleSheets = gVim.Count1 - cnt
+                cnt = cnt Mod visibleSheets
             End If
         Loop
+        .Worksheets(i).Activate
     End With
     Exit Function
 
 Catch:
-    Call KeyStroke(Ctrl_ + PageUp_)
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Ctrl_ + PageUp_)
+    Next i
     Call ErrorHandler("PreviousWorksheet")
 End Function
 

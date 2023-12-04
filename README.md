@@ -94,19 +94,19 @@ Designed with extensibility in mind, you can create your own methods and easily 
 | Delete | `D`/`X` | `DeleteValue` | Delete the value in the cell | |
 | Paste | `p` | `PasteSmart` | Paste after copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
 | Paste | `P` | `PasteSmart` | Paste before copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
-| Font | `-` | `DecreaseFontSize` | Decrease font size | |
-| Font | `+` | `IncreaseFontSize` | Increase font size | |
+| Font | `-` | `DecreaseFontSize` | Decrease font size | ✓ |
+| Font | `+` | `IncreaseFontSize` | Increase font size | ✓ |
 | Color | `fc` | `SmartFontColor` | Show the font color selection dialog | |
 | Find & Replace | `/` | `ShowFindFollowLang` | Show the find dialog, following the language mode of IME | |
 | Find & Replace | `n` | `NextFoundCell` | Select the next found cell | ✓ |
 | Find & Replace | `N` | `PreviousFoundCell` | Select the previous found cell | ✓ |
 | Scrolling | `<C-u>` | `ScrollUpHalf` | Scroll up by half a page | ✓ |
 | Scrolling | `<C-d>` | `ScrollDownHalf` | Scroll down by half a page | ✓ |
-| Scrolling | `zt` | `ScrollCurrentTop` | Scroll to make the current row at the top (`SCREEN_OFFSET` pts of padding) | |
-| Scrolling | `zz` | `ScrollCurrentMiddle` | Scroll to make the current row in the middle | |
-| Scrolling | `zb` | `ScrollCurrentBottom` | Scroll to make the current row at the bottom (`SCREEN_OFFSET` pts of padding) | |
-| Worksheet | `e` | `NextWorksheet` | Select the next worksheet | |
-| Worksheet | `E` | `PreviousWorksheet` | Select the previous worksheet | |
+| Scrolling | `zt` | `ScrollCurrentTop` | Scroll to make the current row at the top (`SCREEN_OFFSET` pts of padding) | ✓ |
+| Scrolling | `zz` | `ScrollCurrentMiddle` | Scroll to make the current row in the middle | ✓ |
+| Scrolling | `zb` | `ScrollCurrentBottom` | Scroll to make the current row at the bottom (`SCREEN_OFFSET` pts of padding) | ✓ |
+| Worksheet | `e` | `NextWorksheet` | Select the next worksheet | ✓ |
+| Worksheet | `E` | `PreviousWorksheet` | Select the previous worksheet | ✓ |
 | Worksheet | `ww` | `ShowSheetPicker` | Launch the Sheet Picker | |
 | Worksheet | `wr` | `RenameWorksheet` | Change the name of the active worksheet | |
 | Workbook | `:w` | `SaveWorkbook` | Save the active workbook | |
@@ -345,8 +345,8 @@ Designed with extensibility in mind, you can create your own methods and easily 
 | Paste | `P` | `PasteSmart` | Paste before copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
 | Paste | `gp` | `PasteSpecial` | Show the paste special format dialog | |
 | Paste | `U` | `PasteValue` | Paste values only | |
-| Font | `-` | `DecreaseFontSize` | Decrease font size | |
-| Font | `+` | `IncreaseFontSize` | Increase font size | |
+| Font | `-` | `DecreaseFontSize` | Decrease font size | ✓ |
+| Font | `+` | `IncreaseFontSize` | Increase font size | ✓ |
 | Font | `fn` | `ChangeFontName` | Focus on font name | |
 | Font | `fs` | `ChangeFontSize` | Focus on font size | |
 | Font | `fh` | `AlignLeft` | Align left | |
@@ -374,15 +374,15 @@ Designed with extensibility in mind, you can create your own methods and easily 
 | Comment | `CR` | `ShowCellCommentAll` | Show all comments | |
 | Comment | `CM` | `HideCellCommentAll` | Hide all comments | |
 | Comment | `CH` | `HideCellCommentIndicator` | Hide the current cell's comment indicator | |
-| Comment | `Cn` | `NextCommentedCell` | Select the next commented cell | |
-| Comment | `Cp` | `PrevCommentedCell` | Select the previous commented cell | |
+| Comment | `Cn` | `NextComment` | Select the next commented cell | ✓ |
+| Comment | `Cp` | `PrevComment` | Select the previous commented cell | ✓ |
 | Find & Replace | `/` | `ShowFindFollowLang` | Show the find dialog, following the language mode of IME | |
 | Find & Replace | `?` | `ShowFindNotFollowLang` | Show the find dialog without following the language mode of IME | |
 | Find & Replace | `n` | `NextFoundCell` | Select the next found cell | ✓ |
 | Find & Replace | `N` | `PreviousFoundCell` | Select the previous found cell | ✓ |
 | Find & Replace | `R` | `ShowReplaceWindow` | Show the find and replace dialog | |
-| Find & Replace | `*` | `FindActiveValueNext` | Find the next cell with the active cell's value and select it | |
-| Find & Replace | `#` | `FindActiveValuePrev` | Find the previous cell with the active cell's value and select it | |
+| Find & Replace | `*` | `FindActiveValueNext` | Find the next cell with the active cell's value and select it | ✓ |
+| Find & Replace | `#` | `FindActiveValuePrev` | Find the previous cell with the active cell's value and select it | ✓ |
 | Find & Replace | `]c` | `NextSpecialCells` | Select the next cell with a comment | ✓ |
 | Find & Replace | `[c` | `PrevSpecialCells` | Select the previous cell with a comment | ✓ |
 | Find & Replace | `]o` | `NextSpecialCells` | Select the next cell with a constant value | ✓ |
@@ -407,14 +407,14 @@ Designed with extensibility in mind, you can create your own methods and easily 
 | Scrolling | `zl` | `ScrollRight1Column` | Scroll right by one column | ✓ |
 | Scrolling | `zH` | `ScrollLeft` | Scroll left by one page | ✓ |
 | Scrolling | `zL` | `ScrollRight` | Scroll right by one page | ✓ |
-| Scrolling | `zt` | `ScrollCurrentTop` | Scroll to make the current row at the top (`SCREEN_OFFSET` pts of padding) | |
-| Scrolling | `zz` | `ScrollCurrentMiddle` | Scroll to make the current row in the middle | |
-| Scrolling | `zb` | `ScrollCurrentBottom` | Scroll to make the current row at the bottom (`SCREEN_OFFSET` pts of padding) | |
-| Scrolling | `zs` | `ScrollCurrentLeft` | Scroll to make the current column at the left | |
-| Scrolling | `zm` | `ScrollCurrentCenter` | Scroll to make the current column in the center | |
-| Scrolling | `ze` | `ScrollCurrentRight` | Scroll to make the current column at the right | |
-| Worksheet | `e`/`wn` | `NextWorksheet` | Select the next worksheet | |
-| Worksheet | `E`/`wp` | `PreviousWorksheet` | Select the previous worksheet | |
+| Scrolling | `zt` | `ScrollCurrentTop` | Scroll to make the current row at the top (`SCREEN_OFFSET` pts of padding) | ✓ |
+| Scrolling | `zz` | `ScrollCurrentMiddle` | Scroll to make the current row in the middle | ✓ |
+| Scrolling | `zb` | `ScrollCurrentBottom` | Scroll to make the current row at the bottom (`SCREEN_OFFSET` pts of padding) | ✓ |
+| Scrolling | `zs` | `ScrollCurrentLeft` | Scroll to make the current column at the left | ✓ |
+| Scrolling | `zm` | `ScrollCurrentCenter` | Scroll to make the current column in the center | ✓ |
+| Scrolling | `ze` | `ScrollCurrentRight` | Scroll to make the current column at the right | ✓ |
+| Worksheet | `e`/`wn` | `NextWorksheet` | Select the next worksheet | ✓ |
+| Worksheet | `E`/`wp` | `PreviousWorksheet` | Select the previous worksheet | ✓ |
 | Worksheet | `ww`/`ws` | `ShowSheetPicker` | Launch the Sheet Picker | |
 | Worksheet | `wr` | `RenameWorksheet` | Change the name of the active worksheet | |
 | Worksheet | `wh` | `MoveWorksheetBack` | Move the active worksheet one position to the front | ✓ |
@@ -436,8 +436,8 @@ Designed with extensibility in mind, you can create your own methods and easily 
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | Close the active workbook without saving | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | Save and close the active workbook | |
 | Workbook | `:b[num]` | `ActivateWorkbook` | Select the workbook at position `[num]` | |
-| Workbook | `]b`/`:bn` | `NextWorkbook` | Select the next workbook | |
-| Workbook | `[b`/`:bp` | `PreviousWorkbook` | Select the previous workbook | |
+| Workbook | `]b`/`:bn` | `NextWorkbook` | Select the next workbook | ✓ |
+| Workbook | `[b`/`:bp` | `PreviousWorkbook` | Select the previous workbook | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | Toggle read-only mode | |
 | Other | `u` | `Undo_CtrlZ` | Undo (send `Ctrl + Z`) | |
 | Other | `<C-r>` | `RedoExecute` | Redo | |
@@ -446,8 +446,8 @@ Designed with extensibility in mind, you can create your own methods and easily 
 | Other | `M` | `ZoomOut` | Zoom out by 10% or `[count]`% | ✓ |
 | Other | `%` | `ZoomSpecifiedScale` | Set the zoom level to `[count]`% (digits `1`-`9` correspond to predefined zoom levels) | ✓ |
 | Other | `\` | `ShowContextMenu` | Show the context menu | |
-| Other | `<C-i>` | `JumpNext` | Move to the next cell in the jump list | |
-| Other | `<C-o>` | `JumpPrev` | Move to the previous cell in the jump list | |
+| Other | `<C-i>` | `JumpNext` | Move to the next cell in the jump list | ✓ |
+| Other | `<C-o>` | `JumpPrev` | Move to the previous cell in the jump list | ✓ |
 | Other | `:cle` | `ClearJumps` | Clear the jump list | |
 | Other | `zf` | `ToggleFreezePanes` | Toggle freeze panes on/off | |
 | Other | `=v` | `ToggleFormulaBar` | Toggle the visibility of the formula bar | |

@@ -349,8 +349,8 @@ Sub DefaultConfig()
         .Map "nmap CR ShowCellCommentAll"
         .Map "nmap CM HideCellCommentAll"
         .Map "nmap CH HideCellCommentIndicator"
-        .Map "nmap Cn NextCommentedCell"
-        .Map "nmap Cp PrevCommentedCell"
+        .Map "nmap Cn NextComment"
+        .Map "nmap Cp PrevComment"
 
 
         'Find & Replace

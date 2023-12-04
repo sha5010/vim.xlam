@@ -134,9 +134,7 @@ Function FindActiveValueNext(Optional ByVal g As String) As Boolean
 
     If Not t Is Nothing Then
         Call RecordToJumpList
-
-        ActiveWorkbook.ActiveSheet.Activate
-        t.Activate
+        Call NextFoundCell
     End If
 
     Call SetStatusBarTemporarily("/" & findText, 2000, disablePrefix:=True)
@@ -171,10 +169,7 @@ Function FindActiveValuePrev(Optional ByVal g As String) As Boolean
 
     If Not t Is Nothing Then
         Call RecordToJumpList
-
-        ActiveWorkbook.ActiveSheet.Activate
-        Set t = Cells.FindPrevious(After:=ActiveCell)
-        t.Activate
+        Call PreviousFoundCell
     End If
 
     Call SetStatusBarTemporarily("?" & findText, 2000, disablePrefix:=True)

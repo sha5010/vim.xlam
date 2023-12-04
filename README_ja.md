@@ -93,19 +93,19 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Delete | `D`/`X` | `DeleteValue` | セルの値を削除 | |
 | Paste | `p` | `PasteSmart` | 行や列がコピーされたときは後に追加。それ以外は `Ctrl + V` を送出 | ✓ |
 | Paste | `P` | `PasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` を送出 | ✓ |
-| Font | `-` | `DecreaseFontSize` | フォントサイズの縮小 | |
-| Font | `+` | `IncreaseFontSize` | フォントサイズの拡大 | |
+| Font | `-` | `DecreaseFontSize` | フォントサイズの縮小 | ✓ |
+| Font | `+` | `IncreaseFontSize` | フォントサイズの拡大 | ✓ |
 | Color | `fc` | `SmartFontColor` | フォントの色を選択するダイアログを表示 | |
 | Find & Replace | `/` | `ShowFindFollowLang` | IMEを言語モードに合わせて検索ダイアログを表示 | |
 | Find & Replace | `n` | `NextFoundCell` | 検索結果の次のセルを選択 | ✓ |
 | Find & Replace | `N` | `PreviousFoundCell` | 検索結果の前のセルを選択 | ✓ |
 | Scrolling | `<C-u>` | `ScrollUpHalf` | 半ページ上スクロール | ✓ |
 | Scrolling | `<C-d>` | `ScrollDownHalf` | 半ページ下スクロール | ✓ |
-| Scrolling | `zt` | `ScrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | |
-| Scrolling | `zz` | `ScrollCurrentMiddle` | 現在行が中央に来るように縦スクロール | |
-| Scrolling | `zb` | `ScrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | |
-| Worksheet | `e` | `NextWorksheet` | 次のシートを選択 | |
-| Worksheet | `E` | `PreviousWorksheet` | 前のシートを選択 | |
+| Scrolling | `zt` | `ScrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | ✓ |
+| Scrolling | `zz` | `ScrollCurrentMiddle` | 現在行が中央に来るように縦スクロール | ✓ |
+| Scrolling | `zb` | `ScrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | ✓ |
+| Worksheet | `e` | `NextWorksheet` | 次のシートを選択 | ✓ |
+| Worksheet | `E` | `PreviousWorksheet` | 前のシートを選択 | ✓ |
 | Worksheet | `ww` | `ShowSheetPicker` | SheetPicker を起動 | |
 | Worksheet | `wr` | `RenameWorksheet` | アクティブなシート名を変更 | |
 | Workbook | `:w` | `SaveWorkbook` | アクティブブックを保存 | |
@@ -344,8 +344,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Paste | `P` | `PasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` を送出 | ✓ |
 | Paste | `gp` | `PasteSpecial` | 形式を選択して貼り付けのダイアログを表示 | |
 | Paste | `U` | `PasteValue` | 値のみ貼り付け | |
-| Font | `-` | `DecreaseFontSize` | フォントサイズの縮小 | |
-| Font | `+` | `IncreaseFontSize` | フォントサイズの拡大 | |
+| Font | `-` | `DecreaseFontSize` | フォントサイズの縮小 | ✓ |
+| Font | `+` | `IncreaseFontSize` | フォントサイズの拡大 | ✓ |
 | Font | `fn` | `ChangeFontName` | フォント名にフォーカス | |
 | Font | `fs` | `ChangeFontSize` | フォントサイズにフォーカス | |
 | Font | `fh` | `AlignLeft` | 左揃え | |
@@ -373,15 +373,15 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Comment | `CR` | `ShowCellCommentAll` | すべてのコメントを表示 | |
 | Comment | `CM` | `HideCellCommentAll` | すべてのコメントを非表示 | |
 | Comment | `CH` | `HideCellCommentIndicator` | 現在セルのコメントインジケータを非表示 | |
-| Comment | `Cn` | `NextCommentedCell` | 次のコメントを選択 | |
-| Comment | `Cp` | `PrevCommentedCell` | 前のコメントを選択 | |
+| Comment | `Cn` | `NextComment` | 次のコメントを選択 | ✓ |
+| Comment | `Cp` | `PrevComment` | 前のコメントを選択 | ✓ |
 | Find & Replace | `/` | `ShowFindFollowLang` | IMEを言語モードに合わせて検索ダイアログを表示 | |
 | Find & Replace | `?` | `ShowFindNotFollowLang` | IMEを言語モードに合わせず検索ダイアログを表示 | |
 | Find & Replace | `n` | `NextFoundCell` | 検索結果の次のセルを選択 | ✓ |
 | Find & Replace | `N` | `PreviousFoundCell` | 検索結果の前のセルを選択 | ✓ |
 | Find & Replace | `R` | `ShowReplaceWindow` | 検索と置換のダイアログを表示 | |
-| Find & Replace | `*` | `FindActiveValueNext` | 現在セルの値で検索し次のセルを選択 | |
-| Find & Replace | `#` | `FindActiveValuePrev` | 現在セルの値で検索し前のセルを選択 | |
+| Find & Replace | `*` | `FindActiveValueNext` | 現在セルの値で検索し次のセルを選択 | ✓ |
+| Find & Replace | `#` | `FindActiveValuePrev` | 現在セルの値で検索し前のセルを選択 | ✓ |
 | Find & Replace | `]c` | `NextSpecialCells` | 次のコメントがあるセルを選択 | ✓ |
 | Find & Replace | `[c` | `PrevSpecialCells` | 前のコメントがあるセルを選択 | ✓ |
 | Find & Replace | `]o` | `NextSpecialCells` | 次の定数があるセルを選択 | ✓ |
@@ -406,14 +406,14 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `zl` | `ScrollRight1Column` | 1列右スクロール | ✓ |
 | Scrolling | `zH` | `ScrollLeft` | 1ページ左スクロール | ✓ |
 | Scrolling | `zL` | `ScrollRight` | 1ページ右スクロール | ✓ |
-| Scrolling | `zt` | `ScrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | |
-| Scrolling | `zz` | `ScrollCurrentMiddle` | 現在行が中央に来るように縦スクロール | |
-| Scrolling | `zb` | `ScrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | |
-| Scrolling | `zs` | `ScrollCurrentLeft` | 現在列が一番左に来るように横スクロール | |
-| Scrolling | `zm` | `ScrollCurrentCenter` | 現在列が中央に来るように横スクロール | |
-| Scrolling | `ze` | `ScrollCurrentRight` | 現在列が一番右に来るように横スクロール | |
-| Worksheet | `e`/`wn` | `NextWorksheet` | 次のシートを選択 | |
-| Worksheet | `E`/`wp` | `PreviousWorksheet` | 前のシートを選択 | |
+| Scrolling | `zt` | `ScrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | ✓ |
+| Scrolling | `zz` | `ScrollCurrentMiddle` | 現在行が中央に来るように縦スクロール | ✓ |
+| Scrolling | `zb` | `ScrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | ✓ |
+| Scrolling | `zs` | `ScrollCurrentLeft` | 現在列が一番左に来るように横スクロール | ✓ |
+| Scrolling | `zm` | `ScrollCurrentCenter` | 現在列が中央に来るように横スクロール | ✓ |
+| Scrolling | `ze` | `ScrollCurrentRight` | 現在列が一番右に来るように横スクロール | ✓ |
+| Worksheet | `e`/`wn` | `NextWorksheet` | 次のシートを選択 | ✓ |
+| Worksheet | `E`/`wp` | `PreviousWorksheet` | 前のシートを選択 | ✓ |
 | Worksheet | `ww`/`ws` | `ShowSheetPicker` | SheetPicker を起動 | |
 | Worksheet | `wr` | `RenameWorksheet` | アクティブなシート名を変更 | |
 | Worksheet | `wh` | `MoveWorksheetBack` | アクティブなシートを前に移動 | ✓ |
@@ -434,8 +434,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | アクティブブックを保存せずに閉じる | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | アクティブブックを保存して閉じる | |
 | Workbook | `:b [num]` | `ActivateWorkbook` | `[num]` 番目のブックを選択 | |
-| Workbook | `]b`/`:bn` | `NextWorkbook` | 次のワークブックを選択 | |
-| Workbook | `[b`/`:bp` | `PreviousWorkbook` | 前のワークブックを選択 | |
+| Workbook | `]b`/`:bn` | `NextWorkbook` | 次のワークブックを選択 | ✓ |
+| Workbook | `[b`/`:bp` | `PreviousWorkbook` | 前のワークブックを選択 | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | 読み取り専用を切り替える | |
 | Other | `u` | `Undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) | |
 | Other | `<C-r>` | `RedoExecute` | やり直し | |
@@ -444,8 +444,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `M` | `ZoomOut` | 10% または `[count]`% ズームアウト | ✓ |
 | Other | `%` | `ZoomSpecifiedScale` | 表示倍率を `[count]`% に設定。`1`-`9` は決まった値に倍率変更 | ✓ |
 | Other | `\` | `ShowContextMenu` | コンテキストメニューを表示 | |
-| Other | `<C-i>` | `JumpNext` | ジャンプリストの次のセルへ移動 | |
-| Other | `<C-o>` | `JumpPrev` | ジャンプリストの前のセルへ移動 | |
+| Other | `<C-i>` | `JumpNext` | ジャンプリストの次のセルへ移動 | ✓ |
+| Other | `<C-o>` | `JumpPrev` | ジャンプリストの前のセルへ移動 | ✓ |
 | Other | `:cle` | `ClearJumps` | ジャンプリストをクリア | |
 | Other | `zf` | `ToggleFreezePanes` | ウィンドウ枠の固定のオン/オフを切り替え | |
 | Other | `=v` | `ToggleFormulaBar` | 関数バーの表示/非表示を切り替え | |

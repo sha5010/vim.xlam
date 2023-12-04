@@ -131,17 +131,23 @@ End Function
 Function NextWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
-    Dim idx As Integer
+    Dim i As Long: i = GetWorkbookIndex(ActiveWorkbook)
+    Dim cnt As Long: cnt = gVim.Count1
+    Dim currentIdx As Long: currentIdx = i
 
-    idx = GetWorkbookIndex(ActiveWorkbook)
-    For i = 1 To Workbooks.Count
-        idx = (idx Mod Workbooks.Count) + 1
-        If Windows(Workbooks(idx).Name).Visible Then
-            Workbooks(idx).Activate
-            Exit Function
+    Do While cnt > 0
+        i = (i Mod Workbooks.Count) + 1
+        If Windows(Workbooks(i).Name).Visible Then
+            cnt = cnt - 1
         End If
-    Next i
+
+        If i = currentIdx Then
+            Dim visibleBooks As Long
+            visibleBooks = gVim.Count1 - cnt
+            cnt = cnt Mod visibleBooks
+        End If
+    Loop
+    Workbooks(i).Activate
     Exit Function
 
 Catch:
@@ -151,17 +157,23 @@ End Function
 Function PreviousWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
-    Dim idx As Integer
+    Dim i As Long: i = GetWorkbookIndex(ActiveWorkbook)
+    Dim cnt As Long: cnt = gVim.Count1
+    Dim currentIdx As Long: currentIdx = i
 
-    idx = GetWorkbookIndex(ActiveWorkbook)
-    For i = 1 To Workbooks.Count
-        idx = ((idx - 2 + Workbooks.Count) Mod Workbooks.Count) + 1
-        If Windows(Workbooks(idx).Name).Visible Then
-            Workbooks(idx).Activate
-            Exit Function
+    Do While cnt > 0
+        i = ((i - 2 + Workbooks.Count) Mod Workbooks.Count) + 1
+        If Windows(Workbooks(i).Name).Visible Then
+            cnt = cnt - 1
         End If
-    Next i
+
+        If i = currentIdx Then
+            Dim visibleBooks As Long
+            visibleBooks = gVim.Count1 - cnt
+            cnt = cnt Mod visibleBooks
+        End If
+    Loop
+    Workbooks(i).Activate
     Exit Function
 
 Catch:
