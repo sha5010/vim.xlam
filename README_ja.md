@@ -121,6 +121,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | ---- | --------- | ------ | ----------- | ----- |
 | Core | `<C-m>` | `ToggleVim` | Vimモードの切替 | |
 | Core | `<C-p>` | `ToggleLang` | 言語モードの切替 (日本語/英語) | |
+| Core | `:` | `EnterCmdlineMode` | コマンドラインモードに入る | |
 | Core | `:debug` | `ToggleDebugMode` | デバッグモードの切り替え | |
 | InsertMode | `a` | `AppendFollowLangMode` | IMEを言語モードに合わせてセルを末尾から編集 | |
 | InsertMode | `A` | `AppendNotFollowLangMode` | IMEを言語モードに合わせずセルを末尾から編集 | |
@@ -476,15 +477,15 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 
 Vim の `set` と同じシンタックスで設定できます。設定例は[設定ファイル](./config/_vimxlamrc)をご覧ください。
 
-| Option Key | Type | Description |
-| ---------- | ---- | ----------- |
-| `statusprefix` | string | ステータスバーに表示される一時的なメッセージのプレフィックス |
-| `togglekey` | string | Vimモードの有効/無効を切り替えるキー (Vim風のキー指定) |
-| `scrolloff` | float | `ScrollCurrentXXX` 系の上下オフセット量 (px) |
-| `jumplisthistory` | int | ジャンプリストの最大保持数 |
-| `[no]japanese` | bool | 日本語モード / 英語モード |
-| `[no]jiskeyboard` | bool | JISキーボード / USキーボード |
-| `[no]debug` | bool | デバッグモードの有効 / 無効 |
+| Option Key | Type | Description | Default |
+| ---------- | ---- | ----------- | ------- |
+| `statusprefix` | string | ステータスバーに表示される一時的なメッセージのプレフィックス | `vim.xlam: ` |
+| `togglekey` | string | Vimモードの有効/無効を切り替えるキー (Vim風のキー指定) | `<C-m>` |
+| `scrolloff` | float | `ScrollCurrentXXX` 系の上下オフセット量 (px) | `54.0` |
+| `jumplisthistory` | int | ジャンプリストの最大保持数 | `100` |
+| `[no]japanese` | bool | 日本語モード / 英語モード | `True` |
+| `[no]jiskeyboard` | bool | JISキーボード / USキーボード | `True` |
+| `[no]debug` | bool | デバッグモードの有効 / 無効 | `False` |
 
 ### Keymap
 
@@ -528,6 +529,13 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 ## Author
 
 [@sha_5010](https://twitter.com/sha_5010)
+
+## Related Projects
+
+- [ExcelLikeVim](https://github.com/kjnh10/ExcelLikeVim)
+- [VimExcel](https://www.vector.co.jp/soft/winnt/business/se494158.html)
+- [vixcel](https://github.com/codetsar/vixcel)
+- [Excel\_Vim\_Keys](https://github.com/treatmesubj/Excel_Vim_Keys)
 
 ## License
 
