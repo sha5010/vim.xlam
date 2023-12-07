@@ -340,6 +340,43 @@ Function GetVisibleSheetsCount() As Long
     Next
 End Function
 
+'/*
+' * Converts a hex color code to a long integer.
+' *
+' * @param {String} colorCode - The hex color code to convert.
+' * @returns {Long} - The corresponding long integer color value, or -1 if the conversion fails.
+' */
+Function HexColorCodeToLong(ByVal colorCode As String) As Long
+    If colorCode Like "*[!0-9a-fA-F]*" Then
+        ' Invalid characters in the color code
+        HexColorCodeToLong = -1
+    ElseIf Len(colorCode) = 3 Then
+        ' Convert 3-digit hex color code to long
+        HexColorCodeToLong = Val("&H" & Mid(colorCode, 3, 1) & Mid(colorCode, 3, 1) & _
+            Mid(colorCode, 2, 1) & Mid(colorCode, 2, 1) & Mid(colorCode, 1, 1) & Mid(colorCode, 1, 1) & "&")
+    ElseIf Len(colorCode) = 6 Then
+        ' Convert 6-digit hex color code to long
+        HexColorCodeToLong = Val("&H" & Mid(colorCode, 5, 2) & Mid(colorCode, 3, 2) & Mid(colorCode, 1, 2) & "&")
+    Else
+        ' Invalid length of the color code
+        HexColorCodeToLong = -1
+    End If
+End Function
+
+'/*
+' * Converts a long integer color code to a 6-digit hex string.
+' *
+' * @param {Long} colorCode - The long integer color code to convert.
+' * @returns {String} - The corresponding 6-digit hex color code string in lowercase.
+' */
+Function ColorCodeToHex(ByVal colorCode As Long) As String
+    ' Convert long integer color code to 6-digit hex string
+    ColorCodeToHex = Right("0" & Hex(colorCode Mod 256), 2) & _
+                     Right("0" & Hex(colorCode ¥ 256 Mod 256), 2) & _
+                     Right("0" & Hex(colorCode ¥ 256 ¥ 256), 2)
+    ColorCodeToHex = LCase(ColorCodeToHex)
+End Function
+
 
 '#####################################################################################'
 ' Source: https://mohayonao.hatenadiary.org/entry/20080617/1213712469                 '

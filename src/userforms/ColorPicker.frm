@@ -128,18 +128,6 @@ Private Sub ChangeSpecific(ByVal Enabled As Boolean, _
     Next Label
 End Sub
 
-Private Function HexColorCodeToLong(ByVal colorCode As String) As Long
-    If Len(colorCode) = 3 Then
-        HexColorCodeToLong = Val("&H" & Mid(colorCode, 3, 1) & Mid(colorCode, 3, 1) & _
-            Mid(colorCode, 2, 1) & Mid(colorCode, 2, 1) & Mid(colorCode, 1, 1) & Mid(colorCode, 1, 1) & "&")
-    ElseIf Len(colorCode) = 6 Then
-        HexColorCodeToLong = Val("&H" & Mid(colorCode, 5, 2) & Mid(colorCode, 3, 2) & Mid(colorCode, 1, 2) & "&")
-    Else
-        HexColorCodeToLong = -1
-    End If
-End Function
-
-
 Private Sub checkCmd()
     Dim colorCode As String
     Dim colorValue As Long
