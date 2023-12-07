@@ -22,11 +22,12 @@ Private pHoldAltLeft As Boolean
 Private pHoldAltRight As Boolean
 
 '/*
-' * Simulates a keystroke for a single key.
+' * Simulates a keystroke for a single key with optional modifier keys.
 ' *
 ' * @param {Long} key - The key code for the desired key.
+' * @param {Boolean} [ignoreKeyUp=False] - Flag to ignore keyup simulation.
 ' */
-Private Sub StrokeSingleKey(ByVal key As Long)
+Private Sub StrokeSingleKey(ByVal key As Long, Optional ByVal ignoreKeyUp As Boolean = False)
     Dim Ctrl As Boolean
     Dim Shift As Boolean
     Dim Alt As Boolean
@@ -40,31 +41,31 @@ Private Sub StrokeSingleKey(ByVal key As Long)
     key = key And &HFF
 
     ' Get current key status
-    pHoldShiftLeft = (GetKeyState(ShiftLeft_) And &H8000) <> 0
-    pHoldShiftRight = (GetKeyState(ShiftRight_) And &H8000) <> 0
-    pHoldCtrlLeft = (GetKeyState(CtrlLeft_) And &H8000) <> 0
-    pHoldCtrlRight = (GetKeyState(CtrlRight_) And &H8000) <> 0
-    pHoldAltLeft = (GetKeyState(AltLeft_) And &H8000) <> 0
-    pHoldAltRight = (GetKeyState(AltRight_) And &H8000) <> 0
+    pHoldShiftLeft = ((GetKeyState(ShiftLeft_) And &H8000) <> 0) And Not ignoreKeyUp
+    pHoldShiftRight = ((GetKeyState(ShiftRight_) And &H8000) <> 0) And Not ignoreKeyUp
+    pHoldCtrlLeft = ((GetKeyState(CtrlLeft_) And &H8000) <> 0) And Not ignoreKeyUp
+    pHoldCtrlRight = ((GetKeyState(CtrlRight_) And &H8000) <> 0) And Not ignoreKeyUp
+    pHoldAltLeft = ((GetKeyState(AltLeft_) And &H8000) <> 0) And Not ignoreKeyUp
+    pHoldAltRight = ((GetKeyState(AltRight_) And &H8000) <> 0) And Not ignoreKeyUp
 
     ' Simulating keydown for modifier keys
     If Alt Then
-        keybd_event vbKeyMenu, 0, 0, 0
-    Else
+        keybd_event AltLeft_, 0, 0, 0
+    ElseIf Not ignoreKeyUp Then
         If pHoldAltRight Then keybd_event AltRight_, 0, EXTENDED_KEY Or KEYUP, 0
         If pHoldAltLeft Then keybd_event AltLeft_, 0, KEYUP, 0
     End If
 
     If Ctrl Then
-        keybd_event vbKeyControl, 0, 0, 0
-    Else
+        keybd_event CtrlLeft_, 0, 0, 0
+    ElseIf Not ignoreKeyUp Then
         If pHoldCtrlRight Then keybd_event CtrlRight_, 0, EXTENDED_KEY Or KEYUP, 0
         If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, KEYUP, 0
     End If
 
     If Shift Then
-        keybd_event vbKeyShift, 0, 0, 0
-    Else
+        keybd_event ShiftLeft_, 0, 0, 0
+    ElseIf Not ignoreKeyUp Then
         If pHoldShiftRight Then keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
         If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, KEYUP, 0
     End If
@@ -76,15 +77,15 @@ Private Sub StrokeSingleKey(ByVal key As Long)
     ' Simulating keyup for modifier keys
     If pHoldAltLeft Then keybd_event AltLeft_, 0, 0, 0
     If pHoldAltRight Then keybd_event AltRight_, 0, 0, 0
-    If Not pHoldAltLeft And Not pHoldAltRight And Alt Then keybd_event vbKeyMenu, 0, KEYUP, 0
+    If Not pHoldAltLeft And Alt Then keybd_event AltLeft_, 0, KEYUP, 0
 
     If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, 0, 0
     If pHoldShiftRight Then keybd_event ShiftRight_, 0, 0, 0
-    If Not pHoldAltLeft And Not pHoldAltRight And Shift Then keybd_event vbKeyShift, 0, KEYUP, 0
+    If Not pHoldAltLeft And Shift Then keybd_event ShiftLeft_, 0, KEYUP, 0
 
     If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, 0, 0
     If pHoldCtrlRight Then keybd_event CtrlRight_, 0, 0, 0
-    If Not pHoldCtrlLeft And Not pHoldCtrlRight And Ctrl Then keybd_event vbKeyControl, 0, KEYUP, 0
+    If Not pHoldCtrlLeft And Ctrl Then keybd_event CtrlLeft_, 0, KEYUP, 0
 
 End Sub
 
@@ -99,7 +100,7 @@ Sub KeyStrokeWithoutKeyup(ParamArray strokeKeys() As Variant)
     Dim i As Long
 
     For i = LBound(strokeKeys) To UBound(strokeKeys)
-        Call StrokeSingleKey(strokeKeys(i))
+        Call StrokeSingleKey(strokeKeys(i), ignoreKeyUp:=True)
     Next i
 End Sub
 
