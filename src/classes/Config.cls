@@ -24,6 +24,12 @@ Private Const SCROLL_OFFSET = "scrolloff"
 Private Const MAX_HISTORIES = "jumplisthistory"
 Private Const LANG_JAPANESE = "japanese"
 Private Const JIS_KEYBOARD = "jiskeyboard"
+Private Const COLOR_PICKER_SIZE = "colorpickersize"
+Private Const CUSTOM_COLOR_1 = "customcolor1"
+Private Const CUSTOM_COLOR_2 = "customcolor2"
+Private Const CUSTOM_COLOR_3 = "customcolor3"
+Private Const CUSTOM_COLOR_4 = "customcolor4"
+Private Const CUSTOM_COLOR_5 = "customcolor5"
 Private Const DEBUG_MODE = "debug"
 
 'properties
@@ -79,12 +85,73 @@ End Property
 Public Property Let IsJisKeyboard(ByVal arg As Boolean)
     cConfig(JIS_KEYBOARD) = arg
 End Property
+Public Property Get ColorPickerSize() As Double
+    ColorPickerSize = cConfig(COLOR_PICKER_SIZE)
+End Property
+Public Property Let ColorPickerSize(ByVal arg As Double)
+    If arg < 6 Then
+        arg = 6
+    ElseIf arg > 48 Then
+        arg = 48
+    End If
+    cConfig(COLOR_PICKER_SIZE) = arg
+End Property
+Public Property Get CustomColor1() As Variant
+    CustomColor1 = cConfig(CUSTOM_COLOR_1)
+End Property
+Public Property Let CustomColor1(ByVal arg As Variant)
+    Dim colorCode As Long: colorCode = ConvertCustomColorToLong(arg)
+    If colorCode > -1 Then cConfig(CUSTOM_COLOR_1) = colorCode
+End Property
+Public Property Get CustomColor2() As Variant
+    CustomColor2 = cConfig(CUSTOM_COLOR_2)
+End Property
+Public Property Let CustomColor2(ByVal arg As Variant)
+    Dim colorCode As Long: colorCode = ConvertCustomColorToLong(arg)
+    If colorCode > -1 Then cConfig(CUSTOM_COLOR_2) = colorCode
+End Property
+Public Property Get CustomColor3() As Variant
+    CustomColor3 = cConfig(CUSTOM_COLOR_3)
+End Property
+Public Property Let CustomColor3(ByVal arg As Variant)
+    Dim colorCode As Long: colorCode = ConvertCustomColorToLong(arg)
+    If colorCode > -1 Then cConfig(CUSTOM_COLOR_3) = colorCode
+End Property
+Public Property Get CustomColor4() As Variant
+    CustomColor4 = cConfig(CUSTOM_COLOR_4)
+End Property
+Public Property Let CustomColor4(ByVal arg As Variant)
+    Dim colorCode As Long: colorCode = ConvertCustomColorToLong(arg)
+    If colorCode > -1 Then cConfig(CUSTOM_COLOR_4) = colorCode
+End Property
+Public Property Get CustomColor5() As Variant
+    CustomColor5 = cConfig(CUSTOM_COLOR_5)
+End Property
+Public Property Let CustomColor5(ByVal arg As Variant)
+    Dim colorCode As Long: colorCode = ConvertCustomColorToLong(arg)
+    If colorCode > -1 Then cConfig(CUSTOM_COLOR_5) = colorCode
+End Property
 Public Property Get DebugMode() As Boolean
     DebugMode = cConfig(DEBUG_MODE)
 End Property
 Public Property Let DebugMode(ByVal arg As Boolean)
     cConfig(DEBUG_MODE) = arg
 End Property
+
+Private Function ConvertCustomColorToLong(ByVal arg As Variant) As Long
+    Select Case VarType(arg)
+        Case vbString
+            ConvertCustomColorToLong = HexColorCodeToLong(Replace(arg, "#", ""))
+        Case vbLong, vbInteger, vbDouble, vbSingle, vbByte, vbCurrency, vbDecimal
+            arg = CLng(arg)
+            If 0 < arg And arg < 16777216 Then
+                ConvertCustomColorToLong = arg
+            Else
+                ConvertCustomColorToLong = -1
+            End If
+    End Select
+End Function
+
 
 Private Sub Class_Initialize()
     Set cConfig = New Dictionary
@@ -97,6 +164,12 @@ Private Sub Class_Initialize()
         .Add MAX_HISTORIES, 100
         .Add LANG_JAPANESE, True
         .Add JIS_KEYBOARD, True
+        .Add COLOR_PICKER_SIZE, 12#
+        .Add CUSTOM_COLOR_1, &H66FF&
+        .Add CUSTOM_COLOR_2, &H6699FF
+        .Add CUSTOM_COLOR_3, &HFF00FF
+        .Add CUSTOM_COLOR_4, &H8000&
+        .Add CUSTOM_COLOR_5, &HFF0000
         .Add DEBUG_MODE, Not ThisWorkbook.IsAddin
     End With
 End Sub
@@ -145,6 +218,12 @@ Public Sub Set_(ByRef keyName As String, ByVal arg As Variant)
         Case MAX_HISTORIES: MaxHistories = arg
         Case LANG_JAPANESE: LangJapanese = arg
         Case JIS_KEYBOARD: IsJisKeyboard = arg
+        Case COLOR_PICKER_SIZE: ColorPickerSize = arg
+        Case CUSTOM_COLOR_1: CustomColor1 = arg
+        Case CUSTOM_COLOR_2: CustomColor2 = arg
+        Case CUSTOM_COLOR_3: CustomColor3 = arg
+        Case CUSTOM_COLOR_4: CustomColor4 = arg
+        Case CUSTOM_COLOR_5: CustomColor5 = arg
         Case DEBUG_MODE: DebugMode = arg
 
         Case Else

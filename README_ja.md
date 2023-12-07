@@ -485,6 +485,12 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `jumplisthistory` | int | ジャンプリストの最大保持数 | `100` |
 | `[no]japanese` | bool | 日本語モード / 英語モード | `True` |
 | `[no]jiskeyboard` | bool | JISキーボード / USキーボード | `True` |
+| `colorpickersize` | float | ColorPicker のフォームサイズ (px) | `12.0` |
+| `customcolor1` | string | ColorPicker のカスタム色 #1 | `#ff6600` ![#ff6600](https://via.placeholder.com/15/ff6600/000000?text=+) |
+| `customcolor2` | string | ColorPicker のカスタム色 #2 | `#ff9966` ![#ff9966](https://via.placeholder.com/15/ff9966/000000?text=+) |
+| `customcolor3` | string | ColorPicker のカスタム色 #3 | `#ff00ff` ![#ff00ff](https://via.placeholder.com/15/ff00ff/000000?text=+) |
+| `customcolor4` | string | ColorPicker のカスタム色 #4 | `#008000` ![#008000](https://via.placeholder.com/15/008000/000000?text=+) |
+| `customcolor5` | string | ColorPicker のカスタム色 #5 | `#0000ff` ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) |
 | `[no]debug` | bool | デバッグモードの有効 / 無効 | `False` |
 
 ### Keymap

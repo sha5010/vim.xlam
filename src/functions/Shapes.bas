@@ -14,7 +14,7 @@ Function ChangeShapeFillColor(Optional ByVal resultColor As cls_FontColor) As Bo
     Set shp = Selection.ShapeRange
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.ShowColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then
@@ -53,7 +53,7 @@ Function ChangeShapeFontColor(Optional ByVal resultColor As cls_FontColor) As Bo
     Set shp = Selection.ShapeRange
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.ShowColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then
@@ -92,7 +92,7 @@ Function ChangeShapeBorderColor(Optional garbage As String, _
     Set shp = Selection.ShapeRange
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.ShowColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then

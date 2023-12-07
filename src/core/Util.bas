@@ -3,11 +3,11 @@ Option Explicit
 Option Private Module
 
 #If Win64 Then
-    Private Declare PtrSafe Function QueryPerformanceCounter Lib "kernel32" (X As Currency) As Boolean
-    Private Declare PtrSafe Function QueryPerformanceFrequency Lib "kernel32" (X As Currency) As Boolean
+    Private Declare PtrSafe Function QueryPerformanceCounter Lib "kernel32" (x As Currency) As Boolean
+    Private Declare PtrSafe Function QueryPerformanceFrequency Lib "kernel32" (x As Currency) As Boolean
 #Else
-    Private Declare Function QueryPerformanceCounter Lib "kernel32" (X As Currency) As Boolean
-    Private Declare Function QueryPerformanceFrequency Lib "kernel32" (X As Currency) As Boolean
+    Private Declare Function QueryPerformanceCounter Lib "kernel32" (x As Currency) As Boolean
+    Private Declare Function QueryPerformanceFrequency Lib "kernel32" (x As Currency) As Boolean
 #End If
 
 Private Ctr1 As Currency

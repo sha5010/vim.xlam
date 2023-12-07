@@ -487,6 +487,12 @@ You can configure using the same syntax as Vim's `set`. For configuration exampl
 | `jumplisthistory` | int | Maximum number of items to keep in the jump list | `100` |
 | `[no]japanese` | bool | Japanese mode / English mode | `True` |
 | `[no]jiskeyboard` | bool | JIS keyboard / US keyboard | `True` |
+| `colorpickersize` | float | ColorPicker form size (px) | `12.0` |
+| `customcolor1` | string | Custom color #1 in ColorPicker | `#ff6600` ![#ff6600](https://via.placeholder.com/15/ff6600/000000?text=+) |
+| `customcolor2` | string | Custom color #2 in ColorPicker | `#ff9966` ![#ff9966](https://via.placeholder.com/15/ff9966/000000?text=+) |
+| `customcolor3` | string | Custom color #3 in ColorPicker | `#ff00ff` ![#ff00ff](https://via.placeholder.com/15/ff00ff/000000?text=+) |
+| `customcolor4` | string | Custom color #4 in ColorPicker | `#008000` ![#008000](https://via.placeholder.com/15/008000/000000?text=+) |
+| `customcolor5` | string | Custom color #5 in ColorPicker | `#0000ff` ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) |
 | `[no]debug` | bool | Enable / disable debug mode | `False` |
 
 ### Keymap

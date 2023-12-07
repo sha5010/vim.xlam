@@ -314,7 +314,7 @@ Function ChangeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor) As
     End If
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.ShowColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then

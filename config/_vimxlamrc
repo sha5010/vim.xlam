@@ -44,6 +44,24 @@
 ### JIS keyboard(jiskeyboard) / US keyboard(nojiskeyboard)
 # set jiskeyboard
 
+### Color picker size
+# set colorpickersize=12
+
+### Custom color 1 (in ColorPicker)
+# set customcolor1=#ff6600
+
+### Custom color 2 (in ColorPicker)
+# set customcolor2=#ff9966
+
+### Custom color 3 (in ColorPicker)
+# set customcolor3=#ff00ff
+
+### Custom color 4 (in ColorPicker)
+# set customcolor4=#008000
+
+### Custom color 5 (in ColorPicker)
+# set customcolor5=#0000ff
+
 ### Debug mode (on: debug / off: nodebug)
 # set nodebug
 

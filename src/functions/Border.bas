@@ -112,7 +112,7 @@ Private Function BorderColorInner(Optional ByVal Index As Variant = 0, _
     End If
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.ShowColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then
