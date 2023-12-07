@@ -72,6 +72,8 @@ Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String)
     ' Quit if command was executed successfully
     ElseIf cCmdBuffer = "" And cCount = 0 Then
         Exit Sub
+    Else
+        valid = True
     End If
 
     ' Handle pre-defined cancel keys
