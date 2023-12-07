@@ -9,6 +9,13 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
+Private IsThemeColor_ As Boolean
+Private ThemeColorIndex As Long
+Private ObjectThemeColorIndex As Long
+Private Color_ As Long
+Private IsSetup As Boolean
+Private IsNull_ As Boolean
+
 '##################################################################################################'
 ' Source: https://www.mrexcel.com/board/threads/applying-tintandshade-to-a-userform-label.1189219/
 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv'
@@ -20,14 +27,6 @@ Option Explicit
     Private Declare Function ColorAdjustLuma Lib "SHLWAPI.DLL" (ByVal clrRGB As Long, ByVal n As Long, ByVal fScale As Long) As Long
     Private Declare Function TranslateColor Lib "oleAut32.dll" Alias "OleTranslateColor" (ByVal clr As OLE_COLOR, ByVal palet As Long, Col As Long) As Long
 #End If
-
-Private IsThemeColor_ As Boolean
-Private ThemeColorIndex As Integer
-Private ObjectThemeColorIndex As Integer
-Private Luminance_ As Integer
-Private Color_ As Long
-Private IsSetup As Boolean
-Private IsNull_ As Boolean
 
 Private Function ApplyTintAndShade(ByVal ColRef As Long, Optional ByVal Luminance As Long = 0) As Long
     '(Luminance must be between -100 and +100)
@@ -47,7 +46,7 @@ Private Sub Class_Initialize()
     IsNull_ = False
 End Sub
 
-Public Sub Setup(Optional ByVal msoThemeColorIndex As Integer = xlNone, Optional ByVal colorCode As Long = xlNone)
+Public Sub Setup(Optional ByVal msoThemeColorIndex As Long = xlNone, Optional ByVal colorCode As Long = xlNone)
     If msoThemeColorIndex = xlNone And colorCode = xlNone Then
         Err.Raise 50001, Description:="msoThemeColorIndex か colorCode のどちらかを指定しなければなりません。"
         Exit Sub
@@ -74,7 +73,7 @@ Public Sub Setup(Optional ByVal msoThemeColorIndex As Integer = xlNone, Optional
         Exit Sub
 
 Catch:
-        Dim savedMode As Integer
+        Dim savedMode As Long
         Dim savedTintAndShade As Double
         Dim savedColor As Long
 
@@ -130,11 +129,11 @@ Public Property Get Color() As Long
     Color = ApplyTintAndShade(Color_, Luminance)
 End Property
 
-Public Property Get ThemeColor() As Integer
+Public Property Get ThemeColor() As Long
     ThemeColor = ThemeColorIndex
 End Property
 
-Public Property Get ObjectThemeColor() As Integer
+Public Property Get ObjectThemeColor() As Long
     ObjectThemeColor = ObjectThemeColorIndex
 End Property
 
