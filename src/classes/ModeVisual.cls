@@ -11,8 +11,7 @@ Option Explicit
 
 Private WithEvents App As Application
 Attribute App.VB_VarHelpID = -1
-Private WithEvents NormalApp As Application
-Attribute NormalApp.VB_VarHelpID = -1
+Private NormalApp As cls_ModeNormal
 
 Private cIsVisualLine As Boolean    ' Visual Line mode (True) / Visual mode (False)
 Private cBaseCell As Range
@@ -91,7 +90,7 @@ End Property
 Private Sub Class_Initialize()
     ' Initialize application instances
     Set App = Application
-    Set NormalApp = Application
+    Set NormalApp = New cls_ModeNormal
 
     If Not TypeOf Selection Is Range Then
         Set cBaseCell = ActiveCell
@@ -112,8 +111,6 @@ End Sub
 Private Sub Class_Terminate()
     Set NormalApp = Nothing
     Set App = Nothing
-
-    cIsVisualLine = False
-
-    Call SetStatusBar
+    Set cBaseCell = Nothing
+    Set cLastCell = Nothing
 End Sub

@@ -129,6 +129,7 @@ Public Sub Change(ByVal newMode As String)
     Select Case newMode
         Case MODE_NORMAL
             Set cModeNormal = New cls_ModeNormal
+            Call DisableIME
         Case MODE_VISUAL
             Set cModeVisual = New cls_ModeVisual
     End Select

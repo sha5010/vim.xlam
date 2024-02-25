@@ -10,6 +10,7 @@ Function ChangeToNormalMode(Optional ByVal g As String) As Boolean
     End If
 
     Call gVim.Mode.Change(MODE_NORMAL)
+    Call SetStatusBar
     Exit Function
 
 Catch:

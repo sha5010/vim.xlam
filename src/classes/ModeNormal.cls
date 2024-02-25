@@ -42,8 +42,6 @@ End Sub
 
 Private Sub Class_Initialize()
     Set App = Application
-    Call DisableIME
-    Call SetStatusBar
 End Sub
 
 Private Sub Class_Terminate()
