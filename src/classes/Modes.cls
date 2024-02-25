@@ -19,7 +19,7 @@ Private cKeyMapBits As Dictionary
 Private cModeNormal As cls_ModeNormal
 Attribute cModeNormal.VB_VarHelpID = -1
 Private cModeVisual As cls_ModeVisual
-Attribute cModeVisual.VB_VarHelpID = -1
+Private cModeShapeInsert As cls_ModeShapeInsert
 
 '/*
 ' * Initializes the class and sets up the key map fallback.
@@ -99,6 +99,7 @@ End Function
 Private Sub ClearAppInstances()
     Set cModeNormal = Nothing
     Set cModeVisual = Nothing
+    Set cModeShapeInsert = Nothing
 End Sub
 
 '/*
@@ -132,6 +133,8 @@ Public Sub Change(ByVal newMode As String)
             Call DisableIME
         Case MODE_VISUAL
             Set cModeVisual = New cls_ModeVisual
+        Case MODE_SHAPEINSERT
+            Set cModeShapeInsert = New cls_ModeShapeInsert
     End Select
 
     ' Update the current mode
@@ -141,6 +144,11 @@ Public Sub Change(ByVal newMode As String)
     If Not Parent Is Nothing Then
         Call Parent.KeyMap.BindAll
     End If
+End Sub
+
+Public Sub Disable()
+    Call ClearAppInstances
+    cCurrentMode = MODE_DUMMY
 End Sub
 
 Public Function ModeBit(ByVal mode_ As String, _
@@ -172,4 +180,8 @@ End Property
 
 Public Property Get Visual() As cls_ModeVisual
     Set Visual = cModeVisual
+End Property
+
+Public Property Get ShapeInsert() As cls_ModeShapeInsert
+    Set ShapeInsert = cModeShapeInsert
 End Property

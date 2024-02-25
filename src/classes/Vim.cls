@@ -87,10 +87,12 @@ Public Property Let Enabled(ByVal arg As Boolean)
         End If
 
         Call DisableIME
-        Call cKeyMap.BindAll
+        Call cModes.Change(MODE_NORMAL)
 
     Else
         'Make disable
+        Call cModes.Disable
+        Call SetStatusBar
         Call cKeyMap.UnbindAll
     End If
 
