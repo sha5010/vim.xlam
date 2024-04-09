@@ -167,6 +167,12 @@ Private Sub UserForm_Activate()
     ' Clear command buffer and result color
     cCmdBuf = ""
     Set cResultColor = Nothing
+
+    ' Set the position to the center of the active window
+    With ActiveWindow
+        Me.Top = .Top + (.Height - Me.Height) / 2
+        Me.Left = .Left + (.Width - Me.Width) / 2
+    End With
 End Sub
 
 '/*
