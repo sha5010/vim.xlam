@@ -42,8 +42,6 @@ Private Sub Class_Initialize()
         cKeyMapBits.Add mode_, 2 ^ i
         i = i + 1
     Next
-
-    Call Change(MODE_NORMAL)
 End Sub
 
 Private Sub Class_Terminate()
