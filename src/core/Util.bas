@@ -377,6 +377,55 @@ Function ColorCodeToHex(ByVal colorCode As Long) As String
     ColorCodeToHex = LCase(ColorCodeToHex)
 End Function
 
+'/*
+' * Returns the number of occurrences of a string within another string.
+' *
+' * @param {String} baseStr - The base string to search within.
+' * @param {String} chkStr - The string to search for.
+' * @returns {Long} - The number of occurrences of chkStr in baseStr.
+' */
+Function StrCount(ByVal baseStr As String, _
+                  ByVal chkStr As String) As Long
+    Dim n As Long: n = 0
+    Dim ret As Long: ret = 0
+
+    ' Loop through the baseStr to count occurrences of chkStr
+    Do
+        n = InStr(n + 1, baseStr, chkStr)
+        If n = 0 Then
+            Exit Do
+        Else
+            ret = ret + 1
+        End If
+    Loop
+
+    StrCount = ret
+End Function
+
+'/*
+' * Returns the position of the Nth occurrence of a string within another string.
+' *
+' * @param {String} baseStr - The base string to search within.
+' * @param {String} chkStr - The string to search for.
+' * @param {Long} n - The Nth occurrence to find.
+' * @returns {Long} - The position of the Nth occurrence of chkStr in baseStr.
+' */
+Function StrNPos(ByVal baseStr As String, _
+                 ByVal chkStr As String, _
+                 ByVal n As Long) As Long
+    Dim i As Long: i = 0
+    Dim l As Long: l = 0
+
+    ' Loop through the baseStr to find the position of the Nth occurrence of chkStr
+    For i = 1 To n
+        l = InStr(l + 1, baseStr, chkStr)
+        If l = 0 Then
+            Exit For
+        End If
+        StrNPos = l
+    Next i
+End Function
+
 
 '#####################################################################################'
 ' Source: https://mohayonao.hatenadiary.org/entry/20080617/1213712469                 '
@@ -561,33 +610,6 @@ End Function
 ' Source: https://mohayonao.hatenadiary.org/entry/20080617/1213712469                 '
 '#####################################################################################'
 
-'文字列中の出現回数を返す
-Function StrCount(baseStr As String, chkStr As String) As Long
-    Dim n As Long: n = 0
-    Dim ret As Long: ret = 0
-    Do
-        n = InStr(n + 1, baseStr, chkStr)
-        If n = 0 Then
-            Exit Do
-        Else
-            ret = ret + 1
-        End If
-    Loop
-    StrCount = ret
-End Function
-
-'文字列中のN回目に現れた位置を返す
-Function StrNPos(baseStr As String, chkStr As String, ByVal n As Long) As Long
-    Dim i As Long: i = 0
-    Dim l As Long: l = 0
-    For i = 1 To n
-        l = InStr(l + 1, baseStr, chkStr)
-        If l = 0 Then
-            Exit For
-        End If
-        StrNPos = l
-    Next i
-End Function
 
 Sub DebugPrint(ByVal str As String, Optional ByVal funcName As String = "")
     If Not gVim.Config.DebugMode Then
