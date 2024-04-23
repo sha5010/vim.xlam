@@ -2,7 +2,7 @@ Attribute VB_Name = "F_Row"
 Option Explicit
 Option Private Module
 
-Enum TargetRowType
+Enum eTargetRowType
     Entire
     ToTopRows
     ToBottomRows
@@ -10,13 +10,13 @@ Enum TargetRowType
     ToBottomOfCurrentRegionRows
 End Enum
 
-Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
+Private Function GetTargetRows(ByVal TargetType As eTargetRowType) As Range
     'Error handling
     On Error GoTo Catch
 
     'Return Nothing when selection is not Range
     If TypeName(Selection) <> "Range" Then
-        Set getTargetRows = Nothing
+        Set GetTargetRows = Nothing
         Exit Function
     End If
 
@@ -29,12 +29,12 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
     'Entire
     If TargetType = Entire Then
         With rngSelection
-            If .Rows.Count > 1 Or gCount = 1 Then
-                Set getTargetRows = .EntireRow
+            If .Rows.Count > 1 Or gVim.Count1 = 1 Then
+                Set GetTargetRows = .EntireRow
                 Exit Function
-            ElseIf gCount > 1 Then
+            ElseIf gVim.Count1 > 1 Then
                 startRow = .Row
-                endRow = .Row + gCount - 1
+                endRow = .Row + gVim.Count1 - 1
             End If
         End With
 
@@ -45,7 +45,7 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
 
         'Out of range
         If startRow > endRow Then
-            Set getTargetRows = Nothing
+            Set GetTargetRows = Nothing
             Exit Function
         End If
 
@@ -58,7 +58,7 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
 
         'Out of range
         If startRow > endRow Then
-            Set getTargetRows = Nothing
+            Set GetTargetRows = Nothing
             Exit Function
         End If
 
@@ -69,7 +69,7 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
 
         'Out of range
         If startRow > endRow Then
-            Set getTargetRows = Nothing
+            Set GetTargetRows = Nothing
             Exit Function
         End If
 
@@ -77,12 +77,12 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
     ElseIf TargetType = ToBottomOfCurrentRegionRows Then
         With ActiveCell.CurrentRegion
             startRow = ActiveCell.Row
-            endRow = .Colmuns(.Rows.Count).Row
+            endRow = .Rows(.Rows.Count).Row
         End With
 
         'Out of range
         If startRow > endRow Then
-            Set getTargetRows = Nothing
+            Set GetTargetRows = Nothing
             Exit Function
         End If
 
@@ -93,63 +93,63 @@ Private Function getTargetRows(ByVal TargetType As TargetRowType) As Range
             endRow = .Rows.Count
         End If
 
-        Set getTargetRows = .Range(.Rows(startRow), .Rows(endRow))
+        Set GetTargetRows = .Range(.Rows(startRow), .Rows(endRow))
     End With
     Exit Function
 
 Catch:
-    Set getTargetRows = Nothing
-    Call errorHandler("getTargetRows")
+    Set GetTargetRows = Nothing
+    Call ErrorHandler("GetTargetRows")
 End Function
 
-Private Function selectRowsInternal(ByVal TargetType As TargetRowType) As Boolean
+Private Function SelectRowsInternal(ByVal TargetType As eTargetRowType) As Boolean
     On Error GoTo Catch
 
     Dim savedCell As Range
     Dim Target As Range
 
-    Set Target = getTargetRows(TargetType)
+    Set Target = GetTargetRows(TargetType)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Set savedCell = ActiveCell
 
     Target.Select
     savedCell.Activate
 
-    selectRowsInternal = True
+    SelectRowsInternal = True
     Exit Function
 
 Catch:
-    Call errorHandler("selectRowsInternal")
+    Call ErrorHandler("SelectRowsInternal")
 End Function
 
-Function selectRows(Optional ByVal TargetType As TargetRowType = Entire)
+Function SelectRows(Optional ByVal TargetType As eTargetRowType = Entire) As Boolean
     On Error GoTo Catch
 
-    Call selectRowsInternal(TargetType)
+    Call SelectRowsInternal(TargetType)
     Exit Function
 
 Catch:
-    Call errorHandler("selectRows")
+    Call ErrorHandler("SelectRows")
 End Function
 
-Function insertRows()
+Function InsertRows(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim savedCell As Range
     Dim Target As Range
 
-    Set Target = getTargetRows(Entire)
+    Set Target = GetTargetRows(Entire)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call repeatRegister("insertRows")
-    Call stopVisualMode
+    Call RepeatRegister("InsertRows")
+    Call StopVisualMode
 
     Application.ScreenUpdating = False
 
@@ -157,26 +157,26 @@ Function insertRows()
     Target.Select
     savedCell.Activate
 
-    Call keystroke(True, Alt_ + I_, R_)
+    Call KeyStroke(Alt_ + I_, R_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("insertRows")
+    Call ErrorHandler("InsertRows")
 End Function
 
-Function appendRows()
+Function AppendRows(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim savedCell As Range
     Dim Target As Range
 
-    Set Target = getTargetRows(Entire)
+    Set Target = GetTargetRows(Entire)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call repeatRegister("appendRows")
-    Call stopVisualMode
+    Call RepeatRegister("AppendRows")
+    Call StopVisualMode
 
     Set savedCell = ActiveCell
 
@@ -190,223 +190,223 @@ Function appendRows()
     Target.Select
     savedCell.Activate
 
-    Call keystroke(True, Alt_ + I_, R_)
+    Call KeyStroke(Alt_ + I_, R_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("appendRows")
+    Call ErrorHandler("AppendRows")
 End Function
 
-Function deleteRows(Optional ByVal TargetType As TargetRowType = Entire)
+Function DeleteRows(Optional ByVal TargetType As eTargetRowType = Entire) As Boolean
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
-    If selectRowsInternal(TargetType) = False Then
+    If SelectRowsInternal(TargetType) = False Then
         Application.ScreenUpdating = True
         Exit Function
     End If
 
-    Call repeatRegister("deleteRows")
-    Call stopVisualMode
+    Call RepeatRegister("DeleteRows")
+    Call StopVisualMode
 
-    Call keystroke(True, Ctrl_ + Minus_)
+    Call KeyStroke(Ctrl_ + Minus_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("deleteRows")
+    Call ErrorHandler("DeleteRows")
 End Function
 
-Function yankRows(Optional ByVal TargetType As TargetRowType = Entire)
+Function YankRows(Optional ByVal TargetType As eTargetRowType = Entire) As Boolean
     On Error GoTo Catch
 
     Dim Target As Range
 
-    Set Target = getTargetRows(TargetType)
+    Set Target = GetTargetRows(TargetType)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Target.Copy
-    Set gLastYanked = Target
+    Set gVim.Vars.LastYanked = Target
 
     Exit Function
 
 Catch:
-    Call errorHandler("yankRows")
+    Call ErrorHandler("YankRows")
 End Function
 
-Function cutRows(Optional ByVal TargetType As TargetRowType = Entire)
+Function CutRows(Optional ByVal TargetType As eTargetRowType = Entire) As Boolean
     On Error GoTo Catch
 
     Dim Target As Range
 
-    Set Target = getTargetRows(TargetType)
+    Set Target = GetTargetRows(TargetType)
     If Target Is Nothing Then
         Exit Function
     End If
 
-    Call stopVisualMode
+    Call StopVisualMode
 
     Target.Cut
-    Set gLastYanked = Target
+    Set gVim.Vars.LastYanked = Target
 
     Exit Function
 
 Catch:
-    Call errorHandler("cutRows")
+    Call ErrorHandler("CutRows")
 End Function
 
-Function hideRows()
+Function HideRows(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    If selectRowsInternal(Entire) = False Then
+    If SelectRowsInternal(Entire) = False Then
         Exit Function
     End If
 
-    Call repeatRegister("hideRows")
-    Call stopVisualMode
+    Call RepeatRegister("HideRows")
+    Call StopVisualMode
 
-    Call keystroke(True, Ctrl_ + k9_)
+    Call KeyStroke(Ctrl_ + k9_)
 
 Catch:
-    Call errorHandler("hideRows")
+    Call ErrorHandler("HideRows")
 End Function
 
-Function unhideRows()
+Function UnhideRows(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    If selectRowsInternal(Entire) = False Then
+    If SelectRowsInternal(Entire) = False Then
         Exit Function
     End If
 
-    Call repeatRegister("unhideRows")
-    Call stopVisualMode
+    Call RepeatRegister("UnhideRows")
+    Call StopVisualMode
 
-    Call keystroke(True, Ctrl_ + Shift_ + k9_)
+    Call KeyStroke(Ctrl_ + Shift_ + k9_)
     Exit Function
 
 Catch:
-    Call errorHandler("unhideRows")
+    Call ErrorHandler("UnhideRows")
 End Function
 
-Function groupRows()
+Function GroupRows(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
-    If selectRowsInternal(Entire) = False Then
+    If SelectRowsInternal(Entire) = False Then
         Application.ScreenUpdating = True
         Exit Function
     End If
 
-    Call repeatRegister("groupRows")
-    Call stopVisualMode
+    Call RepeatRegister("GroupRows")
+    Call StopVisualMode
 
-    Call keystroke(True, Alt_ + Shift_ + Right_)
+    Call KeyStroke(Alt_ + Shift_ + Right_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("groupRows")
+    Call ErrorHandler("GroupRows")
 End Function
 
-Function ungroupRows()
+Function UngroupRows(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Application.ScreenUpdating = False
-    If selectRowsInternal(Entire) = False Then
+    If SelectRowsInternal(Entire) = False Then
         Application.ScreenUpdating = True
         Exit Function
     End If
 
-    Call repeatRegister("ungroupRows")
-    Call stopVisualMode
+    Call RepeatRegister("UngroupRows")
+    Call StopVisualMode
 
-    Call keystroke(True, Alt_ + Shift_ + Left_)
+    Call KeyStroke(Alt_ + Shift_ + Left_)
 
 Catch:
     Application.ScreenUpdating = True
-    Call errorHandler("ungroupRows")
+    Call ErrorHandler("UngroupRows")
 End Function
 
-Function foldRowsGroup()
+Function FoldRowsGroup(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("foldRowsGroup")
-    Call stopVisualMode
+    Call RepeatRegister("FoldRowsGroup")
+    Call StopVisualMode
 
     Dim targetRow As Long
     Dim i As Integer
 
     targetRow = ActiveCell.Row
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call Application.ExecuteExcel4Macro("SHOW.DETAIL(1," & targetRow & ",FALSE)")
     Next i
     Exit Function
 
 Catch:
-    Call errorHandler("foldRowsGroup")
+    Call ErrorHandler("FoldRowsGroup")
 End Function
 
-Function spreadRowsGroup()
+Function SpreadRowsGroup(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("spreadRowsGroup")
-    Call stopVisualMode
+    Call RepeatRegister("SpreadRowsGroup")
+    Call StopVisualMode
 
     Dim targetRow As Long
     Dim i As Integer
 
     targetRow = ActiveCell.Row
 
-    For i = 1 To gCount
+    For i = 1 To gVim.Count1
         Call Application.ExecuteExcel4Macro("SHOW.DETAIL(1," & targetRow & ",TRUE)")
     Next i
     Exit Function
 
 Catch:
-    Call errorHandler("spreadRowsGroup")
+    Call ErrorHandler("SpreadRowsGroup")
 End Function
 
-Function adjustRowsHeight()
+Function AdjustRowsHeight(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("adjustRowsHeight")
-    Call stopVisualMode
+    Call RepeatRegister("AdjustRowsHeight")
+    Call StopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call keystroke(True, Alt_ + H_, O_, A_)
+    Call KeyStroke(Alt_ + H_, O_, A_)
     Exit Function
 
 Catch:
-    Call errorHandler("adjustRowsHeight")
+    Call ErrorHandler("AdjustRowsHeight")
 End Function
 
-Function setRowsHeight()
+Function SetRowsHeight(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call stopVisualMode
+    Call StopVisualMode
 
-    If gCount > 1 Then
-        Selection.Resize(gCount, Selection.Columns.Count).Select
+    If gVim.Count1 > 1 Then
+        Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call keystroke(True, Alt_ + H_, O_, H_)
+    Call KeyStroke(Alt_ + H_, O_, H_)
     Exit Function
 
 Catch:
-    Call errorHandler("setRowsHeight")
+    Call ErrorHandler("SetRowsHeight")
 End Function
 
-Function narrowRowsHeight()
+Function NarrowRowsHeight(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("narrowRowsHeight")
-    Call stopVisualMode
+    Call RepeatRegister("NarrowRowsHeight")
+    Call StopVisualMode
 
     Dim currentHeight As Double
     Dim targetRows As Range
@@ -423,24 +423,24 @@ Function narrowRowsHeight()
         Set targetRows = ActiveCell.EntireRow
     End If
 
-    If currentHeight - gCount < 0 Then
+    If currentHeight - gVim.Count1 < 0 Then
         targetRows.EntireRow.RowHeight = 0
     Else
-        targetRows.EntireRow.RowHeight = currentHeight - gCount
+        targetRows.EntireRow.RowHeight = currentHeight - gVim.Count1
     End If
 
     Set targetRows = Nothing
     Exit Function
 
 Catch:
-    Call errorHandler("narrowRowsHeight")
+    Call ErrorHandler("NarrowRowsHeight")
 End Function
 
-Function wideRowsHeight()
+Function WideRowsHeight(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call repeatRegister("wideRowsHeight")
-    Call stopVisualMode
+    Call RepeatRegister("WideRowsHeight")
+    Call StopVisualMode
 
     Dim currentHeight As Double
     Dim targetRows As Range
@@ -457,15 +457,15 @@ Function wideRowsHeight()
         Set targetRows = ActiveCell.EntireRow
     End If
 
-    If currentHeight + gCount > 409.5 Then
+    If currentHeight + gVim.Count1 > 409.5 Then
         targetRows.EntireRow.RowHeight = 409.5
     Else
-        targetRows.EntireRow.RowHeight = currentHeight + gCount
+        targetRows.EntireRow.RowHeight = currentHeight + gVim.Count1
     End If
 
     Set targetRows = Nothing
     Exit Function
 
 Catch:
-    Call errorHandler("wideRowsHeight")
+    Call ErrorHandler("WideRowsHeight")
 End Function

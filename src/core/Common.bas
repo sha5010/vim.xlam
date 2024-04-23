@@ -2,299 +2,199 @@ Attribute VB_Name = "C_Common"
 Option Explicit
 Option Private Module
 
-#If Win64 Then
-    Public Declare PtrSafe Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Long, ByVal dwExtraInfo As Long)
-    Public Declare PtrSafe Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Long) As Integer
-    Public Declare PtrSafe Function GetKeyState Lib "user32.dll" (ByVal vKey As Long) As Integer
-    Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
-#Else
-    Public Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Long, ByVal dwExtraInfo As Long)
-    Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Long) As Long
-    Public Declare Function GetKeyState Lib "user32.dll" (ByVal vKey As Long) As Long
-    Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
-#End If
+' Repeater
+Private pSavedFuncName As String
+Private pSavedCount As Long
+Private pSavedArgs As Variant
 
+Sub RepeatRegister(ByVal funcName As String, ParamArray args() As Variant)
+    ' Store values in module variables
+    pSavedFuncName = funcName
+    pSavedCount = gVim.Count
+    pSavedArgs = args
+End Sub
 
-'Definition for Keyboard event (keybd_event in user32)
-Public Const KEYUP = &H2          'Key up
-Public Const EXTENDED_KEY = &H1   'For using extended keys
-'
-'Left Ctrl, Left Alt, Right Shift, Insert, delete,
-'Home, End, Page Up, Page Down
-'Arrow Keys (Up, Down, Left, Right)
-'Num Lock, Break (Ctrl + Pause)
-'Print Screen, Enter key on 10 keys
-
-'Virtual Key codes
-Public Const LSHIFT = &HA0 'Left Shift
-Public Const RSHIFT = &HA1 'Right Shift
-Public Const LCTRL = &HA2  'Left Ctrl
-Public Const RCTRL = &HA3  'Right Ctrl
-Public Const LMENU = &HA4  'Left Alt
-Public Const RMENU = &HA5  'Right Alt
-Public Const KANJI = &H19  'Kanji
-Public Const APPS = &H5D   'Application Keys
-
-Public Enum vKey
-    BackSpace_ = 8
-    Tab_ = 9
-    Enter_ = 13
-    Pause_ = 19
-    CapsLock_ = 20
-    Kanji_ = 25
-    Escape_ = 27
-    Henkan_ = 28
-    Muhenkan_ = 29
-    Space_ = 32
-    PageUp_
-    PageDown_
-    End_
-    Home_
-    Left_
-    Up_
-    Right_
-    Down_
-    Select_
-    Print_
-    Execute_
-    PrintScreen_
-    Insert_
-    Delete_
-    Help_
-    k0_
-    k1_
-    k2_
-    k3_
-    k4_
-    k5_
-    k6_
-    k7_
-    k8_
-    k9_
-    A_ = 65
-    B_
-    C_
-    D_
-    E_
-    F_
-    G_
-    H_
-    I_
-    J_
-    K_
-    L_
-    M_
-    N_
-    O_
-    P_
-    Q_
-    R_
-    S_
-    T_
-    U_
-    V_
-    W_
-    X_
-    Y_
-    Z_
-    WinLeft_
-    WinRight_
-    Application_
-    Numpad0_ = 96
-    Numpad1_
-    Numpad2_
-    Numpad3_
-    Numpad4_
-    Numpad5_
-    Numpad6_
-    Numpad7_
-    Numpad8_
-    Numpad9_
-    NumpadMultiply_     'テンキーの *
-    NumpadAdd_          'テンキーの +
-    NumpadEnter_        'テンキーの Enter
-    NumpadSubstract_    'テンキーの -
-    NumpadDecimal_      'テンキーの .
-    NumpadDivide_       'テンキーの /
-    F1_
-    F2_
-    F3_
-    F4_
-    F5_
-    F6_
-    F7_
-    F8_
-    F9_
-    F10_
-    F11_
-    F12_
-    F13_
-    F14_
-    F15_
-    F16_
-    NumLock_ = 144
-    ScrollLock_
-
-    ShiftLeft_ = 160       'Left Shift
-    ShiftRight_            'Right Shift
-    CtrlLeft_              'Left Ctrl
-    CtrlRight_             'Right Ctrl
-    AltLeft_               'Left Alt
-    AltRight_              'Right Alt
-
-    'Shift_JIS 配列
-    Coron_ = 186                ' :  (Shift: *)
-    Semicoron_                  ' ;  (Shift: +)
-    Comma_                      ' ,  (Shift: <)
-    Minus_                      ' -  (Shift: =)
-    Period_                     ' .  (Shift: >)
-    Slash_                      ' /  (Shift: ?)
-    AtMark_                     ' @  (Shift: `)
-    OpeningSquareBracket_ = 219 ' [  (Shift: {)
-    Backslash_                  ' ¥  (Shift: |)  上側の ¥
-    ClosingSquareBracket_       ' ]  (Shift: })
-    Caret_                      ' ^  (Shift: ‾)
-    Underscore_ = 226           ' ¥  (Shift: _)  下側の ¥
-    Eisu_ = 240                 ' Caps Lock
-    Katakana_ = 242             ' カタカナ ひらがな
-    HankakuZenkaku_             ' 半角/全角
-
-    Ctrl_ = 512
-    Shift_ = 1024
-    Alt_ = 2048
-End Enum
-
-Private Function keystrokeAPI(ByVal key As Integer)
-    Dim Ctrl As Boolean
-    Dim Shift As Boolean
-    Dim Alt As Boolean
-
-    Ctrl = ((key ¥ Ctrl_) And 1) = 1
-    Shift = ((key ¥ Shift_) And 1) = 1
-    Alt = ((key ¥ Alt_) And 1) = 1
-
-    key = key And &HFF
-
-    If Ctrl Then keybd_event vbKeyControl, 0, 0, 0
-    If Shift Then keybd_event vbKeyShift, 0, 0, 0
-    If Alt Then keybd_event vbKeyMenu, 0, 0, 0
-
-    keybd_event key, 0, 0, 0
-    keybd_event key, 0, KEYUP, 0
-
-    If Alt Then keybd_event vbKeyMenu, 0, KEYUP, 0
-    If Shift Then keybd_event vbKeyShift, 0, KEYUP, 0
-    If Ctrl Then keybd_event vbKeyControl, 0, KEYUP, 0
-End Function
-
-' /**
-'  * 指定されたキーを順番に押す
-'  * (Ctrlキーなどの解放はしない。手動でやったときに使う)
-'  *
-'  * Alt + H を押した後 I を押す
-'  *     Call keystrokeWithoutKeyup(Alt_ + H_, I_)
-'  */
-Function keystrokeWithoutKeyup(ParamArray keys() As Variant)
-    Dim i As Integer
-    Dim u As Integer
-
-    u = UBound(keys)
-
-    For i = LBound(keys) To u
-        Call keystrokeAPI(keys(i))
-    Next i
-End Function
-
-' /**
-'  * 指定されたキーを順番に押す。なお遅くなるので長押しするようなキーには不向き
-'  * (Ctrlキーなどを解放する。)
-'  *
-'  * @param releaseShiftKey: Shiftキーの解放をする(True)/しない(False)
-'  *
-'  * Alt + H を押した後 I を押す
-'  *     Call keystroke(True, Alt_ + H_, I_)
-'  */
-Function keystroke(ByVal releaseShiftKey As Boolean, ParamArray keys() As Variant)
-    Dim i As Integer
-    Dim u As Integer
-
-    Call keyupControlKeys
-
-    If releaseShiftKey Then
-        Call releaseShiftKeys
+Function RepeatAction(Optional ByVal g As String) As Boolean
+    If pSavedFuncName = "" Then
+        Exit Function
     End If
 
-    u = UBound(keys)
+    ' Restore g:count
+    gVim.Count = pSavedCount
 
-    For i = LBound(keys) To u
-        Call keystrokeAPI(keys(i))
-    Next i
-
-    Call unkeyupControlKeys
-End Function
-
-Function releaseShiftKeys()
-    If GetKeyState(LSHIFT) > 0 Then
-        keybd_event LSHIFT, 0, KEYUP, 0
-    ElseIf GetKeyState(RSHIFT) > 0 Then
-        keybd_event RSHIFT, 0, KEYUP, 0
-    Else
-        keybd_event vbKeyShift, 0, KEYUP, 0
-    End If
-End Function
-
-Function keyupControlKeys()
-    keybd_event LSHIFT, 0, KEYUP, 0
-    keybd_event RSHIFT, 0, EXTENDED_KEY Or KEYUP, 0
-    keybd_event LCTRL, 0, KEYUP, 0
-    keybd_event RCTRL, 0, EXTENDED_KEY Or KEYUP, 0
-    keybd_event LMENU, 0, KEYUP, 0
-    keybd_event RMENU, 0, EXTENDED_KEY Or KEYUP, 0
-End Function
-
-Function unkeyupControlKeys()
-    If (GetKeyState(LSHIFT) And &H8000) <> 0 Then
-        keybd_event LSHIFT, 0, 0, 0
-    ElseIf (GetKeyState(RSHIFT) And &H8000) <> 0 Then
-        keybd_event RSHIFT, 0, EXTENDED_KEY, 0
-    ElseIf (GetKeyState(vbKeyShift) And &H8000) <> 0 Then
-        keybd_event vbKeyShift, 0, 0, 0
-    End If
-
-    If (GetKeyState(LCTRL) And &H8000) <> 0 Then
-        keybd_event LCTRL, 0, 0, 0
-    ElseIf (GetKeyState(RCTRL) And &H8000) <> 0 Then
-        keybd_event RCTRL, 0, EXTENDED_KEY, 0
-    ElseIf (GetKeyState(vbKeyControl) And &H8000) <> 0 Then
-        keybd_event vbKeyControl, 0, 0, 0
-    End If
-
-    If (GetKeyState(LMENU) And &H8000) <> 0 Then
-        keybd_event LMENU, 0, 0, 0
-    ElseIf (GetKeyState(RMENU) And &H8000) <> 0 Then
-        keybd_event RMENU, 0, EXTENDED_KEY, 0
-    ElseIf (GetKeyState(vbKeyMenu) And &H8000) <> 0 Then
-        keybd_event vbKeyMenu, 0, 0, 0
-    End If
-End Function
-
-Function disableIME()
-    Select Case IMEStatus
-        Case vbIMEModeOn, Is > 3
-            Call keystrokeWithoutKeyup(Kanji_)
+    Select Case UBound(pSavedArgs)
+        Case -1
+            RepeatAction = Application.Run(pSavedFuncName)
+        Case 0
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0))
+        Case 1
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1))
+        Case 2
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2))
+        Case 3
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2), pSavedArgs(3))
+        Case 4
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2), pSavedArgs(3), pSavedArgs(4))
+        Case 5
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2), pSavedArgs(3), pSavedArgs(4), pSavedArgs(5))
+        Case 6
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2), pSavedArgs(3), pSavedArgs(4), pSavedArgs(5), pSavedArgs(6))
+        Case 7
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2), pSavedArgs(3), pSavedArgs(4), pSavedArgs(5), pSavedArgs(6), pSavedArgs(7))
+        Case 8
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2), pSavedArgs(3), pSavedArgs(4), pSavedArgs(5), pSavedArgs(6), pSavedArgs(7), pSavedArgs(8))
+        Case 9
+            RepeatAction = Application.Run(pSavedFuncName, pSavedArgs(0), pSavedArgs(1), pSavedArgs(2), pSavedArgs(3), pSavedArgs(4), pSavedArgs(5), pSavedArgs(6), pSavedArgs(7), pSavedArgs(8), pSavedArgs(9))
+        Case Else
+            ' Error if argument is more than 10
+            Call DebugPrint("Too many arguments", pSavedFuncName & " in RepeatAction")
     End Select
+
+    ' Reset g:count after execution
+    gVim.Count = 0
 End Function
 
-Function repeatRegister(ByVal funcName As String, ParamArray args() As Variant)
-    If Repeater Is Nothing Then
-        Set Repeater = New cls_Repeater
+'/*
+' * Jumps to the next or previous position in the jump list.
+' *
+' * @param {Boolean} isNext - True to jump to the next position, False to jump to the previous position.
+' */
+Private Sub JumpInner(ByVal isNext As Boolean)
+    On Error GoTo Catch
+
+    ' Check if the jump list is available
+    If Not gVim.JumpList Is Nothing Then
+        Dim i As Long
+        Dim isAfterJumped As Boolean
+        isAfterJumped = (TypeOf gVim.JumpList.Current Is Range And TypeOf Selection Is Range)
+
+        If isAfterJumped Then
+
+            For i = 1 To 3
+                Select Case i
+                Case 1
+                    isAfterJumped = (gVim.JumpList.Current.Parent.Parent Is Selection.Parent.Parent)
+                Case 2
+                    isAfterJumped = (gVim.JumpList.Current.Parent Is Selection.Parent)
+                Case 3
+                    isAfterJumped = (gVim.JumpList.Current.Address = Selection.Address)
+                End Select
+                If Not isAfterJumped Then
+                    Exit For
+                End If
+            Next i
+        End If
+
+        Dim targetRange As Range
+
+        For i = 1 To gVim.Count1
+            ' Get the next or previous target range from the jump list
+            If isNext Then
+                Set targetRange = gVim.JumpList.Forward
+            Else
+                Set targetRange = gVim.JumpList.Back
+            End If
+
+            If targetRange Is Nothing Then
+                If i > 1 Then
+                    Set targetRange = gVim.JumpList.Current
+                End If
+                Exit For
+            End If
+        Next i
+
+        ' Check if the target range is not empty
+        If Not targetRange Is Nothing Then
+            ' Stop visual mode if active
+            Call StopVisualMode
+
+            ' Record the current position to the jump list if it's the latest position
+            If Not isAfterJumped Then
+                Call RecordToJumpList(CurrentToLatest:=False)
+            End If
+
+            Dim targetWorkbook As Workbook
+            Dim targetWorksheet As Worksheet
+            ' Get the workbook and worksheet from the target range
+            Set targetWorkbook = targetRange.Parent.Parent
+            Set targetWorksheet = targetRange.Parent
+
+            ' Activate the target workbook and worksheet, and select the target range
+            targetWorkbook.Activate
+            targetWorksheet.Activate
+            targetRange.Select
+        Else
+            ' Display a status message for reaching the latest or oldest position
+            Dim statusMessage As String
+            If isNext Then
+                statusMessage = gVim.Msg.LatestJumplist
+            Else
+                statusMessage = gVim.Msg.OldestJumplist
+            End If
+            Call SetStatusBarTemporarily(statusMessage, 1000)
+        End If
+    End If
+    Exit Sub
+
+Catch:
+    ' Handle errors and call the error handler
+    Call ErrorHandler("JumpInner")
+End Sub
+
+Function JumpPrev(Optional ByVal g As String) As Boolean
+    Call JumpInner(isNext:=False)
+End Function
+
+Function JumpNext(Optional ByVal g As String) As Boolean
+    Call JumpInner(isNext:=True)
+End Function
+
+Function ClearJumps(Optional ByVal g As String) As Boolean
+    If Not gVim.JumpList Is Nothing Then
+        Call gVim.JumpList.ClearAll
+        Call SetStatusBarTemporarily(gVim.Msg.ClearedJumplist, 2000)
+    End If
+End Function
+
+'/*
+' * Records the current or specified target range to the jump list.
+' *
+' * @param {Range} [Target] - The target range to add to the jump list. If not specified, uses the current selection or active cell.
+' * @param {Boolean} [CurrentToLatest=True] - True to update the jump list from the current position to the latest position.
+' * @returns {Boolean} - Always returns True.
+' */
+Function RecordToJumpList(Optional Target As Range, Optional ByVal CurrentToLatest As Boolean = True) As Boolean
+    On Error GoTo Catch
+
+    ' Verify if the jump list is available
+    If gVim.JumpList Is Nothing Then
+        Exit Function
     End If
 
-    Call Repeater.Register(funcName, gCount, args)
+    ' If Target is not specified, use the current selection or active cell
+    If Target Is Nothing Then
+        If TypeName(Selection) = "Range" Then
+            Set Target = Selection
+        ElseIf Not ActiveCell Is Nothing Then
+            Set Target = ActiveCell
+        Else
+            Exit Function
+        End If
+    End If
+
+    ' Add the target range to the jump list
+    Call gVim.JumpList.Add(Target, CurrentToLatest)
+    RecordToJumpList = True
+    Exit Function
+
+Catch:
+    ' Handle errors and call the error handler
+    Call ErrorHandler("RecordToJumpList")
 End Function
 
-Function repeatAction()
-    If Not Repeater Is Nothing Then
-        Call Repeater.Run
-    End If
-End Function
+Sub DisableIME()
+    Select Case IMEStatus
+        Case Is > 3, vbIMEHiragana
+            Call KeyStrokeWithoutKeyup(IME_On_)
+    End Select
+End Sub

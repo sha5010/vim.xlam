@@ -2,132 +2,132 @@ Attribute VB_Name = "F_InsertMode"
 Option Explicit
 Option Private Module
 
-Function insertWithIME()
+Function InsertWithIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
-        Call temporarilyDisableVim
-        Call keystroke(True, Space_, BackSpace_, Ctrl_ + Home_, Kanji_)
+        Call ChangeToShapeInsertMode
+        Call KeyStroke(Space_, BackSpace_, Ctrl_ + Home_, IME_On_)
     Else
-        Call keystroke(True, F2_, Ctrl_ + Home_, Kanji_)
+        Call KeyStroke(F2_, Ctrl_ + Home_, IME_On_)
         Call StartEditing
 
-        Application.OnTime Now + 0.1 / 86400, "disableIME"
+        Application.OnTime Now + 0.1 / 86400, "DisableIME"
     End If
 End Function
 
-Function insertWithoutIME()
+Function InsertWithoutIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
-        Call temporarilyDisableVim
-        Call keystroke(True, Space_, BackSpace_, Ctrl_ + Home_)
+        Call ChangeToShapeInsertMode
+        Call KeyStroke(Space_, BackSpace_, Ctrl_ + Home_)
     Else
-        Call keystroke(True, F2_, Ctrl_ + Home_)
+        Call KeyStroke(F2_, Ctrl_ + Home_)
         Call StartEditing
 
-        Application.OnTime Now + 0.1 / 86400, "disableIME"
+        Application.OnTime Now + 0.1 / 86400, "DisableIME"
     End If
 End Function
 
-Function appendWithIME()
+Function AppendWithIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
-        Call temporarilyDisableVim
-        Call keystroke(True, Space_, BackSpace_, Kanji_)
+        Call ChangeToShapeInsertMode
+        Call KeyStroke(Space_, BackSpace_, IME_On_)
     Else
-        Call keystroke(True, F2_, Kanji_)
+        Call KeyStroke(F2_, IME_On_)
         Call StartEditing
 
-        Application.OnTime Now + 0.1 / 86400, "disableIME"
+        Application.OnTime Now + 0.1 / 86400, "DisableIME"
     End If
 End Function
 
-Function appendWithoutIME()
+Function AppendWithoutIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
-        Call temporarilyDisableVim
-        Call keystroke(True, Space_, BackSpace_)
+        Call ChangeToShapeInsertMode
+        Call KeyStroke(Space_, BackSpace_)
     Else
-        Call keystroke(True, F2_)
+        Call KeyStroke(F2_)
         Call StartEditing
 
-        Application.OnTime Now + 0.1 / 86400, "disableIME"
+        Application.OnTime Now + 0.1 / 86400, "DisableIME"
     End If
 End Function
 
-Function substituteWithIME()
+Function SubstituteWithIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
-        Call temporarilyDisableVim
-        Call keystroke(True, Enter_, Delete_, Kanji_)
+        Call ChangeToShapeInsertMode
+        Call KeyStroke(Enter_, Delete_, IME_On_)
     Else
-        Call keystroke(True, BackSpace_, F2_, Kanji_)
+        Call KeyStroke(BackSpace_, F2_, IME_On_)
         Call StartEditing
 
-        Application.OnTime Now + 0.1 / 86400, "disableIME"
+        Application.OnTime Now + 0.1 / 86400, "DisableIME"
     End If
 End Function
 
-Function substituteWithoutIME()
+Function SubstituteWithoutIME(Optional ByVal g As String) As Boolean
     If VarType(Selection) = vbObject Then
-        Call temporarilyDisableVim
-        Call keystroke(True, Enter_, Delete_)
+        Call ChangeToShapeInsertMode
+        Call KeyStroke(Enter_, Delete_)
     Else
-        Call keystroke(True, BackSpace_, F2_)
+        Call KeyStroke(BackSpace_, F2_)
         Call StartEditing
 
-        Application.OnTime Now + 0.1 / 86400, "disableIME"
+        Application.OnTime Now + 0.1 / 86400, "DisableIME"
     End If
 End Function
 
-Function insertFollowLangMode()
-    If gLangJa Then
-        Call insertWithIME
+Function InsertFollowLangMode(Optional ByVal g As String) As Boolean
+    If gVim.IsJapanese Then
+        Call InsertWithIME
     Else
-        Call insertWithoutIME
+        Call InsertWithoutIME
     End If
 End Function
 
-Function insertNotFollowLangMode()
-    If Not gLangJa Then
-        Call insertWithIME
+Function InsertNotFollowLangMode(Optional ByVal g As String) As Boolean
+    If Not gVim.IsJapanese Then
+        Call InsertWithIME
     Else
-        Call insertWithoutIME
+        Call InsertWithoutIME
     End If
 End Function
 
-Function appendFollowLangMode()
-    If gLangJa Then
-        Call appendWithIME
+Function AppendFollowLangMode(Optional ByVal g As String) As Boolean
+    If gVim.IsJapanese Then
+        Call AppendWithIME
     Else
-        Call appendWithoutIME
+        Call AppendWithoutIME
     End If
 End Function
 
-Function appendNotFollowLangMode()
-    If Not gLangJa Then
-        Call appendWithIME
+Function AppendNotFollowLangMode(Optional ByVal g As String) As Boolean
+    If Not gVim.IsJapanese Then
+        Call AppendWithIME
     Else
-        Call appendWithoutIME
+        Call AppendWithoutIME
     End If
 End Function
 
-Function substituteFollowLangMode()
-    If gLangJa Then
-        Call substituteWithIME
+Function SubstituteFollowLangMode(Optional ByVal g As String) As Boolean
+    If gVim.IsJapanese Then
+        Call SubstituteWithIME
     Else
-        Call substituteWithoutIME
+        Call SubstituteWithoutIME
     End If
 End Function
 
-Function substituteNotFollowLangMode()
-    If Not gLangJa Then
-        Call substituteWithIME
+Function SubstituteNotFollowLangMode(Optional ByVal g As String) As Boolean
+    If Not gVim.IsJapanese Then
+        Call SubstituteWithIME
     Else
-        Call substituteWithoutIME
+        Call SubstituteWithoutIME
     End If
 End Function
 
-Sub StartEditing()
-    Call X.StartEditing
+Private Sub StartEditing()
+    gVim.Vars.FromInsertCmd = True
     Application.OnTime Now + (1 / 86400) * 0.1, "StopEditing"
 End Sub
 
-Sub StopEditing()
-    Call stopVisualMode
-    Call X.StopEditing
+Private Sub StopEditing()
+    Call StopVisualMode
+    gVim.Vars.FromInsertCmd = False
 End Sub

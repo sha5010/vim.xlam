@@ -2,123 +2,132 @@ Attribute VB_Name = "F_Font"
 Option Explicit
 Option Private Module
 
-Function increaseFontSize()
-    Call repeatRegister("increaseFontSize")
-    Call stopVisualMode
-    Call keystroke(True, Alt_ + H_, F_, G_)
+Function IncreaseFontSize(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("IncreaseFontSize")
+    Call StopVisualMode
+
+    Dim i As Long
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Alt_ + H_, F_, G_)
+    Next i
 End Function
 
-Function decreaseFontSize()
-    Call repeatRegister("decreaseFontSize")
-    Call stopVisualMode
-    Call keystroke(True, Alt_ + H_, F_, K_)
+Function DecreaseFontSize(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DecreaseFontSize")
+    Call StopVisualMode
+
+    Dim i As Long
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Alt_ + H_, F_, K_)
+    Next i
 End Function
 
-Function changeFontName()
-    Call keystroke(True, Alt_ + H_, F_, F_)
+Function ChangeFontName(Optional ByVal g As String) As Boolean
+    Call KeyStroke(Alt_ + H_, F_, F_)
 End Function
 
-Function changeFontSize()
-    Call keystroke(True, Alt_ + H_, F_, S_)
+Function ChangeFontSize(Optional ByVal g As String) As Boolean
+    Call KeyStroke(Alt_ + H_, F_, S_)
 End Function
 
-Function alignLeft()
-    Call repeatRegister("alignLeft")
-    Call stopVisualMode
+Function AlignLeft(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("AlignLeft")
+    Call StopVisualMode
 
     'Check excel version
-    On Error GoTo Excel2016
+    On Error GoTo Excel2019
     If CDbl(Application.Version) >= 16 Then
-        'Raise error in Excel 2016 (Concat exists in Excel 2019 and later)
-        WorksheetFunction.Concat ""
+        'Raise error in Excel 2016, 2019 (Sequence exists in Excel 2021 and later)
+        WorksheetFunction.Sequence 1
     End If
 
     'Default
-    Call keystroke(True, Alt_ + H_, A_, L_)
+    Call KeyStroke(Alt_ + H_, A_, L_)
     Exit Function
 
-Excel2016:
-    Call keystroke(True, Alt_ + H_, L_, k1_)
+Excel2019:
+    'Excel 2019 and earlier
+    Call KeyStroke(Alt_ + H_, L_, k1_)
 End Function
 
-Function alignCenter()
-    Call repeatRegister("alignCenter")
-    Call stopVisualMode
-    Call keystroke(True, Alt_ + H_, A_, C_)
+Function AlignCenter(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("AlignCenter")
+    Call StopVisualMode
+    Call KeyStroke(Alt_ + H_, A_, C_)
 End Function
 
-Function alignRight()
-    Call repeatRegister("alignRight")
-    Call stopVisualMode
+Function AlignRight(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("AlignRight")
+    Call StopVisualMode
 
     'Check excel version
-    On Error GoTo Excel2016
+    On Error GoTo Excel2019
     If CDbl(Application.Version) >= 16 Then
-        'Raise error in Excel 2016 (Concat exists in Excel 2019 and later)
-        WorksheetFunction.Concat ""
+        'Raise error in Excel 2016, 2019 (Sequence exists in Excel 2021 and later)
+        WorksheetFunction.Sequence 1
     End If
 
     'Default
-    Call keystroke(True, Alt_ + H_, A_, R_)
+    Call KeyStroke(Alt_ + H_, A_, R_)
     Exit Function
 
-Excel2016:
-    'Excel 2013 and earlier
-    Call keystroke(True, Alt_ + H_, R_)
+Excel2019:
+    'Excel 2019 and earlier
+    Call KeyStroke(Alt_ + H_, R_)
 End Function
 
-Function alignTop()
-    Call repeatRegister("alignTop")
-    Call stopVisualMode
-    Call keystroke(True, Alt_ + H_, A_, T_)
+Function AlignTop(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("AlignTop")
+    Call StopVisualMode
+    Call KeyStroke(Alt_ + H_, A_, T_)
 End Function
 
-Function alignMiddle()
-    Call repeatRegister("alignMiddle")
-    Call stopVisualMode
-    Call keystroke(True, Alt_ + H_, A_, M_)
+Function AlignMiddle(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("AlignMiddle")
+    Call StopVisualMode
+    Call KeyStroke(Alt_ + H_, A_, M_)
 End Function
 
-Function alignBottom()
-    Call repeatRegister("alignBottom")
-    Call stopVisualMode
-    Call keystroke(True, Alt_ + H_, A_, B_)
+Function AlignBottom(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("AlignBottom")
+    Call StopVisualMode
+    Call KeyStroke(Alt_ + H_, A_, B_)
 End Function
 
-Function toggleBold()
-    Call repeatRegister("toggleBold")
-    Call stopVisualMode
-    Call keystroke(True, Ctrl_ + k2_)
+Function ToggleBold(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("ToggleBold")
+    Call StopVisualMode
+    Call KeyStroke(Ctrl_ + k2_)
 End Function
 
-Function toggleItalic()
-    Call repeatRegister("toggleItalic")
-    Call stopVisualMode
-    Call keystroke(True, Ctrl_ + k3_)
+Function ToggleItalic(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("ToggleItalic")
+    Call StopVisualMode
+    Call KeyStroke(Ctrl_ + k3_)
 End Function
 
-Function toggleUnderline()
-    Call repeatRegister("toggleUnderline")
-    Call stopVisualMode
-    Call keystroke(True, Ctrl_ + k4_)
+Function ToggleUnderline(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("ToggleUnderline")
+    Call StopVisualMode
+    Call KeyStroke(Ctrl_ + k4_)
 End Function
 
-Function toggleStrikethrough()
-    Call repeatRegister("toggleStrikethrough")
-    Call stopVisualMode
-    Call keystroke(True, Ctrl_ + k5_)
+Function ToggleStrikethrough(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("ToggleStrikethrough")
+    Call StopVisualMode
+    Call KeyStroke(Ctrl_ + k5_)
 End Function
 
-Function changeFormat()
-    Call keystroke(True, Alt_ + H_, N_, Down_, Down_)
+Function ChangeFormat(Optional ByVal g As String) As Boolean
+    Call KeyStroke(Alt_ + H_, N_, Down_, Down_)
 End Function
 
-Function showFontDialog()
-    Call stopVisualMode
-    Call keystroke(True, Ctrl_ + k1_)
+Function showFontDialog(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
+    Call KeyStroke(Ctrl_ + k1_)
 End Function
 
-Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
+Function ChangeFontColor(Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
     If TypeName(Selection) = "Nothing" Then
@@ -126,7 +135,7 @@ Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
     End If
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then
@@ -141,11 +150,11 @@ Function changeFontColor(Optional ByVal resultColor As cls_FontColor)
             End If
         End With
 
-        Call repeatRegister("changeFontColor", resultColor)
-        Call stopVisualMode
+        Call RepeatRegister("ChangeFontColor", resultColor)
+        Call StopVisualMode
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("changeFontColor")
+    Call ErrorHandler("ChangeFontColor")
 End Function

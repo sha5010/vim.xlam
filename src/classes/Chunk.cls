@@ -11,7 +11,7 @@ Option Explicit
 
 Private Fd_ As cls_Chunk
 Private Bk_ As cls_Chunk
-Private Content_ As Object
+Private Content_ As Variant
 
 Private Sub Class_Initialize()
     Set Fd_ = Nothing
@@ -41,9 +41,46 @@ Public Property Set Bk(ByRef Bk As cls_Chunk)
 End Property
 
 Public Property Get Content() As Variant
-    Set Content = Content_
+    If IsObject(Content_) Or VarType(Content_) = vbDataObject Then
+        Set Content = Content_
+    Else
+        Content = Content_
+    End If
 End Property
 
-Public Property Set Content(ByRef Content As Variant)
-    Set Content_ = Content
-End Property
+Public Sub SetContent(ByRef Content As Variant)
+    If IsObject(Content) Or VarType(Content) = vbDataObject Then
+        Set Content_ = Content
+    Else
+        Content_ = Content
+    End If
+End Sub
+
+Public Function IsSame(ByRef Content As Variant) As Boolean
+    If TypeName(Content_) <> TypeName(Content) Then
+        IsSame = False
+        Exit Function
+    End If
+
+    On Error GoTo Catch
+
+    If TypeOf Content Is Range Then
+        IsSame = True
+        IsSame = IsSame And (Content_.Address = Content.Address)
+        IsSame = IsSame And (Content_.Parent Is Content.Parent)
+        IsSame = IsSame And (Content_.Parent.Parent Is Content.Parent.Parent)
+    ElseIf IsObject(Content) Or VarType(Content) = vbDataObject Then
+        IsSame = (Content_ Is Content)
+    Else
+        IsSame = (Content_ = Content)
+    End If
+    Exit Function
+
+Catch:
+    If Err.Number = 424 Then
+        IsSame = False
+        Err.Clear
+    Else
+        Call ErrorHandler("IsSame")
+    End If
+End Function

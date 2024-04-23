@@ -2,20 +2,20 @@ Attribute VB_Name = "F_Border"
 Option Explicit
 Option Private Module
 
-Private Enum Mode
-    APIsetBorder = 1
-    APIdeleteBorder
-    APItoggleBorder
+Private Enum eBorderMode
+    BorderModeSet = 1
+    BorderModeDelete
+    BorderModeToggle
 End Enum
 
-Private Function BorderAPI(ByVal OpMode As Mode, _
-                           Optional ByVal Index As Variant = 0, _
-                           Optional ByVal LineStyle As XlLineStyle = -1, _
-                           Optional ByVal Weight As XlBorderWeight = -1, _
-                           Optional ByVal ColorIndex As XlColorIndex = -1, _
-                           Optional ByVal Color As Long = -1, _
-                           Optional ByVal ThemeColor As XlThemeColor = -1, _
-                           Optional ByVal TintAndShade As Double = 0)
+Private Function BorderInner(ByVal OpMode As eBorderMode, _
+                    Optional ByVal Index As Variant = 0, _
+                    Optional ByVal LineStyle As XlLineStyle = -1, _
+                    Optional ByVal Weight As XlBorderWeight = -1, _
+                    Optional ByVal ColorIndex As XlColorIndex = -1, _
+                    Optional ByVal Color As Long = -1, _
+                    Optional ByVal ThemeColor As XlThemeColor = -1, _
+                    Optional ByVal TintAndShade As Double = 0)
     On Error GoTo Catch
 
     Dim arr As Variant
@@ -26,7 +26,7 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
         Exit Function
     End If
 
-    If OpMode = APIdeleteBorder Then
+    If OpMode = eBorderMode.BorderModeDelete Then
         LineStyle = xlLineStyleNone
     End If
 
@@ -52,10 +52,10 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
                 arr = Array(Index)
             End If
         Case Else
-            Call debugPrint("Unexpected type: " & TypeName(Index), "BorderAPI")
+            Call DebugPrint("Unexpected type: " & TypeName(Index), "BorderInner")
     End Select
 
-    If OpMode = APItoggleBorder Then
+    If OpMode = eBorderMode.BorderModeToggle Then
         sameAll = True
 
         For Each i In arr
@@ -100,11 +100,11 @@ Private Function BorderAPI(ByVal OpMode As Mode, _
     Exit Function
 
 Catch:
-    Call errorHandler("BorderAPI")
+    Call ErrorHandler("BorderInner")
 End Function
 
-Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
-                        Optional ByVal resultColor As cls_FontColor)
+Private Function BorderColorInner(Optional ByVal Index As Variant = 0, _
+                                  Optional ByVal resultColor As cls_FontColor)
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
@@ -112,189 +112,189 @@ Function BorderColorAPI(Optional ByVal Index As Variant = 0, _
     End If
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then
         With resultColor
             If .IsNull Then
-                Call BorderAPI(APIsetBorder, Index, ColorIndex:=xlColorIndexAutomatic)
+                Call BorderInner(eBorderMode.BorderModeSet, Index, ColorIndex:=xlColorIndexAutomatic)
             ElseIf .IsThemeColor Then
-                Call BorderAPI(APIsetBorder, Index, ThemeColor:=.ThemeColor, TintAndShade:=.TintAndShade)
+                Call BorderInner(eBorderMode.BorderModeSet, Index, ThemeColor:=.ThemeColor, TintAndShade:=.TintAndShade)
             Else
-                Call BorderAPI(APIsetBorder, Index, Color:=.Color)
+                Call BorderInner(eBorderMode.BorderModeSet, Index, Color:=.Color)
             End If
         End With
 
-        Call repeatRegister("BorderColorAPI", Index, resultColor)
+        Call RepeatRegister("BorderColorInner", Index, resultColor)
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("BorderColorAPI")
+    Call ErrorHandler("BorderColorInner")
 End Function
 
-Function toggleBorderAround(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                            Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderAround", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, LineStyle:=LineStyle, Weight:=Weight)
+Function ToggleBorderAround(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                            Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderAround", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, LineStyle:=LineStyle, Weight:=Weight)
 End Function
 
-Function toggleBorderLeft(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                          Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderLeft", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlEdgeLeft, LineStyle, Weight)
+Function ToggleBorderLeft(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                          Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderLeft", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlEdgeLeft, LineStyle, Weight)
 End Function
 
-Function toggleBorderTop(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                         Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderTop", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlEdgeTop, LineStyle, Weight)
+Function ToggleBorderTop(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                         Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderTop", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlEdgeTop, LineStyle, Weight)
 End Function
 
-Function toggleBorderBottom(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                            Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderBottom", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlEdgeBottom, LineStyle, Weight)
+Function ToggleBorderBottom(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                            Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderBottom", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlEdgeBottom, LineStyle, Weight)
 End Function
 
-Function toggleBorderRight(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                           Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderRight", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlEdgeRight, LineStyle, Weight)
+Function ToggleBorderRight(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                           Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderRight", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlEdgeRight, LineStyle, Weight)
 End Function
 
-Function toggleBorderInnerHorizontal(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                                     Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderInnerHorizontal", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlInsideHorizontal, LineStyle, Weight)
+Function ToggleBorderInnerHorizontal(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                                     Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderInnerHorizontal", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlInsideHorizontal, LineStyle, Weight)
 End Function
 
-Function toggleBorderInnerVertical(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                                   Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderInnerVertical", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlInsideVertical, LineStyle, Weight)
+Function ToggleBorderInnerVertical(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                                   Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderInnerVertical", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlInsideVertical, LineStyle, Weight)
 End Function
 
-Function toggleBorderInner(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                           Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderInner", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, Array(xlInsideHorizontal, xlInsideVertical), LineStyle, Weight)
+Function ToggleBorderInner(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                           Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderInner", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, Array(xlInsideHorizontal, xlInsideVertical), LineStyle, Weight)
 End Function
 
-Function toggleBorderDiagonalUp(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                                Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderDiagonalUp", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlDiagonalUp, LineStyle, Weight)
+Function ToggleBorderDiagonalUp(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                                Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderDiagonalUp", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlDiagonalUp, LineStyle, Weight)
 End Function
 
-Function toggleBorderDiagonalDown(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                                  Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderDiagonalDown", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, xlDiagonalDown, LineStyle, Weight)
+Function ToggleBorderDiagonalDown(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                                  Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderDiagonalDown", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, xlDiagonalDown, LineStyle, Weight)
 End Function
 
-Function toggleBorderAll(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
-                         Optional ByVal Weight As XlBorderWeight = xlThin)
-    Call repeatRegister("toggleBorderAll", LineStyle, Weight)
-    Call BorderAPI(APItoggleBorder, Array( _
+Function ToggleBorderAll(Optional ByVal LineStyle As XlLineStyle = xlContinuous, _
+                         Optional ByVal Weight As XlBorderWeight = xlThin) As Boolean
+    Call RepeatRegister("ToggleBorderAll", LineStyle, Weight)
+    Call BorderInner(eBorderMode.BorderModeToggle, Array( _
         xlEdgeLeft, xlEdgeTop, xlEdgeBottom, xlEdgeRight, _
         xlInsideHorizontal, xlInsideVertical), LineStyle, Weight)
 End Function
 
 
-Function deleteBorderAround()
-    Call repeatRegister("deleteBorderAround")
-    Call BorderAPI(APIdeleteBorder)
+Function DeleteBorderAround(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderAround")
+    Call BorderInner(eBorderMode.BorderModeDelete)
 End Function
 
-Function deleteBorderLeft()
-    Call repeatRegister("deleteBorderLeft")
-    Call BorderAPI(APIdeleteBorder, xlEdgeLeft)
+Function DeleteBorderLeft(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderLeft")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlEdgeLeft)
 End Function
 
-Function deleteBorderTop()
-    Call repeatRegister("deleteBorderTop")
-    Call BorderAPI(APIdeleteBorder, xlEdgeTop)
+Function DeleteBorderTop(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderTop")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlEdgeTop)
 End Function
 
-Function deleteBorderBottom()
-    Call repeatRegister("deleteBorderBottom")
-    Call BorderAPI(APIdeleteBorder, xlEdgeBottom)
+Function DeleteBorderBottom(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderBottom")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlEdgeBottom)
 End Function
 
-Function deleteBorderRight()
-    Call repeatRegister("deleteBorderRight")
-    Call BorderAPI(APIdeleteBorder, xlEdgeRight)
+Function DeleteBorderRight(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderRight")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlEdgeRight)
 End Function
 
-Function deleteBorderInnerHorizontal()
-    Call repeatRegister("deleteBorderInnerHorizontal")
-    Call BorderAPI(APIdeleteBorder, xlInsideHorizontal)
+Function DeleteBorderInnerHorizontal(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderInnerHorizontal")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlInsideHorizontal)
 End Function
 
-Function deleteBorderInnerVertical()
-    Call repeatRegister("deleteBorderInnerVertical")
-    Call BorderAPI(APIdeleteBorder, xlInsideVertical)
+Function DeleteBorderInnerVertical(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderInnerVertical")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlInsideVertical)
 End Function
 
-Function deleteBorderInner()
-    Call repeatRegister("deleteBorderInner")
-    Call BorderAPI(APIdeleteBorder, Array(xlInsideHorizontal, xlInsideVertical))
+Function DeleteBorderInner(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderInner")
+    Call BorderInner(eBorderMode.BorderModeDelete, Array(xlInsideHorizontal, xlInsideVertical))
 End Function
 
-Function deleteBorderDiagonalUp()
-    Call repeatRegister("deleteBorderDiagonalUp")
-    Call BorderAPI(APIdeleteBorder, xlDiagonalUp)
+Function DeleteBorderDiagonalUp(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderDiagonalUp")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlDiagonalUp)
 End Function
 
-Function deleteBorderDiagonalDown()
-    Call repeatRegister("deleteBorderDiagonalDown")
-    Call BorderAPI(APIdeleteBorder, xlDiagonalDown)
+Function DeleteBorderDiagonalDown(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderDiagonalDown")
+    Call BorderInner(eBorderMode.BorderModeDelete, xlDiagonalDown)
 End Function
 
-Function deleteBorderAll()
-    Call repeatRegister("deleteBorderAll")
-    Call BorderAPI(APIdeleteBorder, Array( _
+Function DeleteBorderAll(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("DeleteBorderAll")
+    Call BorderInner(eBorderMode.BorderModeDelete, Array( _
         xlEdgeLeft, xlEdgeTop, xlEdgeBottom, xlEdgeRight, _
         xlInsideHorizontal, xlInsideVertical))
 End Function
 
 
-Function setBorderColorAround()
-    Call BorderColorAPI
+Function SetBorderColorAround(Optional ByVal g As String) As Boolean
+    Call BorderColorInner
 End Function
 
-Function setBorderColorLeft()
-    Call BorderColorAPI(xlEdgeLeft)
+Function SetBorderColorLeft(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(xlEdgeLeft)
 End Function
 
-Function setBorderColorTop()
-    Call BorderColorAPI(xlEdgeTop)
+Function SetBorderColorTop(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(xlEdgeTop)
 End Function
 
-Function setBorderColorBottom()
-    Call BorderColorAPI(xlEdgeBottom)
+Function SetBorderColorBottom(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(xlEdgeBottom)
 End Function
 
-Function setBorderColorRight()
-    Call BorderColorAPI(xlEdgeRight)
+Function SetBorderColorRight(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(xlEdgeRight)
 End Function
 
-Function setBorderColorInnerHorizontal()
-    Call BorderColorAPI(xlInsideHorizontal)
+Function SetBorderColorInnerHorizontal(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(xlInsideHorizontal)
 End Function
 
-Function setBorderColorInnerVertical()
-    Call BorderColorAPI(xlInsideVertical)
+Function SetBorderColorInnerVertical(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(xlInsideVertical)
 End Function
 
-Function setBorderColorInner()
-    Call BorderColorAPI(Array(xlInsideHorizontal, xlInsideVertical))
+Function SetBorderColorInner(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(Array(xlInsideHorizontal, xlInsideVertical))
 End Function
 
-Function setBorderColorAll()
-    Call BorderColorAPI(Array( _
+Function SetBorderColorAll(Optional ByVal g As String) As Boolean
+    Call BorderColorInner(Array( _
         xlEdgeLeft, xlEdgeTop, xlEdgeBottom, xlEdgeRight, _
         xlInsideHorizontal, xlInsideVertical))
 End Function

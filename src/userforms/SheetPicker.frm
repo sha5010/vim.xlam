@@ -73,7 +73,7 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
 
             'not all sheets can be hidden
             If cnt = 1 And .Visible = xlSheetVisible Then
-                MsgBox "すべてのシートを非表示にすることはできません。", vbExclamation
+                MsgBox gVim.Msg.HideAllSheets, vbExclamation
                 Exit Sub
             End If
 
@@ -101,7 +101,7 @@ Private Sub Rename_Sheet(ByVal n As Integer)
     'N番目のシートをリネームするためのダイアログを表示
     With ActiveWorkbook.Worksheets(n)
         cur = .Name
-        ret = InputBox("新しいシート名を入力してください。", "シートの名前変更", cur)
+        ret = InputBox(gVim.Msg.EnterNewSheetName, gVim.Msg.RenameSheetTitle, cur)
 
         If ret <> "" Then
             '同名だったら何もしない
@@ -109,8 +109,8 @@ Private Sub Rename_Sheet(ByVal n As Integer)
                 Exit Sub
 
             '新しい名前のシートがすでに存在する場合はエラー
-            ElseIf isSheetExists(ret) Then
-                MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
+            ElseIf IsSheetExists(ret) Then
+                MsgBox gVim.Msg.SheetAlreadyExists(ret), vbExclamation
                 Exit Sub
             End If
 
@@ -137,14 +137,13 @@ Private Sub Delete_Sheet(ByVal n As Integer)
 
     '対象シートがVeryHiddenの場合は消せないので警告表示
     If ActiveWorkbook.Worksheets(n).Visible = xlVeryHidden Then
-        MsgBox "VeryHidden のシートは消すことができません。" & vbLf & _
-               "非表示を解除してから再実行してください。", vbExclamation
+        MsgBox gVim.Msg.CannotDeleteVeryHiddenSheet, vbExclamation
         Exit Sub
     End If
 
     '対象シートが最後の可視シートの場合はエラー
-    If ActiveSheet.Visible = xlSheetVisible And getVisibleSheetsCount() = 1 Then
-        MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
+    If ActiveSheet.Visible = xlSheetVisible And GetVisibleSheetsCount() = 1 Then
+        MsgBox gVim.Msg.DeleteOrHideAllSheets, vbExclamation
         Exit Sub
     End If
 
@@ -195,7 +194,7 @@ Private Sub List_Sheets_Change()
 
     idx = List_Sheets.ListIndex + 1
 
-    If previewMode Then
+    If previewMode And idx > 0 Then
         If ActiveWorkbook.Worksheets(idx).Visible And idx <> ActiveWorkbook.ActiveSheet.Index Then
             Call Activate_Nth_sheet(idx)
         End If
@@ -387,7 +386,7 @@ Private Sub MakeList()
     Exit Sub
 
 Catch:
-    If errorHandler("MakeList in UF_SheetPicker") Then
+    If ErrorHandler("MakeList in UF_SheetPicker") Then
         Unload Me
     End If
 End Sub

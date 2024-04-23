@@ -2,13 +2,13 @@ Attribute VB_Name = "F_Moving"
 Option Explicit
 Option Private Module
 
-Function moveUp()
+Function MoveUp()
     Dim r As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
     Else
-        r = ActiveCell.Row - gCount
+        r = ActiveCell.Row - gVim.Count1
         If r < 1 Then
             r = 1
         End If
@@ -16,13 +16,13 @@ Function moveUp()
     End If
 End Function
 
-Function moveDown()
+Function MoveDown()
     Dim r As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
     Else
-        r = ActiveCell.Row + gCount
+        r = ActiveCell.Row + gVim.Count1
         If r > ActiveSheet.Rows.Count Then
             r = ActiveSheet.Rows.Count
         End If
@@ -30,13 +30,13 @@ Function moveDown()
     End If
 End Function
 
-Function moveLeft()
+Function MoveLeft()
     Dim c As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
     Else
-        c = ActiveCell.Column - gCount
+        c = ActiveCell.Column - gVim.Count1
         If c < 1 Then
             c = 1
         End If
@@ -44,13 +44,13 @@ Function moveLeft()
     End If
 End Function
 
-Function moveRight()
+Function MoveRight()
     Dim c As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
     Else
-        c = ActiveCell.Column + gCount
+        c = ActiveCell.Column + gVim.Count1
         If c > ActiveSheet.Columns.Count Then
             c = ActiveSheet.Columns.Count
         End If
@@ -58,10 +58,10 @@ Function moveRight()
     End If
 End Function
 
-Private Function resizeAPI(Optional Up As Long = 0, _
-                           Optional Down As Long = 0, _
-                           Optional Left As Long = 0, _
-                           Optional Right As Long = 0)
+Private Function ResizeInner(Optional Up As Long = 0, _
+                             Optional Down As Long = 0, _
+                             Optional Left As Long = 0, _
+                             Optional Right As Long = 0)
     On Error GoTo Catch
 
     Dim r As Long
@@ -190,12 +190,12 @@ Private Function resizeAPI(Optional Up As Long = 0, _
     Exit Function
 
 Catch:
-    Call errorHandler("resizeAPI")
+    Call ErrorHandler("ResizeInner")
 End Function
 
-Function moveUpWithShift()
+Function MoveUpWithShift()
     Dim r As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyUp, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyUp, 0, EXTENDED_KEY Or KEYUP, 0
     Else
@@ -204,16 +204,16 @@ Function moveUpWithShift()
         End If
 
         If Selection.Item(1).Row = ActiveCell.Row Then
-            Call resizeAPI(Down:=-gCount)
+            Call ResizeInner(Down:=-gVim.Count1)
         Else
-            Call resizeAPI(Up:=gCount)
+            Call ResizeInner(Up:=gVim.Count1)
         End If
     End If
 End Function
 
-Function moveDownWithShift()
+Function MoveDownWithShift()
     Dim r As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyDown, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyDown, 0, EXTENDED_KEY Or KEYUP, 0
     Else
@@ -222,16 +222,16 @@ Function moveDownWithShift()
         End If
 
         If Selection.Item(Selection.Count).Row = ActiveCell.Row Then
-            Call resizeAPI(Up:=-gCount)
+            Call ResizeInner(Up:=-gVim.Count1)
         Else
-            Call resizeAPI(Down:=gCount)
+            Call ResizeInner(Down:=gVim.Count1)
         End If
     End If
 End Function
 
-Function moveLeftWithShift()
+Function MoveLeftWithShift()
     Dim c As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyLeft, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyLeft, 0, EXTENDED_KEY Or KEYUP, 0
     Else
@@ -240,16 +240,16 @@ Function moveLeftWithShift()
         End If
 
         If Selection.Item(1).Column = ActiveCell.Column Then
-            Call resizeAPI(Right:=-gCount)
+            Call ResizeInner(Right:=-gVim.Count1)
         Else
-            Call resizeAPI(Left:=gCount)
+            Call ResizeInner(Left:=gVim.Count1)
         End If
     End If
 End Function
 
-Function moveRightWithShift()
+Function MoveRightWithShift()
     Dim c As Long
-    If gCount = 1 Then
+    If gVim.Count1 = 1 Then
         keybd_event vbKeyRight, 0, EXTENDED_KEY Or 0, 0
         keybd_event vbKeyRight, 0, EXTENDED_KEY Or KEYUP, 0
     Else
@@ -258,71 +258,69 @@ Function moveRightWithShift()
         End If
 
         If Selection.Item(Selection.Count).Column = ActiveCell.Column Then
-            Call resizeAPI(Left:=-gCount)
+            Call ResizeInner(Left:=-gVim.Count1)
         Else
-            Call resizeAPI(Right:=gCount)
+            Call ResizeInner(Right:=gVim.Count1)
         End If
     End If
 End Function
 
-Function moveToTopRow()
+Function MoveToTopRow(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
-        If gCount = 1 Then
+        If gVim.Count = 0 Then
             .Cells(1, ActiveCell.Column).Select
         Else
-            .Cells(gCount, ActiveCell.Column).Select
+            .Cells(gVim.Count1, ActiveCell.Column).Select
         End If
     End With
     Exit Function
 
 Catch:
-    Call errorHandler("moveToTopRow")
+    Call ErrorHandler("MoveToTopRow")
 End Function
 
-Function moveToLastRow()
+Function MoveToLastRow(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
-        If gCount = 1 Then
+        If gVim.Count = 0 Then
             .Cells(.UsedRange.Item(.UsedRange.Count).Row, ActiveCell.Column).Select
         Else
-            .Cells(gCount, ActiveCell.Column).Select
+            .Cells(gVim.Count1, ActiveCell.Column).Select
         End If
     End With
     Exit Function
 
 Catch:
-    Call errorHandler("moveToLastRow")
+    Call ErrorHandler("MoveToLastRow")
 End Function
 
-Function moveToNthColumn()
+Function MoveToNthColumn(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
-    If gCount > ActiveSheet.Columns.Count Then
-        gCount = ActiveSheet.Columns.Count
-    ElseIf gCount < 1 Then
-        gCount = 1
+    If gVim.Count1 > ActiveSheet.Columns.Count Then
+        gVim.Count1 = ActiveSheet.Columns.Count
     End If
 
-    ActiveSheet.Cells(ActiveCell.Row, gCount).Select
+    ActiveSheet.Cells(ActiveCell.Row, gVim.Count1).Select
     Exit Function
 
 Catch:
-    Call errorHandler("moveToNthColumn")
+    Call ErrorHandler("MoveToNthColumn")
 End Function
 
-Function moveToFirstColumn()
+Function MoveToFirstColumn(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, 1).Select
@@ -330,13 +328,13 @@ Function moveToFirstColumn()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToFirstColumn")
+    Call ErrorHandler("MoveToFirstColumn")
 End Function
 
-Function moveToLeftEnd()
+Function MoveToLeftEnd(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, .UsedRange.Item(1).Column).Select
@@ -344,13 +342,13 @@ Function moveToLeftEnd()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToLeftEnd")
+    Call ErrorHandler("MoveToLeftEnd")
 End Function
 
-Function moveToRightEnd()
+Function MoveToRightEnd(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(ActiveCell.Row, .UsedRange.Item(.UsedRange.Count).Column).Select
@@ -358,13 +356,13 @@ Function moveToRightEnd()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToRightEnd")
+    Call ErrorHandler("MoveToRightEnd")
 End Function
 
-Function moveToTopOfCurrentRegion()
+Function MoveToTopOfCurrentRegion(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     Dim targetRow As Long
 
@@ -379,13 +377,13 @@ Function moveToTopOfCurrentRegion()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToTopOfCurrentRegion")
+    Call ErrorHandler("MoveToTopOfCurrentRegion")
 End Function
 
-Function moveToBottomOfCurrentRegion()
+Function MoveToBottomOfCurrentRegion(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     Dim targetRow As Long
 
@@ -400,13 +398,13 @@ Function moveToBottomOfCurrentRegion()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToBottomOfCurrentRegion")
+    Call ErrorHandler("MoveToBottomOfCurrentRegion")
 End Function
 
-Function moveToA1()
+Function MoveToA1(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     With ActiveWorkbook.ActiveSheet
         .Cells(1, 1).Select
@@ -414,60 +412,70 @@ Function moveToA1()
     Exit Function
 
 Catch:
-    Call errorHandler("moveToA1")
+    Call ErrorHandler("MoveToA1")
 End Function
 
-Function moveToSpecifiedCell(ByVal Address As String) As Boolean
+Function MoveToSpecifiedCell(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Call recordToJumpList
+    Dim jumpAddress As String
+    jumpAddress = UF_CmdLine.Launch("Jump to: ", "Jump to", False)
 
-    Address = Trim(Address)
+    If jumpAddress = CMDLINE_CANCELED Or Len(jumpAddress) = 0 Then
+        Exit Function
+    End If
 
-    If reMatch(Address, "^[0-9]{1,7}$") Then
-        ActiveSheet.Cells(CInt(Address), ActiveCell.Column).Select
-        moveToSpecifiedCell = True
+    Dim jumpTarget As Range: Set jumpTarget = Nothing
+    If RegExpMatch(jumpAddress, "^[0-9]{1,7}$") Then
+        Set jumpTarget = ActiveSheet.Cells(CInt(jumpAddress), ActiveCell.Column)
 
-    ElseIf reMatch(Address, "^[a-z]{1,3}$", IgnoreCase:=True) Then
-        ActiveSheet.Range(Address & ActiveCell.Row).Select
-        moveToSpecifiedCell = True
+    ElseIf RegExpMatch(jumpAddress, "^[a-z]{1,3}$", isIgnoreCase:=True) Then
+        Set jumpTarget = ActiveSheet.Range(jumpAddress & ActiveCell.Row)
 
-    ElseIf reMatch(Address, "^[a-z]{1,3}[0-9]{1,7}(:[a-z]{1,3}[0-9]{1,7})?$", IgnoreCase:=True) Then
-        ActiveSheet.Range(Address).Select
-        moveToSpecifiedCell = True
+    ElseIf RegExpMatch(jumpAddress, "^[a-z]{1,3}[0-9]{1,7}(:[a-z]{1,3}[0-9]{1,7})?$", isIgnoreCase:=True) Then
+        Set jumpTarget = ActiveSheet.Range(jumpAddress)
 
-    ElseIf reMatch(Address, "^[a-z]{1,3}:[a-z]{1,3}$", IgnoreCase:=True) Then
-        ActiveSheet.Range(Address).Select
-        moveToSpecifiedCell = True
+    ElseIf RegExpMatch(jumpAddress, "^[a-z]{1,3}:[a-z]{1,3}$", isIgnoreCase:=True) Then
+        Set jumpTarget = ActiveSheet.Range(jumpAddress)
 
-    ElseIf reMatch(Address, "[0-9]{1,7}:[0-9]{1,7}") Then
-        ActiveSheet.Range(Address).Select
-        moveToSpecifiedCell = True
+    ElseIf RegExpMatch(jumpAddress, "[0-9]{1,7}:[0-9]{1,7}") Then
+        Set jumpTarget = ActiveSheet.Range(jumpAddress)
 
+    End If
+
+    If Not jumpTarget Is Nothing Then
+        Call RecordToJumpList
+        jumpTarget.Select
+        Set jumpTarget = Nothing
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("moveToSpecifiedCell")
+    Call ErrorHandler("MoveToSpecifiedCell")
 End Function
 
-Function moveToSpecifiedRow(ByVal n As String) As Boolean
+Function MoveToSpecifiedRow(Optional ByVal lineNum As String) As Boolean
     On Error GoTo Catch
 
-    n = Trim(n)
-    If reMatch(n, "^[0-9]{1,7}$") Then
-        If CLng(n) > ActiveSheet.Rows.Count Then
-            Exit Function
+    ' Set default return value to True (= Waiting for an argument)
+    MoveToSpecifiedRow = True
+
+    lineNum = Trim(lineNum)
+    If RegExpMatch(lineNum, "^0*[1-9][0-9]{0,9}$") Then
+        Dim n As Long: n = CLng(Right(lineNum, 10))
+
+        If n > ActiveSheet.Rows.Count Then
+            n = ActiveSheet.Rows.Count
         End If
 
-        Call recordToJumpList
+        Call RecordToJumpList
 
         ActiveSheet.Cells(CLng(n), ActiveCell.Column).Select
-        moveToSpecifiedRow = True
+        MoveToSpecifiedRow = False  ' Set return value to False (= Done)
     End If
 
     Exit Function
 
 Catch:
-    Call errorHandler("moveToSpecifiedRow")
+    Call ErrorHandler("MoveToSpecifiedRow")
 End Function

@@ -2,33 +2,33 @@ Attribute VB_Name = "F_UsefulCmd"
 Option Explicit
 Option Private Module
 
-Function undo_CtrlZ()
-    Call keystroke(True, Ctrl_ + Z_)
+Function Undo_CtrlZ(Optional ByVal g As String) As Boolean
+    Call KeyStroke(Ctrl_ + Z_)
 End Function
 
-Function redoExecute()
+Function RedoExecute(Optional ByVal g As String) As Boolean
     On Error Resume Next
     Application.CommandBars.ExecuteMso "Redo"
 End Function
 
-Function toggleFreezePanes()
+Function ToggleFreezePanes(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWindow.FreezePanes = Not ActiveWindow.FreezePanes
     Exit Function
 
 Catch:
-    Call errorHandler("toggleFreezePanes")
+    Call ErrorHandler("ToggleFreezePanes")
 End Function
 
-Function zoomIn()
+Function ZoomIn(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim afterZoomRate As Integer
 
-    If gCount > 1 Then
-        afterZoomRate = ActiveWindow.Zoom + gCount
+    If gVim.Count > 0 Then
+        afterZoomRate = ActiveWindow.Zoom + gVim.Count
     Else
-        afterZoomRate = ActiveWindow.Zoom + gCount * 10
+        afterZoomRate = ActiveWindow.Zoom + 10
     End If
 
     If afterZoomRate > 400 Then
@@ -39,20 +39,20 @@ Function zoomIn()
     Exit Function
 
 Catch:
-    If errorHandler("zoomIn") Then
-        Call keystroke(True, Ctrl_ + Shift_ + Alt_ + Minus_)
+    If ErrorHandler("ZoomIn") Then
+        Call KeyStroke(Ctrl_ + Shift_ + Alt_ + Minus_)
     End If
 End Function
 
-Function zoomOut()
+Function ZoomOut(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim afterZoomRate As Integer
 
-    If gCount > 1 Then
-        afterZoomRate = ActiveWindow.Zoom - gCount
+    If gVim.Count > 0 Then
+        afterZoomRate = ActiveWindow.Zoom - gVim.Count
     Else
-        afterZoomRate = ActiveWindow.Zoom - gCount * 10
+        afterZoomRate = ActiveWindow.Zoom - 10
     End If
 
     If afterZoomRate < 10 Then
@@ -63,17 +63,17 @@ Function zoomOut()
     Exit Function
 
 Catch:
-    If errorHandler("zoomOut") Then
-        Call keystroke(True, Ctrl_ + Alt_ + Minus_)
+    If ErrorHandler("ZoomOut") Then
+        Call KeyStroke(Ctrl_ + Alt_ + Minus_)
     End If
 End Function
 
-Function zoomSpecifiedScale()
+Function ZoomSpecifiedScale(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim zoomScale As Integer
 
-    Select Case gCount
+    Select Case gVim.Count1
         Case 1
             zoomScale = 100
         Case 2
@@ -96,172 +96,74 @@ Function zoomSpecifiedScale()
         Case Is > 400
             zoomScale = 400
         Case Is <= 400
-            zoomScale = gCount
+            zoomScale = gVim.Count1
     End Select
 
     ActiveWindow.Zoom = zoomScale
     Exit Function
 
 Catch:
-    Call errorHandler("zoomSpecifiedScale")
+    Call ErrorHandler("ZoomSpecifiedScale")
 End Function
 
-Function toggleFormulaBar()
+Function ToggleFormulaBar(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.DisplayFormulaBar = Not Application.DisplayFormulaBar
     Exit Function
 
 Catch:
-    Call errorHandler("toggleFormulaBar")
+    Call ErrorHandler("ToggleFormulaBar")
 End Function
 
-Function showSummaryInfo()
+Function ShowSummaryInfo(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.Dialogs(xlDialogSummaryInfo).Show
     Exit Function
 
 Catch:
-    Call errorHandler("showSummaryInfo")
+    Call ErrorHandler("ShowSummaryInfo")
 End Function
 
-Function jumpPrev()
-    On Error GoTo Catch
-
-    Dim t As Range
-    Dim wb As Workbook
-    Dim ws As Worksheet
-
-    Call stopVisualMode
-
-    If Not JumpList Is Nothing Then
-        Set t = JumpList.Back
-        If Not t Is Nothing Then
-            Set wb = t.Parent.Parent
-            Set ws = t.Parent
-
-            wb.Activate
-            ws.Activate
-            t.Select
-        Else
-            Call setStatusBarTemporarily("一番古い履歴です。", 1)
-        End If
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("jumpPrev")
-End Function
-
-Function jumpNext()
-    On Error GoTo Catch
-
-    Dim t As Range
-    Dim wb As Workbook
-    Dim ws As Worksheet
-
-    Call stopVisualMode
-
-    If Not JumpList Is Nothing Then
-        Set t = JumpList.Forward
-        If Not t Is Nothing Then
-            Set wb = t.Parent.Parent
-            Set ws = t.Parent
-
-            wb.Activate
-            ws.Activate
-            t.Select
-        Else
-            Call setStatusBarTemporarily("一番新しい履歴です。", 1)
-        End If
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("jumpNext")
-End Function
-
-Function clearJumps()
-    If Not JumpList Is Nothing Then
-        Call JumpList.ClearAll
-        Call setStatusBarTemporarily("ジャンプリストをクリアしました。", 2)
-    End If
-End Function
-
-Function recordToJumpList(Optional Target As Range)
-    On Error GoTo Catch
-
-    'JumpList が利用できるか検証
-    If JumpList Is Nothing Then
-        Exit Function
-    End If
-
-    'Target が未指定の場合は選択中のセル
-    If Target Is Nothing Then
-        If TypeName(Selection) = "Range" Then
-            Set Target = Selection
-        ElseIf Not ActiveCell Is Nothing Then
-            Set Target = ActiveCell
-        Else
-            Exit Function
-        End If
-    End If
-
-    '最新の記録と完全に一致しないなら記録する
-    If JumpList.Latest Is Nothing Then
-        Call JumpList.Add(Target)
-    ElseIf Target.Address <> JumpList.Latest.Address Then
-        Call JumpList.Add(Target)
-    ElseIf Target.Parent.Name <> JumpList.Latest.Parent.Name Then
-        Call JumpList.Add(Target)
-    ElseIf Target.Parent.Parent.FullName <> JumpList.Latest.Parent.Parent.FullName Then
-        Call JumpList.Add(Target)
-    End If
-    Exit Function
-
-Catch:
-    Call errorHandler("recordToJumpList")
-End Function
-
-Function smartFillColor()
-    Call stopVisualMode
+Function SmartFillColor(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
-        Call changeInteriorColor
+        Call ChangeInteriorColor
     ElseIf VarType(Selection) = vbObject Then
-        Call changeShapeFillColor
+        Call ChangeShapeFillColor
     End If
 End Function
 
-Function smartFontColor()
-    Call stopVisualMode
+Function SmartFontColor(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     If TypeName(Selection) = "Range" Then
-        Call changeFontColor
+        Call ChangeFontColor
     ElseIf VarType(Selection) = vbObject Then
-        Call changeShapeFontColor
+        Call ChangeShapeFontColor
     End If
 End Function
 
-Function showContextMenu()
+Function ShowContextMenu(Optional ByVal g As String) As Boolean
     'Send Shift+F10
-    Call keystroke(True, Shift_ + F10_)
+    Call KeyStroke(Shift_ + F10_)
 End Function
 
-Function showMacroDialog()
+Function ShowMacroDialog(Optional ByVal g As String) As Boolean
     'Send Alt+F8
-    Call keystroke(True, Alt_ + F8_, Tab_)
+    Call KeyStroke(Alt_ + F8_, Tab_)
 End Function
 
-Function setPrintArea()
-    Call stopVisualMode
+Function SetPrintArea(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     'Send Alt + P, R, S
-    Call keystroke(True, Alt_ + P_, R_, S_)
+    Call KeyStroke(Alt_ + P_, R_, S_)
 End Function
 
-Function clearPrintArea()
-    Call stopVisualMode
+Function ClearPrintArea(Optional ByVal g As String) As Boolean
+    Call StopVisualMode
 
     'Send Alt + P, R, C
-    Call keystroke(True, Alt_ + P_, R_, C_)
+    Call KeyStroke(Alt_ + P_, R_, C_)
 End Function

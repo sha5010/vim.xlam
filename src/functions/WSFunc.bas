@@ -2,51 +2,71 @@ Attribute VB_Name = "F_WSFunc"
 Option Explicit
 Option Private Module
 
-Function nextWorksheet()
+Function NextWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
+    Dim i As Long
 
     With ActiveWorkbook
-        i = .ActiveSheet.Index - 1
-        Do
-            i = (i + 1) Mod .Worksheets.Count
-            If .Worksheets(i + 1).Visible = xlSheetVisible Then
-                .Worksheets(i + 1).Activate
-                Exit Function
+        i = .ActiveSheet.Index
+        Dim cnt As Long: cnt = gVim.Count1
+
+        Do While cnt > 0
+            i = (i Mod .Worksheets.Count) + 1
+            If .Worksheets(i).Visible = xlSheetVisible Then
+                cnt = cnt - 1
+            End If
+
+            If i = .ActiveSheet.Index Then
+                Dim visibleSheets As Long
+                visibleSheets = gVim.Count1 - cnt
+                cnt = cnt Mod visibleSheets
             End If
         Loop
+        .Worksheets(i).Activate
     End With
     Exit Function
 
 Catch:
-    Call keystroke(True, Ctrl_ + PageDown_)
-    Call errorHandler("nextWorksheet")
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Ctrl_ + PageDown_)
+    Next i
+    Call ErrorHandler("NextWorksheet")
 End Function
 
-Function previousWorksheet()
+Function PreviousWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
+    Dim i As Long
 
     With ActiveWorkbook
-        i = .ActiveSheet.Index - 1
-        Do
-            i = (i - 1 + .Worksheets.Count) Mod .Worksheets.Count
-            If .Worksheets(i + 1).Visible = xlSheetVisible Then
-                .Worksheets(i + 1).Activate
-                Exit Function
+        i = .ActiveSheet.Index
+        Dim cnt As Long: cnt = gVim.Count1
+
+        Do While cnt > 0
+            i = ((i - 2 + .Worksheets.Count) Mod .Worksheets.Count) + 1
+            If .Worksheets(i).Visible = xlSheetVisible Then
+                cnt = cnt - 1
+            End If
+
+            If i = .ActiveSheet.Index Then
+                Dim visibleSheets As Long
+                visibleSheets = gVim.Count1 - cnt
+                cnt = cnt Mod visibleSheets
             End If
         Loop
+        .Worksheets(i).Activate
     End With
     Exit Function
 
 Catch:
-    Call keystroke(True, Ctrl_ + PageUp_)
-    Call errorHandler("previousWorksheet")
+    For i = 1 To gVim.Count1
+        Call KeyStroke(Ctrl_ + PageUp_)
+    Next i
+    Call ErrorHandler("PreviousWorksheet")
 End Function
 
-Function renameWorksheet()
+Function RenameWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim ret As String
@@ -54,7 +74,7 @@ Function renameWorksheet()
 
     With ActiveWorkbook
         beforeName = .ActiveSheet.Name
-        ret = InputBox("新しいシート名を入力してください。", "シート名の変更", beforeName)
+        ret = InputBox(gVim.Msg.EnterNewSheetName, gVim.Msg.RenameSheetTitle, beforeName)
 
         If ret <> "" Then
             'Exit if same name
@@ -62,23 +82,23 @@ Function renameWorksheet()
                 Exit Function
 
             'Error when new sheet name already exists
-            ElseIf isSheetExists(ret) Then
-                MsgBox "すでに """ & ret & """ シートが存在します。", vbExclamation
+            ElseIf IsSheetExists(ret) Then
+                MsgBox gVim.Msg.SheetAlreadyExists(ret), vbExclamation
                 Exit Function
             End If
             .Worksheets(.ActiveSheet.Index).Name = ret
 
-            Call setStatusBarTemporarily("シート名を変更しました： """ & _
-                beforeName & """ → """ & ret & """", 3)
+            Call SetStatusBarTemporarily(gVim.Msg.ChangedSheetName & _
+                ": """ & beforeName & """ -> """ & ret & """", 3000)
         End If
     End With
     Exit Function
 
 Catch:
-    Call errorHandler("renameWorksheet")
+    Call ErrorHandler("RenameWorksheet")
 End Function
 
-Function moveWorksheetForward()
+Function MoveWorksheetForward(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -89,7 +109,7 @@ Function moveWorksheetForward()
 
     With ActiveWorkbook
         idx = .ActiveSheet.Index
-        cnt = gCount
+        cnt = gVim.Count1
         n = .Worksheets.Count
         i = idx
         Do
@@ -117,10 +137,10 @@ Function moveWorksheetForward()
     Exit Function
 
 Catch:
-    Call errorHandler("moveWorksheetBack")
+    Call ErrorHandler("MoveWorksheetBack")
 End Function
 
-Function moveWorksheetBack()
+Function MoveWorksheetBack(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -131,7 +151,7 @@ Function moveWorksheetBack()
 
     With ActiveWorkbook
         idx = .ActiveSheet.Index
-        cnt = gCount
+        cnt = gVim.Count1
         n = .Worksheets.Count
         i = idx
         Do
@@ -160,10 +180,10 @@ Function moveWorksheetBack()
     Exit Function
 
 Catch:
-    Call errorHandler("moveWorksheetBack")
+    Call ErrorHandler("MoveWorksheetBack")
 End Function
 
-Function insertWorksheet()
+Function InsertWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     With ActiveWorkbook
         .Worksheets.Add Before:=.ActiveSheet
@@ -171,10 +191,10 @@ Function insertWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("insertWorksheet")
+    Call ErrorHandler("InsertWorksheet")
 End Function
 
-Function appendWorksheet()
+Function AppendWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     With ActiveWorkbook
         .Worksheets.Add After:=.ActiveSheet
@@ -182,15 +202,15 @@ Function appendWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("appendWorksheet")
+    Call ErrorHandler("AppendWorksheet")
 End Function
 
-Function deleteWorksheet()
+Function DeleteWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     'error if target sheet is last visible one
-    If ActiveSheet.Visible = xlSheetVisible And getVisibleSheetsCount() = 1 Then
-        MsgBox "シートをすべて削除、または非表示にすることはできません。", vbExclamation
+    If ActiveSheet.Visible = xlSheetVisible And GetVisibleSheetsCount() = 1 Then
+        MsgBox gVim.Msg.DeleteOrHideAllSheets, vbExclamation
         Exit Function
     End If
 
@@ -198,23 +218,27 @@ Function deleteWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("deleteWorksheet")
+    Call ErrorHandler("DeleteWorksheet")
 End Function
 
-Function activateWorksheet(ByVal n As String) As Boolean
+Function ActivateWorksheet(Optional ByVal sheetNum As String) As Boolean
     On Error GoTo Catch
 
-    Dim idx As Integer
-
-    If Not IsNumeric(n) Or InStr(n, ".") > 0 Then
+    If Len(sheetNum) = 0 Then
+        ActivateWorksheet = True
+        Exit Function
+    ElseIf sheetNum Like "*[!0-9]*" Then
         Exit Function
     End If
 
-    idx = CInt(n)
+    Dim idx As Long
+    idx = CLng(Right(sheetNum, 10))
 
     With ActiveWorkbook
-        If idx < 1 Or .Worksheets.Count < idx Then
-            Exit Function
+        If idx < 1 Then
+            idx = 1
+        ElseIf .Worksheets.Count < idx Then
+            idx = .Worksheets.Count
         End If
 
         If .Worksheets(idx).Visible <> xlSheetVisible Then
@@ -222,15 +246,14 @@ Function activateWorksheet(ByVal n As String) As Boolean
         End If
 
         .Worksheets(idx).Select
-        activateWorksheet = True
     End With
     Exit Function
 
 Catch:
-    Call errorHandler("activateWorksheet")
+    Call ErrorHandler("ActivateWorksheet")
 End Function
 
-Function activateFirstWorksheet()
+Function ActivateFirstWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
@@ -246,10 +269,10 @@ Function activateFirstWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("activateFirstWorksheet")
+    Call ErrorHandler("ActivateFirstWorksheet")
 End Function
 
-Function activateLastWorksheet()
+Function ActivateLastWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
@@ -265,10 +288,10 @@ Function activateLastWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("activateLastWorksheet")
+    Call ErrorHandler("ActivateLastWorksheet")
 End Function
 
-Function cloneWorksheet()
+Function CloneWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     ActiveSheet.Copy After:=ActiveSheet
@@ -276,14 +299,14 @@ Function cloneWorksheet()
     Exit Function
 
 Catch:
-    Call errorHandler("cloneWorksheet")
+    Call ErrorHandler("CloneWorksheet")
 End Function
 
-Function showSheetPicker()
+Function ShowSheetPicker(Optional ByVal g As String) As Boolean
     UF_SheetPicker.Show
 End Function
 
-Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
+Function ChangeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
     If ActiveSheet Is Nothing Then
@@ -291,7 +314,7 @@ Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
     End If
 
     If resultColor Is Nothing Then
-        Set resultColor = UF_ColorPicker.showColorPicker()
+        Set resultColor = UF_ColorPicker.Launch()
     End If
 
     If Not resultColor Is Nothing Then
@@ -305,29 +328,29 @@ Function changeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor)
                 .Color = resultColor.Color
             End If
 
-            Call repeatRegister("changeWorksheetTabColor", resultColor)
+            Call RepeatRegister("ChangeWorksheetTabColor", resultColor)
         End With
     End If
     Exit Function
 
 Catch:
-    Call errorHandler("changeWorksheetTabColor")
+    Call ErrorHandler("ChangeWorksheetTabColor")
 End Function
 
-Function exportWorksheet()
+Function ExportWorksheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.Dialogs(xlDialogWorkbookCopy).Show
     Exit Function
 
 Catch:
-    Call errorHandler("exportWorksheet")
+    Call ErrorHandler("ExportWorksheet")
 End Function
 
-Function printPreviewOfActiveSheet()
+Function PrintPreviewOfActiveSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveSheet.PrintPreview
     Exit Function
 
 Catch:
-    Call errorHandler("printPreviewOfActiveSheet")
+    Call ErrorHandler("PrintPreviewOfActiveSheet")
 End Function

@@ -2,30 +2,59 @@ Attribute VB_Name = "F_Find_Replace"
 Option Explicit
 Option Private Module
 
-Function showFindFollowLang()
-    UF_FindForm.Show
+Function ShowFindFollowLang(Optional ByVal g As String) As Boolean
+    Dim searchStr As String
+    searchStr = UF_CmdLine.Launch("/", "Find", gVim.IsJapanese)
+
+    If searchStr <> CMDLINE_CANCELED Then
+        Call FindInner(searchStr)
+    End If
 End Function
 
-Function showFindNotFollowLang()
-    gLangJa = Not gLangJa
-    UF_FindForm.Show
-    gLangJa = Not gLangJa
+Function ShowFindNotFollowLang(Optional ByVal g As String) As Boolean
+    Dim searchStr As String
+    searchStr = UF_CmdLine.Launch("/", "Find", Not gVim.IsJapanese)
+
+    If searchStr <> CMDLINE_CANCELED Then
+        Call FindInner(searchStr)
+    End If
 End Function
 
-Function nextFoundCell()
+Private Sub FindInner(ByVal findString As String)
+    Dim t As Range
+
+    If findString = "" Then
+        Call NextFoundCell
+        Exit Sub
+    End If
+
+    Set t = ActiveSheet.Cells.Find(What:=findString, _
+                                   LookIn:=xlValues, _
+                                   LookAt:=xlPart, _
+                                   SearchOrder:=xlByColumns, _
+                                   MatchByte:=False)
+    If Not t Is Nothing Then
+        Call RecordToJumpList
+
+        ActiveWorkbook.ActiveSheet.Activate
+        t.Activate
+    End If
+End Sub
+
+Function NextFoundCell(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim t As Range
     Dim i As Integer
 
-    If gCount > 1 Then
+    If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
     End If
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
-    For i = gCount To 1 Step -1
-        If gCount = 1 Then
+    For i = gVim.Count1 To 1 Step -1
+        If gVim.Count1 = 1 Then
             Application.ScreenUpdating = True
         End If
 
@@ -41,22 +70,22 @@ Function nextFoundCell()
     Exit Function
 
 Catch:
-    Call errorHandler("nextFoundCell")
+    Call ErrorHandler("NextFoundCell")
 End Function
 
-Function previousFoundCell()
+Function PreviousFoundCell(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim t As Range
     Dim i As Integer
 
-    If gCount > 1 Then
+    If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
     End If
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
-    For i = gCount To 1 Step -1
+    For i = gVim.Count1 To 1 Step -1
         If i = 1 Then
             Application.ScreenUpdating = True
         End If
@@ -73,14 +102,14 @@ Function previousFoundCell()
     Exit Function
 
 Catch:
-    Call errorHandler("previousFoundCell")
+    Call ErrorHandler("PreviousFoundCell")
 End Function
 
-Function showReplaceWindow()
-    Call keystroke(True, Alt_ + E_, E_)
+Function ShowReplaceWindow(Optional ByVal g As String) As Boolean
+    Call KeyStroke(Alt_ + E_, E_)
 End Function
 
-Function findActiveValueNext()
+Function FindActiveValueNext(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim t As Range
@@ -104,20 +133,18 @@ Function findActiveValueNext()
                                    MatchByte:=False)
 
     If Not t Is Nothing Then
-        Call recordToJumpList
-
-        ActiveWorkbook.ActiveSheet.Activate
-        t.Activate
+        Call RecordToJumpList
+        Call NextFoundCell
     End If
 
-    Call setStatusBarTemporarily("/" & findText, 2, disablePrefix:=True)
+    Call SetStatusBarTemporarily("/" & findText, 2000, disablePrefix:=True)
     Exit Function
 
 Catch:
-    Call errorHandler("findActiveValueNext")
+    Call ErrorHandler("FindActiveValueNext")
 End Function
 
-Function findActiveValuePrev()
+Function FindActiveValuePrev(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim t As Range
@@ -141,36 +168,33 @@ Function findActiveValuePrev()
                                    MatchByte:=False)
 
     If Not t Is Nothing Then
-        Call recordToJumpList
-
-        ActiveWorkbook.ActiveSheet.Activate
-        Set t = Cells.FindPrevious(After:=ActiveCell)
-        t.Activate
+        Call RecordToJumpList
+        Call PreviousFoundCell
     End If
 
-    Call setStatusBarTemporarily("?" & findText, 2, disablePrefix:=True)
+    Call SetStatusBarTemporarily("?" & findText, 2000, disablePrefix:=True)
     Exit Function
 
 Catch:
-    Call errorHandler("findActiveValuePrev")
+    Call ErrorHandler("FindActiveValuePrev")
 End Function
 
-Function nextSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As XlSearchOrder = xlByColumns)
+Function NextSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As XlSearchOrder = xlByColumns) As Boolean
     On Error GoTo Catch
 
     Dim rngSpecialCells As Range
     Dim rngResultCell As Range
     Dim i As Long
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     'Raise error if target cell does not exists
     Set rngSpecialCells = ActiveSheet.UsedRange.SpecialCells(TypeValue)
 
     'Calculate next cell
     Set rngResultCell = ActiveCell
-    For i = 1 To (gCount - 1) Mod rngSpecialCells.Count + 1
-        Set rngResultCell = determineCell(rngResultCell, rngSpecialCells, TypeValue, SearchOrder, xlNext)
+    For i = 1 To (gVim.Count1 - 1) Mod rngSpecialCells.Count + 1
+        Set rngResultCell = DetermineCell(rngResultCell, rngSpecialCells, TypeValue, SearchOrder, xlNext)
     Next i
 
     If Not rngResultCell Is Nothing Then
@@ -181,28 +205,28 @@ Function nextSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
 Catch:
     If Err.Number = 1004 Then
-        Call setStatusBarTemporarily("該当するセルが見つかりません。", 2)
+        Call SetStatusBarTemporarily(gVim.Msg.NoMatchingCell, 2000)
     Else
-        Call errorHandler("nextSpecialCells")
+        Call ErrorHandler("NextSpecialCells")
     End If
 End Function
 
-Function prevSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As XlSearchOrder = xlByColumns)
+Function PrevSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As XlSearchOrder = xlByColumns) As Boolean
     On Error GoTo Catch
 
     Dim rngSpecialCells As Range
     Dim rngResultCell As Range
     Dim i As Long
 
-    Call recordToJumpList
+    Call RecordToJumpList
 
     'Raise error if target cell does not exists
     Set rngSpecialCells = ActiveSheet.UsedRange.SpecialCells(TypeValue)
 
     'Calculate next cell
     Set rngResultCell = ActiveCell
-    For i = 1 To (gCount - 1) Mod rngSpecialCells.Count + 1
-        Set rngResultCell = determineCell(rngResultCell, rngSpecialCells, TypeValue, SearchOrder, xlPrevious)
+    For i = 1 To (gVim.Count1 - 1) Mod rngSpecialCells.Count + 1
+        Set rngResultCell = DetermineCell(rngResultCell, rngSpecialCells, TypeValue, SearchOrder, xlPrevious)
     Next i
 
     If Not rngResultCell Is Nothing Then
@@ -212,13 +236,13 @@ Function prevSpecialCells(ByVal TypeValue As XlCellType, Optional SearchOrder As
 
 Catch:
     If Err.Number = 1004 Then
-        Call setStatusBarTemporarily("該当するセルが見つかりません。", 2)
+        Call SetStatusBarTemporarily(gVim.Msg.NoMatchingCell, 2000)
     Else
-        Call errorHandler("prevSpecialCells")
+        Call ErrorHandler("PrevSpecialCells")
     End If
 End Function
 
-Private Function determineCell(ByRef BaseCell As Range, _
+Private Function DetermineCell(ByRef BaseCell As Range, _
                                ByRef FoundCells As Range, _
                                ByVal TypeValue As XlCellType, _
                                ByVal SearchOrder As XlSearchOrder, _
@@ -291,8 +315,8 @@ Private Function determineCell(ByRef BaseCell As Range, _
         On Error GoTo Catch
 
         If Not rngResultCells Is Nothing Then
-            Set determineCell = closestSearch(rngResultCells, SearchOrder, SearchDirection, TypeValue = xlCellTypeBlanks)
-            If Not determineCell Is Nothing Then
+            Set DetermineCell = ClosestSearch(rngResultCells, SearchOrder, SearchDirection, TypeValue = xlCellTypeBlanks)
+            If Not DetermineCell Is Nothing Then
                 Exit Function
             End If
         End If
@@ -346,8 +370,8 @@ Private Function determineCell(ByRef BaseCell As Range, _
     If Not rngFoundCells Is Nothing Then
         Set rngResultCells = Intersect(rngCheckCells, rngFoundCells)
         If Not rngResultCells Is Nothing Then
-            Set determineCell = closestSearch(rngResultCells, SearchOrder, SearchDirection, TypeValue = xlCellTypeBlanks)
-            If Not determineCell Is Nothing Then
+            Set DetermineCell = ClosestSearch(rngResultCells, SearchOrder, SearchDirection, TypeValue = xlCellTypeBlanks)
+            If Not DetermineCell Is Nothing Then
                 Exit Function
             End If
         End If
@@ -357,16 +381,16 @@ Private Function determineCell(ByRef BaseCell As Range, _
     Set rngCheckCells = Range(Cells(minRow, minCol), Cells(maxRow, maxCol))
     Set rngResultCells = Intersect(rngCheckCells, FoundCells)
     If Not rngResultCells Is Nothing Then
-        Set determineCell = closestSearch(rngResultCells, SearchOrder, SearchDirection, TypeValue = xlCellTypeBlanks)
+        Set DetermineCell = ClosestSearch(rngResultCells, SearchOrder, SearchDirection, TypeValue = xlCellTypeBlanks)
     End If
 
     Exit Function
 
 Catch:
-    Call errorHandler("determineCell")
+    Call ErrorHandler("DetermineCell")
 End Function
 
-Private Function closestSearch(ByRef rngResultCells As Range, _
+Private Function ClosestSearch(ByRef rngResultCells As Range, _
                                ByVal SearchOrder As XlSearchOrder, _
                                ByVal SearchDirection As XlSearchDirection, _
                                ByVal checkIsBlankMergedCell As Boolean) As Range
@@ -394,7 +418,7 @@ Private Function closestSearch(ByRef rngResultCells As Range, _
                 If tmp Is Nothing Then
                     GoTo Continue
                 ElseIf tmp.Address <> r.Address And tmp.Count > 1 Then
-                    Set tmp = closestSearch(tmp, SearchOrder, SearchDirection, checkIsBlankMergedCell)
+                    Set tmp = ClosestSearch(tmp, SearchOrder, SearchDirection, checkIsBlankMergedCell)
                 Else
                     Set tmp = tmp.Item(1).MergeArea.Item(1)
                 End If
@@ -406,15 +430,15 @@ Private Function closestSearch(ByRef rngResultCells As Range, _
                 GoTo Continue
             End If
 
-            If closestSearch Is Nothing Then
-                Set closestSearch = tmp
+            If ClosestSearch Is Nothing Then
+                Set ClosestSearch = tmp
             ElseIf SearchOrder = xlByColumns Then
-                If closestSearch.Column > tmp.Column Or (closestSearch.Column = tmp.Column And closestSearch.Row > tmp.Row) Then
-                    Set closestSearch = tmp
+                If ClosestSearch.Column > tmp.Column Or (ClosestSearch.Column = tmp.Column And ClosestSearch.Row > tmp.Row) Then
+                    Set ClosestSearch = tmp
                 End If
             ElseIf SearchOrder = xlByRows Then
-                If closestSearch.Row > tmp.Row Or (closestSearch.Row = tmp.Row And closestSearch.Column > tmp.Column) Then
-                    Set closestSearch = tmp
+                If ClosestSearch.Row > tmp.Row Or (ClosestSearch.Row = tmp.Row And ClosestSearch.Column > tmp.Column) Then
+                    Set ClosestSearch = tmp
                 End If
             End If
 
@@ -432,7 +456,7 @@ Private Function closestSearch(ByRef rngResultCells As Range, _
                 If tmp Is Nothing Then
                     GoTo Continue
                 ElseIf tmp.Address <> r.Address And tmp.Count > 1 Then
-                    Set tmp = closestSearch(tmp, SearchOrder, SearchDirection, checkIsBlankMergedCell)
+                    Set tmp = ClosestSearch(tmp, SearchOrder, SearchDirection, checkIsBlankMergedCell)
                 Else
                     Set tmp = tmp.Item(tmp.Count).MergeArea.Item(1)
                 End If
@@ -444,15 +468,15 @@ Private Function closestSearch(ByRef rngResultCells As Range, _
                 GoTo Continue
             End If
 
-            If closestSearch Is Nothing Then
-                Set closestSearch = tmp
+            If ClosestSearch Is Nothing Then
+                Set ClosestSearch = tmp
             ElseIf SearchOrder = xlByColumns Then
-                If closestSearch.Column < tmp.Column Or (closestSearch.Column = tmp.Column And closestSearch.Row < tmp.Row) Then
-                    Set closestSearch = tmp
+                If ClosestSearch.Column < tmp.Column Or (ClosestSearch.Column = tmp.Column And ClosestSearch.Row < tmp.Row) Then
+                    Set ClosestSearch = tmp
                 End If
             ElseIf SearchOrder = xlByRows Then
-                If closestSearch.Row < tmp.Row Or (closestSearch.Row = tmp.Row And closestSearch.Column < tmp.Column) Then
-                    Set closestSearch = tmp
+                If ClosestSearch.Row < tmp.Row Or (ClosestSearch.Row = tmp.Row And ClosestSearch.Column < tmp.Column) Then
+                    Set ClosestSearch = tmp
                 End If
             End If
 
@@ -462,5 +486,5 @@ Continue:
     Exit Function
 
 Catch:
-    Call errorHandler("closestSearch")
+    Call ErrorHandler("ClosestSearch")
 End Function

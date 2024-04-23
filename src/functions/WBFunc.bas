@@ -2,34 +2,34 @@ Attribute VB_Name = "F_WBFunc"
 Option Explicit
 Option Private Module
 
-Function closeAskSaving()
+Function CloseAskSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close
     Exit Function
 
 Catch:
-    Call errorHandler("closeAskSaving")
+    Call ErrorHandler("CloseAskSaving")
 End Function
 
-Function closeWithoutSaving()
+Function CloseWithoutSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close False
     Exit Function
 
 Catch:
-    Call errorHandler("closeWithoutSaving")
+    Call ErrorHandler("CloseWithoutSaving")
 End Function
 
-Function closeWithSaving()
+Function CloseWithSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close True
     Exit Function
 
 Catch:
-    Call errorHandler("closeWithSaving")
+    Call ErrorHandler("CloseWithSaving")
 End Function
 
-Function saveWorkbook()
+Function SaveWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     If ActiveWorkbook.Path = "" Then
@@ -42,28 +42,28 @@ Function saveWorkbook()
     Exit Function
 
 Catch:
-    Call errorHandler("saveWorkbook")
+    Call ErrorHandler("SaveWorkbook")
 End Function
 
-Function saveAsNewWorkbook()
+Function SaveAsNewWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.CommandBars.ExecuteMso "FileSaveAs"
     Exit Function
 
 Catch:
-    Call errorHandler("saveAsNewWorkbook")
+    Call ErrorHandler("SaveAsNewWorkbook")
 End Function
 
-Function openWorkbook()
+Function OpenWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.CommandBars.ExecuteMso "FileOpenUsingBackstage"
     Exit Function
 
 Catch:
-    Call errorHandler("openWorkbook")
+    Call ErrorHandler("OpenWorkbook")
 End Function
 
-Function reopenActiveWorkbook()
+Function ReopenActiveWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim wbFullName As String
@@ -74,7 +74,7 @@ Function reopenActiveWorkbook()
     End If
 
     If Not ActiveWorkbook.Saved Then
-        ret = MsgBox("ファイルを開き直す前に、編集内容を保存しますか?", vbYesNoCancel + vbQuestion)
+        ret = MsgBox(gVim.Msg.ConfirmToSaveBeforeReopening, vbYesNoCancel + vbQuestion)
         If ret = vbCancel Then
             Exit Function
         ElseIf ret = vbNo Then
@@ -91,84 +91,96 @@ Function reopenActiveWorkbook()
     Exit Function
 
 Catch:
-    Call errorHandler("reopenActiveWorkbook")
+    Call ErrorHandler("ReopenActiveWorkbook")
 End Function
 
-Function activateWorkbook(ByVal n As String) As Boolean
+Function ActivateWorkbook(Optional ByVal arg As String) As Boolean
     On Error GoTo Catch
 
-    Dim idx As Integer
+    Dim idx As Long
     Dim isForce As Boolean
 
-    On Error GoTo Catch
+    isForce = (InStr(arg, "!") > 0)
+    arg = Replace(arg, "!", "")
 
-    isForce = (InStr(n, "!") > 0)
-    n = Replace(n, "!", "")
-
-    If Not IsNumeric(n) Or InStr(n, ".") > 0 Then
+    If Len(arg) = 0 Or arg Like "*[!0-9]*" Then
         Exit Function
     End If
 
-    idx = CInt(n)
+    idx = CLng(arg)
 
-    If idx < 1 Or Windows.Count < idx Then
-        Exit Function
+    If idx < 1 Then
+        idx = 1
+    ElseIf Windows.Count < idx Then
+        idx = Windows.Count
     End If
 
     With Windows(idx)
         If .Visible Or isForce Then
             .Visible = True
             .Activate
-            activateWorkbook = True
+            ActivateWorkbook = True
         End If
     End With
     Exit Function
 
 Catch:
-    Call errorHandler("activateWorkbook")
+    Call ErrorHandler("ActivateWorkbook")
 End Function
 
-Function nextWorkbook()
+Function NextWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
-    Dim idx As Integer
+    Dim i As Long: i = GetWorkbookIndex(ActiveWorkbook)
+    Dim cnt As Long: cnt = gVim.Count1
+    Dim currentIdx As Long: currentIdx = i
 
-    idx = getWorkbookIndex(ActiveWorkbook)
-    For i = 1 To Workbooks.Count
-        idx = (idx Mod Workbooks.Count) + 1
-        If Windows(Workbooks(idx).Name).Visible Then
-            Workbooks(idx).Activate
-            Exit Function
+    Do While cnt > 0
+        i = (i Mod Workbooks.Count) + 1
+        If Windows(Workbooks(i).Name).Visible Then
+            cnt = cnt - 1
         End If
-    Next i
+
+        If i = currentIdx Then
+            Dim visibleBooks As Long
+            visibleBooks = gVim.Count1 - cnt
+            cnt = cnt Mod visibleBooks
+        End If
+    Loop
+    Workbooks(i).Activate
     Exit Function
 
 Catch:
-    Call errorHandler("nextWorkbook")
+    Call ErrorHandler("NextWorkbook")
 End Function
 
-Function previousWorkbook()
+Function PreviousWorkbook(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
-    Dim i As Integer
-    Dim idx As Integer
+    Dim i As Long: i = GetWorkbookIndex(ActiveWorkbook)
+    Dim cnt As Long: cnt = gVim.Count1
+    Dim currentIdx As Long: currentIdx = i
 
-    idx = getWorkbookIndex(ActiveWorkbook)
-    For i = 1 To Workbooks.Count
-        idx = ((idx - 2 + Workbooks.Count) Mod Workbooks.Count) + 1
-        If Windows(Workbooks(idx).Name).Visible Then
-            Workbooks(idx).Activate
-            Exit Function
+    Do While cnt > 0
+        i = ((i - 2 + Workbooks.Count) Mod Workbooks.Count) + 1
+        If Windows(Workbooks(i).Name).Visible Then
+            cnt = cnt - 1
         End If
-    Next i
+
+        If i = currentIdx Then
+            Dim visibleBooks As Long
+            visibleBooks = gVim.Count1 - cnt
+            cnt = cnt Mod visibleBooks
+        End If
+    Loop
+    Workbooks(i).Activate
     Exit Function
 
 Catch:
-    Call errorHandler("previousWorkbook")
+    Call ErrorHandler("PreviousWorkbook")
 End Function
 
-Function toggleReadOnly()
+Function ToggleReadOnly(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim ret As VbMsgBoxResult
@@ -182,7 +194,7 @@ Function toggleReadOnly()
         Call ActiveWorkbook.ChangeFileAccess(xlReadWrite)
     Else
         If Not ActiveWorkbook.Saved Then
-            ret = MsgBox("読み取り専用の切り替えを行う前に、編集内容を保存しますか?", vbYesNoCancel + vbQuestion)
+            ret = MsgBox(gVim.Msg.ConfirmToSaveBeforeSwitchReadonly, vbYesNoCancel + vbQuestion)
             If ret = vbCancel Then
                 Exit Function
             ElseIf ret = vbNo Then
@@ -197,5 +209,5 @@ Function toggleReadOnly()
     Exit Function
 
 Catch:
-    Call errorHandler("toggleReadOnly")
+    Call ErrorHandler("ToggleReadOnly")
 End Function
