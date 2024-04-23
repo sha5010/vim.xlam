@@ -17,10 +17,12 @@ Option Explicit
 
 Private WithEvents cUserForm As cls_UFKeyReceiver
 Attribute cUserForm.VB_VarHelpID = -1
+Private cReturn As String
 
 Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String)
     If key Like "*{ENTER}" Then
         Me.Hide
+        cReturn = Me.TextBox.Text
         Exit Sub
     End If
 
@@ -31,11 +33,15 @@ Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String)
         Application.Run cmd
     ElseIf key = "{ESC}" Or key = "^{[}" Or key = "^{c}" Then
         Me.Hide
-        Me.TextBox.Text = CMDLINE_CANCELED
+        cReturn = CMDLINE_CANCELED
     End If
 End Sub
 
 Private Sub TextBox_Change()
+    If Not Me.Visible Then
+        Exit Sub
+    End If
+
     With Me.TextBox
         Dim newWidth As Double
         newWidth = .Left + .Width + 12
@@ -107,6 +113,7 @@ Public Function Launch(Optional ByVal prefix As String = ":", _
     End With
 
     Me.Caption = formCaption
+    cReturn = ""
 
     Dim currentMode As String: currentMode = gVim.Mode.Current
 
@@ -114,5 +121,5 @@ Public Function Launch(Optional ByVal prefix As String = ":", _
     Me.Show
     Call gVim.Mode.Change(currentMode)
 
-    Launch = Me.TextBox.Text
+    Launch = cReturn
 End Function
