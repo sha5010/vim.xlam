@@ -9,8 +9,8 @@ Option Private Module
     Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 #Else
     Public Declare Sub keybd_event Lib "user32" (ByVal bVk As Byte, ByVal bScan As Byte, ByVal dwFlags As Long, ByVal dwExtraInfo As Long)
-    Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Long) As Long
-    Public Declare Function GetKeyState Lib "user32.dll" (ByVal vKey As Long) As Long
+    Public Declare Function GetAsyncKeyState Lib "user32.dll" (ByVal vKey As Long) As Integer
+    Public Declare Function GetKeyState Lib "user32.dll" (ByVal vKey As Long) As Integer
     Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 #End If
 
