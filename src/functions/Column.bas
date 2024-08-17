@@ -285,7 +285,8 @@ Function UnhideColumns(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     'ref: https://excel.nj-clucker.com/ctrl-shift-0-not-working/
-    Call KeyStroke(Ctrl_ + Shift_ + k0_)
+    'Call KeyStroke(Ctrl_ + Shift_ + k0_)
+    Call KeyStroke(Alt_ + H_, O_, U_, L_)
     Exit Function
 
 Catch:
