@@ -119,71 +119,71 @@ Sub DefaultConfig()
 
 
         ' Border
-        .Map "nmap bb ToggleBorderAll " & xlContinuous & " " & xlThin
-        .Map "nmap ba ToggleBorderAround " & xlContinuous & " " & xlThin
-        .Map "nmap bh ToggleBorderLeft " & xlContinuous & " " & xlThin
-        .Map "nmap bj ToggleBorderBottom " & xlContinuous & " " & xlThin
-        .Map "nmap bk ToggleBorderTop " & xlContinuous & " " & xlThin
-        .Map "nmap bl ToggleBorderRight " & xlContinuous & " " & xlThin
-        .Map "nmap bia ToggleBorderInner " & xlContinuous & " " & xlThin
-        .Map "nmap bis ToggleBorderInnerHorizontal " & xlContinuous & " " & xlThin
-        .Map "nmap biv ToggleBorderInnerVertical " & xlContinuous & " " & xlThin
-        .Map "nmap b/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlThin
-        .Map "nmap b<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlThin
+        .Map "nmap bb ToggleBorderAll 1 2"                  ' xlContinuous, xlThin
+        .Map "nmap ba ToggleBorderAround 1 2"               ' xlContinuous, xlThin
+        .Map "nmap bh ToggleBorderLeft 1 2"                 ' xlContinuous, xlThin
+        .Map "nmap bj ToggleBorderBottom 1 2"               ' xlContinuous, xlThin
+        .Map "nmap bk ToggleBorderTop 1 2"                  ' xlContinuous, xlThin
+        .Map "nmap bl ToggleBorderRight 1 2"                ' xlContinuous, xlThin
+        .Map "nmap bia ToggleBorderInner 1 2"               ' xlContinuous, xlThin
+        .Map "nmap bis ToggleBorderInnerHorizontal 1 2"     ' xlContinuous, xlThin
+        .Map "nmap biv ToggleBorderInnerVertical 1 2"       ' xlContinuous, xlThin
+        .Map "nmap b/ ToggleBorderDiagonalUp 1 2"           ' xlContinuous, xlThin
+        .Map "nmap b<bslash> ToggleBorderDiagonalDown 1 2"  ' xlContinuous, xlThin
 
-        .Map "nmap bB ToggleBorderAll " & xlContinuous & " " & xlThick
-        .Map "nmap bA ToggleBorderAround " & xlContinuous & " " & xlThick
-        .Map "nmap bH ToggleBorderLeft " & xlContinuous & " " & xlThick
-        .Map "nmap bJ ToggleBorderBottom " & xlContinuous & " " & xlThick
-        .Map "nmap bK ToggleBorderTop " & xlContinuous & " " & xlThick
-        .Map "nmap bL ToggleBorderRight " & xlContinuous & " " & xlThick
-        .Map "nmap Bb ToggleBorderAll " & xlContinuous & " " & xlThick
-        .Map "nmap Ba ToggleBorderAround " & xlContinuous & " " & xlThick
-        .Map "nmap Bh ToggleBorderLeft " & xlContinuous & " " & xlThick
-        .Map "nmap Bj ToggleBorderBottom " & xlContinuous & " " & xlThick
-        .Map "nmap Bk ToggleBorderTop " & xlContinuous & " " & xlThick
-        .Map "nmap Bl ToggleBorderRight " & xlContinuous & " " & xlThick
-        .Map "nmap Bia ToggleBorderInner " & xlContinuous & " " & xlThick
-        .Map "nmap Bis ToggleBorderInnerHorizontal " & xlContinuous & " " & xlThick
-        .Map "nmap Biv ToggleBorderInnerVertical " & xlContinuous & " " & xlThick
-        .Map "nmap B/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlThick
-        .Map "nmap B<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlThick
+        .Map "nmap bB ToggleBorderAll 1 4"                  ' xlContinuous, xlThick
+        .Map "nmap bA ToggleBorderAround 1 4"               ' xlContinuous, xlThick
+        .Map "nmap bH ToggleBorderLeft 1 4"                 ' xlContinuous, xlThick
+        .Map "nmap bJ ToggleBorderBottom 1 4"               ' xlContinuous, xlThick
+        .Map "nmap bK ToggleBorderTop 1 4"                  ' xlContinuous, xlThick
+        .Map "nmap bL ToggleBorderRight 1 4"                ' xlContinuous, xlThick
+        .Map "nmap Bb ToggleBorderAll 1 4"                  ' xlContinuous, xlThick
+        .Map "nmap Ba ToggleBorderAround 1 4"               ' xlContinuous, xlThick
+        .Map "nmap Bh ToggleBorderLeft 1 4"                 ' xlContinuous, xlThick
+        .Map "nmap Bj ToggleBorderBottom 1 4"               ' xlContinuous, xlThick
+        .Map "nmap Bk ToggleBorderTop 1 4"                  ' xlContinuous, xlThick
+        .Map "nmap Bl ToggleBorderRight 1 4"                ' xlContinuous, xlThick
+        .Map "nmap Bia ToggleBorderInner 1 4"               ' xlContinuous, xlThick
+        .Map "nmap Bis ToggleBorderInnerHorizontal 1 4"     ' xlContinuous, xlThick
+        .Map "nmap Biv ToggleBorderInnerVertical 1 4"       ' xlContinuous, xlThick
+        .Map "nmap B/ ToggleBorderDiagonalUp 1 4"           ' xlContinuous, xlThick
+        .Map "nmap B<bslash> ToggleBorderDiagonalDown 1 4"  ' xlContinuous, xlThick
 
-        .Map "nmap bob ToggleBorderAll " & xlContinuous & " " & xlHairline
-        .Map "nmap boa ToggleBorderAround " & xlContinuous & " " & xlHairline
-        .Map "nmap boh ToggleBorderLeft " & xlContinuous & " " & xlHairline
-        .Map "nmap boj ToggleBorderBottom " & xlContinuous & " " & xlHairline
-        .Map "nmap bok ToggleBorderTop " & xlContinuous & " " & xlHairline
-        .Map "nmap bol ToggleBorderRight " & xlContinuous & " " & xlHairline
-        .Map "nmap boia ToggleBorderInner " & xlContinuous & " " & xlHairline
-        .Map "nmap bois ToggleBorderInnerHorizontal " & xlContinuous & " " & xlHairline
-        .Map "nmap boiv ToggleBorderInnerVertical " & xlContinuous & " " & xlHairline
-        .Map "nmap bo/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlHairline
-        .Map "nmap bo<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlHairline
+        .Map "nmap bob ToggleBorderAll 1 1"                 ' xlContinuous, xlHairline
+        .Map "nmap boa ToggleBorderAround 1 1"              ' xlContinuous, xlHairline
+        .Map "nmap boh ToggleBorderLeft 1 1"                ' xlContinuous, xlHairline
+        .Map "nmap boj ToggleBorderBottom 1 1"              ' xlContinuous, xlHairline
+        .Map "nmap bok ToggleBorderTop 1 1"                 ' xlContinuous, xlHairline
+        .Map "nmap bol ToggleBorderRight 1 1"               ' xlContinuous, xlHairline
+        .Map "nmap boia ToggleBorderInner 1 1"              ' xlContinuous, xlHairline
+        .Map "nmap bois ToggleBorderInnerHorizontal 1 1"    ' xlContinuous, xlHairline
+        .Map "nmap boiv ToggleBorderInnerVertical 1 1"      ' xlContinuous, xlHairline
+        .Map "nmap bo/ ToggleBorderDiagonalUp 1 1"          ' xlContinuous, xlHairline
+        .Map "nmap bo<bslash> ToggleBorderDiagonalDown 1 1" ' xlContinuous, xlHairline
 
-        .Map "nmap bmb ToggleBorderAll " & xlContinuous & " " & xlMedium
-        .Map "nmap bma ToggleBorderAround " & xlContinuous & " " & xlMedium
-        .Map "nmap bmh ToggleBorderLeft " & xlContinuous & " " & xlMedium
-        .Map "nmap bmj ToggleBorderBottom " & xlContinuous & " " & xlMedium
-        .Map "nmap bmk ToggleBorderTop " & xlContinuous & " " & xlMedium
-        .Map "nmap bml ToggleBorderRight " & xlContinuous & " " & xlMedium
-        .Map "nmap bmia ToggleBorderInner " & xlContinuous & " " & xlMedium
-        .Map "nmap bmis ToggleBorderInnerHorizontal " & xlContinuous & " " & xlMedium
-        .Map "nmap bmiv ToggleBorderInnerVertical " & xlContinuous & " " & xlMedium
-        .Map "nmap bm/ ToggleBorderDiagonalUp " & xlContinuous & " " & xlMedium
-        .Map "nmap bm<bslash> ToggleBorderDiagonalDown " & xlContinuous & " " & xlMedium
+        .Map "nmap bmb ToggleBorderAll 1 -4138"                     ' xlContinuous, xlMedium
+        .Map "nmap bma ToggleBorderAround 1 -4138"                  ' xlContinuous, xlMedium
+        .Map "nmap bmh ToggleBorderLeft 1 -4138"                    ' xlContinuous, xlMedium
+        .Map "nmap bmj ToggleBorderBottom 1 -4138"                  ' xlContinuous, xlMedium
+        .Map "nmap bmk ToggleBorderTop 1 -4138"                     ' xlContinuous, xlMedium
+        .Map "nmap bml ToggleBorderRight 1 -4138"                   ' xlContinuous, xlMedium
+        .Map "nmap bmia ToggleBorderInner 1 -4138"                  ' xlContinuous, xlMedium
+        .Map "nmap bmis ToggleBorderInnerHorizontal 1 -4138"        ' xlContinuous, xlMedium
+        .Map "nmap bmiv ToggleBorderInnerVertical 1 -4138"          ' xlContinuous, xlMedium
+        .Map "nmap bm/ ToggleBorderDiagonalUp 1 -4138"              ' xlContinuous, xlMedium
+        .Map "nmap bm<bslash> ToggleBorderDiagonalDown 1 -4138"     ' xlContinuous, xlMedium
 
-        .Map "nmap btb ToggleBorderAll " & xlDouble & " " & xlThick
-        .Map "nmap bta ToggleBorderAround " & xlDouble & " " & xlThick
-        .Map "nmap bth ToggleBorderLeft " & xlDouble & " " & xlThick
-        .Map "nmap btj ToggleBorderBottom " & xlDouble & " " & xlThick
-        .Map "nmap btk ToggleBorderTop " & xlDouble & " " & xlThick
-        .Map "nmap btl ToggleBorderRight " & xlDouble & " " & xlThick
-        .Map "nmap btia ToggleBorderInner " & xlDouble & " " & xlThick
-        .Map "nmap btis ToggleBorderInnerHorizontal " & xlDouble & " " & xlThick
-        .Map "nmap btiv ToggleBorderInnerVertical " & xlDouble & " " & xlThick
-        .Map "nmap bt/ ToggleBorderDiagonalUp " & xlDouble & " " & xlThick
-        .Map "nmap bt<bslash> ToggleBorderDiagonalDown " & xlDouble & " " & xlThick
+        .Map "nmap btb ToggleBorderAll -4119 4"                     ' xlDouble, xlThick
+        .Map "nmap bta ToggleBorderAround -4119 4"                  ' xlDouble, xlThick
+        .Map "nmap bth ToggleBorderLeft -4119 4"                    ' xlDouble, xlThick
+        .Map "nmap btj ToggleBorderBottom -4119 4"                  ' xlDouble, xlThick
+        .Map "nmap btk ToggleBorderTop -4119 4"                     ' xlDouble, xlThick
+        .Map "nmap btl ToggleBorderRight -4119 4"                   ' xlDouble, xlThick
+        .Map "nmap btia ToggleBorderInner -4119 4"                  ' xlDouble, xlThick
+        .Map "nmap btis ToggleBorderInnerHorizontal -4119 4"        ' xlDouble, xlThick
+        .Map "nmap btiv ToggleBorderInnerVertical -4119 4"          ' xlDouble, xlThick
+        .Map "nmap bt/ ToggleBorderDiagonalUp -4119 4"              ' xlDouble, xlThick
+        .Map "nmap bt<bslash> ToggleBorderDiagonalDown -4119 4"     ' xlDouble, xlThick
 
         .Map "nmap bdd DeleteBorderAll"
         .Map "nmap bda DeleteBorderAround"
@@ -251,14 +251,14 @@ Sub DefaultConfig()
         'Yank
         .Map "nmap yr YankRows"
         .Map "nmap yc YankColumns"
-        .Map "nmap ygg YankRows " & eTargetRowType.ToTopRows
-        .Map "nmap yG YankRows " & eTargetRowType.ToBottomRows
-        .Map "nmap y{ YankRows " & eTargetRowType.ToTopOfCurrentRegionRows
-        .Map "nmap y} YankRows " & eTargetRowType.ToBottomOfCurrentRegionRows
-        .Map "nmap y0 YankColumns " & eTargetColumnType.ToLeftEndColumns
-        .Map "nmap y$ YankColumns " & eTargetColumnType.ToRightEndColumns
-        .Map "nmap y^ YankColumns " & eTargetColumnType.ToLeftOfCurrentRegionColumns
-        .Map "nmap yg$ YankColumns " & eTargetColumnType.ToRightOfCurrentRegionColumns
+        .Map "nmap ygg YankRows 1"      ' eTargetRowType.ToTopRows
+        .Map "nmap yG YankRows 2"       ' eTargetRowType.ToBottomRows
+        .Map "nmap y{ YankRows 3"       ' eTargetRowType.ToTopOfCurrentRegionRows
+        .Map "nmap y} YankRows 4"       ' eTargetRowType.ToBottomOfCurrentRegionRows
+        .Map "nmap y0 YankColumns 1"    ' eTargetColumnType.ToLeftEndColumns
+        .Map "nmap y$ YankColumns 2"    ' eTargetColumnType.ToRightEndColumns
+        .Map "nmap y^ YankColumns 3"    ' eTargetColumnType.ToLeftOfCurrentRegionColumns
+        .Map "nmap yg$ YankColumns 4"   ' eTargetColumnType.ToRightOfCurrentRegionColumns
 
         .Map "nmap yh YankFromLeftCell"
         .Map "nmap yj YankFromDownCell"
@@ -273,14 +273,14 @@ Sub DefaultConfig()
         .Map "nmap dd DeleteRows"
         .Map "nmap dr DeleteRows"
         .Map "nmap dc DeleteColumns"
-        .Map "nmap dgg DeleteRows " & eTargetRowType.ToTopRows
-        .Map "nmap dG DeleteRows " & eTargetRowType.ToBottomRows
-        .Map "nmap d{ DeleteRows " & eTargetRowType.ToTopOfCurrentRegionRows
-        .Map "nmap d} DeleteRows " & eTargetRowType.ToBottomOfCurrentRegionRows
-        .Map "nmap d0 DeleteColumns " & eTargetColumnType.ToLeftEndColumns
-        .Map "nmap d$ DeleteColumns " & eTargetColumnType.ToRightEndColumns
-        .Map "nmap d^ DeleteColumns " & eTargetColumnType.ToLeftOfCurrentRegionColumns
-        .Map "nmap dg$ DeleteColumns " & eTargetColumnType.ToRightOfCurrentRegionColumns
+        .Map "nmap dgg DeleteRows 1"    ' eTargetRowType.ToTopRows
+        .Map "nmap dG DeleteRows 2"     ' eTargetRowType.ToBottomRows
+        .Map "nmap d{ DeleteRows 3"     ' eTargetRowType.ToTopOfCurrentRegionRows
+        .Map "nmap d} DeleteRows 4"     ' eTargetRowType.ToBottomOfCurrentRegionRows
+        .Map "nmap d0 DeleteColumns 1"  ' eTargetColumnType.ToLeftEndColumns
+        .Map "nmap d$ DeleteColumns 2"  ' eTargetColumnType.ToRightEndColumns
+        .Map "nmap d^ DeleteColumns 3"  ' eTargetColumnType.ToLeftOfCurrentRegionColumns
+        .Map "nmap dg$ DeleteColumns 4" ' eTargetColumnType.ToRightOfCurrentRegionColumns
 
         .Map "nmap dh DeleteToLeft"
         .Map "nmap dj DeleteToUp"
@@ -291,19 +291,19 @@ Sub DefaultConfig()
         'Cut
         .Map "nmap xr CutRows"
         .Map "nmap xc CutColumns"
-        .Map "nmap xgg CutRows " & eTargetRowType.ToTopRows
-        .Map "nmap xG CutRows " & eTargetRowType.ToBottomRows
-        .Map "nmap x{ CutRows " & eTargetRowType.ToTopOfCurrentRegionRows
-        .Map "nmap x} CutRows " & eTargetRowType.ToBottomOfCurrentRegionRows
-        .Map "nmap x0 CutColumns " & eTargetColumnType.ToLeftEndColumns
-        .Map "nmap x$ CutColumns " & eTargetColumnType.ToRightEndColumns
-        .Map "nmap x^ CutColumns " & eTargetColumnType.ToLeftOfCurrentRegionColumns
-        .Map "nmap xg$ CutColumns " & eTargetColumnType.ToRightOfCurrentRegionColumns
+        .Map "nmap xgg CutRows 1"       ' eTargetRowType.ToTopRows
+        .Map "nmap xG CutRows 2"        ' eTargetRowType.ToBottomRows
+        .Map "nmap x{ CutRows 3"        ' eTargetRowType.ToTopOfCurrentRegionRows
+        .Map "nmap x} CutRows 4"        ' eTargetRowType.ToBottomOfCurrentRegionRows
+        .Map "nmap x0 CutColumns 1"     ' eTargetColumnType.ToLeftEndColumns
+        .Map "nmap x$ CutColumns 2"     ' eTargetColumnType.ToRightEndColumns
+        .Map "nmap x^ CutColumns 3"     ' eTargetColumnType.ToLeftOfCurrentRegionColumns
+        .Map "nmap xg$ CutColumns 4"    ' eTargetColumnType.ToRightOfCurrentRegionColumns
 
 
         'Paste
-        .Map "nmap p PasteSmart " & xlNext
-        .Map "nmap P PasteSmart " & xlPrevious
+        .Map "nmap p PasteSmart 1"  ' xlNext
+        .Map "nmap P PasteSmart 2"  ' xlPrevious
         .Map "nmap gp PasteSpecial"
         .Map "nmap U PasteValue"
 
@@ -361,18 +361,18 @@ Sub DefaultConfig()
         .Map "nmap R ShowReplaceWindow"
         .Map "nmap * FindActiveValueNext"
         .Map "nmap # FindActiveValuePrev"
-        .Map "nmap ]c NextSpecialCells " & xlCellTypeComments
-        .Map "nmap [c PrevSpecialCells " & xlCellTypeComments
-        .Map "nmap ]o NextSpecialCells " & xlCellTypeConstants
-        .Map "nmap [o PrevSpecialCells " & xlCellTypeConstants
-        .Map "nmap ]f NextSpecialCells " & xlCellTypeFormulas
-        .Map "nmap [f PrevSpecialCells " & xlCellTypeFormulas
-        .Map "nmap ]k NextSpecialCells " & xlCellTypeBlanks
-        .Map "nmap [k PrevSpecialCells " & xlCellTypeBlanks
-        .Map "nmap ]t NextSpecialCells " & xlCellTypeSameFormatConditions
-        .Map "nmap [t PrevSpecialCells " & xlCellTypeSameFormatConditions
-        .Map "nmap ]v NextSpecialCells " & xlCellTypeSameValidation
-        .Map "nmap [v PrevSpecialCells " & xlCellTypeSameValidation
+        .Map "nmap ]c NextSpecialCells -4144"   ' xlCellTypeComments
+        .Map "nmap [c PrevSpecialCells -4144"   ' xlCellTypeComments
+        .Map "nmap ]o NextSpecialCells 2"       ' xlCellTypeConstants
+        .Map "nmap [o PrevSpecialCells 2"       ' xlCellTypeConstants
+        .Map "nmap ]f NextSpecialCells -4123"   ' xlCellTypeFormulas
+        .Map "nmap [f PrevSpecialCells -4123"   ' xlCellTypeFormulas
+        .Map "nmap ]k NextSpecialCells 4"       ' xlCellTypeBlanks
+        .Map "nmap [k PrevSpecialCells 4"       ' xlCellTypeBlanks
+        .Map "nmap ]t NextSpecialCells -4173"   ' xlCellTypeSameFormatConditions
+        .Map "nmap [t PrevSpecialCells -4173"   ' xlCellTypeSameFormatConditions
+        .Map "nmap ]v NextSpecialCells -4175"   ' xlCellTypeSameValidation
+        .Map "nmap [v PrevSpecialCells -4175"   ' xlCellTypeSameValidation
 
         .Map "nmap ]s NextShape"
         .Map "nmap [s PrevShape"
@@ -465,15 +465,15 @@ Sub DefaultConfig()
 
 
         'Count
-        .Map "nmap 1 ShowCmdForm " & """1"""
-        .Map "nmap 2 ShowCmdForm " & """2"""
-        .Map "nmap 3 ShowCmdForm " & """3"""
-        .Map "nmap 4 ShowCmdForm " & """4"""
-        .Map "nmap 5 ShowCmdForm " & """5"""
-        .Map "nmap 6 ShowCmdForm " & """6"""
-        .Map "nmap 7 ShowCmdForm " & """7"""
-        .Map "nmap 8 ShowCmdForm " & """8"""
-        .Map "nmap 9 ShowCmdForm " & """9"""
+        .Map "nmap 1 ShowCmdForm ""1"""
+        .Map "nmap 2 ShowCmdForm ""2"""
+        .Map "nmap 3 ShowCmdForm ""3"""
+        .Map "nmap 4 ShowCmdForm ""4"""
+        .Map "nmap 5 ShowCmdForm ""5"""
+        .Map "nmap 6 ShowCmdForm ""6"""
+        .Map "nmap 7 ShowCmdForm ""7"""
+        .Map "nmap 8 ShowCmdForm ""8"""
+        .Map "nmap 9 ShowCmdForm ""9"""
 
 
         'KeyMapping
