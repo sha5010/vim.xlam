@@ -171,9 +171,9 @@ End Sub
 Private Sub Show_Help()
     'ヘルプ文字列
     Dim HELP As String
-    HELP = "[Move]¥n" & _
+    HELP = "[Move Cursor]¥n" & _
         "  j/k¥tMove down/up¥n" & _
-        "  C-j/C-k¥tMove down/up" & AMOUNT & "rows¥n" & _
+        "  C-j/C-k¥tMove down/up (" & AMOUNT & " rows)¥n" & _
         "  g/G¥tMove to top/bottom¥n" & _
         "¥n" & _
         "[Sheet Action]¥n" & _
