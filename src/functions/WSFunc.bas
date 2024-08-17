@@ -75,6 +75,7 @@ Function RenameWorksheet(Optional ByVal g As String) As Boolean
     With ActiveWorkbook
         beforeName = .ActiveSheet.Name
         ret = InputBox(gVim.Msg.EnterNewSheetName, gVim.Msg.RenameSheetTitle, beforeName)
+        Call DisableIME
 
         If ret <> "" Then
             'Exit if same name

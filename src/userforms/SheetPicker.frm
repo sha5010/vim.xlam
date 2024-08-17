@@ -102,6 +102,7 @@ Private Sub Rename_Sheet(ByVal n As Integer)
     With ActiveWorkbook.Worksheets(n)
         cur = .Name
         ret = InputBox(gVim.Msg.EnterNewSheetName, gVim.Msg.RenameSheetTitle, cur)
+        Call DisableIME
 
         If ret <> "" Then
             '同名だったら何もしない
