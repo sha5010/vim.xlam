@@ -25,7 +25,7 @@
 
 Excelでも最高のVim体験を。Excel上でvimのキーバインドを使って操作できるようにするExcelアドインです。
 
-## Description
+## 📝 説明
 
 vim.xlam は vim のような使用感で Excel 上でもキーボード主体で操作できるようにするための Excelアドインです。
 
@@ -37,7 +37,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 
 \* サンプルファイルは [https://atelierkobato.com](https://atelierkobato.com/download/) 様のものを使用しております。
 
-## Features
+## ✨ 主な機能
 
 - `hjkl` を基本としたセル移動だけでなく、`gg`、`G`、`^`、`$` といったジャンプコマンドも多数使用可能
 - フォント、背景色、罫線などの設定もマウス操作なしで効率的に実施可能
@@ -46,7 +46,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 - `count` 指定や `.` リピートなど、Vim の強みを活かした操作
 - 容易なカスタマイズ性を追求しており、どなたでもカスタマイズ可能
 
-## Installation
+## 📦 インストール方法
 
 1. [リリースページ](https://github.com/sha5010/vim.xlam/releases/latest)から最新の vim.xlam をダウンロードしてください。(または[最新版を直接ダウンロード](https://github.com/sha5010/vim.xlam/releases/latest/download/vim.xlam)）
 2. ダウンロードした vim.xlam を `C:\Users\<USERNAME>\AppData\Roaming\Microsoft\AddIns` 配下に保存してください。
@@ -57,14 +57,22 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | ---- |
 | **このプロジェクトは現在開発中です**。リリースの際にしばしば破壊的変更が加わる可能性があります。更新する前にリリースノートをご確認ください。 |
 
-## Usage
+### (任意) おすすめの初期設定
+
+デフォルトの設定では `/` キーを vim.xlam で認識できません。以下の手順で利用可能になります。
+
+1. Excelのメニューから **ファイル** をクリックし、 **オプション** を選択してください。
+2. 左側のパネルで **詳細設定** を選択し、一番下付近にある **Lotusとの互換性** までスクロールしてください。
+3. **Microsoft Excel メニュー キー:** を空欄にして **OK** をクリックしてください。
+
+## 📘 使い方
 
 - アドインに追加することで自動的に起動するので、あとは最高のVim体験をお楽しみください！
 - セル移動/編集、行列の追加/削除、色や罫線の設定 等、割り当てられたキーで操作可能
   - 実装済みの全てのコマンドは、下の表をご覧ください
 - [設定ファイル](./config/_vimxlamrc)を配置することで設定やキーマップの[カスタマイズ](#Customization)も可能
 
-### Default Keybindings
+### ⌨️ デフォルトのキーバインド
 
 **主なコマンド**
 
@@ -459,21 +467,21 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 
 \* デフォルトの設定は [DefaultConfig.bas](./src/DefaultConfig.bas) の中で `Map` メソッドを使って定義しています。
 
-### Custom Key Mapping
+### 🔧 カスタムキーマッピング
 
 - `<C-[>` → `<Esc>`
 
-## Customization
+## ⚙️ カスタマイズ
 
 [設定ファイル](./config/_vimxlamrc)を vim.xlam が保存されているディレクトリに置くことで、起動時に設定を読み込むことができます。読み込むファイル名は `_vimxlamrc` のみです。ファイルエンコーディングは Shift-JIS で保存してください。
 
-### Syntax
+### 🔤 設定ファイルの文法
 
 - `#` で始まる行や空行は無視されます
 - `set` で始まる行は、定義された設定値を変更できます
 - `map` または `unmap` を含む行は、キーマップの設定を変更できます
 
-### Options
+### 🛠️ オプション一覧
 
 Vim の `set` と同じシンタックスで設定できます。設定例は[設定ファイル](./config/_vimxlamrc)をご覧ください。
 
@@ -493,7 +501,7 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `customcolor5` | string | ColorPicker のカスタム色 #5 | `#0000ff` ![#0000ff](https://via.placeholder.com/15/0000ff/000000?text=+) |
 | `[no]debug` | bool | デバッグモードの有効 / 無効 | `False` |
 
-### Keymap
+### 🗺️ キーマップの変更
 
 キーマップの追加/変更/削除が可能です。
 
@@ -528,21 +536,21 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 
 \* [DefaultConfig.bas](./src/DefaultConfig.bas) 内に記載されているものと同じシンタックスになりますので、必要に応じて参考にしてください。
 
-## Contributing
+## 🚀 貢献するには...
 
 [Issue](https://github.com/sha5010/vim.xlam/issues) や [Pull Request](https://github.com/sha5010/vim.xlam/pulls) は大歓迎です。もしご自身で開発された機能がありましたら、開発にご協力いただけますと幸いです。
 
-## Author
+## 😎 作者
 
 [@sha_5010](https://twitter.com/sha_5010)
 
-## Related Projects
+## 💡 関連プロジェクト
 
 - [ExcelLikeVim](https://github.com/kjnh10/ExcelLikeVim)
 - [VimExcel](https://www.vector.co.jp/soft/winnt/business/se494158.html)
 - [vixcel](https://github.com/codetsar/vixcel)
 - [Excel\_Vim\_Keys](https://github.com/treatmesubj/Excel_Vim_Keys)
 
-## License
+## 🔒 ライセンス
 
 [MIT](./LICENSE)
