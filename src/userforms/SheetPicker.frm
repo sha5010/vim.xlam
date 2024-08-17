@@ -168,6 +168,76 @@ Private Sub Delete_Sheet(ByVal n As Integer)
     End If
 End Sub
 
+Private Sub Move_Sheet(ByVal n As Long, ByVal moveDirection As XlSearchDirection)
+    With ActiveWorkbook
+        ' Check n-th sheet is exists
+        If n < 1 Or .Worksheets.Count < n Then
+            Exit Sub
+        End If
+
+        ' Exit if number of sheets = 1
+        If .Worksheets.Count = 1 Then
+            Exit Sub
+        End If
+
+        ' Calculate destination index
+        Dim destIndex As Long
+        Dim isWrap As Boolean: isWrap = False
+
+        If moveDirection = xlNext Then
+            If n = .Worksheets.Count Then
+                destIndex = 1
+                isWrap = True
+            Else
+                destIndex = n + 1
+            End If
+        ElseIf moveDirection = xlPrevious Then
+            If n = 1 Then
+                destIndex = .Worksheets.Count
+                isWrap = True
+            Else
+                destIndex = n - 1
+            End If
+        End If
+
+        ' Move worksheet
+        Dim hidState As XlSheetVisibility
+        Dim targetSheet As Worksheet
+
+        Set targetSheet = .Worksheets(destIndex)
+        hidState = targetSheet.Visible
+
+        If Not hidState = xlSheetVisible Then
+            Application.ScreenUpdating = False
+            targetSheet.Visible = xlSheetVisible
+        End If
+
+        If n < destIndex Then
+            .Worksheets(n).Move After:=targetSheet
+        Else
+            .Worksheets(n).Move Before:=targetSheet
+        End If
+
+        targetSheet.Visible = hidState
+
+        Application.ScreenUpdating = True
+
+        ' Remake list
+        If isWrap Then
+            Me.List_Sheets.Clear
+            Call MakeList
+        Else
+            Dim buf As String
+            buf = List_Sheets.List(n - 1, 1)
+            List_Sheets.List(n - 1, 1) = List_Sheets.List(destIndex - 1, 1)
+            List_Sheets.List(destIndex - 1, 1) = buf
+        End If
+
+        ' Reselect
+        List_Sheets.ListIndex = destIndex - 1
+    End With
+End Sub
+
 Private Sub Show_Help()
     'ヘルプ文字列
     Dim HELP As String
@@ -177,6 +247,7 @@ Private Sub Show_Help()
         "  g/G¥tMove to top/bottom¥n" & _
         "¥n" & _
         "[Sheet Action]¥n" & _
+        "  J/K¥tSwap sheet with lower/upper¥n" & _
         "  h/H¥tToogle sheet visible/(Very hidden)¥n" & _
         "  l¥tPreview the sheet for current row¥n" & _
         "  R¥tRename sheet¥n" & _
@@ -266,6 +337,12 @@ Private Sub List_Sheets_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
                 Else
                     .ListIndex = .ListIndex - AMOUNT
                 End If
+
+            Case Asc("J")
+                Call Move_Sheet(.ListIndex + 1, xlNext)
+
+            Case Asc("K")
+                Call Move_Sheet(.ListIndex + 1, xlPrevious)
 
             Case Asc("g")
                 .ListIndex = 0
