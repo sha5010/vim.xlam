@@ -255,8 +255,11 @@ Public Sub LoadCustomConfig(Optional ByVal configFilePath As String)
         configFilePath = configFilePath & "¥" & CUSTOM_CONFIG
     End If
 
+    Dim fso As FileSystemObject
+    Set fso = New FileSystemObject
+
     ' Check file exists
-    If Dir(configFilePath) = "" Then
+    If Not fso.FileExists(configFilePath) Then
         Exit Sub
     End If
 
