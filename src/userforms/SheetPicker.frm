@@ -98,6 +98,8 @@ Private Sub Rename_Sheet(ByVal n As Integer)
         Exit Sub
     End If
 
+    On Error GoTo Catch
+
     'N番目のシートをリネームするためのダイアログを表示
     With ActiveWorkbook.Worksheets(n)
         cur = .Name
@@ -125,6 +127,10 @@ Private Sub Rename_Sheet(ByVal n As Integer)
             List_Sheets.List(List_Sheets.ListIndex, 1) = ret
         End If
     End With
+    Exit Sub
+
+Catch:
+    MsgBox gVim.Msg.SheetRenameError, vbExclamation
 End Sub
 
 Private Sub Delete_Sheet(ByVal n As Integer)

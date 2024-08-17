@@ -203,3 +203,13 @@ Public Property Get CannotDeleteVeryHiddenSheet() As String
         "VeryHidden のシートは消すことができません。" & vbLf & "非表示を解除してから再実行してください｡ ", _
         "The 'VeryHidden' sheet cannot be deleted." & vbLf & "Please unhide it and try again.")
 End Property
+
+Public Property Get SheetRenameError() As String
+    SheetRenameError = IIf(Parent.IsJapanese, _
+        "入力されたシートまたはグラフの名前が正しくありません。次の点を確認して修正してください。" & vbLf & vbLf & _
+        "- 入力文字が 31 文字以内であること" & vbLf & _
+        "- 次の文字を含まないこと:" & vbLf & "    :  ¥ / ? * [ ]", _
+        "The sheet or chart name entered is not valid. Please ensure that:" & vbLf & vbLf & _
+        "- The name is 31 characters or less" & vbLf & _
+        "- It does not contain any of the following characters:" & vbLf & "    :  ¥ / ? * [ ]")
+End Property
