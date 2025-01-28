@@ -117,6 +117,8 @@ Sub DefaultConfig()
         .Map "nmap v ToggleVisualMode"
         .Map "nmap V ToggleVisualLine"
 
+        Application.OnKey "^+A", "IncrementCellValue"
+        Application.OnKey "^+X", "DecrementCellValue"
 
         ' Border
         .Map "nmap bb ToggleBorderAll " & xlContinuous & " " & xlThin
