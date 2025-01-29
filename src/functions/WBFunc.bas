@@ -2,9 +2,21 @@ Attribute VB_Name = "F_WBFunc"
 Option Explicit
 Option Private Module
 
+Private Sub CheckAndQuitIfNoWorkbooks()
+    On Error Goto Catch
+    If Application.Workbooks.Count = 0 Then
+        Application.Quit
+    End If
+    Exit Sub
+
+Catch:
+    Call ErrorHandler("CheckAndQuitIfNoWorkbooks")
+End Sub
+
 Function CloseAskSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close
+    Call CheckAndQuitIfNoWorkbooks
     Exit Function
 
 Catch:
@@ -14,6 +26,7 @@ End Function
 Function CloseWithoutSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close False
+    Call CheckAndQuitIfNoWorkbooks
     Exit Function
 
 Catch:
@@ -23,6 +36,7 @@ End Function
 Function CloseWithSaving(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     ActiveWorkbook.Close True
+    Call CheckAndQuitIfNoWorkbooks
     Exit Function
 
 Catch:
