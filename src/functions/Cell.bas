@@ -476,11 +476,15 @@ Function FollowHyperlinkOfActiveCell(Optional ByVal g As String) As Boolean
         Exit Function
     End If
 
-    If ActiveCell.Hyperlinks.Count > 0 Then
-        ActiveCell.Hyperlinks(1).Follow
-    ElseIf InStr(UCase(ActiveCell.Formula), "=HYPERLINK(") > 0 Then
-        ActiveWorkbook.followHyperlink Split(ActiveCell.Formula, """")(1)
-    End If
+    With ActiveCell
+        If .Hyperlinks.Count > 0 Then
+            .Hyperlinks(1).Follow
+        ElseIf .Formula <> .Value And InStr(.Formula, "HYPERLINK") > 0 Then
+            Dim linkAddr As String
+            linkAddr = Application.Evaluate(Replace(.Formula, "HYPERLINK", "IFERROR"))
+            ActiveWorkbook.FollowHyperlink linkAddr
+        End If
+    End With
     Exit Function
 
 Catch:
