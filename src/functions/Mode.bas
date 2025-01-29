@@ -1,5 +1,6 @@
 Attribute VB_Name = "F_Mode"
 Option Explicit
+Option Private Module
 
 Function ChangeToNormalMode(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
