@@ -264,29 +264,16 @@ Public Sub LoadCustomConfig(Optional ByVal configFilePath As String)
     End If
 
     ' Load file
-    Dim fileNum As Long: fileNum = FreeFile()
-    Dim bufByte() As Byte
+    Dim fs As TextStream
+    Set fs = fso.OpenTextFile(configFilePath, ForReading, False, TristateFalse)
 
-    Open configFilePath For Binary As #fileNum
-        ReDim bufByte(LOF(fileNum))
-        Get #fileNum, , bufByte
-    Close #fileNum
+    ' Process each line
+    While Not fs.AtEndOfStream
+        Call ParseConfig(fs.ReadLine())
+    Wend
 
-    ' Convert to unicode
-    Dim loadedText As String
-    loadedText = StrConv(bufByte(), vbUnicode)
-
-    ' Split into lines
-    loadedText = Replace(loadedText, vbCrLf, vbLf)
-
-    Dim lines() As String
-    lines = Split(loadedText, vbLf)
-
-    ' Process by 1 line
-    Dim i As Long
-    For i = LBound(lines) To UBound(lines)
-        Call ParseConfig(lines(i))
-    Next i
+    ' Close the file
+    fs.Close
 End Sub
 
 Private Sub ParseConfig(ByRef configStr As String)

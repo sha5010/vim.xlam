@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 Private Sub CheckAndQuitIfNoWorkbooks()
-    On Error Goto Catch
+    On Error GoTo Catch
     If Application.Workbooks.Count = 0 Then
         Application.Quit
     End If
