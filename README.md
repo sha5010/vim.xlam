@@ -496,6 +496,7 @@ You can configure using the same syntax as Vim's `set`. For configuration exampl
 | `jumplisthistory` | int | Maximum number of items to keep in the jump list | `100` |
 | `[no]japanese` | bool | Japanese mode / English mode | `True` |
 | `[no]jiskeyboard` | bool | JIS keyboard / US keyboard | `True` |
+| `[no]quitapp` | bool | Quit Excel or not when closing the last workbook | `True` |
 | `colorpickersize` | float | ColorPicker form size (px) | `12.0` |
 | `customcolor1` | string | Custom color #1 in ColorPicker | `#ff6600` ![#ff6600](https://via.placeholder.com/15/ff6600/000000?text=+) |
 | `customcolor2` | string | Custom color #2 in ColorPicker | `#ff9966` ![#ff9966](https://via.placeholder.com/15/ff9966/000000?text=+) |

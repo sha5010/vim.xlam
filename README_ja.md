@@ -493,6 +493,7 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `jumplisthistory` | int | ジャンプリストの最大保持数 | `100` |
 | `[no]japanese` | bool | 日本語モード / 英語モード | `True` |
 | `[no]jiskeyboard` | bool | JISキーボード / USキーボード | `True` |
+| `[no]quitapp` | bool | 最後のワークブックが閉じられたときExcelを終了するか | `True` |
 | `colorpickersize` | float | ColorPicker のフォームサイズ (px) | `12.0` |
 | `customcolor1` | string | ColorPicker のカスタム色 #1 | `#ff6600` ![#ff6600](https://via.placeholder.com/15/ff6600/000000?text=+) |
 | `customcolor2` | string | ColorPicker のカスタム色 #2 | `#ff9966` ![#ff9966](https://via.placeholder.com/15/ff9966/000000?text=+) |

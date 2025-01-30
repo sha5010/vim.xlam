@@ -24,6 +24,7 @@ Private Const SCROLL_OFFSET = "scrolloff"
 Private Const MAX_HISTORIES = "jumplisthistory"
 Private Const LANG_JAPANESE = "japanese"
 Private Const JIS_KEYBOARD = "jiskeyboard"
+Private Const QUIT_APP_ALL_WB_CLOSED = "quitapp"
 Private Const COLOR_PICKER_SIZE = "colorpickersize"
 Private Const CUSTOM_COLOR_1 = "customcolor1"
 Private Const CUSTOM_COLOR_2 = "customcolor2"
@@ -84,6 +85,12 @@ Public Property Get IsJisKeyboard() As Boolean
 End Property
 Public Property Let IsJisKeyboard(ByVal arg As Boolean)
     cConfig(JIS_KEYBOARD) = arg
+End Property
+Public Property Get QuitApp() As Boolean
+    QuitApp = cConfig(QUIT_APP_ALL_WB_CLOSED)
+End Property
+Public Property Let QuitApp(ByVal arg As Boolean)
+    cConfig(QUIT_APP_ALL_WB_CLOSED) = arg
 End Property
 Public Property Get ColorPickerSize() As Double
     ColorPickerSize = cConfig(COLOR_PICKER_SIZE)
@@ -164,6 +171,7 @@ Private Sub Class_Initialize()
         .Add MAX_HISTORIES, 100
         .Add LANG_JAPANESE, True
         .Add JIS_KEYBOARD, True
+        .Add QUIT_APP_ALL_WB_CLOSED, True
         .Add COLOR_PICKER_SIZE, 12#
         .Add CUSTOM_COLOR_1, &H66FF&
         .Add CUSTOM_COLOR_2, &H6699FF
@@ -218,6 +226,7 @@ Public Sub Set_(ByRef keyName As String, ByVal arg As Variant)
         Case MAX_HISTORIES: MaxHistories = arg
         Case LANG_JAPANESE: LangJapanese = arg
         Case JIS_KEYBOARD: IsJisKeyboard = arg
+        Case QUIT_APP_ALL_WB_CLOSED: QuitApp = arg
         Case COLOR_PICKER_SIZE: ColorPickerSize = arg
         Case CUSTOM_COLOR_1: CustomColor1 = arg
         Case CUSTOM_COLOR_2: CustomColor2 = arg
