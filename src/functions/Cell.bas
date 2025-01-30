@@ -221,24 +221,26 @@ Private Sub ProcessNumber(ByVal isSubtract As Boolean)
             GoTo Continue   ' No formula
         End If
 
-        Dim n As Double
-        n = gVim.Count1 * procSign
-
+        Dim n
         Dim valueType As VbVarType
+        n = CDec(gVim.Count1 * procSign)
         valueType = VarType(targetCell.Value)
 
         Select Case valueType
         Case vbCurrency, vbByte, vbDate, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
             If InStr(targetCell.NumberFormatLocal, "%") > 0 Then
-                n = n / 100
+                targetCell.Value = CDec(targetCell.Value) + CDec(n / 100)
+            Else
+                targetCell.Value = CDec(targetCell.Value) + n
             End If
-            targetCell.Value = targetCell.Value + n
         Case vbString
-            If Not targetCell.Value Like "*[!0-9.]*" And IsNumeric(targetCell.Value) Then
-                If targetCell.PrefixCharacter = "'" Then
-                    targetCell.Value = "'" & (CDbl(targetCell.Value) + n)
+            If Not targetCell.Value Like "*[!0-9.]*" Then
+                If Not IsNumeric(targetCell.Value) Then
+                    GoTo Continue
+                ElseIf targetCell.PrefixCharacter = "'" Then
+                    targetCell.Value = "'" & (CDec(targetCell.Value) + n)
                 Else
-                    targetCell.Value = CDbl(targetCell.Value) + n
+                    targetCell.Value = CDec(targetCell.Value) + n
                 End If
             End If
         End Select
