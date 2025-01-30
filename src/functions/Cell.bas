@@ -56,7 +56,8 @@ Function YankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab) As Bool
 
     'Error if too many cells selected
     If Selection.Count > 1048576 * 8 Then
-        Err.Raise 6
+        Call SetStatusBarTemporarily(gVim.Msg.TooManyCells, 3000)
+        Exit Function
     End If
 
     Call StopVisualMode
