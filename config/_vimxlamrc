@@ -44,6 +44,9 @@
 ### JIS keyboard(jiskeyboard) / US keyboard(nojiskeyboard)
 # set jiskeyboard
 
+### Quit Excel or not when closing the last workbook (Yes: quitapp / No: noquitapp)
+# set quitapp
+
 ### Color picker size
 # set colorpickersize=12
 

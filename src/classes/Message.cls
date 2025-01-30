@@ -102,6 +102,12 @@ Public Property Get YankDone() As String
         "Copied to clipboard. ")
 End Property
 
+Public Property Get ProcessingNumber() As String
+    ProcessingNumber = IIf(Parent.IsJapanese, _
+        "数値の増減を処理中です...", _
+        "Processing numeric increase/decrease...")
+End Property
+
 Public Property Get TooManyCells() As String
     TooManyCells = IIf(Parent.IsJapanese, _
         "選択セル数が多すぎます。", _

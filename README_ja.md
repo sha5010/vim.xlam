@@ -174,6 +174,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cell | `<` | `DecrementText` | インデントを減らす | ✓ |
 | Cell | `(` | `IncreaseDecimal` | 小数点表示桁上げ | ✓ |
 | Cell | `)` | `DecreaseDecimal` | 小数点表示桁下げ | ✓ |
+| Cell | `<C-S-A>` | `AddNumber` | 数値を加算 | ✓ |
+| Cell | `<C-S-X>` | `SubtractNumber` | 数値を減算 | ✓ |
 | Cell | `zw` | `ToggleWrapText` | セルの折り返しのオン/オフを切り替え | |
 | Cell | `&` | `ToggleMergeCells` | セル結合のオン/オフを切り替え | |
 | Cell | `f,` | `ApplyCommaStyle` | 桁区切りスタイルを適用 | |

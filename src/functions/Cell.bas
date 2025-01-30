@@ -188,6 +188,103 @@ Function DecreaseDecimal(Optional ByVal g As String) As Boolean
     Next i
 End Function
 
+Private Sub ProcessNumber(ByVal isSubtract As Boolean)
+    On Error GoTo Catch
+    If TypeName(Selection) <> "Range" Then
+        Exit Sub
+    End If
+
+    'Error if too many cells selected
+    If Selection.Count > 1048576 * 8 Then
+        Call SetStatusBarTemporarily(gVim.Msg.TooManyCells, 3000)
+        Exit Sub
+    End If
+
+    Call StopVisualMode
+
+    Dim procSign As Long
+    procSign = CLng(isSubtract) * 2 + 1
+
+    Dim savedCalculation As XlCalculation
+    savedCalculation = Application.Calculation
+
+    Application.ScreenUpdating = False
+    Application.EnableEvents = False
+    Application.Calculation = xlCalculationManual
+
+    Dim startTime As Double
+    Dim currentTime As Double
+    Dim targetCell As Range
+    Dim i As Long: i = 1
+    For Each targetCell In Selection
+        If InStr(targetCell.Formula, "=") > 0 Then
+            GoTo Continue   ' No formula
+        End If
+
+        Dim n As Double
+        n = gVim.Count1 * procSign
+
+        Dim valueType As VbVarType
+        valueType = VarType(targetCell.Value)
+
+        Select Case valueType
+        Case vbCurrency, vbByte, vbDate, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
+            If InStr(targetCell.NumberFormatLocal, "%") > 0 Then
+                n = n / 100
+            End If
+            targetCell.Value = targetCell.Value + n
+        Case vbString
+            If Not targetCell.Value Like "*[!0-9.]*" And IsNumeric(targetCell.Value) Then
+                If targetCell.PrefixCharacter = "'" Then
+                    targetCell.Value = "'" & (CDbl(targetCell.Value) + n)
+                Else
+                    targetCell.Value = CDbl(targetCell.Value) + n
+                End If
+            End If
+        End Select
+
+Continue:
+        'Avoid freeze
+        If (i And &HFFF) = 0 Then
+            'Show progress bar in status bar
+            Call SetStatusBar(gVim.Msg.ProcessingNumber, _
+                             currentCount:=i, maximumCount:=Selection.Count, progressBar:=True)
+
+            currentTime = Timer
+            If currentTime < startTime Or currentTime - startTime > 2 Then
+                DoEvents
+                startTime = currentTime
+            End If
+        End If
+        i = i + 1
+    Next
+    GoTo Finally
+
+Catch:
+    Call ErrorHandler("ProcessNumber")
+
+Finally:
+    Call SetStatusBar
+    Application.ScreenUpdating = True
+    Application.EnableEvents = True
+    Application.Calculation = savedCalculation
+    If savedCalculation = xlCalculationSemiautomatic Then
+        Application.Calculate
+    End If
+End Sub
+
+Function AddNumber(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("AddNumber")
+
+    Call ProcessNumber(isSubtract:=False)
+End Function
+
+Function SubtractNumber(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("SubtractNumber")
+
+    Call ProcessNumber(isSubtract:=True)
+End Function
+
 Function InsertCellsUp(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 

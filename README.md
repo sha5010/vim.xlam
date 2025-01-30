@@ -176,6 +176,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Cell | `<` | `DecrementText` | Decrease indentation | ✓ |
 | Cell | `(` | `IncreaseDecimal` | Increase decimal places | ✓ |
 | Cell | `)` | `DecreaseDecimal` | Decrease decimal places | ✓ |
+| Cell | `<C-S-A>` | `AddNumber` | Add the number | ✓ |
+| Cell | `<C-S-X>` | `SubtractNumber` | Subtract the number | ✓ |
 | Cell | `zw` | `ToggleWrapText` | Toggle cell wrap text | |
 | Cell | `&` | `ToggleMergeCells` | Toggle cell merge | |
 | Cell | `f,` | `ApplyCommaStyle` | Apply comma style | |
