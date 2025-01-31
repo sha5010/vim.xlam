@@ -25,6 +25,7 @@ Private Const MAX_HISTORIES = "jumplisthistory"
 Private Const LANG_JAPANESE = "japanese"
 Private Const JIS_KEYBOARD = "jiskeyboard"
 Private Const QUIT_APP_ALL_WB_CLOSED = "quitapp"
+Private Const NUMPAD_COUNT = "numpadcount"
 Private Const COLOR_PICKER_SIZE = "colorpickersize"
 Private Const CUSTOM_COLOR_1 = "customcolor1"
 Private Const CUSTOM_COLOR_2 = "customcolor2"
@@ -91,6 +92,13 @@ Public Property Get QuitApp() As Boolean
 End Property
 Public Property Let QuitApp(ByVal arg As Boolean)
     cConfig(QUIT_APP_ALL_WB_CLOSED) = arg
+End Property
+Public Property Get NumpadCount() As Boolean
+    NumpadCount = cConfig(NUMPAD_COUNT)
+End Property
+Public Property Let NumpadCount(ByVal arg As Boolean)
+    cConfig(NUMPAD_COUNT) = arg
+    Call ChangeNumpadKeymap(arg)
 End Property
 Public Property Get ColorPickerSize() As Double
     ColorPickerSize = cConfig(COLOR_PICKER_SIZE)
@@ -159,6 +167,17 @@ Private Function ConvertCustomColorToLong(ByVal arg As Variant) As Long
     End Select
 End Function
 
+Private Sub ChangeNumpadKeymap(ByVal isEnabled As Boolean)
+    Dim i As Long
+    For i = 1 To 9
+        If isEnabled Then
+            Call Parent.KeyMap.Map("nmap <k" & CStr(i) & "> " & SHOW_CMD_PROCEDURE & " """ & CStr(i) & """")
+        Else
+            Call Parent.KeyMap.Map("nunmap <k" & CStr(i) & ">")
+        End If
+    Next
+End Sub
+
 
 Private Sub Class_Initialize()
     Set cConfig = New Dictionary
@@ -172,6 +191,7 @@ Private Sub Class_Initialize()
         .Add LANG_JAPANESE, True
         .Add JIS_KEYBOARD, True
         .Add QUIT_APP_ALL_WB_CLOSED, True
+        .Add NUMPAD_COUNT, False
         .Add COLOR_PICKER_SIZE, 12#
         .Add CUSTOM_COLOR_1, &H66FF&
         .Add CUSTOM_COLOR_2, &H6699FF
@@ -180,6 +200,7 @@ Private Sub Class_Initialize()
         .Add CUSTOM_COLOR_5, &HFF0000
         .Add DEBUG_MODE, Not ThisWorkbook.IsAddin
     End With
+
 End Sub
 
 Private Sub Class_Terminate()
@@ -227,6 +248,7 @@ Public Sub Set_(ByRef keyName As String, ByVal arg As Variant)
         Case LANG_JAPANESE: LangJapanese = arg
         Case JIS_KEYBOARD: IsJisKeyboard = arg
         Case QUIT_APP_ALL_WB_CLOSED: QuitApp = arg
+        Case NUMPAD_COUNT: NumpadCount = arg
         Case COLOR_PICKER_SIZE: ColorPickerSize = arg
         Case CUSTOM_COLOR_1: CustomColor1 = arg
         Case CUSTOM_COLOR_2: CustomColor2 = arg

@@ -47,6 +47,9 @@
 ### Quit Excel or not when closing the last workbook (Yes: quitapp / No: noquitapp)
 # set quitapp
 
+### Whether NumPad is used as [count] or not
+# set nonumpadcount
+
 ### Color picker size
 # set colorpickersize=12
 

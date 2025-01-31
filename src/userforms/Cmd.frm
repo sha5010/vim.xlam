@@ -29,6 +29,18 @@ Private cNumSeqFlag As Boolean
 ' * @param {String} key - The pressed key.
 ' */
 Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String)
+    ' Process when a number is entered on the Numpad, if NumpadCount option is enabled
+    If gVim.Config.NumpadCount And InStr(key, "{") = 1 Then
+        Dim keyValue As String
+        keyValue = Left(Mid(key, 2), Len(key) - 2)
+        If Not keyValue Like "*[!0-9]*" Then
+            Select Case CLng(keyValue)
+                Case 96 To 105
+                    key = CLng(keyValue) - 96
+            End Select
+        End If
+    End If
+
     ' Check if the pressed key is a single digit and a numeric sequence is ongoing
     If Len(key) = 1 And (cCount = 0 Or cNumSeqFlag) Then
         cNumSeqFlag = True

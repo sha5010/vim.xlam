@@ -961,6 +961,7 @@ Private Function ConvertKeyCodes(ByVal key As String, _
     End If
 
     ' Handle special keys
+    Dim i As Long
     Select Case lowerKey
         Case "bs": result = BackSpace_
         Case "tab": result = Tab_
@@ -974,7 +975,7 @@ Private Function ConvertKeyCodes(ByVal key As String, _
         Case "home": result = Home_
         Case "end": result = End_
         Case "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12", "f13", "f14", "f15", "f16"
-            Dim i As Long: i = CLng(Mid(lowerKey, 2))
+            i = CLng(Mid(lowerKey, 2))
             result = F1_ - 1 + i
         Case "nl", "cr", "return", "enter": result = Enter_
         Case "space": result = Space_
@@ -987,6 +988,15 @@ Private Function ConvertKeyCodes(ByVal key As String, _
             isShift = True
         Case "pageup": result = PageUp_
         Case "pagedown": result = PageDown_
+        Case "kplus": result = NumpadAdd_
+        Case "kminus": result = NumpadSubstract_
+        Case "kmultiply": result = NumpadMultiply_
+        Case "kdivide": result = NumpadDivide_
+        Case "kenter": result = NumpadEnter_
+        Case "kpoint": result = NumpadDecimal_
+        Case "k0", "k1", "k2", "k3", "k4", "k5", "k6", "k7", "k8", "k9"
+            i = CLng(Mid(lowerKey, 2, 1))
+            result = Numpad0_ + i
 
         Case "+", ",": result = Equal_US_
         Case "-": result = Minus_
@@ -1117,18 +1127,20 @@ Public Function ConvertSendKeysStyle(ByVal key As String, _
             ConvertSendKeysStyle = "{" & UCase(key) & "}"
         Case "nl", "cr", "return", "enter"
             ConvertSendKeysStyle = "{ENTER}"
-        Case "space"
-            ConvertSendKeysStyle = "{ }"
-        Case "lt"
-            ConvertSendKeysStyle = "{<}"
-        Case "bslash"
-            ConvertSendKeysStyle = "{¥}"
-        Case "bar"
-            ConvertSendKeysStyle = "{|}"
-        Case "pageup"
-            ConvertSendKeysStyle = "{PGUP}"
-        Case "pagedown"
-            ConvertSendKeysStyle = "{PGDN}"
+        Case "space":     ConvertSendKeysStyle = "{ }"
+        Case "lt":        ConvertSendKeysStyle = "{<}"
+        Case "bslash":    ConvertSendKeysStyle = "{¥}"
+        Case "bar":       ConvertSendKeysStyle = "{|}"
+        Case "pageup":    ConvertSendKeysStyle = "{PGUP}"
+        Case "pagedown":  ConvertSendKeysStyle = "{PGDN}"
+        Case "kplus":     ConvertSendKeysStyle = "{107}"
+        Case "kminus":    ConvertSendKeysStyle = "{109}"
+        Case "kmultiply": ConvertSendKeysStyle = "{106}"
+        Case "kdivide":   ConvertSendKeysStyle = "{111}"
+        Case "kenter":    ConvertSendKeysStyle = "{108}"
+        Case "kpoint":    ConvertSendKeysStyle = "{110}"
+        Case "k0", "k1", "k2", "k3", "k4", "k5", "k6", "k7", "k8", "k9"
+            ConvertSendKeysStyle = "{" & CStr(Numpad0_ + CLng(Mid(lowerKey, 2, 1))) & "}"
         Case Else
             Err.Raise 50000, Description:="Unsupported key name: " & key
         End Select
@@ -1196,12 +1208,12 @@ Private Function GetKeyCharacter(ByVal code As Long, ByVal isShift As Boolean) A
         Case 40: GetKeyCharacter = "down"
         Case 45: GetKeyCharacter = "insert"
         Case 46: GetKeyCharacter = "del"
-        Case 106: GetKeyCharacter = "*"
-        Case 107: GetKeyCharacter = "+"
-        Case 108: GetKeyCharacter = "enter"
-        Case 109: GetKeyCharacter = "-"
-        Case 110: GetKeyCharacter = "."
-        Case 111: GetKeyCharacter = "/"
+        Case 106: GetKeyCharacter = "kmultiply"
+        Case 107: GetKeyCharacter = "kplus"
+        Case 108: GetKeyCharacter = "kenter"
+        Case 109: GetKeyCharacter = "kminus"
+        Case 110: GetKeyCharacter = "kpoint"
+        Case 111: GetKeyCharacter = "kdivide"
         Case 186 And isUs: GetKeyCharacter = ";"
         Case 186 And isJis: GetKeyCharacter = ":"
         Case 187 And isUs: GetKeyCharacter = "="
@@ -1222,7 +1234,7 @@ Private Function GetKeyCharacter(ByVal code As Long, ByVal isShift As Boolean) A
         Case 32, 48 To 57, 65 To 90
             GetKeyCharacter = LCase(Chr(code))
         Case 96 To 105
-            GetKeyCharacter = Chr(code - 48)
+            GetKeyCharacter = "k" & Chr(code - 48)
         Case 112 To 127
             GetKeyCharacter = "f" & code - 111
 
@@ -1283,11 +1295,20 @@ Public Function SendKeysToDisplayText(ByVal key As String) As String
         If Len(key) - braceIndex > 2 Then
             Dim keyName As String
             keyName = Mid(key, braceIndex + 1, Len(key) - braceIndex - 1)
-            If keyName = "226" Then
-                SendKeysToDisplayText = "^_"
-            Else
-                SendKeysToDisplayText = Left(key, braceIndex - 1) & "<" & keyName & ">"
-            End If
+            Select Case keyName
+                Case "226": SendKeysToDisplayText = "^_"
+                Case "96", "97", "98", "99", "100", "101", "102", "103", "104", "105"
+                    SendKeysToDisplayText = "<k" & Chr(CLng(keyName) - 48) & ">"
+                Case "106": SendKeysToDisplayText = "<kmultiply>"
+                Case "107": SendKeysToDisplayText = "<kplus>"
+                Case "108": SendKeysToDisplayText = "<kenter>"
+                Case "109": SendKeysToDisplayText = "<kminus>"
+                Case "110": SendKeysToDisplayText = "<kpoint>"
+                Case "111": SendKeysToDisplayText = "<kdivide>"
+
+                Case Else
+                    SendKeysToDisplayText = Left(key, braceIndex - 1) & "<" & keyName & ">"
+            End Select
         Else
             SendKeysToDisplayText = Left(key, braceIndex - 1)
             If braceIndex > 1 Then

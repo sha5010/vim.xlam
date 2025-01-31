@@ -499,6 +499,7 @@ You can configure using the same syntax as Vim's `set`. For configuration exampl
 | `[no]japanese` | bool | Japanese mode / English mode | `True` |
 | `[no]jiskeyboard` | bool | JIS keyboard / US keyboard | `True` |
 | `[no]quitapp` | bool | Quit Excel or not when closing the last workbook | `True` |
+| `[no]numpadcount` | bool |  Whether NumPad is used as `[count]` or not | `False` |
 | `colorpickersize` | float | ColorPicker form size (px) | `12.0` |
 | `customcolor1` | string | Custom color #1 in ColorPicker | `#ff6600` ![#ff6600](https://placehold.co/15/ff6600/ff6600) |
 | `customcolor2` | string | Custom color #2 in ColorPicker | `#ff9966` ![#ff9966](https://placehold.co/15/ff9966/ff9966) |
@@ -506,6 +507,27 @@ You can configure using the same syntax as Vim's `set`. For configuration exampl
 | `customcolor4` | string | Custom color #4 in ColorPicker | `#008000` ![#008000](https://placehold.co/15/008000/008000) |
 | `customcolor5` | string | Custom color #5 in ColorPicker | `#0000ff` ![#0000ff](https://placehold.co/15/0000ff/0000ff) |
 | `[no]debug` | bool | Enable / disable debug mode | `False` |
+
+#### Notes on `numpadcount`
+
+- When `set numpadcount` is specified, the `ShowCmdForm` is automatically set for NumPad 1-9. You do not need to manually map keys using `nmap`.
+- If you explicitly specify `set nonumpadcount`:
+    - Key mappings for NumPad 1-9 set before this command will be cleared.
+    - If you want to set key mappings for NumPad 1-9, please specify them after this setting.
+
+By default, no key mappings are applied to the NumPad. This is useful if you want to input numbers without exiting Vim mode. Additionally, by setting key mappings, you can use the NumPad as a launcher to trigger useful functions with a single key.
+
+However, with the default configuration, NumPad keys cannot be used as `[count]`. By setting `set numpadcount`, NumPad keys can be used as `[count]`, but they will no longer function as a launcher. (You can still assign keys like `0` and other symbol keys).
+
+**Launcher Configuration Example**
+
+```vim
+nmap <kplus> AddNumber
+nmap <kminus> SubtractNumber
+nmap <k1> AlignLeft
+nmap <k2> AlignCenter
+nmap <k3> AlignRight
+```
 
 ### 🗺️ Keymap
 

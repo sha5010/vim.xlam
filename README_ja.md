@@ -496,6 +496,7 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `[no]japanese` | bool | 日本語モード / 英語モード | `True` |
 | `[no]jiskeyboard` | bool | JISキーボード / USキーボード | `True` |
 | `[no]quitapp` | bool | 最後のワークブックが閉じられたときExcelを終了するか | `True` |
+| `[no]numpadcount` | bool | NumPadを `[count]` として使うかどうか | `False` |
 | `colorpickersize` | float | ColorPicker のフォームサイズ (px) | `12.0` |
 | `customcolor1` | string | ColorPicker のカスタム色 #1 | `#ff6600` ![#ff6600](https://placehold.co/15/ff6600/ff6600) |
 | `customcolor2` | string | ColorPicker のカスタム色 #2 | `#ff9966` ![#ff9966](https://placehold.co/15/ff9966/ff9966) |
@@ -503,6 +504,27 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `customcolor4` | string | ColorPicker のカスタム色 #4 | `#008000` ![#008000](https://placehold.co/15/008000/008000) |
 | `customcolor5` | string | ColorPicker のカスタム色 #5 | `#0000ff` ![#0000ff](https://placehold.co/15/0000ff/0000ff) |
 | `[no]debug` | bool | デバッグモードの有効 / 無効 | `False` |
+
+#### `numpadcount` の注意点
+
+- `set numpadcount` を指定した場合、自動的にNumPad 1-9に対して `ShowCmdForm` が設定されます。ご自身で `nmap` によってキーを設定する必要はありません。
+- `set nonumpadcount` を明示的に指定する場合
+    - 指定した行以前に設定したNumPad 1-9へキーマップは解除されます。
+    - NumPad 1-9に対してキーマップを設定する場合は、この設定のあとに記載してください。
+
+デフォルトではNumPadに対してはキーマップを実施していません。Vimモードを解除せずに数値を入力したい場合に便利です。また、キーマップを設定することで便利機能を1keyで起動できるランチャーとしても活用できます。
+
+一方、デフォルトのままでは `[count]` としては使用できません。`set numpadcount` を設定することで `[count]` として使用できますが、ランチャーとしては使用できなくなります。（`0` とそれ以外の記号キーなどにはキーを割り当てられます）
+
+**ランチャー設定のサンプル**
+
+```vim
+nmap <kplus> AddNumber
+nmap <kminus> SubtractNumber
+nmap <k1> AlignLeft
+nmap <k2> AlignCenter
+nmap <k3> AlignRight
+```
 
 ### 🗺️ キーマップの変更
 
