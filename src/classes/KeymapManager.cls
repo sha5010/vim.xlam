@@ -989,7 +989,7 @@ Private Function ConvertKeyCodes(ByVal key As String, _
         Case "pageup": result = PageUp_
         Case "pagedown": result = PageDown_
         Case "kplus": result = NumpadAdd_
-        Case "kminus": result = NumpadSubstract_
+        Case "kminus": result = NumpadSubtract_
         Case "kmultiply": result = NumpadMultiply_
         Case "kdivide": result = NumpadDivide_
         Case "kenter": result = NumpadEnter_

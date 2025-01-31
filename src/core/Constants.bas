@@ -115,7 +115,7 @@ Public Enum eKey
     NumpadMultiply_     '  *   in numeric keypad
     NumpadAdd_          '  +   in numeric keypad
     NumpadEnter_        'Enter in numeric keypad
-    NumpadSubstract_    '  -   in numeric keypad
+    NumpadSubtract_     '  -   in numeric keypad
     NumpadDecimal_      '  .   in numeric keypad
     NumpadDivide_       '  /   in numeric keypad
     F1_

@@ -4,9 +4,7 @@ Option Private Module
 
 Private Sub CheckAndQuitIfNoWorkbooks()
     On Error GoTo Catch
-    If Not gVim.Config.QuitApp Then
-        Exit Sub
-    ElseIf Application.Workbooks.Count = 0 Then
+    If gVim.Config.QuitApp And Application.Workbooks.Count = 0 Then
         Application.Quit
     End If
     Exit Sub
