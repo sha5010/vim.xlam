@@ -200,10 +200,16 @@ Private Sub ProcessNumber(ByVal isSubtract As Boolean)
         Exit Sub
     End If
 
-    Call StopVisualMode
+    Dim procSign As Long: procSign = IIf(isSubtract, -1, 1)
 
-    Dim procSign As Long
-    procSign = CLng(isSubtract) * 2 + 1
+    ' Works for empty cell when only one cell is selected
+    If targetRange.Count = 1 And ActiveCell.Formula = "" Then
+        targetRange.Value = procSign * gVim.Count1
+        Call StopVisualMode
+        Exit Sub
+    End If
+
+    Call StopVisualMode
 
     Dim savedCalculation As XlCalculation
     savedCalculation = Application.Calculation
