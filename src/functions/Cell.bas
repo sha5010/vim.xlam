@@ -188,7 +188,7 @@ Function DecreaseDecimal(Optional ByVal g As String) As Boolean
     Next i
 End Function
 
-Private Sub ProcessNumber(ByVal isSubtract As Boolean)
+Private Sub ProcessNumber(ByVal isSubtract As Boolean, Optional ByVal isGrow As Boolean = False)
     On Error GoTo Catch
     If TypeName(Selection) <> "Range" Then
         Exit Sub
@@ -201,6 +201,7 @@ Private Sub ProcessNumber(ByVal isSubtract As Boolean)
     End If
 
     Dim procSign As Long: procSign = IIf(isSubtract, -1, 1)
+    Dim targetRange As Range: Set targetRange = Selection
 
     ' Works for empty cell when only one cell is selected
     If targetRange.Count = 1 And ActiveCell.Formula = "" Then
@@ -211,71 +212,87 @@ Private Sub ProcessNumber(ByVal isSubtract As Boolean)
 
     Call StopVisualMode
 
-    Dim savedCalculation As XlCalculation
-    savedCalculation = Application.Calculation
+    Dim savedCalculation As XlCalculation: savedCalculation = Application.Calculation
+    If targetRange.Count > 1 Then
+        Application.ScreenUpdating = False
+        Application.EnableEvents = False
+        Application.Calculation = xlCalculationManual
+    End If
 
-    Application.ScreenUpdating = False
-    Application.EnableEvents = False
-    Application.Calculation = xlCalculationManual
-
-    Dim startTime As Double
+    Dim startTime As Double: startTime = Timer()
     Dim currentTime As Double
-    Dim targetCell As Range
+    Dim inc As Long: inc = gVim.Count1
+    Dim rowInc As Long: rowInc = IIf(isGrow And targetRange.Rows.Count > 1, procSign, 0)
+    Dim colInc As Long: colInc = IIf(isGrow And targetRange.Rows.Count < 2, procSign, 0)
+
     Dim i As Long: i = 1
-    For Each targetCell In Selection
-        If InStr(targetCell.Formula, "=") > 0 Then
-            GoTo Continue   ' No formula
-        End If
+    Dim r As Long
+    Dim c As Long
+    Dim targetCell As Range
 
-        Dim n
-        Dim valueType As VbVarType
-        n = CDec(gVim.Count1 * procSign)
-        valueType = VarType(targetCell.Value)
+    For r = 1 To targetRange.Rows.Count
+        For c = 1 To targetRange.Columns.Count
+            Set targetCell = targetRange.Cells(r, c)
 
-        Select Case valueType
-        Case vbCurrency, vbByte, vbDate, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
-            If InStr(targetCell.NumberFormatLocal, "%") > 0 Then
-                targetCell.Value = CDec(targetCell.Value) + CDec(n / 100)
-            Else
-                targetCell.Value = CDec(targetCell.Value) + n
+            If targetCell.Formula = "" Then
+                ' Do nothing
+
+            ElseIf InStr(targetCell.Formula, "=") = 0 Then
+                Dim n: n = CDec(inc * procSign)
+                Dim valueType As VbVarType: valueType = VarType(targetCell.Value)
+
+                Select Case valueType
+                Case vbCurrency, vbByte, vbDate, vbDecimal, vbDouble, vbInteger, vbLong, vbSingle
+                    If InStr(targetCell.NumberFormatLocal, "%") > 0 Then
+                        targetCell.Value = CDec(targetCell.Value) + CDec(n / 100)
+                    Else
+                        targetCell.Value = CDec(targetCell.Value) + n
+                    End If
+                Case vbString
+                    If Not targetCell.Value Like "*[!0-9.]*" Then
+                        If Not IsNumeric(targetCell.Value) Then
+                            ' Do nothing
+                        ElseIf targetCell.PrefixCharacter = "'" Then
+                            targetCell.Value = "'" & (CDec(targetCell.Value) + n)
+                        Else
+                            targetCell.Value = CDec(targetCell.Value) + n
+                        End If
+                    End If
+                End Select
             End If
-        Case vbString
-            If Not targetCell.Value Like "*[!0-9.]*" Then
-                If Not IsNumeric(targetCell.Value) Then
-                    GoTo Continue
-                ElseIf targetCell.PrefixCharacter = "'" Then
-                    targetCell.Value = "'" & (CDec(targetCell.Value) + n)
-                Else
-                    targetCell.Value = CDec(targetCell.Value) + n
-                End If
-            End If
-        End Select
+            inc = inc + (gVim.Count1 * procSign * colInc)
 
 Continue:
-        'Avoid freeze
-        If (i And &HFFF) = 0 Then
-            'Show progress bar in status bar
-            Call SetStatusBar(gVim.Msg.ProcessingNumber, _
-                             currentCount:=i, maximumCount:=Selection.Count, progressBar:=True)
+            'Avoid freeze
+            If (i And &HFFF) = 0 Then
+                'Show progress bar in status bar
+                Call SetStatusBar(gVim.Msg.ProcessingNumber, _
+                                 currentCount:=i, maximumCount:=Selection.Count, progressBar:=True)
 
-            currentTime = Timer
-            If currentTime < startTime Or currentTime - startTime > 2 Then
-                DoEvents
-                startTime = currentTime
+                currentTime = Timer
+                If currentTime < startTime Or currentTime - startTime > 2 Then
+                    DoEvents
+                    startTime = currentTime
+                    Application.Cursor = xlWait
+                End If
             End If
-        End If
-        i = i + 1
-    Next
+            i = i + 1
+        Next c
+
+        inc = inc + (gVim.Count1 * procSign * rowInc)
+    Next r
+
+    Call SetStatusBar
     GoTo Finally
 
 Catch:
     Call ErrorHandler("ProcessNumber")
 
 Finally:
-    Call SetStatusBar
     Application.ScreenUpdating = True
     Application.EnableEvents = True
     Application.Calculation = savedCalculation
+    Application.Cursor = xlDefault
     If savedCalculation = xlCalculationSemiautomatic Then
         Application.Calculate
     End If
@@ -291,6 +308,18 @@ Function SubtractNumber(Optional ByVal g As String) As Boolean
     Call RepeatRegister("SubtractNumber")
 
     Call ProcessNumber(isSubtract:=True)
+End Function
+
+Function VisualAddNumber(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("VisualAddNumber")
+
+    Call ProcessNumber(isSubtract:=False, isGrow:=True)
+End Function
+
+Function VisualSubtractNumber(Optional ByVal g As String) As Boolean
+    Call RepeatRegister("VisualSubtractNumber")
+
+    Call ProcessNumber(isSubtract:=True, isGrow:=True)
 End Function
 
 Function InsertCellsUp(Optional ByVal g As String) As Boolean

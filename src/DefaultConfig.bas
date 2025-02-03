@@ -97,6 +97,8 @@ Sub DefaultConfig()
         .Map "nmap ) DecreaseDecimal"
         .Map "nmap <C-S-A> AddNumber"
         .Map "nmap <C-S-X> SubtractNumber"
+        .Map "nmap g<C-A> VisualAddNumber"
+        .Map "nmap g<C-X> VisualSubtractNumber"
         .Map "nmap zw ToggleWrapText"
         .Map "nmap & ToggleMergeCells"
         .Map "nmap f, ApplyCommaStyle"

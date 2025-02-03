@@ -178,6 +178,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Cell | `)` | `DecreaseDecimal` | Decrease decimal places | ✓ |
 | Cell | `<C-S-A>` | `AddNumber` | Add the number | ✓ |
 | Cell | `<C-S-X>` | `SubtractNumber` | Subtract the number | ✓ |
+| Cell | `g<C-A>` | `VisualAddNumber` | Add the number sequentially | ✓ |
+| Cell | `g<C-X>` | `VisualSubtractNumber` | Subtract the number sequentially | ✓ |
 | Cell | `zw` | `ToggleWrapText` | Toggle cell wrap text | |
 | Cell | `&` | `ToggleMergeCells` | Toggle cell merge | |
 | Cell | `f,` | `ApplyCommaStyle` | Apply comma style | |
