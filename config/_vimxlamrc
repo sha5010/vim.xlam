@@ -50,6 +50,9 @@
 ### Whether NumPad is used as [count] or not
 # set nonumpadcount
 
+### Delay time to display suggestions (ms, 0 to disable)
+# set suggestwait=1000
+
 ### Color picker size
 # set colorpickersize=12
 

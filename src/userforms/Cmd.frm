@@ -333,8 +333,13 @@ Private Sub LazySuggest()
     Call Application.OnTime(lastRegisterTime, lastRegisterProc, , False)
     On Error GoTo 0
 
+    ' Disabled if SuggestWait is less than 0
+    If gVim.Config.SuggestWait <= 0 Then
+        Exit Sub
+    End If
+
     ' Calculate the time for the next OnTime event
-    lastRegisterTime = Date + CDec(Timer + 1) / 86400
+    lastRegisterTime = Date + CDec(Timer + gVim.Config.SuggestWait / 1000) / 86400
 
     ' Set procedure name
     lastRegisterProc = "'ShowSuggest """ & cCmdBuffer & """'"
