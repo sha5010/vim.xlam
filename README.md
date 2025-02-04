@@ -467,6 +467,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `<C-i>` | `JumpNext` | Move to the next cell in the jump list | ✓ |
 | Other | `<C-o>` | `JumpPrev` | Move to the previous cell in the jump list | ✓ |
 | Other | `:cle` | `ClearJumps` | Clear the jump list | |
+| Other | `:help <KEY>` | `SearchHelp` | Search help for a given `<KEY>` | |
 | Other | `zf` | `ToggleFreezePanes` | Toggle freeze panes on/off | |
 | Other | `=v` | `ToggleFormulaBar` | Toggle the visibility of the formula bar | |
 | Other | `gb` | `ToggleGridlines` | Toggle the visibility of the gridlines | |

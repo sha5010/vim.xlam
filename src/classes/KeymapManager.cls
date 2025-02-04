@@ -346,7 +346,14 @@ Private Sub LazyParseKeys(ByVal mode_ As String, ByVal key As String)
 
     ' Check if the TEMP key exists
     If Not cKeyMap.Exists(tempKey) Then
-        Exit Sub
+        Dim tmpLen As Long
+        tmpLen = InStr(key, KEY_SEPARATOR)
+        If tmpLen > 0 Then
+            Call LazyParseKeys(mode_, Left(key, tmpLen - 1))
+            If Not cKeyMap.Exists(tempKey) Then
+                Exit Sub
+            End If
+        End If
     End If
 
     ' TEMP key contains mappings separated by KEY_TERM_SYMBOL

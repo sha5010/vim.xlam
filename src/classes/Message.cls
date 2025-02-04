@@ -72,6 +72,18 @@ Public Property Get NoCommandAvailable() As String
         "No command is available: ")
 End Property
 
+Public Property Get NoCommandHelp() As String
+    NoCommandHelp = IIf(Parent.IsJapanese, _
+        "コマンドヘルプがありません: ", _
+        "No command help is available: ")
+End Property
+
+Public Property Get ArgumentsRequired() As String
+    ArgumentsRequired = IIf(Parent.IsJapanese, _
+        "引数が必要です。", _
+        "Argument is required.")
+End Property
+
 Public Property Get LatestJumplist() As String
     LatestJumplist = IIf(Parent.IsJapanese, _
         "一番新しいジャンプリスト履歴です。", _

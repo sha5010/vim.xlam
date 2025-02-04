@@ -464,6 +464,7 @@ Sub DefaultConfig()
 
 
         'Other Commands
+        .Map "nmap <cmd>help SearchHelp"
         .Map "nmap zf ToggleFreezePanes"
         .Map "nmap =v ToggleFormulaBar"
         .Map "nmap gb ToggleGridlines"

@@ -464,6 +464,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `<C-i>` | `JumpNext` | ジャンプリストの次のセルへ移動 | ✓ |
 | Other | `<C-o>` | `JumpPrev` | ジャンプリストの前のセルへ移動 | ✓ |
 | Other | `:cle` | `ClearJumps` | ジャンプリストをクリア | |
+| Other | `:help <KEY>` | `SearchHelp` | 指定された `<KEY>` のヘルプを検索 | |
 | Other | `zf` | `ToggleFreezePanes` | ウィンドウ枠の固定のオン/オフを切り替え | |
 | Other | `=v` | `ToggleFormulaBar` | 関数バーの表示/非表示を切り替え | |
 | Other | `gb` | `ToggleGridlines` | グリッド枠線の表示/非表示を切り替え | |

@@ -214,6 +214,49 @@ Sub DisableIME()
     End Select
 End Sub
 
+Function SearchHelp(Optional ByVal key As String = "") As Boolean
+    On Error GoTo Catch
+
+    If key = "" Then
+        Call SetStatusBarTemporarily(gVim.Msg.ArgumentsRequired, 3000)
+        Exit Function
+    End If
+
+    Dim cmd As String
+    If InStr(key, ":") = 1 Then
+        Dim suggestsList() As String
+        suggestsList = gVim.KeyMap.Suggest(Mid(key, 2), True)
+        If UBound(suggestsList) = 0 Then
+            cmd = gVim.KeyMap.Get_(suggestsList(0), True)
+            key = ":" & suggestsList(0)
+        End If
+    Else
+        cmd = gVim.KeyMap.Get_(gVim.KeyMap.VimToVBA(key, KEY_SEPARATOR))
+    End If
+
+    Dim helpText As String
+    If cmd = DUMMY_PROCEDURE Then
+        cmd = ""
+        helpText = gVim.Msg.NoKeyAllocation & key
+    ElseIf cmd = "" Then
+        helpText = gVim.Msg.NoCommandAvailable & Mid(key, 2)
+    Else
+        helpText = gVim.Help.GetText(cmd)
+
+        If helpText = cmd Then
+            helpText = gVim.Msg.NoCommandHelp & key
+        Else
+            helpText = key & "    " & cmd & "    " & helpText
+        End If
+    End If
+
+    Call SetStatusBarTemporarily(helpText, 3000)
+    Exit Function
+Catch:
+    ' Handle errors and call the error handler
+    Call ErrorHandler("SearchHelp")
+End Function
+
 Private Function CmdSuggest(ByVal key As String) As CommandBar
     If key = "" Then
         Exit Function
