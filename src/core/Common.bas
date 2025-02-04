@@ -241,9 +241,9 @@ Private Function CmdSuggest(ByVal key As String) As CommandBar
             End If
         Else
             If Not menuDict.Exists(nextChar) Then
-                menuDict.Add nextChar, gVim.KeyMap.Get_(suggestsList(i))
+                menuDict.Add nextChar, gVim.Help.GetText(gVim.KeyMap.Get_(suggestsList(i)))
             Else
-                menuDict(nextChar) = gVim.KeyMap.Get_(suggestsList(i))
+                menuDict(nextChar) = gVim.Help.GetText(gVim.KeyMap.Get_(suggestsList(i)))
             End If
         End If
     Next i
@@ -279,7 +279,8 @@ Private Function CmdlineSuggest(ByVal key As String) As CommandBar
             Else
                 .Caption = "      "
             End If
-            .Caption = .Caption & suggestsList(i) & String(Int(32 - Len(suggestsList(i)) * 2), ChrW(&H2005)) & gVim.KeyMap.Get_(suggestsList(i), True)
+            .Caption = .Caption & suggestsList(i) & String(Int(32 - Len(suggestsList(i)) * 2), ChrW(&H2005)) & _
+                gVim.Help.GetText(gVim.KeyMap.Get_(suggestsList(i), True))
             .OnAction = "'CompleteSuggest """ & suggestsList(i) & """'"
         End With
     Next i

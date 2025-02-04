@@ -240,8 +240,8 @@ End Sub
 
 Private Sub Show_Help()
     'ヘルプ文字列
-    Dim HELP As String
-    HELP = "[Move Cursor]¥n" & _
+    Dim HELP_MSG As String
+    HELP_MSG = "[Move Cursor]¥n" & _
         "  j/k¥tMove down/up¥n" & _
         "  C-j/C-k¥tMove down/up (" & AMOUNT & " rows)¥n" & _
         "  g/G¥tMove to top/bottom¥n" & _
@@ -260,9 +260,9 @@ Private Sub Show_Help()
         "[Preview mode]¥n" & _
         "  P¥tToggle preview mode"
 
-    HELP = Replace(HELP, "¥n", vbLf)
-    HELP = Replace(HELP, "¥t", vbTab)
-    Call MsgBox(HELP)
+    HELP_MSG = Replace(HELP_MSG, "¥n", vbLf)
+    HELP_MSG = Replace(HELP_MSG, "¥t", vbTab)
+    Call MsgBox(HELP_MSG)
 
     Me.Caption = Replace(Me.Caption, " (?: Show help)", "")
 End Sub

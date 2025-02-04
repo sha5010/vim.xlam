@@ -10,6 +10,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private cMsg As cls_Message                 ' Message text
+Private cHelp As cls_Help                   ' Help text
 Private cVars As cls_Vars                   ' Global variables
 
 Private cIsEnabled As Boolean               ' Vim mode (enabled / disabled)
@@ -27,6 +28,10 @@ Private Sub Class_Initialize()
     ' Initialize Message
     Set cMsg = New cls_Message
     Set cMsg.Parent = Me
+
+    ' Initialize Help
+    Set cHelp = New cls_Help
+    Set cHelp.Parent = Me
 
     ' Initialize Vars
     Set cVars = New cls_Vars
@@ -176,6 +181,15 @@ End Property
 ' */
 Public Property Get Msg() As cls_Message
     Set Msg = cMsg
+End Property
+
+'/*
+' * Gets the help properties for getting help text.
+' *
+' * @returns {cls_Help} - The help text manager.
+' */
+Public Property Get Help() As cls_Help
+    Set Help = cHelp
 End Property
 
 '/*
