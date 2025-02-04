@@ -142,10 +142,10 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Moving | `j` | `MoveDown` | ↓ | ✓ |
 | Moving | `k` | `MoveUp` | ↑ | ✓ |
 | Moving | `l` | `MoveRight` | → | ✓ |
-| Moving | `H` | `MoveLeft` | Shift + ← | ✓ |
-| Moving | `J` | `MoveDown` | Shift + ↓ | ✓ |
-| Moving | `K` | `MoveUp` | Shift + ↑ | ✓ |
-| Moving | `L` | `MoveRight` | Shift + → | ✓ |
+| Moving | `H` | `MoveLeftWithShift` | Shift + ← | ✓ |
+| Moving | `J` | `MoveDownWithShift` | Shift + ↓ | ✓ |
+| Moving | `K` | `MoveUpWithShift` | Shift + ↑ | ✓ |
+| Moving | `L` | `MoveRightWithShift` | Shift + → | ✓ |
 | Moving | `<C-h>` | `MoveLeft` | Ctrl + ← | |
 | Moving | `<C-j>` | `MoveDown` | Ctrl + ↓ | |
 | Moving | `<C-k>` | `MoveUp` | Ctrl + ↑ | |
@@ -314,14 +314,14 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Column | `cw` | `SetColumnsWidth` | 現在列の幅を任意に設定 | ✓ |
 | Yank | `yr` | `YankRows` | 現在行をコピー | ✓ |
 | Yank | `yc` | `YankColumns` | 現在列をコピー | ✓ |
-| Yank | `ygg` | `YankToTopRows` | 現在行から1行目までをコピー | |
-| Yank | `yG` | `YankToBottomRows` | 現在行から UsedRange の最終行までをコピー | |
-| Yank | `y{` | `YankToTopOfCurrentRegionRows` | 現在行から CurrentRegion の最初の行までをコピー | |
-| Yank | `y}` | `YankToBottomOfCurrentRegionRows` | 現在行から CurrentRegion の最後の行までをコピー | |
-| Yank | `y0` | `YankToLeftEndColumns` | 現在列から UsedRange の最初の列までをコピー | |
-| Yank | `y$` | `YankToRightEndColumns` | 現在列から UsedRange の最後の列までをコピー | |
-| Yank | `y^` | `YankToLeftOfCurrentRegionColumns` | 現在列から CurrentRegion  の最初の列までをコピー | |
-| Yank | `yg$` | `YankToRightOfCurrentRegionColumns` | 現在列から CurrentRegion の最後の列までをコピー | |
+| Yank | `ygg` | `YankRows` | 現在行から1行目までをコピー | |
+| Yank | `yG` | `YankRows` | 現在行から UsedRange の最終行までをコピー | |
+| Yank | `y{` | `YankRows` | 現在行から CurrentRegion の最初の行までをコピー | |
+| Yank | `y}` | `YankRows` | 現在行から CurrentRegion の最後の行までをコピー | |
+| Yank | `y0` | `YankColumns` | 現在列から UsedRange の最初の列までをコピー | |
+| Yank | `y$` | `YankColumns` | 現在列から UsedRange の最後の列までをコピー | |
+| Yank | `y^` | `YankColumns` | 現在列から CurrentRegion  の最初の列までをコピー | |
+| Yank | `yg$` | `YankColumns` | 現在列から CurrentRegion の最後の列までをコピー | |
 | Yank | `yh` | `YankFromLeftCell` | 現在のセルの左の値をコピーして貼り付け | |
 | Yank | `yj` | `YankFromDownCell` | 現在のセルの下の値をコピーして貼り付け | |
 | Yank | `yk` | `YankFromUpCell` | 現在のセルの上の値をコピーして貼り付け | |
@@ -329,30 +329,30 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Yank | `Y` | `YankAsPlaintext` | 選択中のセルをプレーンテキストとしてコピー | |
 | Delete | `D`/`X` | `DeleteValue` | セルの値を削除 | |
 | Delete | `dx` | `DeleteRows` | 現在行を削除 | ✓ |
-| Delete | `dr` | `DeleteRows` | 現在行を削除 | ✓ |
+| Delete | `dd`/`dr` | `DeleteRows` | 現在行を削除 | ✓ |
 | Delete | `dc` | `DeleteColumns` | 現在列を削除 | ✓ |
-| Delete | `dgg` | `DeleteToTopRows` | 現在行から先頭行までを削除 | |
-| Delete | `dG` | `DeleteToBottomRows` | 現在行から UsedRange の最終行までを削除 | |
-| Delete | `d{` | `DeleteToTopOfCurrentRegionRows` | 現在行から CurrentRegion の最初の行までを削除 | |
-| Delete | `d}` | `DeleteToBottomOfCurrentRegionRows` | 現在行から CurrentRegion の最後の行までを削除 | |
-| Delete | `d0` | `DeleteToLeftEndColumns` | 現在列から UsedRange の最初の列までを削除 | |
-| Delete | `d$` | `DeleteToRightEndColumns` | 現在列から UsedRange の最後の列までを削除 | |
-| Delete | `d^` | `DeleteToLeftOfCurrentRegionColumns` | 現在列から CurrentRegion  の最初の列までを削除 | |
-| Delete | `dg$` | `DeleteToRightOfCurrentRegionColumns` | 現在列から CurrentRegion の最後の列までを削除 | |
+| Delete | `dgg` | `DeleteRows` | 現在行から先頭行までを削除 | |
+| Delete | `dG` | `DeleteRows` | 現在行から UsedRange の最終行までを削除 | |
+| Delete | `d{` | `DeleteRows` | 現在行から CurrentRegion の最初の行までを削除 | |
+| Delete | `d}` | `DeleteRows` | 現在行から CurrentRegion の最後の行までを削除 | |
+| Delete | `d0` | `DeleteColumns` | 現在列から UsedRange の最初の列までを削除 | |
+| Delete | `d$` | `DeleteColumns` | 現在列から UsedRange の最後の列までを削除 | |
+| Delete | `d^` | `DeleteColumns` | 現在列から CurrentRegion  の最初の列までを削除 | |
+| Delete | `dg$` | `DeleteColumns` | 現在列から CurrentRegion の最後の列までを削除 | |
 | Delete | `dh` | `DeleteToLeft` | 現在のセルを削除し左方向へシフト | ✓ |
 | Delete | `dj` | `DeleteToUp` | 現在のセルを削除し上方向へシフト | ✓ |
 | Delete | `dk` | `DeleteToUp` | 現在のセルを削除し上方向へシフト | ✓ |
 | Delete | `dl` | `DeleteToLeft` | 現在のセルを削除し左方向へシフト | ✓ |
 | Cut | `xr` | `CutRows` | 現在行を切り取り | ✓ |
 | Cut | `xc` | `CutColumns` | 現在列を切り取り | ✓ |
-| Cut | `xgg` | `CutToTopRows` | 現在行から1行目までを切り取り | |
-| Cut | `xG` | `CutToBottomRows` | 現在行から UsedRange の最後の行までを切り取り | |
-| Cut | `x{` | `CutToTopOfCurrentRegionRows` | 現在行から CurrentRegion  の最初の列までを切り取り | |
-| Cut | `x}` | `CutToBottomOfCurrentRegionRows` | 現在行から CurrentRegion の最後の行までを切り取り | |
-| Cut | `x0` | `CutToLeftEndColumns` | 現在列から UsedRange の最初の列までを切り取り | |
-| Cut | `x$` | `CutToRightEndColumns` | 現在列から UsedRange の最後の列までを切り取り | |
-| Cut | `x^` | `CutToLeftOfCurrentRegionColumns` | 現在列から CurrentRegion  の最初の列までを切り取り | |
-| Cut | `xg$` | `CutToRightOfCurrentRegionColumns` | 現在列から CurrentRegion の最後の列までを切り取り | |
+| Cut | `xgg` | `CutRows` | 現在行から1行目までを切り取り | |
+| Cut | `xG` | `CutRows` | 現在行から UsedRange の最後の行までを切り取り | |
+| Cut | `x{` | `CutRows` | 現在行から CurrentRegion  の最初の列までを切り取り | |
+| Cut | `x}` | `CutRows` | 現在行から CurrentRegion の最後の行までを切り取り | |
+| Cut | `x0` | `CutColumns` | 現在列から UsedRange の最初の列までを切り取り | |
+| Cut | `x$` | `CutColumns` | 現在列から UsedRange の最後の列までを切り取り | |
+| Cut | `x^` | `CutColumns` | 現在列から CurrentRegion  の最初の列までを切り取り | |
+| Cut | `xg$` | `CutColumns` | 現在列から CurrentRegion の最後の列までを切り取り | |
 | Paste | `p` | `PasteSmart` | 行や列がコピーされたときは後に追加。それ以外は `Ctrl + V` を送出 | ✓ |
 | Paste | `P` | `PasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` を送出 | ✓ |
 | Paste | `gp` | `PasteSpecial` | 形式を選択して貼り付けのダイアログを表示 | |
@@ -446,6 +446,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `:q` | `CloseAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) | |
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | アクティブブックを保存せずに閉じる | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | アクティブブックを保存して閉じる | |
+| Workbook | `:sav` | `SaveAsNewWorkbook` | 新しいワークブックとして保存 | |
 | Workbook | `:b [num]` | `ActivateWorkbook` | `[num]` 番目のブックを選択 | |
 | Workbook | `]b`/`:bn` | `NextWorkbook` | 次のワークブックを選択 | ✓ |
 | Workbook | `[b`/`:bp` | `PreviousWorkbook` | 前のワークブックを選択 | ✓ |
@@ -480,7 +481,16 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 
 ### 🔧 カスタムキーマッピング
 
-- `<C-[>` → `<Esc>`
+- Normal Mode
+    - `<C-[>` → `<Esc>`
+- Cmdline Mode
+    - `<C-w>` → `<C-BS>`
+    - `<C-u>` → `<S-Home><BS>`
+    - `<C-k>` → `<S-End><Del>`
+    - `<C-h>` → `<Left>`
+    - `<C-l>` → `<Right>`
+    - `<C-a>` → `<Home>`
+    - `<C-e>` → `<End>`
 
 ## ⚙️ カスタマイズ
 

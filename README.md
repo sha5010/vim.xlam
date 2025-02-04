@@ -144,10 +144,10 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Moving | `j` | `MoveDown` | ↓ | ✓ |
 | Moving | `k` | `MoveUp` | ↑ | ✓ |
 | Moving | `l` | `MoveRight` | → | ✓ |
-| Moving | `H` | `MoveLeft` | Shift + ← | ✓ |
-| Moving | `J` | `MoveDown` | Shift + ↓ | ✓ |
-| Moving | `K` | `MoveUp` | Shift + ↑ | ✓ |
-| Moving | `L` | `MoveRight` | Shift + → | ✓ |
+| Moving | `H` | `MoveLeftWithShift` | Shift + ← | ✓ |
+| Moving | `J` | `MoveDownWithShift` | Shift + ↓ | ✓ |
+| Moving | `K` | `MoveUpWithShift` | Shift + ↑ | ✓ |
+| Moving | `L` | `MoveRightWithShift` | Shift + → | ✓ |
 | Moving | `<C-h>` | `MoveLeft` | Ctrl + ← | |
 | Moving | `<C-j>` | `MoveDown` | Ctrl + ↓ | |
 | Moving | `<C-k>` | `MoveUp` | Ctrl + ↑ | |
@@ -316,14 +316,14 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Column | `cw` | `SetColumnsWidth` | Set the width of the current column to a custom value | ✓ |
 | Yank | `yr` | `YankRows` | Copy the current row | ✓ |
 | Yank | `yc` | `YankColumns` | Copy the current column | ✓ |
-| Yank | `ygg` | `YankToTopRows` | Copy from the current row to the first row | |
-| Yank | `yG` | `YankToBottomRows` | Copy from the current row to the last row in UsedRange | |
-| Yank | `y{` | `YankToTopOfCurrentRegionRows` | Copy from the current row to the first row of the CurrentRegion | |
-| Yank | `y}` | `YankToBottomOfCurrentRegionRows` | Copy from the current row to the last row of the CurrentRegion | |
-| Yank | `y0` | `YankToLeftEndColumns` | Copy from the current column to the first column in UsedRange | |
-| Yank | `y$` | `YankToRightEndColumns` | Copy from the current column to the last column in UsedRange | |
-| Yank | `y^` | `YankToLeftOfCurrentRegionColumns` | Copy from the current column to the first column of the CurrentRegion | |
-| Yank | `yg$` | `YankToRightOfCurrentRegionColumns` | Copy from the current column to the last column of the CurrentRegion | |
+| Yank | `ygg` | `YankRows` | Copy from the current row to the first row | |
+| Yank | `yG` | `YankRows` | Copy from the current row to the last row in UsedRange | |
+| Yank | `y{` | `YankRows` | Copy from the current row to the first row of the CurrentRegion | |
+| Yank | `y}` | `YankRows` | Copy from the current row to the last row of the CurrentRegion | |
+| Yank | `y0` | `YankColumns` | Copy from the current column to the first column in UsedRange | |
+| Yank | `y$` | `YankColumns` | Copy from the current column to the last column in UsedRange | |
+| Yank | `y^` | `YankColumns` | Copy from the current column to the first column of the CurrentRegion | |
+| Yank | `yg$` | `YankColumns` | Copy from the current column to the last column of the CurrentRegion | |
 | Yank | `yh` | `YankFromLeftCell` | Copy and paste the value from the cell to the left of the current cell | |
 | Yank | `yj` | `YankFromDownCell` | Copy and paste the value from the cell below the current cell | |
 | Yank | `yk` | `YankFromUpCell` | Copy and paste the value from the cell above the current cell | |
@@ -331,30 +331,30 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Yank | `Y` | `YankAsPlaintext` | Copy the selected cells as plaintext | |
 | Delete | `D`/`X` | `DeleteValue` | Delete the value in the cell | |
 | Delete | `dx` | `DeleteRows` | Delete the current row | ✓ |
-| Delete | `dr` | `DeleteRows` | Delete the current row | ✓ |
+| Delete | `dd`/`dr` | `DeleteRows` | Delete the current row | ✓ |
 | Delete | `dc` | `DeleteColumns` | Delete the current column | ✓ |
-| Delete | `dgg` | `DeleteToTopRows` | Delete from the current row to the top row | |
-| Delete | `dG` | `DeleteToBottomRows` | Delete from the current row to the last row in UsedRange | |
-| Delete | `d{` | `DeleteToTopOfCurrentRegionRows` | Delete from the current row to the first row of the CurrentRegion | |
-| Delete | `d}` | `DeleteToBottomOfCurrentRegionRows` | Delete from the current row to the last row of the CurrentRegion | |
-| Delete | `d0` | `DeleteToLeftEndColumns` | Delete from the current column to the first column in UsedRange | |
-| Delete | `d$` | `DeleteToRightEndColumns` | Delete from the current column to the last column in UsedRange | |
-| Delete | `d^` | `DeleteToLeftOfCurrentRegionColumns` | Delete from the current column to the first column of the CurrentRegion | |
-| Delete | `dg$` | `DeleteToRightOfCurrentRegionColumns` | Delete from the current column to the last column of the CurrentRegion | |
+| Delete | `dgg` | `DeleteRows` | Delete from the current row to the top row | |
+| Delete | `dG` | `DeleteRows` | Delete from the current row to the last row in UsedRange | |
+| Delete | `d{` | `DeleteRows` | Delete from the current row to the first row of the CurrentRegion | |
+| Delete | `d}` | `DeleteRows` | Delete from the current row to the last row of the CurrentRegion | |
+| Delete | `d0` | `DeleteColumns` | Delete from the current column to the first column in UsedRange | |
+| Delete | `d$` | `DeleteColumns` | Delete from the current column to the last column in UsedRange | |
+| Delete | `d^` | `DeleteColumns` | Delete from the current column to the first column of the CurrentRegion | |
+| Delete | `dg$` | `DeleteColumns` | Delete from the current column to the last column of the CurrentRegion | |
 | Delete | `dh` | `DeleteToLeft` | Delete the current cell and shift left | ✓ |
 | Delete | `dj` | `DeleteToUp` | Delete the current cell and shift up | ✓ |
 | Delete | `dk` | `DeleteToUp` | Delete the current cell and shift up | ✓ |
 | Delete | `dl` | `DeleteToLeft` | Delete the current cell and shift left | ✓ |
 | Cut | `xr` | `CutRows` | Cut the current row | ✓ |
 | Cut | `xc` | `CutColumns` | Cut the current column | ✓ |
-| Cut | `xgg` | `CutToTopRows` | Cut from the current row to the first row | |
-| Cut | `xG` | `CutToBottomRows` | Cut from the current row to the last row in UsedRange | |
-| Cut | `x{` | `CutToTopOfCurrentRegionRows` | Cut from the current row to the first row of the CurrentRegion | |
-| Cut | `x}` | `CutToBottomOfCurrentRegionRows` | Cut from the current row to the last row of the CurrentRegion | |
-| Cut | `x0` | `CutToLeftEndColumns` | Cut from the current column to the first column in UsedRange | |
-| Cut | `x$` | `CutToRightEndColumns` | Cut from the current column to the last column in UsedRange | |
-| Cut | `x^` | `CutToLeftOfCurrentRegionColumns` | Cut from the current column to the first column of the CurrentRegion | |
-| Cut | `xg$` | `CutToRightOfCurrentRegionColumns` | Cut from the current column to the last column of the CurrentRegion | |
+| Cut | `xgg` | `CutRows` | Cut from the current row to the first row | |
+| Cut | `xG` | `CutRows` | Cut from the current row to the last row in UsedRange | |
+| Cut | `x{` | `CutRows` | Cut from the current row to the first row of the CurrentRegion | |
+| Cut | `x}` | `CutRows` | Cut from the current row to the last row of the CurrentRegion | |
+| Cut | `x0` | `CutColumns` | Cut from the current column to the first column in UsedRange | |
+| Cut | `x$` | `CutColumns` | Cut from the current column to the last column in UsedRange | |
+| Cut | `x^` | `CutColumns` | Cut from the current column to the first column of the CurrentRegion | |
+| Cut | `xg$` | `CutColumns` | Cut from the current column to the last column of the CurrentRegion | |
 | Paste | `p` | `PasteSmart` | Paste after copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
 | Paste | `P` | `PasteSmart` | Paste before copying rows or columns; otherwise, send `Ctrl + V` | ✓ |
 | Paste | `gp` | `PasteSpecial` | Show the paste special format dialog | |
@@ -449,7 +449,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Workbook | `:q` | `CloseAskSaving` | Close the active workbook (show a dialog if there are unsaved changes) | |
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | Close the active workbook without saving | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | Save and close the active workbook | |
-| Workbook | `:b[num]` | `ActivateWorkbook` | Select the workbook at position `[num]` | |
+| Workbook | `:sav` | `SaveAsNewWorkbook` | Save as a new workbook | |
+| Workbook | `:b [num]` | `ActivateWorkbook` | Select the workbook at position `[num]` | |
 | Workbook | `]b`/`:bn` | `NextWorkbook` | Select the next workbook | ✓ |
 | Workbook | `[b`/`:bp` | `PreviousWorkbook` | Select the previous workbook | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | Toggle read-only mode | |
@@ -483,7 +484,16 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 
 ### 🔧 Custom Key Mapping
 
-- `<C-[>` → `<Esc>`
+- Normal Mode
+    - `<C-[>` → `<Esc>`
+- Cmdline Mode
+    - `<C-w>` → `<C-BS>`
+    - `<C-u>` → `<S-Home><BS>`
+    - `<C-k>` → `<S-End><Del>`
+    - `<C-h>` → `<Left>`
+    - `<C-l>` → `<Right>`
+    - `<C-a>` → `<Home>`
+    - `<C-e>` → `<End>`
 
 ## ⚙️ Customization
 
