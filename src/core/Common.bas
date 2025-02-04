@@ -214,80 +214,101 @@ Sub DisableIME()
     End Select
 End Sub
 
-Sub ShowSuggest(Optional ByVal key As String = "")
-    Dim formCaption As String
+Private Function CmdSuggest(ByVal key As String) As CommandBar
+    If key = "" Then
+        Exit Function
+    End If
+
     Dim suggestsList() As String
+    suggestsList = gVim.KeyMap.Suggest(key)
+
+    If UBound(suggestsList) < 0 Then
+        Exit Function
+    End If
+
     Dim menuDict As Dictionary
+    Set menuDict = New Dictionary
+
+    Dim i As Long
+    For i = LBound(suggestsList) To UBound(suggestsList)
+        Dim nextChar As String
+        nextChar = Replace(suggestsList(i), key & KEY_SEPARATOR, "", Count:=1)
+
+        If InStr(nextChar, KEY_SEPARATOR) > 0 Then
+            nextChar = Split(nextChar, KEY_SEPARATOR, 2)(0)
+            If Not menuDict.Exists(nextChar) Then
+                menuDict.Add nextChar, "  + more"
+            End If
+        Else
+            If Not menuDict.Exists(nextChar) Then
+                menuDict.Add nextChar, gVim.KeyMap.Get_(suggestsList(i))
+            Else
+                menuDict(nextChar) = gVim.KeyMap.Get_(suggestsList(i))
+            End If
+        End If
+    Next i
+
+    Set CmdSuggest = Application.CommandBars.Add(position:=msoBarPopup, Temporary:=True)
+    Dim k
+    For Each k In menuDict.Keys()
+        With CmdSuggest.Controls.Add(Type:=msoControlButton)
+            .Caption = UF_Cmd.Label_Text.Caption & "&" & gVim.KeyMap.SendKeysToDisplayText(k) & "    " & menuDict(k)
+            .OnAction = "'CompleteSuggest """ & k & """'"
+        End With
+    Next k
+End Function
+
+Private Function CmdlineSuggest(ByVal key As String) As CommandBar
+    Dim suggestsList() As String
+    suggestsList = gVim.KeyMap.Suggest(key, True)
+
+    If UBound(suggestsList) < 0 Then
+        Exit Function
+    ElseIf UBound(suggestsList) = 0 Then
+        UF_CmdLine.TextBox.Text = suggestsList(0)
+        Exit Function
+    End If
+
+    Set CmdlineSuggest = Application.CommandBars.Add(position:=msoBarPopup, Temporary:=True)
+
+    Dim i As Long
+    For i = LBound(suggestsList) To UBound(suggestsList)
+        With CmdlineSuggest.Controls.Add(Type:=msoControlButton)
+            If i < Len(gVim.Config.SuggestLabels) Then
+                .Caption = "(&" & Mid(gVim.Config.SuggestLabels, i + 1, 1) & ")  "
+            Else
+                .Caption = "      "
+            End If
+            .Caption = .Caption & suggestsList(i) & String(Int(32 - Len(suggestsList(i)) * 2), ChrW(&H2005)) & gVim.KeyMap.Get_(suggestsList(i), True)
+            .OnAction = "'CompleteSuggest """ & suggestsList(i) & """'"
+        End With
+    Next i
+End Function
+
+Function ShowSuggest(Optional ByVal key As String = "") As Boolean
+    Dim formCaption As String
     Dim tmpMenu As CommandBar
     Dim i As Long
 
     If UF_Cmd.Visible Then
         formCaption = UF_Cmd.Caption
-        suggestsList = gVim.KeyMap.Suggest(key)
-
-        If UBound(suggestsList) > -1 Then
-            Set menuDict = New Dictionary
-
-            For i = LBound(suggestsList) To UBound(suggestsList)
-                Dim nextChar As String
-                nextChar = Replace(suggestsList(i), key & KEY_SEPARATOR, "", Count:=1)
-
-                If InStr(nextChar, KEY_SEPARATOR) > 0 Then
-                    nextChar = Split(nextChar, KEY_SEPARATOR, 2)(0)
-                    If Not menuDict.Exists(nextChar) Then
-                        menuDict.Add nextChar, "  + more"
-                    End If
-                Else
-                    If Not menuDict.Exists(nextChar) Then
-                        menuDict.Add nextChar, gVim.KeyMap.Get_(suggestsList(i))
-                    Else
-                        menuDict(nextChar) = gVim.KeyMap.Get_(suggestsList(i))
-                    End If
-                End If
-            Next i
-        End If
-
-        Set tmpMenu = Application.CommandBars.Add(position:=msoBarPopup, Temporary:=True)
-        Dim k
-        For Each k In menuDict.Keys()
-            With tmpMenu.Controls.Add(Type:=msoControlButton)
-                .Caption = UF_Cmd.Label_Text.Caption & "&" & gVim.KeyMap.SendKeysToDisplayText(k) & "    " & menuDict(k)
-                .OnAction = "'CompleteSuggest """ & k & """'"
-            End With
-        Next k
+        Set tmpMenu = CmdSuggest(key)
 
     ElseIf UF_CmdLine.Visible And UF_CmdLine.Label_Prefix.Caption = ":" Then
+        key = UF_CmdLine.TextBox.Text
         formCaption = UF_CmdLine.Caption
-        suggestsList = gVim.KeyMap.Suggest(UF_CmdLine.TextBox.Text, True)
+        Set tmpMenu = CmdlineSuggest(key)
 
-        Dim chrs As String
-        chrs = "asdfghjkl;qwertyuiopzxcvbnm,./1234567890"
-
-        Set tmpMenu = Application.CommandBars.Add(position:=msoBarPopup, Temporary:=True)
-
-        For i = LBound(suggestsList) To UBound(suggestsList)
-            With tmpMenu.Controls.Add(Type:=msoControlButton)
-                If i < Len(chrs) Then
-                    .Caption = "(&" & Mid(chrs, i + 1, 1) & ")  "
-                Else
-                    .Caption = "    "
-                End If
-                .Caption = .Caption & suggestsList(i) & String(Int(32 - Len(suggestsList(i)) * 2), ChrW(&H2005)) & gVim.KeyMap.Get_(suggestsList(i), True)
-                .OnAction = "'CompleteSuggest """ & suggestsList(i) & """'"
-            End With
-        Next i
-    Else
-        Exit Sub
     End If
 
-    If UBound(suggestsList) = 0 And UF_CmdLine.Visible Then
-        UF_CmdLine.TextBox.Text = suggestsList(0)
-    ElseIf UBound(suggestsList) > -1 Then
-        Dim formRect As RECT
-        GetWindowRect FindWindowA(vbNullString, formCaption), formRect
-        tmpMenu.ShowPopup formRect.Left, formRect.Top - tmpMenu.Height + 30
+    If tmpMenu Is Nothing Then
+        Exit Function
     End If
-End Sub
+
+    Dim formRect As RECT
+    GetWindowRect FindWindowA(vbNullString, formCaption), formRect
+    tmpMenu.ShowPopup formRect.Left + tmpMenu.Width - 30, formRect.Top - tmpMenu.Height + 30
+End Function
 
 Sub CompleteSuggest(ByVal key As String)
     If UF_Cmd.Visible Then

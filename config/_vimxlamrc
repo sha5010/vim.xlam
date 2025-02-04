@@ -53,6 +53,9 @@
 ### Delay time to display suggestions (ms, 0 to disable)
 # set suggestwait=1000
 
+### Shortcut labels for suggestion
+# set suggestlabels=asdfghjkl;qwertyuiopzxcvbnm,./1234567890
+
 ### Color picker size
 # set colorpickersize=12
 

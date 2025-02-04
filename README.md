@@ -510,6 +510,7 @@ You can configure using the same syntax as Vim's `set`. For configuration exampl
 | `[no]quitapp` | bool | Quit Excel or not when closing the last workbook | `True` |
 | `[no]numpadcount` | bool |  Whether NumPad is used as `[count]` or not | `False` |
 | `suggestwait` | int | Delay time to display suggestions (ms, 0 to disable) | `1000` |
+| `suggestlabels` | string | Shortcut labels for suggestion | Ommited |
 | `colorpickersize` | float | ColorPicker form size (px) | `12.0` |
 | `customcolor1` | string | Custom color #1 in ColorPicker | `#ff6600` ![#ff6600](https://placehold.co/15/ff6600/ff6600) |
 | `customcolor2` | string | Custom color #2 in ColorPicker | `#ff9966` ![#ff9966](https://placehold.co/15/ff9966/ff9966) |

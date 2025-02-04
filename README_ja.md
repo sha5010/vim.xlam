@@ -507,6 +507,7 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `[no]quitapp` | bool | 最後のワークブックが閉じられたときExcelを終了するか | `True` |
 | `[no]numpadcount` | bool | NumPadを `[count]` として使うかどうか | `False` |
 | `suggestwait` | int | サジェストを表示するまでの待ち時間 (ms, 0で無効化) | `1000` |
+| `suggestlabels` | string | サジェストショートカットのラベルで使用する文字 | 省略 |
 | `colorpickersize` | float | ColorPicker のフォームサイズ (px) | `12.0` |
 | `customcolor1` | string | ColorPicker のカスタム色 #1 | `#ff6600` ![#ff6600](https://placehold.co/15/ff6600/ff6600) |
 | `customcolor2` | string | ColorPicker のカスタム色 #2 | `#ff9966` ![#ff9966](https://placehold.co/15/ff9966/ff9966) |

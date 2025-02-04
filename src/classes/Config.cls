@@ -27,6 +27,7 @@ Private Const JIS_KEYBOARD = "jiskeyboard"
 Private Const QUIT_APP_ALL_WB_CLOSED = "quitapp"
 Private Const NUMPAD_COUNT = "numpadcount"
 Private Const SUGGEST_WAIT = "suggestwait"
+Private Const SUGGEST_LABELS = "suggestlabels"
 Private Const COLOR_PICKER_SIZE = "colorpickersize"
 Private Const CUSTOM_COLOR_1 = "customcolor1"
 Private Const CUSTOM_COLOR_2 = "customcolor2"
@@ -106,6 +107,12 @@ Public Property Get SuggestWait() As Long
 End Property
 Public Property Let SuggestWait(ByVal arg As Long)
     cConfig(SUGGEST_WAIT) = arg
+End Property
+Public Property Get SuggestLabels() As String
+    SuggestLabels = cConfig(SUGGEST_LABELS)
+End Property
+Public Property Let SuggestLabels(ByVal arg As String)
+    cConfig(SUGGEST_LABELS) = arg
 End Property
 Public Property Get ColorPickerSize() As Double
     ColorPickerSize = cConfig(COLOR_PICKER_SIZE)
@@ -200,6 +207,7 @@ Private Sub Class_Initialize()
         .Add QUIT_APP_ALL_WB_CLOSED, True
         .Add NUMPAD_COUNT, False
         .Add SUGGEST_WAIT, 1000
+        .Add SUGGEST_LABELS, "asdfghjkl;qwertyuiopzxcvbnm,./1234567890"
         .Add COLOR_PICKER_SIZE, 12#
         .Add CUSTOM_COLOR_1, &H66FF&
         .Add CUSTOM_COLOR_2, &H6699FF
@@ -258,6 +266,7 @@ Public Sub Set_(ByRef keyName As String, ByVal arg As Variant)
         Case QUIT_APP_ALL_WB_CLOSED: QuitApp = arg
         Case NUMPAD_COUNT: NumpadCount = arg
         Case SUGGEST_WAIT: SuggestWait = arg
+        Case SUGGEST_LABELS: SuggestLabels = arg
         Case COLOR_PICKER_SIZE: ColorPickerSize = arg
         Case CUSTOM_COLOR_1: CustomColor1 = arg
         Case CUSTOM_COLOR_2: CustomColor2 = arg
