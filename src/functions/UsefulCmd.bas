@@ -179,3 +179,10 @@ Function Sort(Optional ByVal sortOrder As XlSortOrder) As Boolean
         Call KeyStroke(Alt_ + A_, S_, D_)
     End If
 End Function
+
+Function RemoveDuplicates() As Boolean
+    Call StopVisualMode
+
+    'Send Alt + A, M, Shift + Tab, Shift + Tab
+    Call KeyStroke(Alt_ + A_, M_, Shift_ + Tab_, Shift_ + Tab_)
+End Function

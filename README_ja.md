@@ -459,6 +459,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `\` | `ShowContextMenu` | コンテキストメニューを表示 | |
 | Other | `:sort` | `Sort` | 昇順でソート | |
 | Other | `:sort!` | `Sort` | 降順でソート | |
+| Other | `:unique` | `RemoveDuplicates` | 重複する行をシートから削除 | |
 | Other | `<C-i>` | `JumpNext` | ジャンプリストの次のセルへ移動 | ✓ |
 | Other | `<C-o>` | `JumpPrev` | ジャンプリストの前のセルへ移動 | ✓ |
 | Other | `:cle` | `ClearJumps` | ジャンプリストをクリア | |

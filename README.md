@@ -462,6 +462,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `\` | `ShowContextMenu` | Show the context menu | |
 | Other | `:sort` | `Sort` | Sort in ascending order | |
 | Other | `:sort!` | `Sort` | Sort in descenging order | |
+| Other | `:unique` | `RemoveDuplicates` | Delete duplicates rows from sheet | |
 | Other | `<C-i>` | `JumpNext` | Move to the next cell in the jump list | ✓ |
 | Other | `<C-o>` | `JumpPrev` | Move to the previous cell in the jump list | ✓ |
 | Other | `:cle` | `ClearJumps` | Clear the jump list | |
