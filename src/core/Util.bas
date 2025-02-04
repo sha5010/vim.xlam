@@ -287,6 +287,94 @@ Function RegExpReplace(ByVal str As String, ByVal matchPattern As String, ByVal 
 End Function
 
 '/*
+' * Checks if the input string starts with any of the prefixes in the provided parameter.
+' * The parameter can be either a single string or an array of string.
+' * If the parameter type is not String or String(), an error is raised.
+' *
+' * @param {String} str - The string to check.
+' * @param {Variant} prefixes - A single prefix string or an array of prefix strings to check for.
+' * @returns {Boolean} - True if the string starts with any of the prefixes, False otherwise.
+' */
+Function StartsWith(ByRef str As String, ByVal prefixes As Variant) As Boolean
+    Dim i As Long
+
+    ' Check the type of prefixes
+    If Not (VarType(prefixes) = vbString Or IsArray(prefixes)) Then
+        Err.Raise 5, , "Type mismatch: 'prefixes' must be either a String or String()"
+    End If
+
+    ' Check if prefixes is an array
+    If IsArray(prefixes) Then
+        ' Loop through the array of prefixes and check if any match the beginning of the text
+        For i = LBound(prefixes) To UBound(prefixes)
+            ' Check the type of prefix
+            If VarType(prefixes(i)) = vbString Then
+                If InStr(str, prefixes(i)) = 1 Then ' InStr starts searching from position 1
+                    StartsWith = True
+                    Exit Function
+                End If
+            End If
+        Next i
+    Else
+        ' If a single string is provided, check if it matches the beginning of the text
+        If InStr(str, prefixes) = 1 Then
+            StartsWith = True
+        Else
+            StartsWith = False
+        End If
+    End If
+End Function
+
+'/*
+' * Checks if the input string ends with any of the suffixes in the provided parameter.
+' * The parameter can be either a single string or an array of string.
+' * If the parameter type is not String or String(), an error is raised.
+' *
+' * @param {String} str - The string to check.
+' * @param {Variant} suffixes - A single suffix string or an array of suffix strings to check for.
+' * @returns {Boolean} - True if the string ends with any of the suffixes, False otherwise.
+' */
+Function EndsWith(ByRef str As String, ByVal suffixes As Variant) As Boolean
+    Dim i As Long
+    Dim textLen As Long
+    Dim suffixLen As Long
+
+    ' Check the type of suffixes
+    If Not (VarType(suffixes) = vbString Or IsArray(suffixes)) Then
+        Err.Raise 5, , "Type mismatch: 'suffixes' must be either a String or String()"
+    End If
+
+    ' Check if suffixes is an array
+    If IsArray(suffixes) Then
+        ' Loop through the array of suffixes and check if any match the end of the text
+        For i = LBound(suffixes) To UBound(suffixes)
+            suffixLen = Len(suffixes(i))
+            textLen = Len(str)
+
+            ' Check the type of suffix
+            If VarType(suffixes(i)) = vbString Then
+                ' Using InStrRev to search from the end of the string
+                If InStrRev(str, suffixes(i), textLen) = textLen - suffixLen + 1 Then
+                    EndsWith = True
+                    Exit Function
+                End If
+            End If
+        Next i
+    Else
+        ' If a single string is provided, check if it matches the end of the text
+        suffixLen = Len(suffixes)
+        textLen = Len(str)
+
+        If InStrRev(str, suffixes, textLen) = textLen - suffixLen + 1 Then
+            EndsWith = True
+        Else
+            EndsWith = False
+        End If
+    End If
+End Function
+
+
+'/*
 ' * Returns the index of the target workbook in the Workbooks collection.
 ' *
 ' * @param {Workbook} targetWorkbook - The target workbook.
@@ -338,6 +426,78 @@ Function GetVisibleSheetsCount() As Long
             GetVisibleSheetsCount = GetVisibleSheetsCount + 1
         End If
     Next
+End Function
+
+'/*
+' * Retrieves the list of files and subfolders from the specified folder.
+' *
+' * @param {String} folderPath - The path of the folder to list files and subfolders from.
+' * @returns {Collection} - A collection of file and subfolder names.
+' */
+Function DirGrob(ByVal folderPath As String) As Collection
+    Dim fso As FileSystemObject
+    Dim objFolder As folder
+    Dim objFile As file
+    Dim objSubFolder As folder
+
+    ' Setup Collection
+    Set DirGrob = New Collection
+
+    ' Create FileSystemObject
+    Set fso = New FileSystemObject
+
+    Dim sepIndex As Long
+    Dim lastPart As String
+    folderPath = Replace(folderPath, "/", "¥")
+    sepIndex = InStrRev(folderPath, "¥")
+
+    lastPart = LCase(Mid(folderPath, sepIndex + 1))
+    folderPath = Left(folderPath, sepIndex)
+
+    ' Ensure the folder exists before proceeding
+    If fso.FolderExists(folderPath) Then
+        Set objFolder = fso.GetFolder(folderPath)
+
+        ' List subfolders in the folder
+        For Each objSubFolder In objFolder.SubFolders
+            If StartsWith(LCase(fso.GetFileName(objSubFolder.Path)), lastPart) Then
+                DirGrob.Add fso.GetFileName(objSubFolder.Path) & "/" ' Append "/" to indicate it's a folder
+            End If
+        Next objSubFolder
+
+        ' List files in the folder
+        For Each objFile In objFolder.Files
+            If StartsWith(LCase(fso.GetFileName(objFile.Path)), lastPart) Then
+                DirGrob.Add fso.GetFileName(objFile.Path) ' Add the file name
+            End If
+        Next objFile
+    End If
+
+    ' Release the FileSystemObject
+    Set fso = Nothing
+End Function
+
+'/*
+' * Converts a relative path to an absolute path.
+' *
+' * @param {String} cwd - The current working directory.
+' * @param {String} relativePath - The relative path to be converted.
+' * @returns {String} - The corresponding absolute path.
+' */
+Function GetAbsolutePath(ByRef cwd As String, ByRef relativePath As String) As String
+    ' Declare variables
+    Dim fso As FileSystemObject
+    Dim fullPath As String
+
+    ' Create FileSystemObject
+    Set fso = New FileSystemObject
+
+    ' Combine the current workbook path with the relative path and get the absolute path
+    fullPath = cwd & "¥" & relativePath
+    GetAbsolutePath = fso.GetAbsolutePathName(fullPath)
+
+    ' Release the FileSystemObject
+    Set fso = Nothing
 End Function
 
 '/*

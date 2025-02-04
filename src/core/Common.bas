@@ -285,6 +285,45 @@ Private Function CmdlineSuggest(ByVal key As String) As CommandBar
     Next i
 End Function
 
+Function PathSuggest(ByVal cmd As String, ByVal basePath As String) As CommandBar
+    Dim childItems As Collection
+    Set childItems = DirGrob(basePath)
+
+    If childItems.Count = 0 Then
+        Exit Function
+    End If
+
+    cmd = Left(cmd, InStrRev(Replace(cmd, "/", "¥"), "¥"))
+    If childItems.Count = 1 Then
+        Call CompleteSuggest(cmd & childItems(1))
+        Exit Function
+    End If
+
+    Set PathSuggest = Application.CommandBars.Add(position:=msoBarPopup, Temporary:=True)
+    With PathSuggest.Controls.Add(Type:=msoControlButton)
+        .Enabled = False
+        .Caption = basePath
+    End With
+
+    Dim childItem
+    Dim i As Long: i = 0
+    Dim isDirEnded As Boolean
+    For Each childItem In childItems
+        With PathSuggest.Controls.Add(Type:=msoControlButton)
+            If i < Len(gVim.Config.SuggestLabels) Then
+                .Caption = "(&" & Mid(gVim.Config.SuggestLabels, i + 1, 1) & ")  "
+            Else
+                .Caption = "      "
+            End If
+            .Caption = .Caption & childItem
+            .OnAction = "'CompleteSuggest """ & cmd & childItem & """'"
+            .BeginGroup = (i = 0) Or (Not isDirEnded And Right(childItem, 1) <> "/")
+        End With
+        isDirEnded = (Right(childItem, 1) <> "/")
+        i = i + 1
+    Next
+End Function
+
 Function ShowSuggest(Optional ByVal key As String = "") As Boolean
     Dim formCaption As String
     Dim tmpMenu As CommandBar
@@ -299,6 +338,32 @@ Function ShowSuggest(Optional ByVal key As String = "") As Boolean
         formCaption = UF_CmdLine.Caption
         Set tmpMenu = CmdlineSuggest(key)
 
+        If tmpMenu Is Nothing Then
+            If InStr(key, " ") = 0 Then
+                Exit Function
+            End If
+
+            Dim secondPart As String
+            secondPart = Replace(Split(key, " ", 2)(1), "/", "¥")
+            If Not StartsWith(secondPart, Array(".¥", "..¥", "‾¥", "¥")) Then
+                Exit Function
+            End If
+
+            Dim absPath As String
+            If StartsWith(secondPart, "¥") Then
+                absPath = GetAbsolutePath(Left(CurDir, 2), Mid(secondPart, 2))
+            ElseIf InStr(secondPart, "‾") = 1 Then
+                absPath = GetAbsolutePath(Environ$("USERPROFILE"), Mid(secondPart, 3))
+            Else
+                absPath = GetAbsolutePath(ActiveWorkbook.Path, secondPart)
+            End If
+
+            If Right(secondPart, 1) = "¥" Then
+                absPath = absPath & "¥"
+            End If
+
+            Set tmpMenu = PathSuggest(key, absPath)
+        End If
     End If
 
     If tmpMenu Is Nothing Then
