@@ -40,6 +40,7 @@ Sub DefaultConfig()
         'Core
         .Map "nmap <C-p> ToggleLang"
         .Map "nmap : EnterCmdlineMode"
+        .Map "nmap <cmd>reload ReloadVim"
         .Map "nmap <cmd>debug ToggleDebugMode"
 
 

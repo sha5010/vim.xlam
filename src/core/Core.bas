@@ -37,6 +37,13 @@ Function ExitVim(Optional ByVal g As String) As Boolean
     End If
 End Function
 
+Function ReloadVim(Optional ByVal g As String) As Boolean
+    If Not gVim Is Nothing Then
+        Call ExitVim
+    End If
+    Call StartVim
+End Function
+
 Function ToggleVim(Optional ByVal g As String) As Boolean
     If gVim Is Nothing Then
         Call StartVim
