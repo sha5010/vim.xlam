@@ -442,7 +442,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Worksheet | `wy` | `CloneWorksheet` | Clone the active worksheet | |
 | Worksheet | `we` | `ExportWorksheet` | Show the move or copy sheet dialog | |
 | Worksheet | `w[num]` | `ActivateWorksheet` | Select the worksheet at position `[num]` (only 1-9) | |
-| Worksheet | `:p` | `PrintPreviewOfActiveSheet` | Show the print preview of the active sheet | |
+| Worksheet | `:preview` | `PrintPreviewOfActiveSheet` | Show the print preview of the active sheet | |
 | Workbook | `:e` | `OpenWorkbook` | Open a workbook | |
 | Workbook | `:e!` | `ReopenActiveWorkbook` | Discard changes to the active workbook and reopen it | |
 | Workbook | `:w` | `SaveWorkbook` | Save the active workbook | |

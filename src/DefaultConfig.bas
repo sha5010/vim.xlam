@@ -423,7 +423,7 @@ Sub DefaultConfig()
         .Map "nmap we ExportWorksheet"
         .Map "nmap w ActivateWorksheet"
 
-        .Map "nmap <cmd>printpreview PrintPreviewOfActiveSheet"
+        .Map "nmap <cmd>preview PrintPreviewOfActiveSheet"
 
 
         'Workbook Function
