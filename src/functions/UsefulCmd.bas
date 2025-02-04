@@ -115,6 +115,24 @@ Catch:
     Call ErrorHandler("ToggleFormulaBar")
 End Function
 
+Function ToggleGridlines(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+    ActiveWindow.DisplayGridlines = Not ActiveWindow.DisplayGridlines
+    Exit Function
+
+Catch:
+    Call ErrorHandler("ToggleGridlines")
+End Function
+
+Function ToggleHeadings(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+    ActiveWindow.DisplayHeadings = Not ActiveWindow.DisplayHeadings
+    Exit Function
+
+Catch:
+    Call ErrorHandler("ToggleHeadings")
+End Function
+
 Function ShowSummaryInfo(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.Dialogs(xlDialogSummaryInfo).Show

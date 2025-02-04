@@ -468,6 +468,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `:cle` | `ClearJumps` | Clear the jump list | |
 | Other | `zf` | `ToggleFreezePanes` | Toggle freeze panes on/off | |
 | Other | `=v` | `ToggleFormulaBar` | Toggle the visibility of the formula bar | |
+| Other | `gb` | `ToggleGridlines` | Toggle the visibility of the gridlines | |
+| Other | `gh` | `ToggleHeadings` | Toggle the visibility of the headings | |
 | Other | `gs` | `ShowSummaryInfo` | Show the file properties | |
 | Other | `zp` | `SetPrintArea` | Set the selected cells as the print area | |
 | Other | `zP` | `ClearPrintArea` | Clear the print area | |

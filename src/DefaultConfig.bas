@@ -466,6 +466,8 @@ Sub DefaultConfig()
         'Other Commands
         .Map "nmap zf ToggleFreezePanes"
         .Map "nmap =v ToggleFormulaBar"
+        .Map "nmap gb ToggleGridlines"
+        .Map "nmap gh ToggleHeadings"
         .Map "nmap gs ShowSummaryInfo"
         .Map "nmap zp SetPrintArea"
         .Map "nmap zP ClearPrintArea"
