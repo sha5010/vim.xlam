@@ -443,7 +443,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Worksheet | `we` | `ExportWorksheet` | Show the move or copy sheet dialog | |
 | Worksheet | `w[num]` | `ActivateWorksheet` | Select the worksheet at position `[num]` (only 1-9) | |
 | Worksheet | `:preview` | `PrintPreviewOfActiveSheet` | Show the print preview of the active sheet | |
-| Workbook | `:e` | `OpenWorkbook` | Open a workbook | |
+| Workbook | `:e [path]` | `OpenWorkbook` | Open a workbook | |
 | Workbook | `:e!` | `ReopenActiveWorkbook` | Discard changes to the active workbook and reopen it | |
 | Workbook | `:w` | `SaveWorkbook` | Save the active workbook | |
 | Workbook | `:q` | `CloseAskSaving` | Close the active workbook (show a dialog if there are unsaved changes) | |

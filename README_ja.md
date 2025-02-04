@@ -440,7 +440,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Worksheet | `we` | `ExportWorksheet` | シートの移動またはコピーダイアログを表示 | |
 | Worksheet | `w[num]` | `ActivateWorksheet` | `[num]` 番目のシートを選択 (1-9 のみ) | |
 | Worksheet | `:preview` | `PrintPreviewOfActiveSheet` | 印刷プレビューを表示 | |
-| Workbook | `:e` | `OpenWorkbook` | ブックを開く | |
+| Workbook | `:e [path]` | `OpenWorkbook` | ブックを開く | |
 | Workbook | `:e!` | `ReopenActiveWorkbook` | アクティブなブックの変更を破棄し開き直す | |
 | Workbook | `:w` | `SaveWorkbook` | アクティブブックを保存 | |
 | Workbook | `:q` | `CloseAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) | |

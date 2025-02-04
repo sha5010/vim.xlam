@@ -68,9 +68,18 @@ Catch:
     Call ErrorHandler("SaveAsNewWorkbook")
 End Function
 
-Function OpenWorkbook(Optional ByVal g As String) As Boolean
+Function OpenWorkbook(Optional ByVal relPath As String) As Boolean
     On Error GoTo Catch
-    Application.CommandBars.ExecuteMso "FileOpenUsingBackstage"
+
+    If relPath = "" Then
+        Application.CommandBars.ExecuteMso "FileOpenUsingBackstage"
+        Exit Function
+    End If
+
+    Dim absPath As String
+    absPath = GetAbsolutePath(ActiveWorkbook.Path, relPath)
+
+    Workbooks.Open absPath
     Exit Function
 
 Catch:
