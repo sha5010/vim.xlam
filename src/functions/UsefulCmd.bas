@@ -167,3 +167,15 @@ Function ClearPrintArea(Optional ByVal g As String) As Boolean
     'Send Alt + P, R, C
     Call KeyStroke(Alt_ + P_, R_, C_)
 End Function
+
+Function Sort(Optional ByVal sortOrder As XlSortOrder) As Boolean
+    Call StopVisualMode
+
+    If sortOrder = xlAscending Then
+        'Send Alt + A, S, A
+        Call KeyStroke(Alt_ + A_, S_, A_)
+    Else
+        'Send Alt + A, S, D
+        Call KeyStroke(Alt_ + A_, S_, D_)
+    End If
+End Function

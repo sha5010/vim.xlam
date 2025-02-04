@@ -460,6 +460,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `M` | `ZoomOut` | Zoom out by 10% or `[count]`% | ✓ |
 | Other | `%` | `ZoomSpecifiedScale` | Set the zoom level to `[count]`% (digits `1`-`9` correspond to predefined zoom levels) | ✓ |
 | Other | `\` | `ShowContextMenu` | Show the context menu | |
+| Other | `:sort` | `Sort` | Sort in ascending order | |
+| Other | `:sort!` | `Sort` | Sort in descenging order | |
 | Other | `<C-i>` | `JumpNext` | Move to the next cell in the jump list | ✓ |
 | Other | `<C-o>` | `JumpPrev` | Move to the previous cell in the jump list | ✓ |
 | Other | `:cle` | `ClearJumps` | Clear the jump list | |

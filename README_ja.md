@@ -457,6 +457,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `M` | `ZoomOut` | 10% または `[count]`% ズームアウト | ✓ |
 | Other | `%` | `ZoomSpecifiedScale` | 表示倍率を `[count]`% に設定。`1`-`9` は決まった値に倍率変更 | ✓ |
 | Other | `\` | `ShowContextMenu` | コンテキストメニューを表示 | |
+| Other | `:sort` | `Sort` | 昇順でソート | |
+| Other | `:sort!` | `Sort` | 降順でソート | |
 | Other | `<C-i>` | `JumpNext` | ジャンプリストの次のセルへ移動 | ✓ |
 | Other | `<C-o>` | `JumpPrev` | ジャンプリストの前のセルへ移動 | ✓ |
 | Other | `:cle` | `ClearJumps` | ジャンプリストをクリア | |

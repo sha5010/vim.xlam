@@ -454,6 +454,8 @@ Sub DefaultConfig()
         .Map "nmap M ZoomOut"
         .Map "nmap % ZoomSpecifiedScale"
         .Map "nmap <bslash> ShowContextMenu"
+        .Map "nmap <cmd>sort Sort 1"    ' xlAscending
+        .Map "nmap <cmd>sort! Sort 2"   ' xlDescending
 
         .Map "nmap <C-i> JumpNext"
         .Map "nmap <C-o> JumpPrev"
