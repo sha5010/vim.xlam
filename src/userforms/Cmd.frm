@@ -107,6 +107,8 @@ Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String)
         Exit Sub
     End If
 
+    Call LazySuggest
+
     ' Redisplay if my form is invisible
     If Not Me.Visible Then
         Me.Show
@@ -271,6 +273,7 @@ End Sub
 ' */
 Private Sub UserForm_Activate()
     Me.Move Application.Left + 4, Application.Top + Application.Height - Me.Height - 4
+    Call LazySuggest
 End Sub
 
 '/*
@@ -320,3 +323,27 @@ Public Function Launch(ByVal prefixKey As String) As Boolean
     ' Show the form
     Me.Show
 End Function
+
+Private Sub LazySuggest()
+    Static lastRegisterTime
+    Static lastRegisterProc
+
+    ' Try to cancel the previous OnTime event
+    On Error Resume Next
+    Call Application.OnTime(lastRegisterTime, lastRegisterProc, , False)
+    On Error GoTo 0
+
+    ' Calculate the time for the next OnTime event
+    lastRegisterTime = Date + CDec(Timer + 1) / 86400
+
+    ' Set procedure name
+    lastRegisterProc = "'ShowSuggest """ & cCmdBuffer & """'"
+
+    ' Register the next OnTime event
+    Call Application.OnTime(lastRegisterTime, lastRegisterProc)
+End Sub
+
+Public Sub ReceiveKey(ByVal key As String)
+    Call cUserForm_KeyPressWithString(gVim.KeyMap.SendKeysToDisplayText(key))
+    Call cUserForm_KeyPressWithSendKeys(key)
+End Sub

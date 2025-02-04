@@ -469,6 +469,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `zP` | `ClearPrintArea` | Clear the print area | |
 | Other | `@@` | `ShowMacroDialog` | Show the macro dialog | |
 | Other | `1-9` | `ShowCmdForm` | Specify `[count]` (only works with features marked with ✓ in Count) | |
+| CmdLine | `<Tab>` | `ShowSuggest` | Show command suggestions if possible | |
 
 </div></details>
 

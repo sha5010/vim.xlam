@@ -466,6 +466,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `zP` | `ClearPrintArea` | 印刷範囲をクリア | |
 | Other | `@@` | `ShowMacroDialog` | マクロダイアログを表示 | |
 | Other | `1-9` | `ShowCmdForm` | `[count]` を指定 (Count に ✓ がついている機能で有効) | |
+| CmdLine | `<Tab>` | `ShowSuggest` | 可能ならコマンドのサジェストを表示する | |
 
 </div></details>
 

@@ -496,6 +496,7 @@ Sub DefaultConfig()
 
 
         'Cmdline Mode
+        .Map "cmap <Tab> ShowSuggest"
         .Map "cmap <C-w> <key><C-BS>"
         .Map "cmap <C-u> <key><S-Home><BS>"
         .Map "cmap <C-k> <key><S-End><Del>"
