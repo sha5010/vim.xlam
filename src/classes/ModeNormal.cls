@@ -19,7 +19,7 @@ Private Sub App_SheetChange(ByVal Sh As Object, ByVal Target As Range)
 
         If gVim.Vars.FromInsertCmd Then
             ' Note: Undo command will no longer be available
-            Call RepeatRegister("ChangeSelectedCells", Target.Item(1).Text)
+            Call RepeatRegister("ChangeSelectedCells", Target.Item(1).Formula)
         End If
     End If
 End Sub
