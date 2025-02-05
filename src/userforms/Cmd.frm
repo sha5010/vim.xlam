@@ -342,7 +342,14 @@ Private Sub LazySuggest()
     lastRegisterTime = Date + CDec(Timer + gVim.Config.SuggestWait / 1000) / 86400
 
     ' Set procedure name
-    lastRegisterProc = "'ShowSuggest """ & cCmdBuffer & """'"
+    If gVim.KeyMap.IsStillValid(cCmdBuffer) Then
+        lastRegisterProc = "'ShowSuggest """ & cCmdBuffer & """'"
+    ElseIf gVim.KeyMap.IsStillValid(cCmdBufferWithoutNumber) Then
+        lastRegisterProc = "'ShowSuggest """ & cCmdBufferWithoutNumber & """'"
+    Else
+        ' TODO: ArgumentSuggest
+        Exit Sub
+    End If
 
     ' Register the next OnTime event
     Call Application.OnTime(lastRegisterTime, lastRegisterProc)
