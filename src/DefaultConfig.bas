@@ -232,6 +232,8 @@ Sub DefaultConfig()
         .Map "nmap rs SpreadRowsGroup"
         .Map "nmap rj AdjustRowsHeight"
         .Map "nmap rw SetRowsHeight"
+        .Map "nmap rl ApplyRowsLock"
+        .Map "nmap rL ClearRowsLock"
 
 
         'Column
@@ -251,6 +253,8 @@ Sub DefaultConfig()
         .Map "nmap cs SpreadColumnsGroup"
         .Map "nmap cj AdjustColumnsWidth"
         .Map "nmap cw SetColumnsWidth"
+        .Map "nmap cl ApplyColumnsLock"
+        .Map "nmap cL ClearColumnsLock"
 
 
         'Yank

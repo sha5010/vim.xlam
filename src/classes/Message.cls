@@ -231,3 +231,15 @@ Public Property Get SheetRenameError() As String
         "- The name is 31 characters or less" & vbLf & _
         "- It does not contain any of the following characters:" & vbLf & "    :  ¥ / ? * [ ]")
 End Property
+
+Public Property Get LockingRange() As String
+    LockingRange = IIf(Parent.IsJapanese, _
+        "セル選択ロック範囲: ", _
+        "Cell selection lock range: ")
+End Property
+
+Public Property Get ClearedSelectionLock() As String
+    ClearedSelectionLock = IIf(Parent.IsJapanese, _
+        "セル選択ロックを解除しました", _
+        "Cleared cell selection lock.")
+End Property

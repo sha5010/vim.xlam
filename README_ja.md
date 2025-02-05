@@ -296,6 +296,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Row | `rs` | `SpreadRowsGroup` | 現在行の折り畳みを開く | ✓ |
 | Row | `rj` | `AdjustRowsHeight` | 現在行の高さを自動調整 | ✓ |
 | Row | `rw` | `SetRowsHeight` | 現在行の高さを任意に設定 | ✓ |
+| Row | `rl` | `ApplyRowsLock` | 指定された行だけしか選択できないようにロック | ✓ |
+| Row | `rL` | `ClearRowsLock` | `ApplyRowsLock` で適用されたロックを解除 |   |
 | Column | `c-` | `NarrowColumnsWidth` | 列幅を狭くする | ✓ |
 | Column | `c+` | `WideColumnsWidth` | 列幅を広くする | ✓ |
 | Column | `cc` | `SelectColumns` | 列を選択 | ✓ |
@@ -312,6 +314,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Column | `cs` | `SpreadColumnsGroup` | 現在列の折り畳みを開く | ✓ |
 | Column | `cj` | `AdjustColumnsWidth` | 現在列の幅を自動調整 | ✓ |
 | Column | `cw` | `SetColumnsWidth` | 現在列の幅を任意に設定 | ✓ |
+| Column | `cl` | `ApplyColumnsLock` | 指定された列だけしか選択できないようにロック | ✓ |
+| Column | `cL` | `ClearColumnsLock` | `ApplyColumnsLock` で適用されたロックを解除 |   |
 | Yank | `yr` | `YankRows` | 現在行をコピー | ✓ |
 | Yank | `yc` | `YankColumns` | 現在列をコピー | ✓ |
 | Yank | `ygg` | `YankRows` | 現在行から1行目までをコピー | |

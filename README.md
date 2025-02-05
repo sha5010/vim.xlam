@@ -298,6 +298,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Row | `rs` | `SpreadRowsGroup` | Expand the folding of the current row group | ✓ |
 | Row | `rj` | `AdjustRowsHeight` | Automatically adjust the height of the current row | ✓ |
 | Row | `rw` | `SetRowsHeight` | Set the height of the current row to a custom value | ✓ |
+| Row | `rl` | `ApplyRowsLock` | Locks to allow only specified rows to be selected | ✓ |
+| Row | `rL` | `ClearRowsLock` | Remove locks applied by `ApplyRowsLock` |   |
 | Column | `c-` | `NarrowColumnsWidth` | Narrow the width of the column | ✓ |
 | Column | `c+` | `WideColumnsWidth` | Widen the width of the column | ✓ |
 | Column | `cc` | `SelectColumns` | Select columns | ✓ |
@@ -314,6 +316,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Column | `cs` | `SpreadColumnsGroup` | Expand the folding of the current column group | ✓ |
 | Column | `cj` | `AdjustColumnsWidth` | Automatically adjust the width of the current column | ✓ |
 | Column | `cw` | `SetColumnsWidth` | Set the width of the current column to a custom value | ✓ |
+| Column | `cl` | `ApplyColumnsLock` | Locks to allow only specified columns to be selected | ✓ |
+| Column | `cL` | `ClearColumnsLock` | Remove locks applied by `ApplyColumnsLock` |   |
 | Yank | `yr` | `YankRows` | Copy the current row | ✓ |
 | Yank | `yc` | `YankColumns` | Copy the current column | ✓ |
 | Yank | `ygg` | `YankRows` | Copy from the current row to the first row | |

@@ -469,3 +469,47 @@ Function WideRowsHeight(Optional ByVal g As String) As Boolean
 Catch:
     Call ErrorHandler("WideRowsHeight")
 End Function
+
+Function ApplyRowsLock(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    Dim Target As Range
+
+    Set Target = GetTargetRows(Entire)
+    If Target Is Nothing Then
+        Exit Function
+    End If
+
+    Call StopVisualMode
+
+    With Target
+        gVim.Vars.SetLockedRows .Item(1).Row, .Item(.Count).Row
+    End With
+
+    Call gVim.Mode.Normal.ApplySelectionLock
+    Call SetStatusBar(gVim.Msg.LockingRange & gVim.Vars.GetLockedRange())
+    Exit Function
+
+Catch:
+    Call ErrorHandler("ApplyRowsLock")
+End Function
+
+Function ClearRowsLock(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    gVim.Vars.SetLockedRows 0, 0
+
+    Dim lockedRange As String
+    lockedRange = gVim.Vars.GetLockedRange()
+
+    If lockedRange = "" Then
+        Call SetStatusBar
+        Call SetStatusBarTemporarily(gVim.Msg.ClearedSelectionLock, 2000)
+    Else
+        Call SetStatusBar(gVim.Msg.LockingRange & gVim.Vars.GetLockedRange())
+    End If
+    Exit Function
+
+Catch:
+    Call ErrorHandler("ClearRowsLock")
+End Function
