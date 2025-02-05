@@ -345,6 +345,8 @@ Private Function CmdlineSuggest(ByVal key As String) As CommandBar
 End Function
 
 Function PathSuggest(ByVal cmd As String, ByVal basePath As String) As CommandBar
+    basePath = ResolvePath(basePath)
+
     Dim childItems As Collection
     Set childItems = DirGrob(basePath)
 
@@ -411,20 +413,7 @@ Function ShowSuggest(Optional ByVal key As String = "") As Boolean
                 Exit Function
             End If
 
-            Dim absPath As String
-            If StartsWith(secondPart, "¥") Then
-                absPath = GetAbsolutePath(Left(CurDir, 2), Mid(secondPart, 2))
-            ElseIf InStr(secondPart, "‾") = 1 Then
-                absPath = GetAbsolutePath(Environ$("USERPROFILE"), Mid(secondPart, 3))
-            Else
-                absPath = GetAbsolutePath(ActiveWorkbook.Path, secondPart)
-            End If
-
-            If Right(secondPart, 1) = "¥" Then
-                absPath = absPath & "¥"
-            End If
-
-            Set tmpMenu = PathSuggest(key, absPath)
+            Set tmpMenu = PathSuggest(key, secondPart)
         End If
     End If
 

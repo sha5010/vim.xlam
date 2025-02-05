@@ -501,6 +501,43 @@ Function GetAbsolutePath(ByRef cwd As String, ByRef relativePath As String) As S
 End Function
 
 '/*
+' * Resolves the provided relative or special path into an absolute path.
+' *
+' * @param {String} strPath - The relative or special path that needs to be resolved.
+' * @returns {String} - The resolved absolute path.
+' */
+Function ResolvePath(ByVal strPath As String) As String
+    ' Replace path to windows style
+    strPath = Replace(strPath, "/", "¥")
+
+    ' Declare variable to store the resolved absolute path
+    Dim absPath As String
+
+    ' Check if the relative path starts with a backslash
+    If StartsWith(strPath, "¥") Then
+        ' Resolve the absolute path
+        absPath = GetAbsolutePath("", Mid(strPath, 2))
+
+    ' Check if the relative path starts with a tilde (‾), indicating the user profile directory
+    ElseIf StartsWith(strPath, "‾¥") Then
+        ' Resolve the absolute path using the user's profile directory
+        absPath = GetAbsolutePath(Environ$("USERPROFILE"), Mid(strPath, 3))
+
+    ' Otherwise, resolve the relative path using the active workbook's directory
+    Else
+        absPath = GetAbsolutePath(ActiveWorkbook.Path, strPath)
+    End If
+
+    ' If the relative path ends with a backslash, append it to the absolute path
+    If Right(strPath, 1) = "¥" And Right(absPath, 1) <> "¥" Then
+        absPath = absPath & "¥"
+    End If
+
+    ' Return the resolved absolute path
+    ResolvePath = absPath
+End Function
+
+'/*
 ' * Converts a hex color code to a long integer.
 ' *
 ' * @param {String} colorCode - The hex color code to convert.

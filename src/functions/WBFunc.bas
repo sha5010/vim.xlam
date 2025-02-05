@@ -77,7 +77,7 @@ Function OpenWorkbook(Optional ByVal relPath As String) As Boolean
     End If
 
     Dim absPath As String
-    absPath = GetAbsolutePath(ActiveWorkbook.Path, relPath)
+    absPath = ResolvePath(relPath)
 
     Workbooks.Open absPath
     Exit Function
