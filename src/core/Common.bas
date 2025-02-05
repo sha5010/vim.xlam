@@ -5,9 +5,16 @@ Option Private Module
 #If Win64 Then
     Private Declare PtrSafe Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
     Private Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
+    Private Declare PtrSafe Function GetDpiForWindow Lib "user32" (ByVal hWnd As LongPtr) As Long
+    Private Declare PtrSafe Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
+    Private Declare PtrSafe Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
+
 #Else
     Private Declare Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
     Private Declare Function GetWindowRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
+    Private Declare Function GetDpiForWindow Lib "user32" (ByVal hWnd As LongPtr) As Long
+    Private Declare Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
+    Private Declare Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
 #End If
 
 Private Type RECT
@@ -15,6 +22,13 @@ Private Type RECT
     Top As Long
     Right As Long
     Bottom As Long
+End Type
+
+Public Type monitorInfo
+    cbSize As Long
+    rcMonitor As RECT
+    rcWork As RECT
+    dwFlags As Long
 End Type
 
 ' Repeater
@@ -317,12 +331,13 @@ Private Function CmdlineSuggest(ByVal key As String) As CommandBar
     Dim i As Long
     For i = LBound(suggestsList) To UBound(suggestsList)
         With CmdlineSuggest.Controls.Add(Type:=msoControlButton)
+            Dim labelCaption As String
             If i < Len(gVim.Config.SuggestLabels) Then
-                .Caption = "(&" & Mid(gVim.Config.SuggestLabels, i + 1, 1) & ")  "
+                labelCaption = "(&" & Mid(gVim.Config.SuggestLabels, i + 1, 1) & ")  "
             Else
-                .Caption = "      "
+                labelCaption = "      "
             End If
-            .Caption = .Caption & suggestsList(i) & String(Int(32 - Len(suggestsList(i)) * 2), ChrW(&H2005)) & _
+            .Caption = labelCaption & suggestsList(i) & String(Int(32 - Len(suggestsList(i)) * 2), ChrW(&H2005)) & _
                 gVim.Help.GetText(gVim.KeyMap.Get_(suggestsList(i), True))
             .OnAction = "'CompleteSuggest """ & suggestsList(i) & """'"
         End With
@@ -354,14 +369,17 @@ Function PathSuggest(ByVal cmd As String, ByVal basePath As String) As CommandBa
     Dim isDirEnded As Boolean
     For Each childItem In childItems
         With PathSuggest.Controls.Add(Type:=msoControlButton)
+            Dim labelCaption As String
             If i < Len(gVim.Config.SuggestLabels) Then
-                .Caption = "(&" & Mid(gVim.Config.SuggestLabels, i + 1, 1) & ")  "
+                labelCaption = "(&" & Mid(gVim.Config.SuggestLabels, i + 1, 1) & ")  "
             Else
-                .Caption = "      "
+                labelCaption = "      "
             End If
-            .Caption = .Caption & childItem
+            .Caption = labelCaption & childItem
             .OnAction = "'CompleteSuggest """ & cmd & childItem & """'"
-            .BeginGroup = (i = 0) Or (Not isDirEnded And Right(childItem, 1) <> "/")
+            If (i = 0) Or (Not isDirEnded And Right(childItem, 1) <> "/") Then
+                .BeginGroup = True
+            End If
         End With
         isDirEnded = (Right(childItem, 1) <> "/")
         i = i + 1
@@ -414,15 +432,78 @@ Function ShowSuggest(Optional ByVal key As String = "") As Boolean
         Exit Function
     End If
 
-    Dim formRect As RECT
-    GetWindowRect FindWindowA(vbNullString, formCaption), formRect
-    tmpMenu.ShowPopup formRect.Left + tmpMenu.Width - 30, formRect.Top - tmpMenu.Height + 30
+    Call ShowPopupMenu(tmpMenu, formCaption)
 End Function
 
+'/*
+' * Displays a popup menu near the specified window.
+' *
+' * @param {CommandBar} popupMenu - The popup menu to be displayed.
+' * @param {String} winCaption - The caption of the window to find.
+' */
+Sub ShowPopupMenu(ByRef popupMenu As CommandBar, ByVal winCaption As String)
+    ' Declare variable for window handle
+    Dim hWnd As LongPtr
+    hWnd = FindWindowA(vbNullString, winCaption)
+
+    ' If the window is not found, exit the subroutine
+    If hWnd = 0 Then
+        Exit Sub
+    End If
+
+    ' Declare variable for window rectangle
+    Dim formRect As RECT
+    GetWindowRect hWnd, formRect
+
+    ' Obtain the DPI scale factor for the window
+    Dim dpi As Long
+    dpi = GetDpiForWindow(hWnd)
+    Dim scaleFactor As Single
+    scaleFactor = dpi / 96  ' Calculate scale factor based on 96 DPI
+
+    ' Declare variable for monitor handle
+    Dim monitorHandle As LongPtr
+    monitorHandle = MonitorFromRect(formRect, 2)  ' 2: MONITOR_DEFAULTTONEAREST
+
+    ' Declare variable for monitor information
+    Dim monitorInfo As monitorInfo
+    monitorInfo.cbSize = Len(monitorInfo)
+    GetMonitorInfo monitorHandle, monitorInfo
+
+    ' Calculate the adjusted position of the popup menu
+    Dim adjustedLeft As Long
+    Dim adjustedTop As Long
+    adjustedLeft = formRect.Left * scaleFactor
+    adjustedTop = (formRect.Top + (formRect.Bottom - formRect.Top) / 2) * scaleFactor - popupMenu.Height
+
+    ' Adjust top position if the popup is out of the monitor's bounds
+    If adjustedTop < monitorInfo.rcMonitor.Top Then
+        adjustedTop = monitorInfo.rcMonitor.Top  ' Adjust to the bottom if too high
+    End If
+
+    ' Adjust left position if the popup is out of the monitor's bounds
+    If adjustedLeft < monitorInfo.rcMonitor.Left Then
+        adjustedLeft = monitorInfo.rcMonitor.Left  ' Adjust to the right if too far left
+    End If
+
+    ' Show the popup menu at the adjusted position
+    popupMenu.ShowPopup adjustedLeft, adjustedTop
+End Sub
+
+'/*
+' * Completes the suggestion by passing the key to the relevant control.
+' *
+' * @param {String} key - The key to be passed to the suggestion control.
+' */
 Sub CompleteSuggest(ByVal key As String)
+    ' Check if the command interface (UF_Cmd) is visible
     If UF_Cmd.Visible Then
+        ' Pass the key to UF_Cmd control
         Call UF_Cmd.ReceiveKey(key)
+
+    ' Check if the command line interface (UF_CmdLine) is visible
     ElseIf UF_CmdLine.Visible Then
+        ' Set the key text in the UF_CmdLine TextBox
         UF_CmdLine.TextBox.Text = key
     End If
 End Sub
