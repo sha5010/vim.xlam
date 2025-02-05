@@ -56,12 +56,10 @@ Function LazyLoad(ByVal key As String) As Boolean
 
     End If
 
-    ' If result is not succeeded and subkey is available, show command form and exit
+    ' If result is not succeeded, show command form and exit
     If ret Then
-        If gVim.KeyMap.IsStillValid(key) Then
-            Call ShowCmdForm(key)
-            Exit Function
-        End If
+        Call ShowCmdForm(key)
+        Exit Function
     End If
 
      ' Register the key with the command

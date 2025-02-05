@@ -643,11 +643,6 @@ Private Function SearchSuggestKeys(ByVal key As String, ByVal mode_ As String, _
     ' Lazily parse keys to handle TEMP bindings
     Call LazyParseKeys(mode_, strKey)
 
-    ' Check exists key
-    If cKeyMap.Exists(strKey) Then
-        SearchSuggestKeys = firstKey & KEY_TERM_SYMBOL
-    End If
-
     ' Construct the summary key
     Dim summaryKey As String: summaryKey = strKey & KEY_SUMMARY
 
