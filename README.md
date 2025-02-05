@@ -40,12 +40,13 @@ Designed with extensibility in mind, you can create your own methods and easily 
 
 ## ✨ Features
 
-- Supports not only basic cell navigation using `hjkl` but also various jump commands like `gg`, `G`, `^`, `$`.
-- Efficiently perform tasks such as font, background color, and border settings without mouse interaction.
-- Equipped with features for commenting, scrolling, and worksheet operations.
-- Remembers the last edited cell and the cell before a jump, providing a jump list feature.
-- Operations leveraging Vim strengths such as `count` specification and `.` repeat.
-- Designed for easy customization, making it accessible to anyone.
+- 🚀 Over 350 commands, launching in less than 0.1 seconds, significantly improving Excel productivity.
+- ⚡ Supports not only cell movement with `hjkl`, but also jump commands like `gg`, `G`, `^`, `$`, and more.
+- 🎯 Vim features such as `count` specification, `.` repeat, jump lists, and visual mode, and more are recreated as faithfully as possible.
+- 💡 Command suggestion feature, making it easy to use by simply remembering a minimal set of prefixes.
+- 🎨 Custom ColorPicker, allowing you to select colors within 3 keystrokes.
+- 🗂️ SheetPicker for easy navigation and management, even with a large number of worksheets.
+- 🛠️ Simple [customization](#%EF%B8%8F-customization) by writing a vimrc-like configuration file.
 
 ## 📦 Installation
 
@@ -72,7 +73,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 - As it automatically launches when added to the add-ins, enjoy the ultimate Vim experience in Excel!
 - Operations such as cell navigation/editing, adding/deleting rows and columns, setting colors and borders, etc., can be performed using assigned keys.
   - For a list of all implemented commands, refer to the table below.
-- Customization of settings and keymaps is also possible by placing a [configuration file](./config/_vimxlamrc). See [Customization](#Customization) for details.
+- Customization of settings and keymaps is also possible by placing a [configuration file](./config/_vimxlamrc). See [Customization](#%EF%B8%8F-customization) for details.
 
 ### ⌨️ Default Keybindings
 
