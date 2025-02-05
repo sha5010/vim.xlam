@@ -16,6 +16,8 @@ Private Freq As Currency
 Private Overhead As Currency
 
 Private savedStatusMsg As String
+Private isVisibleTempMsg As Boolean
+Private Const APPLY_SAVED_MSG = "## APPLY SAVED MESSAGE ##"
 
 '/*
 ' * Initializes the timer by querying the performance frequency and counters.
@@ -80,8 +82,19 @@ Sub SetStatusBar(Optional ByVal str As String = "", _
     Dim decimalPart As Byte
     Static lastUpdateTime As Double
 
-    ' If the text is empty, reset the status bar and exit the subroutine
-    If str = "" Then
+    ' Restore status bar message if the input string matches the "APPLY_SAVED_MSG"
+    If str = APPLY_SAVED_MSG Then
+        isVisibleTempMsg = False
+        Call SetStatusBar(savedStatusMsg)
+        Exit Sub
+
+    ' If a temporary message is visible, save the current string as the new saved message
+    ElseIf isVisibleTempMsg Then
+        savedStatusMsg = str
+        Exit Sub
+
+    ' If the input string is empty, clear the status bar
+    ElseIf str = "" Then
         savedStatusMsg = ""
         Application.StatusBar = False
         Exit Sub
@@ -160,18 +173,21 @@ Sub SetStatusBarTemporarily(ByVal str As String, _
                    Optional ByVal disablePrefix As Boolean = False)
 
     Dim startDate As Date
-    Static lastRegisterTime As Double
+    Static lastRegisterTime
 
     ' Get the current date
     startDate = Date
 
     ' Try to cancel the previous OnTime event
     On Error Resume Next
-    Call Application.OnTime(lastRegisterTime, "'SetStatusBar """ & savedStatusMsg & """'", , False)
+    Call Application.OnTime(lastRegisterTime, "'SetStatusBar """ & APPLY_SAVED_MSG & """'", , False)
     On Error GoTo Catch
 
+    ' Set the visibility flag for temporary messages to True
+    isVisibleTempMsg = True
+
     ' Calculate the time for the next OnTime event
-    lastRegisterTime = CDbl(startDate) + (Timer + miliseconds / 1000) / 86400
+    lastRegisterTime = startDate + CDec(Timer + miliseconds / 1000) / 86400
 
     ' If disablePrefix is enabled, set the status bar with the string
     If disablePrefix Then
@@ -182,7 +198,7 @@ Sub SetStatusBarTemporarily(ByVal str As String, _
     End If
 
     ' Register the next OnTime event
-    Call Application.OnTime(lastRegisterTime, "'SetStatusBar """ & savedStatusMsg & """'")
+    Call Application.OnTime(lastRegisterTime, "'SetStatusBar """ & APPLY_SAVED_MSG & """'")
 
 Catch:
 End Sub
