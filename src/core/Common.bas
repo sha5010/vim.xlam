@@ -3,8 +3,8 @@ Option Explicit
 Option Private Module
 
 #If Win64 Then
-    Private Declare PtrSafe Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
-    Private Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
+    Private Declare PtrSafe Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As LongPtr
+    Private Declare PtrSafe Function GetWindowRect Lib "user32" (ByVal hWnd As LongPtr, lpRect As RECT) As Long
     Private Declare PtrSafe Function GetDpiForWindow Lib "user32" (ByVal hWnd As LongPtr) As Long
     Private Declare PtrSafe Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
     Private Declare PtrSafe Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
@@ -12,7 +12,7 @@ Option Private Module
 #Else
     Private Declare Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
     Private Declare Function GetWindowRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
-    Private Declare Function GetDpiForWindow Lib "user32" (ByVal hWnd As LongPtr) As Long
+    Private Declare Function GetDpiForWindow Lib "user32" (ByVal hWnd As Long) As Long
     Private Declare Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
     Private Declare Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
 #End If
