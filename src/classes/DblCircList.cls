@@ -75,11 +75,13 @@ Private Sub UnlinkDeadObjects()
 End Sub
 
 Private Sub CleanUp(Optional ByVal isAddLater As Boolean = False)
-    Call UnlinkDeadObjects
-
     Dim buf As Long: buf = 0
     If isAddLater Then
         buf = 1
+    End If
+
+    If Count_ + buf > StoreMax Then
+        Call UnlinkDeadObjects
     End If
 
     While Count_ + buf > StoreMax
