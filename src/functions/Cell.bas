@@ -249,13 +249,44 @@ Private Sub ProcessNumber(ByVal isSubtract As Boolean, Optional ByVal isGrow As 
                         targetCell.Value = CDec(targetCell.Value) + n
                     End If
                 Case vbString
-                    If Not targetCell.Value Like "*[!0-9.]*" Then
-                        If Not IsNumeric(targetCell.Value) Then
-                            ' Do nothing
-                        ElseIf targetCell.PrefixCharacter = "'" Then
-                            targetCell.Value = "'" & (CDec(targetCell.Value) + n)
+                    Dim cellValue As String: cellValue = targetCell.Value
+                    Dim newValue  As String: newValue = ""
+                    If Not cellValue Like "*[!0-9.-]*" Then
+                        If IsNumeric(cellValue) Then
+                            newValue = CDec(cellValue) + n
+                        End If
+                    End If
+
+                    If newValue = "" Then
+                        Dim j As Long
+                        If Right(cellValue, 1) Like "[0-9]" Then
+                            For j = 2 To 11
+                                If Right(cellValue, j) Like "*[!0-9]*" Then
+                                    Exit For
+                                End If
+                            Next j
+                            j = j - 1
+                            newValue = _
+                                Left(cellValue, Len(cellValue) - j) & _
+                                Format(WorksheetFunction.Max(CDec(Right(cellValue, j)) + n, 0), String(j, "0"))
+                        ElseIf Left(cellValue, 1) Like "[0-9]" Then
+                            For j = 2 To 11
+                                If Left(cellValue, j) Like "*[!0-9]*" Then
+                                    Exit For
+                                End If
+                            Next j
+                            j = j - 1
+                            newValue = _
+                                Format(WorksheetFunction.Max(CDec(Left(cellValue, j)) + n, 0), String(j, "0")) & _
+                                Mid(cellValue, j + 1)
+                        End If
+                    End If
+
+                    If newValue <> "" Then
+                        If targetCell.PrefixCharacter = "'" Then
+                            targetCell.Value = "'" & newValue
                         Else
-                            targetCell.Value = CDec(targetCell.Value) + n
+                            targetCell.Value = newValue
                         End If
                     End If
                 End Select
