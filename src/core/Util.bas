@@ -470,6 +470,9 @@ Function DirGrob(ByVal folderPath As String) As Collection
     lastPart = LCase(Mid(folderPath, sepIndex + 1))
     folderPath = Left(folderPath, sepIndex)
 
+    ' Ignore errors
+    On Error Resume Next
+
     ' Ensure the folder exists before proceeding
     If fso.FolderExists(folderPath) Then
         Set objFolder = fso.GetFolder(folderPath)
