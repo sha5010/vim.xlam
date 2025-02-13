@@ -451,10 +451,10 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `:q` | `CloseAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) | |
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | アクティブブックを保存せずに閉じる | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | アクティブブックを保存して閉じる | |
-| Workbook | `:sav` | `SaveAsNewWorkbook` | 新しいワークブックとして保存 | |
+| Workbook | `:saveas` | `SaveAsNewWorkbook` | 新しいワークブックとして保存 | |
 | Workbook | `:b [num]` | `ActivateWorkbook` | `[num]` 番目のブックを選択 | |
-| Workbook | `]b`/`:bn` | `NextWorkbook` | 次のワークブックを選択 | ✓ |
-| Workbook | `[b`/`:bp` | `PreviousWorkbook` | 前のワークブックを選択 | ✓ |
+| Workbook | `]b`/`:bnext` | `NextWorkbook` | 次のワークブックを選択 | ✓ |
+| Workbook | `[b`/`:bprevious` | `PreviousWorkbook` | 前のワークブックを選択 | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | 読み取り専用を切り替える | |
 | Other | `u` | `Undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) | |
 | Other | `<C-r>` | `RedoExecute` | やり直し | |
@@ -468,7 +468,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `:unique` | `RemoveDuplicates` | 重複する行をシートから削除 | |
 | Other | `<C-i>` | `JumpNext` | ジャンプリストの次のセルへ移動 | ✓ |
 | Other | `<C-o>` | `JumpPrev` | ジャンプリストの前のセルへ移動 | ✓ |
-| Other | `:cle` | `ClearJumps` | ジャンプリストをクリア | |
+| Other | `:clearjumps` | `ClearJumps` | ジャンプリストをクリア | |
 | Other | `:help <KEY>` | `SearchHelp` | 指定された `<KEY>` のヘルプを検索 | |
 | Other | `zf` | `ToggleFreezePanes` | ウィンドウ枠の固定のオン/オフを切り替え | |
 | Other | `=v` | `ToggleFormulaBar` | 関数バーの表示/非表示を切り替え | |

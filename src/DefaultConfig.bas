@@ -438,10 +438,10 @@ Sub DefaultConfig()
         .Map "nmap <cmd>q! CloseWithoutSaving"
         .Map "nmap <cmd>wq CloseWithSaving"
         .Map "nmap <cmd>x CloseWithSaving"
-        .Map "nmap <cmd>sav SaveAsNewWorkbook"
+        .Map "nmap <cmd>saveas SaveAsNewWorkbook"
         .Map "nmap <cmd>b ActivateWorkbook"
-        .Map "nmap <cmd>bn NextWorkbook"
-        .Map "nmap <cmd>bp PreviousWorkbook"
+        .Map "nmap <cmd>bnext NextWorkbook"
+        .Map "nmap <cmd>bprevious PreviousWorkbook"
 
         .Map "nmap ZZ CloseWithSaving"
         .Map "nmap ZQ CloseWithoutSaving"
@@ -464,7 +464,7 @@ Sub DefaultConfig()
 
         .Map "nmap <C-i> JumpNext"
         .Map "nmap <C-o> JumpPrev"
-        .Map "nmap <cmd>cle ClearJumps"
+        .Map "nmap <cmd>clearjumps ClearJumps"
 
 
         'Other Commands

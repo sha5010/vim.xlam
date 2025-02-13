@@ -454,10 +454,10 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Workbook | `:q` | `CloseAskSaving` | Close the active workbook (show a dialog if there are unsaved changes) | |
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | Close the active workbook without saving | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | Save and close the active workbook | |
-| Workbook | `:sav` | `SaveAsNewWorkbook` | Save as a new workbook | |
+| Workbook | `:saveas` | `SaveAsNewWorkbook` | Save as a new workbook | |
 | Workbook | `:b [num]` | `ActivateWorkbook` | Select the workbook at position `[num]` | |
-| Workbook | `]b`/`:bn` | `NextWorkbook` | Select the next workbook | ✓ |
-| Workbook | `[b`/`:bp` | `PreviousWorkbook` | Select the previous workbook | ✓ |
+| Workbook | `]b`/`:bnext` | `NextWorkbook` | Select the next workbook | ✓ |
+| Workbook | `[b`/`:bprevious` | `PreviousWorkbook` | Select the previous workbook | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | Toggle read-only mode | |
 | Other | `u` | `Undo_CtrlZ` | Undo (send `Ctrl + Z`) | |
 | Other | `<C-r>` | `RedoExecute` | Redo | |
@@ -471,7 +471,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `:unique` | `RemoveDuplicates` | Delete duplicates rows from sheet | |
 | Other | `<C-i>` | `JumpNext` | Move to the next cell in the jump list | ✓ |
 | Other | `<C-o>` | `JumpPrev` | Move to the previous cell in the jump list | ✓ |
-| Other | `:cle` | `ClearJumps` | Clear the jump list | |
+| Other | `:clearjumps` | `ClearJumps` | Clear the jump list | |
 | Other | `:help <KEY>` | `SearchHelp` | Search help for a given `<KEY>` | |
 | Other | `zf` | `ToggleFreezePanes` | Toggle freeze panes on/off | |
 | Other | `=v` | `ToggleFormulaBar` | Toggle the visibility of the formula bar | |

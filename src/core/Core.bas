@@ -95,7 +95,30 @@ Function EnterCmdlineMode(Optional ByVal g As String) As Boolean
     cmdAndArg = Split(cmdResult, " ", 2)
 
     Dim cmdSuggests() As String
-    cmdSuggests = gVim.KeyMap.Suggest(cmdAndArg(0), True)
+    Dim prefix As String
+    Dim isExcFlag As Boolean
+    Dim i As Long
+
+    If Right(cmdAndArg(0), 1) = "!" Then
+        prefix = Left(cmdAndArg(0), Len(cmdAndArg(0)) - 1)
+        isExcFlag = True
+    Else
+        prefix = cmdAndArg(0)
+    End If
+    cmdSuggests = gVim.KeyMap.Suggest(prefix, True)
+
+    For i = LBound(cmdSuggests) To UBound(cmdSuggests)
+        If EndsWith(cmdSuggests(i), "!") Then
+            If Not isExcFlag Then
+                cmdSuggests(i) = ""
+            End If
+        Else
+            If isExcFlag Then
+                cmdSuggests(i) = ""
+            End If
+        End If
+    Next i
+    cmdSuggests = Filter(cmdSuggests, prefix)
 
     If UBound(cmdSuggests) < 0 Then
         Call SetStatusBarTemporarily(gVim.Msg.NoCommandAvailable & cmdResult, 3000)
