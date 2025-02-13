@@ -147,3 +147,10 @@ End Function
 Function ShowCmdForm(ByVal prefixStr As String) As Boolean
     ShowCmdForm = UF_Cmd.Launch(prefixStr)
 End Function
+
+Function ShowVersion(Optional ByVal g As String) As Boolean
+    Dim versionStr As String
+    versionStr = ThisWorkbook.BuiltinDocumentProperties("Comments")
+
+    MsgBox versionStr, vbInformation
+End Function

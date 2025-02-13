@@ -135,6 +135,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Core | `:` | `EnterCmdlineMode` | Enter the Cmdline mode | |
 | Core | `:reload` | `ReloadVim` | Reload vim.xlam | |
 | Core | `:debug` | `ToggleDebugMode` | Toggle debug mode | |
+| Core | `:version` | `ShowVersion` | Show vim.xlam version info | |
 | InsertMode | `a` | `AppendFollowLangMode` | Edit cell from the end, following language mode for IME | |
 | InsertMode | `A` | `AppendNotFollowLangMode` | Edit cell from the end without following language mode for IME | |
 | InsertMode | `i` | `InsertFollowLangMode` | Edit cell from the start, following language mode for IME | |

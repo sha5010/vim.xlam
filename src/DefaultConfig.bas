@@ -42,6 +42,7 @@ Sub DefaultConfig()
         .Map "nmap : EnterCmdlineMode"
         .Map "nmap <cmd>reload ReloadVim"
         .Map "nmap <cmd>debug ToggleDebugMode"
+        .Map "nmap <cmd>version ShowVersion"
 
 
         'InsertMode

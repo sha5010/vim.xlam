@@ -133,6 +133,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Core | `:` | `EnterCmdlineMode` | コマンドラインモードに入る | |
 | Core | `:reload` | `ReloadVim` | vim.xlam をリロード | |
 | Core | `:debug` | `ToggleDebugMode` | デバッグモードの切り替え | |
+| Core | `:version` | `ShowVersion` | vim.xlam のバージョン情報を表示 | |
 | InsertMode | `a` | `AppendFollowLangMode` | IMEを言語モードに合わせてセルを末尾から編集 | |
 | InsertMode | `A` | `AppendNotFollowLangMode` | IMEを言語モードに合わせずセルを末尾から編集 | |
 | InsertMode | `i` | `InsertFollowLangMode` | IMEを言語モードに合わせてセルを先頭から編集 | |
