@@ -64,7 +64,7 @@ Private Sub StrokeSingleKey(ByVal key As Long, Optional ByVal ignoreKeyUp As Boo
     End If
 
     If Shift Then
-        keybd_event ShiftLeft_, 0, 0, 0
+        keybd_event vbKeyShift, 0, EXTENDED_KEY, 0
     ElseIf Not ignoreKeyUp Then
         If pHoldShiftRight Then keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
         If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, KEYUP, 0
@@ -81,7 +81,8 @@ Private Sub StrokeSingleKey(ByVal key As Long, Optional ByVal ignoreKeyUp As Boo
 
     If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, 0, 0
     If pHoldShiftRight Then keybd_event ShiftRight_, 0, 0, 0
-    If Not pHoldAltLeft And Shift Then keybd_event ShiftLeft_, 0, KEYUP, 0
+    If Not pHoldShiftLeft And Shift Then keybd_event ShiftLeft_, 0, KEYUP, 0
+    If Not pHoldShiftRight And Shift Then keybd_event ShiftRight_, 0, KEYUP, 0
 
     If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, 0, 0
     If pHoldCtrlRight Then keybd_event CtrlRight_, 0, 0, 0
