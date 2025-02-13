@@ -385,6 +385,15 @@ Function PathSuggest(ByVal cmd As String, ByVal basePath As String) As CommandBa
         End With
         isDirEnded = (Right(childItem, 1) <> "/")
         i = i + 1
+
+        If i >= 50 And childItems.Count > 51 Then
+            With PathSuggest.Controls.Add(Type:=msoControlButton)
+                .Enabled = False
+                .Caption = CStr(childItems.Count - 50) & gVim.Msg.RemainingResults
+                .BeginGroup = True
+            End With
+            Exit For
+        End If
     Next
 End Function
 

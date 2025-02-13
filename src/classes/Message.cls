@@ -243,3 +243,9 @@ Public Property Get ClearedSelectionLock() As String
         "セル選択ロックを解除しました", _
         "Cleared cell selection lock.")
 End Property
+
+Public Property Get RemainingResults() As String
+    RemainingResults = IIf(Parent.IsJapanese, _
+        " 個の結果は省略", _
+        " results remaining")
+End Property
