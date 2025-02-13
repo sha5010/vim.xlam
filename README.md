@@ -422,6 +422,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Scrolling | `<C-f>` | `ScrollDown` | Scroll down by one page | ✓ |
 | Scrolling | `<C-y>` | `ScrollUp1Row` | Scroll up by one row | ✓ |
 | Scrolling | `<C-e>` | `ScrollDown1Row` | Scroll down by one row | ✓ |
+| Scrolling | `,` | `ScrollLeftHalf` | Scroll left by half a page | ✓ |
+| Scrolling | `;` | `ScrollRightHalf` | Scroll right by half a page | ✓ |
 | Scrolling | `zh` | `ScrollLeft1Column` | Scroll left by one column | ✓ |
 | Scrolling | `zl` | `ScrollRight1Column` | Scroll right by one column | ✓ |
 | Scrolling | `zH` | `ScrollLeft` | Scroll left by one page | ✓ |

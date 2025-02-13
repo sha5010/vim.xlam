@@ -420,6 +420,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `<C-f>` | `ScrollDown` | 1ページ下スクロール | ✓ |
 | Scrolling | `<C-y>` | `ScrollUp1Row` | 1行上スクロール | ✓ |
 | Scrolling | `<C-e>` | `ScrollDown1Row` | 1行下スクロール | ✓ |
+| Scrolling | `,` | `ScrollLeftHalf` | 半ページ左スクロール | ✓ |
+| Scrolling | `;` | `ScrollRightHalf` | 半ページ右スクロール | ✓ |
 | Scrolling | `zh` | `ScrollLeft1Column` | 1列左スクロール | ✓ |
 | Scrolling | `zl` | `ScrollRight1Column` | 1列右スクロール | ✓ |
 | Scrolling | `zH` | `ScrollLeft` | 1ページ左スクロール | ✓ |

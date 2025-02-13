@@ -123,6 +123,73 @@ Catch:
     Call ErrorHandler("ScrollDownHalf")
 End Function
 
+Function ScrollLeftHalf(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    Dim leftColVisible As Long
+    Dim scrollWidth As Integer
+    Dim targetCol As Long
+
+    If gVim.Count1 > 1 Then
+        Application.ScreenUpdating = False
+        ActiveWindow.LargeScroll ToLeft:=gVim.Count1 ¥ 2
+        Application.ScreenUpdating = True
+    End If
+
+    If (gVim.Count1 And 1) = 1 Then
+        leftColVisible = ActiveWindow.VisibleRange.Column
+
+        scrollWidth = ActiveWindow.VisibleRange.Columns.Count / 2
+        targetCol = leftColVisible - scrollWidth
+
+        If targetCol < 1 Then
+            targetCol = 1
+        End If
+
+        ActiveWindow.SmallScroll ToLeft:=scrollWidth
+    End If
+
+    Call ActivateCellInVisibleRange
+    Exit Function
+
+Catch:
+    Call ErrorHandler("ScrollLeftHalf")
+End Function
+
+Function ScrollRightHalf(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    Dim leftColVisible As Long
+    Dim scrollWidth As Integer
+    Dim targetCol As Long
+
+    If gVim.Count1 > 1 Then
+        Application.ScreenUpdating = False
+        ActiveWindow.LargeScroll ToRight:=gVim.Count1 ¥ 2
+        Application.ScreenUpdating = True
+    End If
+
+    If (gVim.Count1 And 1) = 1 Then
+        leftColVisible = ActiveWindow.VisibleRange.Column
+
+        scrollWidth = ActiveWindow.VisibleRange.Columns.Count / 2
+        targetCol = leftColVisible + scrollWidth
+
+        If targetCol > ActiveSheet.Columns.Count Then
+            targetCol = ActiveSheet.Columns.Count
+        End If
+
+        ActiveWindow.SmallScroll ToRight:=scrollWidth
+    End If
+
+    Call ActivateCellInVisibleRange
+    Exit Function
+
+Catch:
+    Call ErrorHandler("ScrollRightHalf")
+End Function
+
+
 Function ScrollUp(Optional ByVal g As String) As Boolean
     Application.ScreenUpdating = False
     ActiveWindow.LargeScroll Up:=gVim.Count1
