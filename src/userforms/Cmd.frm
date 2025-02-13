@@ -245,7 +245,11 @@ End Function
 ' * @param {String} str - The pressed key.
 ' */
 Private Sub cUserForm_KeyPressWithString(ByVal str As String)
-    Me.Label_Text = Me.Label_Text & str
+    If gVim.Config.NumpadCount And str Like "<k[0-9]>" Then
+        Me.Label_Text = Me.Label_Text & Mid(str, 3, 1)
+    Else
+        Me.Label_Text = Me.Label_Text & str
+    End If
     Me.Width = Me.Label_Text.Left + Me.Label_Text.Width + 12
 End Sub
 
