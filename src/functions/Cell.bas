@@ -331,24 +331,28 @@ End Sub
 
 Function AddNumber(Optional ByVal g As String) As Boolean
     Call RepeatRegister("AddNumber")
+    Call StopVisualMode
 
     Call ProcessNumber(isSubtract:=False)
 End Function
 
 Function SubtractNumber(Optional ByVal g As String) As Boolean
     Call RepeatRegister("SubtractNumber")
+    Call StopVisualMode
 
     Call ProcessNumber(isSubtract:=True)
 End Function
 
 Function VisualAddNumber(Optional ByVal g As String) As Boolean
     Call RepeatRegister("VisualAddNumber")
+    Call StopVisualMode
 
     Call ProcessNumber(isSubtract:=False, isGrow:=True)
 End Function
 
 Function VisualSubtractNumber(Optional ByVal g As String) As Boolean
     Call RepeatRegister("VisualSubtractNumber")
+    Call StopVisualMode
 
     Call ProcessNumber(isSubtract:=True, isGrow:=True)
 End Function

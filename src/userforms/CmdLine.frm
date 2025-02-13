@@ -94,6 +94,7 @@ Private Sub UserForm_Activate()
         .SetFocus
         .Left = Me.Label_Prefix.Left + Me.Label_Prefix.Width - 7.5
     End With
+    Call TextBox_Change
 End Sub
 
 Public Function Launch(Optional ByVal prefix As String = ":", _

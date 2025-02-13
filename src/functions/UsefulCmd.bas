@@ -198,7 +198,7 @@ Function Sort(Optional ByVal sortOrder As XlSortOrder) As Boolean
     End If
 End Function
 
-Function RemoveDuplicates() As Boolean
+Function RemoveDuplicates(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     'Send Alt + A, M, Shift + Tab, Shift + Tab
