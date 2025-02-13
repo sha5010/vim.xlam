@@ -204,3 +204,28 @@ Function RemoveDuplicates(Optional ByVal g As String) As Boolean
     'Send Alt + A, M, Shift + Tab, Shift + Tab
     Call KeyStroke(Alt_ + A_, M_, Shift_ + Tab_, Shift_ + Tab_)
 End Function
+
+Function OpenActiveBookDir(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+    ActiveWorkbook.FollowHyperlink ActiveWorkbook.Path
+    Exit Function
+
+Catch:
+    Call ErrorHandler("OpenActiveBookDir")
+End Function
+
+Function YankActiveBookPath(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    'Set to clipboard
+    With New DataObject
+        .SetText ActiveWorkbook.FullName
+        .PutInClipboard
+    End With
+
+    Call SetStatusBarTemporarily(gVim.Msg.YankDone & " (" & ActiveWorkbook.FullName & ")", 3000)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("YankActiveBookPath")
+End Function

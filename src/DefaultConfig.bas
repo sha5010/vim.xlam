@@ -463,6 +463,8 @@ Sub DefaultConfig()
         .Map "nmap <cmd>sort Sort 1"    ' xlAscending
         .Map "nmap <cmd>sort! Sort 2"   ' xlDescending
         .Map "nmap <cmd>unique RemoveDuplicates"
+        .Map "nmap <cmd>opendir OpenActiveBookDir"
+        .Map "nmap <cmd>fullpath YankActiveBookPath"
 
         .Map "nmap <C-i> JumpNext"
         .Map "nmap <C-o> JumpPrev"
