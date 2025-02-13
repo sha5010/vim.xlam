@@ -435,9 +435,9 @@ End Function
 ' * @returns {Long} - The count of visible sheets.
 ' */
 Function GetVisibleSheetsCount() As Long
-    Dim ws As Worksheet
+    Dim ws As Object
 
-    For Each ws In Worksheets
+    For Each ws In Sheets
         If ws.Visible = xlSheetVisible Then
             GetVisibleSheetsCount = GetVisibleSheetsCount + 1
         End If

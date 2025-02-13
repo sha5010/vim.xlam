@@ -26,15 +26,15 @@ Private previewMode As Boolean
 
 Private Function Activate_Nth_sheet(ByVal n As Integer) As Boolean
     'N番目のシートをアクティベート
-    If ActiveWorkbook.Worksheets.Count < n Or n < 1 Then
+    If ActiveWorkbook.Sheets.Count < n Or n < 1 Then
         Exit Function
     End If
 
-    If Not ActiveWorkbook.Worksheets(n).Visible Then
-        ActiveWorkbook.Worksheets(n).Visible = True
+    If Not ActiveWorkbook.Sheets(n).Visible Then
+        ActiveWorkbook.Sheets(n).Visible = True
     End If
 
-    ActiveWorkbook.Worksheets(n).Activate
+    ActiveWorkbook.Sheets(n).Activate
     Activate_Nth_sheet = True
 End Function
 
@@ -49,7 +49,7 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
     Dim cnt As Integer
 
     'N番目のシートの可視/不可視状態をトグル
-    If ActiveWorkbook.Worksheets.Count < n Then
+    If ActiveWorkbook.Sheets.Count < n Then
         Exit Sub
     End If
 
@@ -59,11 +59,11 @@ Private Sub Toggle_Sheet_Visible(ByVal n As Integer, _
     sheetVisibility = IIf(VeryHidden, xlVeryHidden, xlSheetHidden)
     hiddenText = IIf(VeryHidden, VERY_HIDDEN, INVISIBLE)
 
-    With ActiveWorkbook.Worksheets(n)
+    With ActiveWorkbook.Sheets(n)
         If .Visible <> sheetVisibility Then
             'check the number of visible sheets
-            For i = 1 To ActiveWorkbook.Worksheets.Count
-                If ActiveWorkbook.Worksheets(i).Visible = xlSheetVisible Then
+            For i = 1 To ActiveWorkbook.Sheets.Count
+                If ActiveWorkbook.Sheets(i).Visible = xlSheetVisible Then
                     cnt = cnt + 1
                     If cnt > 1 Then
                         Exit For
@@ -94,14 +94,14 @@ Private Sub Rename_Sheet(ByVal n As Integer)
     Dim cur As String
 
     'N番目のシートが存在しなければ終了
-    If ActiveWorkbook.Worksheets.Count < n Then
+    If ActiveWorkbook.Sheets.Count < n Then
         Exit Sub
     End If
 
     On Error GoTo Catch
 
     'N番目のシートをリネームするためのダイアログを表示
-    With ActiveWorkbook.Worksheets(n)
+    With ActiveWorkbook.Sheets(n)
         cur = .Name
         ret = InputBox(gVim.Msg.EnterNewSheetName, gVim.Msg.RenameSheetTitle, cur)
         Call DisableIME
@@ -138,12 +138,12 @@ Private Sub Delete_Sheet(ByVal n As Integer)
     Dim cur As Integer
 
     'N番目のシートが存在しなければ終了
-    If ActiveWorkbook.Worksheets.Count < n Then
+    If ActiveWorkbook.Sheets.Count < n Then
         Exit Sub
     End If
 
     '対象シートがVeryHiddenの場合は消せないので警告表示
-    If ActiveWorkbook.Worksheets(n).Visible = xlVeryHidden Then
+    If ActiveWorkbook.Sheets(n).Visible = xlVeryHidden Then
         MsgBox gVim.Msg.CannotDeleteVeryHiddenSheet, vbExclamation
         Exit Sub
     End If
@@ -155,13 +155,13 @@ Private Sub Delete_Sheet(ByVal n As Integer)
     End If
 
     '削除前のシート数を保持
-    cur = ActiveWorkbook.Worksheets.Count
+    cur = ActiveWorkbook.Sheets.Count
 
     'N番目のシートを削除 (デフォルトでダイアログが表示される)
-    ActiveWorkbook.Worksheets(n).Delete
+    ActiveWorkbook.Sheets(n).Delete
 
     '削除されたか確認
-    If ActiveWorkbook.Worksheets.Count < cur Then
+    If ActiveWorkbook.Sheets.Count < cur Then
         '削除された場合はリスト再生成
         List_Sheets.Clear
         Call MakeList
@@ -171,12 +171,12 @@ End Sub
 Private Sub Move_Sheet(ByVal n As Long, ByVal moveDirection As XlSearchDirection)
     With ActiveWorkbook
         ' Check n-th sheet is exists
-        If n < 1 Or .Worksheets.Count < n Then
+        If n < 1 Or .Sheets.Count < n Then
             Exit Sub
         End If
 
         ' Exit if number of sheets = 1
-        If .Worksheets.Count = 1 Then
+        If .Sheets.Count = 1 Then
             Exit Sub
         End If
 
@@ -185,7 +185,7 @@ Private Sub Move_Sheet(ByVal n As Long, ByVal moveDirection As XlSearchDirection
         Dim isWrap As Boolean: isWrap = False
 
         If moveDirection = xlNext Then
-            If n = .Worksheets.Count Then
+            If n = .Sheets.Count Then
                 destIndex = 1
                 isWrap = True
             Else
@@ -193,18 +193,18 @@ Private Sub Move_Sheet(ByVal n As Long, ByVal moveDirection As XlSearchDirection
             End If
         ElseIf moveDirection = xlPrevious Then
             If n = 1 Then
-                destIndex = .Worksheets.Count
+                destIndex = .Sheets.Count
                 isWrap = True
             Else
                 destIndex = n - 1
             End If
         End If
 
-        ' Move worksheet
+        ' Move Sheet
         Dim hidState As XlSheetVisibility
-        Dim targetSheet As Worksheet
+        Dim targetSheet As Object
 
-        Set targetSheet = .Worksheets(destIndex)
+        Set targetSheet = .Sheets(destIndex)
         hidState = targetSheet.Visible
 
         If Not hidState = xlSheetVisible Then
@@ -213,9 +213,9 @@ Private Sub Move_Sheet(ByVal n As Long, ByVal moveDirection As XlSearchDirection
         End If
 
         If n < destIndex Then
-            .Worksheets(n).Move After:=targetSheet
+            .Sheets(n).Move After:=targetSheet
         Else
-            .Worksheets(n).Move Before:=targetSheet
+            .Sheets(n).Move Before:=targetSheet
         End If
 
         targetSheet.Visible = hidState
@@ -273,7 +273,7 @@ Private Sub List_Sheets_Change()
     idx = List_Sheets.ListIndex + 1
 
     If previewMode And idx > 0 Then
-        If ActiveWorkbook.Worksheets(idx).Visible And idx <> ActiveWorkbook.ActiveSheet.Index Then
+        If ActiveWorkbook.Sheets(idx).Visible And idx <> ActiveWorkbook.ActiveSheet.Index Then
             Call Activate_Nth_sheet(idx)
         End If
     End If
@@ -446,7 +446,7 @@ Private Sub MakeList()
 
     'アクティブブックのシート一覧をリストに表示
     With List_Sheets
-        For i = 1 To ActiveWorkbook.Worksheets.Count
+        For i = 1 To ActiveWorkbook.Sheets.Count
             .AddItem ""
 
             'キーが使えれば割当
@@ -455,8 +455,8 @@ Private Sub MakeList()
             End If
 
             'シート名を表示
-            sheetName = ActiveWorkbook.Worksheets(i).Name
-            If Not ActiveWorkbook.Worksheets(i).Visible Then
+            sheetName = ActiveWorkbook.Sheets(i).Name
+            If Not ActiveWorkbook.Sheets(i).Visible Then
                 sheetName = INVISIBLE & sheetName
             End If
             .List(i - 1, 1) = sheetName

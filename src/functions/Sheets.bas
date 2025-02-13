@@ -1,8 +1,8 @@
-Attribute VB_Name = "F_WSFunc"
+Attribute VB_Name = "F_Sheets"
 Option Explicit
 Option Private Module
 
-Function NextWorksheet(Optional ByVal g As String) As Boolean
+Function NextSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Long
@@ -12,8 +12,8 @@ Function NextWorksheet(Optional ByVal g As String) As Boolean
         Dim cnt As Long: cnt = gVim.Count1
 
         Do While cnt > 0
-            i = (i Mod .Worksheets.Count) + 1
-            If .Worksheets(i).Visible = xlSheetVisible Then
+            i = (i Mod .Sheets.Count) + 1
+            If .Sheets(i).Visible = xlSheetVisible Then
                 cnt = cnt - 1
             End If
 
@@ -23,7 +23,7 @@ Function NextWorksheet(Optional ByVal g As String) As Boolean
                 cnt = cnt Mod visibleSheets
             End If
         Loop
-        .Worksheets(i).Activate
+        .Sheets(i).Activate
     End With
     Exit Function
 
@@ -31,10 +31,10 @@ Catch:
     For i = 1 To gVim.Count1
         Call KeyStroke(Ctrl_ + PageDown_)
     Next i
-    Call ErrorHandler("NextWorksheet")
+    Call ErrorHandler("NextSheet")
 End Function
 
-Function PreviousWorksheet(Optional ByVal g As String) As Boolean
+Function PreviousSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Long
@@ -44,8 +44,8 @@ Function PreviousWorksheet(Optional ByVal g As String) As Boolean
         Dim cnt As Long: cnt = gVim.Count1
 
         Do While cnt > 0
-            i = ((i - 2 + .Worksheets.Count) Mod .Worksheets.Count) + 1
-            If .Worksheets(i).Visible = xlSheetVisible Then
+            i = ((i - 2 + .Sheets.Count) Mod .Sheets.Count) + 1
+            If .Sheets(i).Visible = xlSheetVisible Then
                 cnt = cnt - 1
             End If
 
@@ -55,7 +55,7 @@ Function PreviousWorksheet(Optional ByVal g As String) As Boolean
                 cnt = cnt Mod visibleSheets
             End If
         Loop
-        .Worksheets(i).Activate
+        .Sheets(i).Activate
     End With
     Exit Function
 
@@ -63,10 +63,10 @@ Catch:
     For i = 1 To gVim.Count1
         Call KeyStroke(Ctrl_ + PageUp_)
     Next i
-    Call ErrorHandler("PreviousWorksheet")
+    Call ErrorHandler("PreviousSheet")
 End Function
 
-Function RenameWorksheet(Optional ByVal g As String) As Boolean
+Function RenameSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim ret As String
@@ -87,7 +87,7 @@ Function RenameWorksheet(Optional ByVal g As String) As Boolean
                 MsgBox gVim.Msg.SheetAlreadyExists(ret), vbExclamation
                 Exit Function
             End If
-            .Worksheets(.ActiveSheet.Index).Name = ret
+            .Sheets(.ActiveSheet.Index).Name = ret
 
             Call SetStatusBarTemporarily(gVim.Msg.ChangedSheetName & _
                 ": """ & beforeName & """ -> """ & ret & """", 3000)
@@ -96,10 +96,10 @@ Function RenameWorksheet(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call ErrorHandler("RenameWorksheet")
+    Call ErrorHandler("RenameSheet")
 End Function
 
-Function MoveWorksheetForward(Optional ByVal g As String) As Boolean
+Function MoveSheetForward(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -111,7 +111,7 @@ Function MoveWorksheetForward(Optional ByVal g As String) As Boolean
     With ActiveWorkbook
         idx = .ActiveSheet.Index
         cnt = gVim.Count1
-        n = .Worksheets.Count
+        n = .Sheets.Count
         i = idx
         Do
             i = (i Mod n) + 1
@@ -121,15 +121,15 @@ Function MoveWorksheetForward(Optional ByVal g As String) As Boolean
                 warpFlag = False
             End If
 
-            If .Worksheets(i).Visible = xlSheetVisible Then
+            If .Sheets(i).Visible = xlSheetVisible Then
                 cnt = cnt - 1
             End If
 
             If cnt = 0 Then
                 If warpFlag Then
-                    .Worksheets(idx).Move Before:=.Worksheets(i)
+                    .Sheets(idx).Move Before:=.Sheets(i)
                 Else
-                    .Worksheets(idx).Move After:=.Worksheets(i)
+                    .Sheets(idx).Move After:=.Sheets(i)
                 End If
                 Exit Do
             End If
@@ -138,10 +138,10 @@ Function MoveWorksheetForward(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call ErrorHandler("MoveWorksheetBack")
+    Call ErrorHandler("MoveSheetBack")
 End Function
 
-Function MoveWorksheetBack(Optional ByVal g As String) As Boolean
+Function MoveSheetBack(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -153,7 +153,7 @@ Function MoveWorksheetBack(Optional ByVal g As String) As Boolean
     With ActiveWorkbook
         idx = .ActiveSheet.Index
         cnt = gVim.Count1
-        n = .Worksheets.Count
+        n = .Sheets.Count
         i = idx
         Do
             i = (i - 1) Mod n
@@ -164,15 +164,15 @@ Function MoveWorksheetBack(Optional ByVal g As String) As Boolean
                 warpFlag = False
             End If
 
-            If .Worksheets(i).Visible = xlSheetVisible Then
+            If .Sheets(i).Visible = xlSheetVisible Then
                 cnt = cnt - 1
             End If
 
             If cnt = 0 Then
                 If warpFlag Then
-                    .Worksheets(idx).Move After:=.Worksheets(i)
+                    .Sheets(idx).Move After:=.Sheets(i)
                 Else
-                    .Worksheets(idx).Move Before:=.Worksheets(i)
+                    .Sheets(idx).Move Before:=.Sheets(i)
                 End If
                 Exit Do
             End If
@@ -181,7 +181,7 @@ Function MoveWorksheetBack(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call ErrorHandler("MoveWorksheetBack")
+    Call ErrorHandler("MoveSheetBack")
 End Function
 
 Function InsertWorksheet(Optional ByVal g As String) As Boolean
@@ -206,7 +206,7 @@ Catch:
     Call ErrorHandler("AppendWorksheet")
 End Function
 
-Function DeleteWorksheet(Optional ByVal g As String) As Boolean
+Function DeleteSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     'error if target sheet is last visible one
@@ -219,14 +219,14 @@ Function DeleteWorksheet(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call ErrorHandler("DeleteWorksheet")
+    Call ErrorHandler("DeleteSheet")
 End Function
 
-Function ActivateWorksheet(Optional ByVal sheetNum As String) As Boolean
+Function ActivateSheet(Optional ByVal sheetNum As String) As Boolean
     On Error GoTo Catch
 
     If Len(sheetNum) = 0 Then
-        ActivateWorksheet = True
+        ActivateSheet = True
         Exit Function
     ElseIf sheetNum Like "*[!0-9]*" Then
         Exit Function
@@ -238,31 +238,31 @@ Function ActivateWorksheet(Optional ByVal sheetNum As String) As Boolean
     With ActiveWorkbook
         If idx < 1 Then
             idx = 1
-        ElseIf .Worksheets.Count < idx Then
-            idx = .Worksheets.Count
+        ElseIf .Sheets.Count < idx Then
+            idx = .Sheets.Count
         End If
 
-        If .Worksheets(idx).Visible <> xlSheetVisible Then
-            .Worksheets(idx).Visible = xlSheetVisible
+        If .Sheets(idx).Visible <> xlSheetVisible Then
+            .Sheets(idx).Visible = xlSheetVisible
         End If
 
-        .Worksheets(idx).Select
+        .Sheets(idx).Select
     End With
     Exit Function
 
 Catch:
-    Call ErrorHandler("ActivateWorksheet")
+    Call ErrorHandler("ActivateSheet")
 End Function
 
-Function ActivateFirstWorksheet(Optional ByVal g As String) As Boolean
+Function ActivateFirstSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
 
     With ActiveWorkbook
-        For i = 1 To .Worksheets.Count
-            If .Worksheets(i).Visible = xlSheetVisible Then
-                .Worksheets(i).Activate
+        For i = 1 To .Sheets.Count
+            If .Sheets(i).Visible = xlSheetVisible Then
+                .Sheets(i).Activate
                 Exit Function
             End If
         Next i
@@ -270,18 +270,18 @@ Function ActivateFirstWorksheet(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call ErrorHandler("ActivateFirstWorksheet")
+    Call ErrorHandler("ActivateFirstSheet")
 End Function
 
-Function ActivateLastWorksheet(Optional ByVal g As String) As Boolean
+Function ActivateLastSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Dim i As Integer
 
     With ActiveWorkbook
-        For i = .Worksheets.Count To 1 Step -1
-            If .Worksheets(i).Visible = xlSheetVisible Then
-                .Worksheets(i).Activate
+        For i = .Sheets.Count To 1 Step -1
+            If .Sheets(i).Visible = xlSheetVisible Then
+                .Sheets(i).Activate
                 Exit Function
             End If
         Next i
@@ -289,10 +289,10 @@ Function ActivateLastWorksheet(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call ErrorHandler("ActivateLastWorksheet")
+    Call ErrorHandler("ActivateLastSheet")
 End Function
 
-Function CloneWorksheet(Optional ByVal g As String) As Boolean
+Function CloneSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     ActiveSheet.Copy After:=ActiveSheet
@@ -300,14 +300,14 @@ Function CloneWorksheet(Optional ByVal g As String) As Boolean
     Exit Function
 
 Catch:
-    Call ErrorHandler("CloneWorksheet")
+    Call ErrorHandler("CloneSheet")
 End Function
 
 Function ShowSheetPicker(Optional ByVal g As String) As Boolean
     UF_SheetPicker.Show
 End Function
 
-Function ChangeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor) As Boolean
+Function ChangeSheetTabColor(Optional ByVal resultColor As cls_FontColor) As Boolean
     On Error GoTo Catch
 
     If ActiveSheet Is Nothing Then
@@ -329,22 +329,22 @@ Function ChangeWorksheetTabColor(Optional ByVal resultColor As cls_FontColor) As
                 .Color = resultColor.Color
             End If
 
-            Call RepeatRegister("ChangeWorksheetTabColor", resultColor)
+            Call RepeatRegister("ChangeSheetTabColor", resultColor)
         End With
     End If
     Exit Function
 
 Catch:
-    Call ErrorHandler("ChangeWorksheetTabColor")
+    Call ErrorHandler("ChangeSheetTabColor")
 End Function
 
-Function ExportWorksheet(Optional ByVal g As String) As Boolean
+Function ExportSheet(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
     Application.Dialogs(xlDialogWorkbookCopy).Show
     Exit Function
 
 Catch:
-    Call ErrorHandler("ExportWorksheet")
+    Call ErrorHandler("ExportSheet")
 End Function
 
 Function PrintPreviewOfActiveSheet(Optional ByVal g As String) As Boolean

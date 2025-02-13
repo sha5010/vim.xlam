@@ -45,7 +45,7 @@ Designed with extensibility in mind, you can create your own methods and easily 
 - 🎯 Vim features such as `count` specification, `.` repeat, jump lists, and visual mode, and more are recreated as faithfully as possible.
 - 💡 Command suggestion feature, making it easy to use by simply remembering a minimal set of prefixes.
 - 🎨 Custom ColorPicker, allowing you to select colors within 3 keystrokes.
-- 🗂️ SheetPicker for easy navigation and management, even with a large number of worksheets.
+- 🗂️ SheetPicker for easy navigation and management, even with a large number of sheets.
 - 🛠️ Simple [customization](#%EF%B8%8F-customization) by writing a vimrc-like configuration file.
 
 ## 📦 Installation
@@ -115,10 +115,10 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Scrolling | `zt` | `ScrollCurrentTop` | Scroll to make the current row at the top (`SCREEN_OFFSET` pts of padding) | ✓ |
 | Scrolling | `zz` | `ScrollCurrentMiddle` | Scroll to make the current row in the middle | ✓ |
 | Scrolling | `zb` | `ScrollCurrentBottom` | Scroll to make the current row at the bottom (`SCREEN_OFFSET` pts of padding) | ✓ |
-| Worksheet | `e` | `NextWorksheet` | Select the next worksheet | ✓ |
-| Worksheet | `E` | `PreviousWorksheet` | Select the previous worksheet | ✓ |
-| Worksheet | `ww` | `ShowSheetPicker` | Launch the Sheet Picker | |
-| Worksheet | `wr` | `RenameWorksheet` | Change the name of the active worksheet | |
+| Sheet | `e` | `NextSheet` | Select the next sheet | ✓ |
+| Sheet | `E` | `PreviousSheet` | Select the previous sheet | ✓ |
+| Sheet | `ww` | `ShowSheetPicker` | Launch the Sheet Picker | |
+| Sheet | `wr` | `RenameSheet` | Change the name of the active sheet | |
 | Workbook | `:w` | `SaveWorkbook` | Save the active workbook | |
 | Workbook | `:q` | `CloseAskSaving` | Close the active workbook (show a dialog if there are unsaved changes) | |
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | Close the active workbook without saving | |
@@ -432,22 +432,22 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Scrolling | `zs` | `ScrollCurrentLeft` | Scroll to make the current column at the left | ✓ |
 | Scrolling | `zm` | `ScrollCurrentCenter` | Scroll to make the current column in the center | ✓ |
 | Scrolling | `ze` | `ScrollCurrentRight` | Scroll to make the current column at the right | ✓ |
-| Worksheet | `e`/`wn` | `NextWorksheet` | Select the next worksheet | ✓ |
-| Worksheet | `E`/`wp` | `PreviousWorksheet` | Select the previous worksheet | ✓ |
-| Worksheet | `ww`/`ws` | `ShowSheetPicker` | Launch the Sheet Picker | |
-| Worksheet | `wr` | `RenameWorksheet` | Change the name of the active worksheet | |
-| Worksheet | `wh` | `MoveWorksheetBack` | Move the active worksheet one position to the front | ✓ |
-| Worksheet | `wl` | `MoveWorksheetForward` | Move the active worksheet one position to the back | ✓ |
-| Worksheet | `wi` | `InsertWorksheet` | Insert a new worksheet in front of the active worksheet | |
-| Worksheet | `wa` | `AppendWorksheet` | Insert a new worksheet after the active worksheet | |
-| Worksheet | `wd` | `DeleteWorksheet` | Delete the active worksheet | |
-| Worksheet | `w0` | `ActivateLastWorksheet` | Select the last worksheet | |
-| Worksheet | `w$` | `ActivateLastWorksheet` | Select the last worksheet | |
-| Worksheet | `wc` | `ChangeWorksheetTabColor` | Change the color of the active worksheet tab | |
-| Worksheet | `wy` | `CloneWorksheet` | Clone the active worksheet | |
-| Worksheet | `we` | `ExportWorksheet` | Show the move or copy sheet dialog | |
-| Worksheet | `w[num]` | `ActivateWorksheet` | Select the worksheet at position `[num]` (only 1-9) | |
-| Worksheet | `:preview` | `PrintPreviewOfActiveSheet` | Show the print preview of the active sheet | |
+| Sheet | `e`/`wn` | `NextSheet` | Select the next sheet | ✓ |
+| Sheet | `E`/`wp` | `PreviousSheet` | Select the previous sheet | ✓ |
+| Sheet | `ww`/`ws` | `ShowSheetPicker` | Launch the Sheet Picker | |
+| Sheet | `wr` | `RenameSheet` | Change the name of the active sheet | |
+| Sheet | `wh` | `MoveSheetBack` | Move the active sheet one position to the front | ✓ |
+| Sheet | `wl` | `MoveSheetForward` | Move the active sheet one position to the back | ✓ |
+| Sheet | `wi` | `InsertWorksheet` | Insert a new worksheet in front of the active worksheet | |
+| Sheet | `wa` | `AppendWorksheet` | Insert a new worksheet after the active worksheet | |
+| Sheet | `wd` | `DeleteSheet` | Delete the active sheet | |
+| Sheet | `w0` | `ActivateLastSheet` | Select the last sheet | |
+| Sheet | `w$` | `ActivateLastSheet` | Select the last sheet | |
+| Sheet | `wc` | `ChangeSheetTabColor` | Change the color of the active sheet tab | |
+| Sheet | `wy` | `CloneSheet` | Clone the active sheet | |
+| Sheet | `we` | `ExportSheet` | Show the move or copy sheet dialog | |
+| Sheet | `w[num]` | `ActivateSheet` | Select the sheet at position `[num]` (only 1-9) | |
+| Sheet | `:preview` | `PrintPreviewOfActiveSheet` | Show the print preview of the active sheet | |
 | Workbook | `:e [path]` | `OpenWorkbook` | Open a workbook | |
 | Workbook | `:e!` | `ReopenActiveWorkbook` | Discard changes to the active workbook and reopen it | |
 | Workbook | `:w` | `SaveWorkbook` | Save the active workbook | |

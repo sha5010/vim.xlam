@@ -406,26 +406,26 @@ Sub DefaultConfig()
         .Map "nmap ze ScrollCurrentRight"
 
 
-        'Worksheet Function
-        .Map "nmap e NextWorksheet"
-        .Map "nmap E PreviousWorksheet"
+        'Sheet Function
+        .Map "nmap e NextSheet"
+        .Map "nmap E PreviousSheet"
 
         .Map "nmap ww ShowSheetPicker"
         .Map "nmap ws ShowSheetPicker"
-        .Map "nmap wn NextWorksheet"
-        .Map "nmap wp PreviousWorksheet"
-        .Map "nmap wr RenameWorksheet"
-        .Map "nmap wh MoveWorksheetBack"
-        .Map "nmap wl MoveWorksheetForward"
+        .Map "nmap wn NextSheet"
+        .Map "nmap wp PreviousSheet"
+        .Map "nmap wr RenameSheet"
+        .Map "nmap wh MoveSheetBack"
+        .Map "nmap wl MoveSheetForward"
         .Map "nmap wi InsertWorksheet"
         .Map "nmap wa AppendWorksheet"
-        .Map "nmap wd DeleteWorksheet"
-        .Map "nmap w0 ActivateLastWorksheet"
-        .Map "nmap w$ ActivateLastWorksheet"
-        .Map "nmap wc ChangeWorksheetTabColor"
-        .Map "nmap wy CloneWorksheet"
-        .Map "nmap we ExportWorksheet"
-        .Map "nmap w ActivateWorksheet"
+        .Map "nmap wd DeleteSheet"
+        .Map "nmap w0 ActivateLastSheet"
+        .Map "nmap w$ ActivateLastSheet"
+        .Map "nmap wc ChangeSheetTabColor"
+        .Map "nmap wy CloneSheet"
+        .Map "nmap we ExportSheet"
+        .Map "nmap w ActivateSheet"
 
         .Map "nmap <cmd>preview PrintPreviewOfActiveSheet"
 

@@ -44,7 +44,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 - 🎯 `count` 指定、`.` リピート、ジャンプリスト、ビジュアルモードなど、Vim の強みを最大限再現
 - 💡 コマンドサジェスト機能により、最低限のプレフィックスさえ覚えれば容易に利用可能
 - 🎨 3キーストローク以内で色を選択できるオリジナルの ColorPicker を搭載
-- 🗂️ 大量のワークシートでも簡単にジャンプ、管理できる SheetPicker も搭載
+- 🗂️ 大量のシートでも簡単にジャンプ、管理できる SheetPicker も搭載
 - 🛠️ vimrc 風の設定ファイルを記述することで簡単に[カスタマイズ](#%EF%B8%8F-カスタマイズ)可能
 
 ## 📦 インストール方法
@@ -113,10 +113,10 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `zt` | `ScrollCurrentTop` | 現在行が最上部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | ✓ |
 | Scrolling | `zz` | `ScrollCurrentMiddle` | 現在行が中央に来るように縦スクロール | ✓ |
 | Scrolling | `zb` | `ScrollCurrentBottom` | 現在行が最下部に来るように縦スクロール (`SCREEN_OFFSET` pt分余裕をもたせる) | ✓ |
-| Worksheet | `e` | `NextWorksheet` | 次のシートを選択 | ✓ |
-| Worksheet | `E` | `PreviousWorksheet` | 前のシートを選択 | ✓ |
-| Worksheet | `ww` | `ShowSheetPicker` | SheetPicker を起動 | |
-| Worksheet | `wr` | `RenameWorksheet` | アクティブなシート名を変更 | |
+| Sheet | `e` | `NextSheet` | 次のシートを選択 | ✓ |
+| Sheet | `E` | `PreviousSheet` | 前のシートを選択 | ✓ |
+| Sheet | `ww` | `ShowSheetPicker` | SheetPicker を起動 | |
+| Sheet | `wr` | `RenameSheet` | アクティブなシート名を変更 | |
 | Workbook | `:w` | `SaveWorkbook` | アクティブブックを保存 | |
 | Workbook | `:q` | `CloseAskSaving` | アクティブブックを閉じる(未保存時はダイアログを表示) | |
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | アクティブブックを保存せずに閉じる | |
@@ -430,21 +430,21 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Scrolling | `zs` | `ScrollCurrentLeft` | 現在列が一番左に来るように横スクロール | ✓ |
 | Scrolling | `zm` | `ScrollCurrentCenter` | 現在列が中央に来るように横スクロール | ✓ |
 | Scrolling | `ze` | `ScrollCurrentRight` | 現在列が一番右に来るように横スクロール | ✓ |
-| Worksheet | `e`/`wn` | `NextWorksheet` | 次のシートを選択 | ✓ |
-| Worksheet | `E`/`wp` | `PreviousWorksheet` | 前のシートを選択 | ✓ |
-| Worksheet | `ww`/`ws` | `ShowSheetPicker` | SheetPicker を起動 | |
-| Worksheet | `wr` | `RenameWorksheet` | アクティブなシート名を変更 | |
-| Worksheet | `wh` | `MoveWorksheetBack` | アクティブなシートを前に移動 | ✓ |
-| Worksheet | `wl` | `MoveWorksheetForward` | アクティブなシートを次に移動 | ✓ |
-| Worksheet | `wi` | `InsertWorksheet` | アクティブなシートの前に新しいシートを挿入 | |
-| Worksheet | `wa` | `AppendWorksheet` | アクティブなシートの次に新しいシートを挿入 | |
-| Worksheet | `wd` | `DeleteWorksheet` | アクティブなシートを削除 | |
-| Worksheet | `w0`/`w$` | `ActivateLastWorksheet` | 一番最後のシートを選択 | |
-| Worksheet | `wc` | `ChangeWorksheetTabColor` | アクティブなシートの色を変更 | |
-| Worksheet | `wy` | `CloneWorksheet` | アクティブなシートを複製 | |
-| Worksheet | `we` | `ExportWorksheet` | シートの移動またはコピーダイアログを表示 | |
-| Worksheet | `w[num]` | `ActivateWorksheet` | `[num]` 番目のシートを選択 (1-9 のみ) | |
-| Worksheet | `:preview` | `PrintPreviewOfActiveSheet` | 印刷プレビューを表示 | |
+| Sheet | `e`/`wn` | `NextSheet` | 次のシートを選択 | ✓ |
+| Sheet | `E`/`wp` | `PreviousSheet` | 前のシートを選択 | ✓ |
+| Sheet | `ww`/`ws` | `ShowSheetPicker` | SheetPicker を起動 | |
+| Sheet | `wr` | `RenameSheet` | アクティブなシート名を変更 | |
+| Sheet | `wh` | `MoveSheetBack` | アクティブなシートを前に移動 | ✓ |
+| Sheet | `wl` | `MoveSheetForward` | アクティブなシートを次に移動 | ✓ |
+| Sheet | `wi` | `InsertWorksheet` | アクティブなシートの前に新しいシートを挿入 | |
+| Sheet | `wa` | `AppendWorksheet` | アクティブなシートの次に新しいシートを挿入 | |
+| Sheet | `wd` | `DeleteSheet` | アクティブなシートを削除 | |
+| Sheet | `w0`/`w$` | `ActivateLastSheet` | 一番最後のシートを選択 | |
+| Sheet | `wc` | `ChangeSheetTabColor` | アクティブなシートの色を変更 | |
+| Sheet | `wy` | `CloneSheet` | アクティブなシートを複製 | |
+| Sheet | `we` | `ExportSheet` | シートの移動またはコピーダイアログを表示 | |
+| Sheet | `w[num]` | `ActivateSheet` | `[num]` 番目のシートを選択 (1-9 のみ) | |
+| Sheet | `:preview` | `PrintPreviewOfActiveSheet` | 印刷プレビューを表示 | |
 | Workbook | `:e [path]` | `OpenWorkbook` | ブックを開く | |
 | Workbook | `:e!` | `ReopenActiveWorkbook` | アクティブなブックの変更を破棄し開き直す | |
 | Workbook | `:w` | `SaveWorkbook` | アクティブブックを保存 | |
