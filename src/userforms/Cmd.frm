@@ -296,6 +296,7 @@ End Sub
 ' */
 Private Sub QuitForm()
     Call ResetVars
+    Call LazySuggest(cancelOnly:=True)
     Me.Hide
 End Sub
 
@@ -328,7 +329,7 @@ Public Function Launch(ByVal prefixKey As String) As Boolean
     Me.Show
 End Function
 
-Private Sub LazySuggest()
+Private Sub LazySuggest(Optional ByVal cancelOnly As Boolean = False)
     Static lastRegisterTime
     Static lastRegisterProc
 
@@ -336,6 +337,10 @@ Private Sub LazySuggest()
     On Error Resume Next
     Call Application.OnTime(lastRegisterTime, lastRegisterProc, , False)
     On Error GoTo 0
+
+    If cancelOnly Then
+        Exit Sub
+    End If
 
     ' Disabled if SuggestWait is less than 0
     If gVim.Config.SuggestWait <= 0 Then
