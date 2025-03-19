@@ -202,8 +202,8 @@ Private Sub Class_Initialize()
         .Add VIM_TOGGLE_KEY, "^{m}"
         .Add SCROLL_OFFSET, 54#
         .Add MAX_HISTORIES, 100
-        .Add LANG_JAPANESE, True
-        .Add JIS_KEYBOARD, True
+        .Add LANG_JAPANESE, Application.LanguageSettings.LanguageID(msoLanguageIDUI) = msoLanguageIDJapanese
+        .Add JIS_KEYBOARD, IsJISKeyboardLayout()
         .Add QUIT_APP_ALL_WB_CLOSED, True
         .Add NUMPAD_COUNT, False
         .Add SUGGEST_WAIT, 1000

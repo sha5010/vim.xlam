@@ -5,9 +5,11 @@ Option Private Module
 #If Win64 Then
     Private Declare PtrSafe Function QueryPerformanceCounter Lib "kernel32" (x As Currency) As Boolean
     Private Declare PtrSafe Function QueryPerformanceFrequency Lib "kernel32" (x As Currency) As Boolean
+    Private Declare PtrSafe Function GetKeyboardLayoutName Lib "user32" Alias "GetKeyboardLayoutNameA" (ByVal pwszKLID As String) As Long
 #Else
     Private Declare Function QueryPerformanceCounter Lib "kernel32" (x As Currency) As Boolean
     Private Declare Function QueryPerformanceFrequency Lib "kernel32" (x As Currency) As Boolean
+    Private Declare Function GetKeyboardLayoutName Lib "user32" Alias "GetKeyboardLayoutNameA" (ByVal pwszKLID As String) As Long
 #End If
 
 Private Ctr1 As Currency
@@ -591,6 +593,26 @@ Function ColorCodeToHex(ByVal colorCode As Long) As String
                      Right("0" & Hex(colorCode ¥ 256 Mod 256), 2) & _
                      Right("0" & Hex(colorCode ¥ 256 ¥ 256), 2)
     ColorCodeToHex = LCase(ColorCodeToHex)
+End Function
+
+'/**
+' * Checks if the current keyboard layout is Japanese Industrial Standard (JIS).
+' *
+' * @returns {Boolean} - True if the current keyboard layout is JIS, False otherwise.
+' */
+Function IsJISKeyboardLayout() As Boolean
+    Const JIS_KEYBOARD_ID = "0411"
+
+    Dim keyboardLayout As String
+    keyboardLayout = String(10, 0)
+
+    ' Retrieve keyboard layout using Windows API
+    If GetKeyboardLayoutName(keyboardLayout) = 0 Then
+        Exit Function
+    End If
+
+    keyboardLayout = Left(keyboardLayout, InStr(keyboardLayout, Chr(0)) - 1)
+    IsJISKeyboardLayout = EndsWith(keyboardLayout, JIS_KEYBOARD_ID)
 End Function
 
 

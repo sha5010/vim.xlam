@@ -526,8 +526,8 @@ You can configure using the same syntax as Vim's `set`. For configuration exampl
 | `togglekey` | string | Key to toggle Vim mode on/off (Vim-style key specification) | `<C-m>` |
 | `scrolloff` | float | Up and down offset for `ScrollCurrentXXX` series (px) | `54.0` |
 | `jumplisthistory` | int | Maximum number of items to keep in the jump list | `100` |
-| `[no]japanese` | bool | Japanese mode / English mode | `True` |
-| `[no]jiskeyboard` | bool | JIS keyboard / US keyboard | `True` |
+| `[no]japanese` | bool | Japanese mode / English mode | Auto[^1] |
+| `[no]jiskeyboard` | bool | JIS keyboard / US keyboard | Auto[^2] |
 | `[no]quitapp` | bool | Quit Excel or not when closing the last workbook | `True` |
 | `[no]numpadcount` | bool |  Whether NumPad is used as `[count]` or not | `False` |
 | `suggestwait` | int | Delay time to display suggestions (ms, 0 to disable) | `1000` |
@@ -539,6 +539,9 @@ You can configure using the same syntax as Vim's `set`. For configuration exampl
 | `customcolor4` | string | Custom color #4 in ColorPicker | `#008000` ![#008000](https://placehold.co/15/008000/008000) |
 | `customcolor5` | string | Custom color #5 in ColorPicker | `#0000ff` ![#0000ff](https://placehold.co/15/0000ff/0000ff) |
 | `[no]debug` | bool | Enable / disable debug mode | `False` |
+
+[^1]: Referring to the Excel UI language settings
+[^2]: Determined using Windows API `GetKeyboardLayoutNameA`
 
 #### Notes on `numpadcount`
 

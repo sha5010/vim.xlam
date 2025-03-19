@@ -39,10 +39,10 @@
 # set jumplisthistory=100
 
 ### “ú–{Œê(japanese) / English (nojapanese)
-# set japanese
+# set nojapanese
 
 ### JIS keyboard(jiskeyboard) / US keyboard(nojiskeyboard)
-# set jiskeyboard
+# set nojiskeyboard
 
 ### Quit Excel or not when closing the last workbook (Yes: quitapp / No: noquitapp)
 # set quitapp

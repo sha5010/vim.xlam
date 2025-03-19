@@ -523,8 +523,8 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `togglekey` | string | Vimモードの有効/無効を切り替えるキー (Vim風のキー指定) | `<C-m>` |
 | `scrolloff` | float | `ScrollCurrentXXX` 系の上下オフセット量 (px) | `54.0` |
 | `jumplisthistory` | int | ジャンプリストの最大保持数 | `100` |
-| `[no]japanese` | bool | 日本語モード / 英語モード | `True` |
-| `[no]jiskeyboard` | bool | JISキーボード / USキーボード | `True` |
+| `[no]japanese` | bool | 日本語モード / 英語モード | Auto[^1] |
+| `[no]jiskeyboard` | bool | JISキーボード / USキーボード | Auto[^2] |
 | `[no]quitapp` | bool | 最後のワークブックが閉じられたときExcelを終了するか | `True` |
 | `[no]numpadcount` | bool | NumPadを `[count]` として使うかどうか | `False` |
 | `suggestwait` | int | サジェストを表示するまでの待ち時間 (ms, 0で無効化) | `1000` |
@@ -536,6 +536,9 @@ Vim の `set` と同じシンタックスで設定できます。設定例は[�
 | `customcolor4` | string | ColorPicker のカスタム色 #4 | `#008000` ![#008000](https://placehold.co/15/008000/008000) |
 | `customcolor5` | string | ColorPicker のカスタム色 #5 | `#0000ff` ![#0000ff](https://placehold.co/15/0000ff/0000ff) |
 | `[no]debug` | bool | デバッグモードの有効 / 無効 | `False` |
+
+[^1]: Excel UI の言語設定が日本語なら `True`
+[^2]: Windows API `GetKeyboardLayoutNameA` を使用して判定
 
 #### `numpadcount` の注意点
 
