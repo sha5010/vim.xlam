@@ -203,7 +203,13 @@ Function RecordToJumpList(Optional Target As Range, Optional ByVal CurrentToLate
     ' If Target is not specified, use the current selection or active cell
     If Target Is Nothing Then
         If TypeName(Selection) = "Range" Then
-            Set Target = Selection
+            If Selection.Count < 16384 Then
+                Set Target = Selection
+            ElseIf Not ActiveCell Is Nothing Then
+                Set Target = ActiveCell
+            Else
+                Exit Function
+            End If
         ElseIf Not ActiveCell Is Nothing Then
             Set Target = ActiveCell
         Else
