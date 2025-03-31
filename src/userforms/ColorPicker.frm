@@ -220,9 +220,6 @@ Private Sub UserForm_Initialize()
 
         ' Put brightness variation of theme color
         For j = 1 To 5
-            Set Color = New cls_FontColor
-            Call Color.Setup(msoThemeColorIndex:=i + 1)
-
             Select Case themeColorLuminance
                 Case 51 To 203
                     Color.AddLuminance = lncDefault(j)
