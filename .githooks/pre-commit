@@ -1,0 +1,30 @@
+#!/bin/bash
+
+############################## Setup ################################
+# To use this pre-commit script, please run the following command:  #
+#     git config --local core.hooksPath .githooks                   #
+#####################################################################
+
+# get files that including trailing spaces and lines
+FILES=$(
+  git diff --cached --check |
+    grep -E "trailing whitespace|new blank line" |
+    grep -iE "\.(bas|frm|cls)$" |
+    sed -e 's/:[[:digit:]]*:.*$//' |
+    sort | uniq
+)
+
+for file in $FILES; do
+  # delete trailing spaces and lines (file)
+  sed -E -e 's/[[:space:]]*$//' -e 's/Begin \{[0-9A-F-]*\} \w*/\0 /' -i "${file}"
+  sed -e :a -e '/^\n*$/{$d;N;};/\n$/ba' -i "${file}"
+
+  # delete trailing spaces and lines (index)
+  git show ":${file}" |
+    sed -E -e 's/[[:space:]]*$//' -e 's/Begin \{[0-9A-F-]*\} \w*/\0 /' |
+    sed -e :a -e '/^\n*$/{$d;N;};/\n$/ba' |
+    git hash-object -w --stdin |
+    xargs -I{} git update-index --cacheinfo 100644 {} "${file}"
+
+  echo -e "[\033[34m*\033[0m] Removed trailing spaces and lines ... ${file}"
+done
