@@ -33,9 +33,9 @@ Private Sub StrokeSingleKey(ByVal key As Long, Optional ByVal ignoreKeyUp As Boo
     Dim Alt As Boolean
 
     ' Extracting modifier key states
-    Ctrl = ((key ¥ Ctrl_) And 1) = 1
-    Shift = ((key ¥ Shift_) And 1) = 1
-    Alt = ((key ¥ Alt_) And 1) = 1
+    Ctrl = ((key \ Ctrl_) And 1) = 1
+    Shift = ((key \ Shift_) And 1) = 1
+    Alt = ((key \ Alt_) And 1) = 1
 
     ' Extracting the actual key code
     key = key And &HFF

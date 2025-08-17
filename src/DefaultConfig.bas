@@ -448,7 +448,7 @@ Sub DefaultConfig()
 
         .Map "nmap ZZ CloseWithSaving"
         .Map "nmap ZQ CloseWithoutSaving"
-        .Map "nmap ‾ ToggleReadOnly"
+        .Map "nmap ~ ToggleReadOnly"
         .Map "nmap ]b NextWorkbook"
         .Map "nmap [b PreviousWorkbook"
 

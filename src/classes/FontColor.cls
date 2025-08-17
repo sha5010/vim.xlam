@@ -153,11 +153,11 @@ Public Property Get Red() As Byte
 End Property
 
 Public Property Get Green() As Byte
-    Green = Color_ ¥ 256 Mod 256
+    Green = Color_ \ 256 Mod 256
 End Property
 
 Public Property Get Blue() As Byte
-    Blue = Color_ ¥ 256 ¥ 256
+    Blue = Color_ \ 256 \ 256
 End Property
 
 Public Property Get Hue() As Long

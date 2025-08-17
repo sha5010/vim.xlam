@@ -360,7 +360,7 @@ Function PathSuggest(ByVal cmd As String, ByVal basePath As String) As CommandBa
         Exit Function
     End If
 
-    cmd = Left(cmd, InStrRev(Replace(cmd, "/", "¥"), "¥"))
+    cmd = Left(cmd, InStrRev(Replace(cmd, "/", "\"), "\"))
     If childItems.Count = 1 Then
         Call CompleteSuggest(cmd & childItems(1))
         Exit Function
@@ -423,8 +423,8 @@ Function ShowSuggest(Optional ByVal key As String = "") As Boolean
             End If
 
             Dim secondPart As String
-            secondPart = Replace(Split(key, " ", 2)(1), "/", "¥")
-            If Not StartsWith(secondPart, Array(".¥", "..¥", "‾¥", "¥")) Then
+            secondPart = Replace(Split(key, " ", 2)(1), "/", "\")
+            If Not StartsWith(secondPart, Array(".\", "..\", "~\", "\")) Then
                 Exit Function
             End If
 

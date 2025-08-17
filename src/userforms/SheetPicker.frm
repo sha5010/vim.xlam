@@ -241,27 +241,27 @@ End Sub
 Private Sub Show_Help()
     'ヘルプ文字列
     Dim HELP_MSG As String
-    HELP_MSG = "[Move Cursor]¥n" & _
-        "  j/k¥tMove down/up¥n" & _
-        "  C-j/C-k¥tMove down/up (" & AMOUNT & " rows)¥n" & _
-        "  g/G¥tMove to top/bottom¥n" & _
-        "¥n" & _
-        "[Sheet Action]¥n" & _
-        "  J/K¥tSwap sheet with lower/upper¥n" & _
-        "  h/H¥tToogle sheet visible/(Very hidden)¥n" & _
-        "  l¥tPreview the sheet for current row¥n" & _
-        "  R¥tRename sheet¥n" & _
-        "  D/X¥tDelete sheet¥n" & _
-        "¥n" & _
-        "[Change sheet]¥n" & _
-        "  Enter¥tActivate the sheet for current row¥n" & _
-        "  [0-9a-z]¥tActivate specify sheet¥n" & _
-        "¥n" & _
-        "[Preview mode]¥n" & _
-        "  P¥tToggle preview mode"
+    HELP_MSG = "[Move Cursor]\n" & _
+        "  j/k\tMove down/up\n" & _
+        "  C-j/C-k\tMove down/up (" & AMOUNT & " rows)\n" & _
+        "  g/G\tMove to top/bottom\n" & _
+        "\n" & _
+        "[Sheet Action]\n" & _
+        "  J/K\tSwap sheet with lower/upper\n" & _
+        "  h/H\tToogle sheet visible/(Very hidden)\n" & _
+        "  l\tPreview the sheet for current row\n" & _
+        "  R\tRename sheet\n" & _
+        "  D/X\tDelete sheet\n" & _
+        "\n" & _
+        "[Change sheet]\n" & _
+        "  Enter\tActivate the sheet for current row\n" & _
+        "  [0-9a-z]\tActivate specify sheet\n" & _
+        "\n" & _
+        "[Preview mode]\n" & _
+        "  P\tToggle preview mode"
 
-    HELP_MSG = Replace(HELP_MSG, "¥n", vbLf)
-    HELP_MSG = Replace(HELP_MSG, "¥t", vbTab)
+    HELP_MSG = Replace(HELP_MSG, "\n", vbLf)
+    HELP_MSG = Replace(HELP_MSG, "\t", vbTab)
     Call MsgBox(HELP_MSG)
 
     Me.Caption = Replace(Me.Caption, " (?: Show help)", "")

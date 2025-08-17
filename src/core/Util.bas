@@ -466,8 +466,8 @@ Function DirGrob(ByVal folderPath As String) As Collection
 
     Dim sepIndex As Long
     Dim lastPart As String
-    folderPath = Replace(folderPath, "/", "¥")
-    sepIndex = InStrRev(folderPath, "¥")
+    folderPath = Replace(folderPath, "/", "\")
+    sepIndex = InStrRev(folderPath, "\")
 
     lastPart = LCase(Mid(folderPath, sepIndex + 1))
     folderPath = Left(folderPath, sepIndex)
@@ -514,7 +514,7 @@ Function GetAbsolutePath(ByRef cwd As String, ByRef relativePath As String) As S
     Set fso = New FileSystemObject
 
     ' Combine the current workbook path with the relative path and get the absolute path
-    fullPath = cwd & "¥" & relativePath
+    fullPath = cwd & "\" & relativePath
     GetAbsolutePath = fso.GetAbsolutePathName(fullPath)
 
     ' Release the FileSystemObject
@@ -529,18 +529,18 @@ End Function
 ' */
 Function ResolvePath(ByVal strPath As String) As String
     ' Replace path to windows style
-    strPath = Replace(strPath, "/", "¥")
+    strPath = Replace(strPath, "/", "\")
 
     ' Declare variable to store the resolved absolute path
     Dim absPath As String
 
     ' Check if the relative path starts with a backslash
-    If StartsWith(strPath, "¥") Then
+    If StartsWith(strPath, "\") Then
         ' Resolve the absolute path
         absPath = GetAbsolutePath("", Mid(strPath, 2))
 
-    ' Check if the relative path starts with a tilde (‾), indicating the user profile directory
-    ElseIf StartsWith(strPath, "‾¥") Then
+    ' Check if the relative path starts with a tilde (~), indicating the user profile directory
+    ElseIf StartsWith(strPath, "~\") Then
         ' Resolve the absolute path using the user's profile directory
         absPath = GetAbsolutePath(Environ$("USERPROFILE"), Mid(strPath, 3))
 
@@ -550,8 +550,8 @@ Function ResolvePath(ByVal strPath As String) As String
     End If
 
     ' If the relative path ends with a backslash, append it to the absolute path
-    If Right(strPath, 1) = "¥" And Right(absPath, 1) <> "¥" Then
-        absPath = absPath & "¥"
+    If Right(strPath, 1) = "\" And Right(absPath, 1) <> "\" Then
+        absPath = absPath & "\"
     End If
 
     ' Return the resolved absolute path
@@ -590,8 +590,8 @@ End Function
 Function ColorCodeToHex(ByVal colorCode As Long) As String
     ' Convert long integer color code to 6-digit hex string
     ColorCodeToHex = Right("0" & Hex(colorCode Mod 256), 2) & _
-                     Right("0" & Hex(colorCode ¥ 256 Mod 256), 2) & _
-                     Right("0" & Hex(colorCode ¥ 256 ¥ 256), 2)
+                     Right("0" & Hex(colorCode \ 256 Mod 256), 2) & _
+                     Right("0" & Hex(colorCode \ 256 \ 256), 2)
     ColorCodeToHex = LCase(ColorCodeToHex)
 End Function
 

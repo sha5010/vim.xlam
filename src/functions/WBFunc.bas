@@ -92,7 +92,7 @@ Function ReopenActiveWorkbook(Optional ByVal g As String) As Boolean
     Dim wbFullName As String
     Dim ret As VbMsgBoxResult
 
-    If InStr(ActiveWorkbook.FullName, "¥") = 0 And InStr(ActiveWorkbook.FullName, "/") = 0 Then
+    If InStr(ActiveWorkbook.FullName, "\") = 0 And InStr(ActiveWorkbook.FullName, "/") = 0 Then
         Exit Function
     End If
 
@@ -208,7 +208,7 @@ Function ToggleReadOnly(Optional ByVal g As String) As Boolean
 
     Dim ret As VbMsgBoxResult
 
-    If InStr(ActiveWorkbook.FullName, "¥") = 0 And InStr(ActiveWorkbook.FullName, "/") = 0 Then
+    If InStr(ActiveWorkbook.FullName, "\") = 0 And InStr(ActiveWorkbook.FullName, "/") = 0 Then
         Exit Function
     End If
 

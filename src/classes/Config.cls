@@ -298,10 +298,10 @@ Public Sub LoadCustomConfig(Optional ByVal configFilePath As String)
                 sepIndex = InStr(sepIndex + 1, configFilePath, "/")
                 configFilePath = Mid(configFilePath, sepIndex)
             End If
-            configFilePath = Environ("OneDrive") & Replace(configFilePath, "/", "¥")
+            configFilePath = Environ("OneDrive") & Replace(configFilePath, "/", "\")
         End If
 
-        configFilePath = configFilePath & "¥" & CUSTOM_CONFIG
+        configFilePath = configFilePath & "\" & CUSTOM_CONFIG
     End If
 
     Dim fso As FileSystemObject

@@ -152,14 +152,14 @@ Public Enum eKey
     Minus_                      ' US  - (Shift _ )      JIS  - (Shift = )
     Period_                     ' US  . (Shift > )      JIS  . (Shift > )
     Slash_                      ' US  / (Shift ? )      JIS  / (Shift ? )
-    BackQuote_US_ = 192         ' US  ` (Shift ‾ )      JIS  @ (Shift ` )
-    AtMark_JIS_ = 192           ' US  ` (Shift ‾ )      JIS  @ (Shift ` )
+    BackQuote_US_ = 192         ' US  ` (Shift ~ )      JIS  @ (Shift ` )
+    AtMark_JIS_ = 192           ' US  ` (Shift ~ )      JIS  @ (Shift ` )
     OpeningSquareBracket_ = 219 ' US  [ (Shift { )      JIS  [ (Shift { )
-    Backslash_                  ' US  ¥ (Shift | )      JIS  ¥ (Shift | )  [upperside ¥ ]
+    Backslash_                  ' US  \ (Shift | )      JIS  \ (Shift | )  [upperside \ ]
     ClosingSquareBracket_       ' US  ] (Shift } )      JIS  ] (Shift } )
-    SingleQuote_US_ = 222       ' US  ' (Shift " )      JIS  ^ (Shift ‾ )
-    Caret_JIS_ = 222            ' US  ' (Shift " )      JIS  ^ (Shift ‾ )
-    Underscore_ = 226           ' US  None              JIS  ¥ (Shift _ )  [downside ¥ ]
+    SingleQuote_US_ = 222       ' US  ' (Shift " )      JIS  ^ (Shift ~ )
+    Caret_JIS_ = 222            ' US  ' (Shift " )      JIS  ^ (Shift ~ )
+    Underscore_ = 226           ' US  None              JIS  \ (Shift _ )  [downside \ ]
 
     'JIS keyboard only
     Eisu_ = 240                 ' 英数

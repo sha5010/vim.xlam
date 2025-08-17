@@ -19,8 +19,8 @@ Private REDIRECT_TABLE_JIS As Dictionary
 ' cKeyMap structure
 ' {
 '   "n - {h}": "MoveLeft",                                  # Normal mode & "h" key  => Map to "MoveLeft" procedure
-'   "n - {d} [SUMMARY]": "¥n{d} - {d}¥n{d} - {c} ..."       # Normal mode & "d" key summary  => List of available subkeys
-'   "n - {r} {TEMP]": "rr SelectRow¥nrd DeleteRow¥n ..."    # Normal mode & "r" key temp  => Unresolved key list
+'   "n - {d} [SUMMARY]": "\n{d} - {d}\n{d} - {c} ..."       # Normal mode & "d" key summary  => List of available subkeys
+'   "n - {r} {TEMP]": "rr SelectRow\nrd DeleteRow\n ..."    # Normal mode & "r" key temp  => Unresolved key list
 ' }
 
 '/*
@@ -775,7 +775,7 @@ Private Sub InitDummyKey()
         .Add "{?}", dummyModeBit
         .Add "{@}", dummyModeBit
         .Add "{[}", dummyModeBit
-        .Add "{¥}", dummyModeBit
+        .Add "{\}", dummyModeBit
         .Add "{]}", dummyModeBit
         .Add "{^}", dummyModeBit
         .Add "{_}", dummyModeBit
@@ -783,7 +783,7 @@ Private Sub InitDummyKey()
         .Add "{{}", dummyModeBit
         .Add "{|}", dummyModeBit
         .Add "{}}", dummyModeBit
-        .Add "{‾}", dummyModeBit
+        .Add "{~}", dummyModeBit
         .Add "{226}", dummyModeBit
         .Add "+0", dummyModeBit
 
@@ -984,7 +984,7 @@ Private Function ConvertKeyCodes(ByVal key As String, _
         Case "lt", "<"
             result = Comma_
             isShift = True
-        Case "bslash", "¥": result = Backslash_
+        Case "bslash", "\": result = Backslash_
         Case "bar", "|"
             result = Backslash_
             isShift = True
@@ -1025,9 +1025,9 @@ Private Function ConvertKeyCodes(ByVal key As String, _
                 Case "_"
                     result = Minus_
                     isShift = True
-                Case "`", "‾"
+                Case "`", "~"
                     result = BackQuote_US_
-                    isShift = (lowerKey = "‾")
+                    isShift = (lowerKey = "~")
                 Case "'", """"
                     result = SingleQuote_US_
                     isShift = (lowerKey = """")
@@ -1058,9 +1058,9 @@ Private Function ConvertKeyCodes(ByVal key As String, _
                 Case "@", "`"
                     result = AtMark_JIS_
                     isShift = (lowerKey = "`")
-                Case "^", "‾"
+                Case "^", "~"
                     result = Caret_JIS_
-                    isShift = (lowerKey = "‾")
+                    isShift = (lowerKey = "~")
                 Case "_"
                     result = Underscore_
                     isShift = True
@@ -1131,7 +1131,7 @@ Public Function ConvertSendKeysStyle(ByVal key As String, _
             ConvertSendKeysStyle = "{ENTER}"
         Case "space":     ConvertSendKeysStyle = "{ }"
         Case "lt":        ConvertSendKeysStyle = "{<}"
-        Case "bslash":    ConvertSendKeysStyle = "{¥}"
+        Case "bslash":    ConvertSendKeysStyle = "{\}"
         Case "bar":       ConvertSendKeysStyle = "{|}"
         Case "pageup":    ConvertSendKeysStyle = "{PGUP}"
         Case "pagedown":  ConvertSendKeysStyle = "{PGDN}"
@@ -1227,12 +1227,12 @@ Private Function GetKeyCharacter(ByVal code As Long, ByVal isShift As Boolean) A
         Case 192 And isUs: GetKeyCharacter = "`"
         Case 192 And isJis: GetKeyCharacter = "@"
         Case 219: GetKeyCharacter = "["
-        Case 220: GetKeyCharacter = "¥"
+        Case 220: GetKeyCharacter = "\"
         Case 221: GetKeyCharacter = "]"
         Case 222 And isUs: GetKeyCharacter = "'"
         Case 222 And isJis: GetKeyCharacter = "^"
         Case 226 And isShift: GetKeyCharacter = "_"
-        Case 226: GetKeyCharacter = "¥"
+        Case 226: GetKeyCharacter = "\"
         Case 32, 48 To 57, 65 To 90
             GetKeyCharacter = LCase(Chr(code))
         Case 96 To 105
@@ -1333,7 +1333,7 @@ Private Sub InitializeRedirectTables()
     If REDIRECT_TABLE_US Is Nothing Then
         Set REDIRECT_TABLE_US = New Dictionary
         With REDIRECT_TABLE_US
-            .Add "+{`}", "{‾}"
+            .Add "+{`}", "{~}"
             .Add "+1", "{!}"
             .Add "+2", "{@}"
             .Add "+3", "{#}"
@@ -1348,14 +1348,14 @@ Private Sub InitializeRedirectTables()
             .Add "+{=}", "{+}"
             .Add "+{[}", "{{}"
             .Add "+{]}", "{}}"
-            .Add "+{¥}", "{|}"
+            .Add "+{\}", "{|}"
             .Add "+{;}", "{:}"
             .Add "+{'}", "{""}"
             .Add "+{,}", "{<}"
             .Add "+{.}", "{>}"
             .Add "+{/}", "{?}"
 
-            .Add "^{‾}", "^+{`}"
+            .Add "^{~}", "^+{`}"
             .Add "^{!}", "^+1"
             .Add "^{@}", "^+2"
             .Add "^{#}", "^+3"
@@ -1370,7 +1370,7 @@ Private Sub InitializeRedirectTables()
             .Add "^{+}", "^+{=}"
             .Add "^{{}", "^+{[}"
             .Add "^{}}", "^+{]}"
-            .Add "^{|}", "^+{¥}"
+            .Add "^{|}", "^+{\}"
             .Add "^{:}", "^+{;}"
             .Add "^{""}", "^+{'}"
             .Add "^{<}", "^+{,}"
@@ -1392,8 +1392,8 @@ Private Sub InitializeRedirectTables()
             .Add "+8", "{(}"
             .Add "+9", "{)}"
             .Add "+{-}", "{=}"
-            .Add "+{^}", "{‾}"
-            .Add "+{¥}", "{|}"
+            .Add "+{^}", "{~}"
+            .Add "+{\}", "{|}"
             .Add "+{@}", "{`}"
             .Add "+{[}", "{{}"
             .Add "+{;}", "{+}"
@@ -1414,8 +1414,8 @@ Private Sub InitializeRedirectTables()
             .Add "^{(}", "^+8"
             .Add "^{)}", "^+9"
             .Add "^{=}", "^+{-}"
-            .Add "^{‾}", "^+{^}"
-            .Add "^{|}", "^+{¥}"
+            .Add "^{~}", "^+{^}"
+            .Add "^{|}", "^+{\}"
             .Add "^{`}", "^+{@}"
             .Add "^{{}", "^+{[}"
             .Add "^{+}", "^+{;}"
@@ -1457,7 +1457,7 @@ Public Sub BindAll()
             ' Create the lazy load procedure for the key
             Dim lazyLoadProcedure As String
             If key = "{226}" Then
-                lazyLoadProcedure = "{¥}"
+                lazyLoadProcedure = "{\}"
             Else
                 lazyLoadProcedure = Replace(key, "{'}", "{''}")
                 lazyLoadProcedure = Replace(lazyLoadProcedure, "{""}", "{""""}")

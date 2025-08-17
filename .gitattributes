@@ -16,17 +16,17 @@
 *.vbaproj linguist-language=INI
 
 # file encording
-*.bas working-tree-encoding=sjis
-*.dcm working-tree-encoding=sjis
-*.frm working-tree-encoding=sjis
-*.cls working-tree-encoding=sjis
+*.bas working-tree-encoding=CP932
+*.dcm working-tree-encoding=CP932
+*.frm working-tree-encoding=CP932
+*.cls working-tree-encoding=CP932
 
-*.bas diff=sjis
-*.dcm diff=sjis
-*.frm diff=sjis
-*.cls diff=sjis
+*.bas diff=CP932
+*.dcm diff=CP932
+*.frm diff=CP932
+*.cls diff=CP932
 
-*.bas encoding=sjis
-*.dcm encoding=sjis
-*.frm encoding=sjis
-*.cls encoding=sjis
+*.bas encoding=CP932
+*.dcm encoding=CP932
+*.frm encoding=CP932
+*.cls encoding=CP932

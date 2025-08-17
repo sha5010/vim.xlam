@@ -66,7 +66,7 @@ Function ScrollUpHalf(Optional ByVal g As String) As Boolean
 
     If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
-        ActiveWindow.LargeScroll Up:=gVim.Count1 ¥ 2
+        ActiveWindow.LargeScroll Up:=gVim.Count1 \ 2
         Application.ScreenUpdating = True
     End If
 
@@ -99,7 +99,7 @@ Function ScrollDownHalf(Optional ByVal g As String) As Boolean
 
     If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
-        ActiveWindow.LargeScroll Down:=gVim.Count1 ¥ 2
+        ActiveWindow.LargeScroll Down:=gVim.Count1 \ 2
         Application.ScreenUpdating = True
     End If
 
@@ -132,7 +132,7 @@ Function ScrollLeftHalf(Optional ByVal g As String) As Boolean
 
     If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
-        ActiveWindow.LargeScroll ToLeft:=gVim.Count1 ¥ 2
+        ActiveWindow.LargeScroll ToLeft:=gVim.Count1 \ 2
         Application.ScreenUpdating = True
     End If
 
@@ -165,7 +165,7 @@ Function ScrollRightHalf(Optional ByVal g As String) As Boolean
 
     If gVim.Count1 > 1 Then
         Application.ScreenUpdating = False
-        ActiveWindow.LargeScroll ToRight:=gVim.Count1 ¥ 2
+        ActiveWindow.LargeScroll ToRight:=gVim.Count1 \ 2
         Application.ScreenUpdating = True
     End If
 
