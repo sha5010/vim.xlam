@@ -168,8 +168,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Moving | `}` | `MoveToBottomOfCurrentRegion` | CurrentRegion 内で最後の行に移動 | |
 | Moving | `W[cell]` | `MoveToSpecifiedCell` | 指定された `[cell]` へ移動 | |
 | Moving | `:[num]` | `MoveToSpecifiedRow` | 指定された `[num]` 行目に移動 | |
-| Cell | `xx` | `CutCell` | セルを切り取り | |
-| Cell | `yy` | `YankCell` | セルをコピー | |
+| Cell | `ga` | `SelectUsedRange` | UsedRange の範囲を選択 | |
+| Cell | `gA` | `SelectAllCells` | 全セルを選択 | |
 | Cell | `o` | `InsertCellsDown` | 選択セルの下にセルを挿入 | ✓ |
 | Cell | `O` | `InsertCellsUp` | 選択セルの上にセルを挿入 | ✓ |
 | Cell | `t` | `InsertCellsRight` | 選択セルの右にセルを挿入 | ✓ |
@@ -319,6 +319,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Column | `cw` | `SetColumnsWidth` | 現在列の幅を任意に設定 | ✓ |
 | Column | `cl` | `ApplyColumnsLock` | 指定された列だけしか選択できないようにロック | ✓ |
 | Column | `cL` | `ClearColumnsLock` | `ApplyColumnsLock` で適用されたロックを解除 |   |
+| Yank | `yy` | `YankCell` | セルをコピー | |
+| Yank | `yga` | `YankUsedRange` | UsedRange の範囲をコピー | |
+| Yank | `ygA` | `YankAllCells` | 全セルをコピー | |
 | Yank | `yr` | `YankRows` | 現在行をコピー | ✓ |
 | Yank | `yc` | `YankColumns` | 現在列をコピー | ✓ |
 | Yank | `ygg` | `YankRows` | 現在行から1行目までをコピー | |
@@ -339,7 +342,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Yank | `yl` | `YankFromRightCell` | 現在のセルの右の値をコピーして貼り付け | |
 | Yank | `Y` | `YankAsPlaintext` | 選択中のセルをプレーンテキストとしてコピー | |
 | Delete | `D`/`X` | `DeleteValue` | セルの値を削除 | |
-| Delete | `dx` | `DeleteRows` | 現在行を削除 | ✓ |
+| Delete | `dga` | `DeleteUsedRange` | UsedRange の範囲を削除 | |
+| Delete | `dgA` | `DeleteAllCells` | 全セルを削除 | |
 | Delete | `dd`/`dr` | `DeleteRows` | 現在行を削除 | ✓ |
 | Delete | `dc` | `DeleteColumns` | 現在列を削除 | ✓ |
 | Delete | `dgg` | `DeleteRows` | 現在行から1行目までを削除 | |
@@ -358,6 +362,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Delete | `dj` | `DeleteToUp` | 現在のセルを削除し上方向へシフト | ✓ |
 | Delete | `dk` | `DeleteToUp` | 現在のセルを削除し上方向へシフト | ✓ |
 | Delete | `dl` | `DeleteToLeft` | 現在のセルを削除し左方向へシフト | ✓ |
+| Cut | `xx` | `CutCell` | セルを切り取り | |
+| Cut | `xga` | `CutUsedRange` | UsedRange の範囲を切り取り | |
+| Cut | `xgA` | `CutAllCells` | 全セルを切り取り | |
 | Cut | `xr` | `CutRows` | 現在行を切り取り | ✓ |
 | Cut | `xc` | `CutColumns` | 現在列を切り取り | ✓ |
 | Cut | `xgg` | `CutRows` | 現在行から1行目までを切り取り | |

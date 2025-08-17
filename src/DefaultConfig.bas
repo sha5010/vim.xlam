@@ -88,8 +88,8 @@ Sub DefaultConfig()
 
 
         'Cell
-        .Map "nmap xx CutCell"
-        .Map "nmap yy YankCell"
+        .Map "nmap ga SelectUsedRange"
+        .Map "nmap gA SelectAllCells"
         .Map "nmap o InsertCellsDown"
         .Map "nmap O InsertCellsUp"
         .Map "nmap t InsertCellsRight"
@@ -260,6 +260,9 @@ Sub DefaultConfig()
 
 
         'Yank
+        .Map "nmap yy YankCell"
+        .Map "nmap yga YankUsedRange"
+        .Map "nmap ygA YankAllCells"
         .Map "nmap yr YankRows"
         .Map "nmap yc YankColumns"
         .Map "nmap ygg YankRows 5"      ' eTargetRowType.ToFirstRows
@@ -285,6 +288,8 @@ Sub DefaultConfig()
         'Delete
         .Map "nmap X DeleteValue"
         .Map "nmap D DeleteValue"
+        .Map "nmap dga DeleteUsedRange"
+        .Map "nmap dgA DeleteAllCells"
         .Map "nmap dd DeleteRows"
         .Map "nmap dr DeleteRows"
         .Map "nmap dc DeleteColumns"
@@ -308,6 +313,9 @@ Sub DefaultConfig()
 
 
         'Cut
+        .Map "nmap xx CutCell"
+        .Map "nmap xga CutUsedRange"
+        .Map "nmap xgA CutAllCells"
         .Map "nmap xr CutRows"
         .Map "nmap xc CutColumns"
         .Map "nmap xgg CutRows 5"       ' eTargetRowType.ToFirstRows

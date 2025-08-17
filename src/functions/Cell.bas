@@ -2,12 +2,74 @@ Attribute VB_Name = "F_Cell"
 Option Explicit
 Option Private Module
 
+Private Enum eOperationType
+    SelectOp
+    YankOp
+    CutOp
+    DeleteOp
+End Enum
+
 Private Enum eSearchMode
     TopToBottom = 1
     LeftToRight
     BottomToTop
     RightToLeft
 End Enum
+
+Private Function OperateCells(ByRef Target As Range, ByVal operationType As eOperationType)
+    On Error GoTo Catch
+
+    If Target Is Nothing Then
+        Exit Function
+    End If
+
+    Call StopVisualMode
+
+    Select Case operationType
+        Case eOperationType.SelectOp
+            Target.Select
+        Case eOperationType.YankOp
+            Target.Copy
+            Set gVim.Vars.LastYanked = Target
+        Case eOperationType.CutOp
+            Target.Cut
+            Set gVim.Vars.LastYanked = Target
+        Case eOperationType.DeleteOp
+            Target.Select
+            Call KeyStroke(Ctrl_ + Minus_)
+    End Select
+
+Catch:
+    Call ErrorHandler("OperateCells")
+End Function
+
+Function SelectUsedRange(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.UsedRange, SelectOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("SelectUsedRange")
+End Function
+
+Function SelectAllCells(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.Cells, SelectOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("SelectAllCells")
+End Function
 
 Function CutCell(Optional ByVal g As String) As Boolean
     Call StopVisualMode
@@ -18,6 +80,34 @@ Function CutCell(Optional ByVal g As String) As Boolean
     End If
 End Function
 
+Function CutUsedRange(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.UsedRange, CutOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("CutUsedRange")
+End Function
+
+Function CutAllCells(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.Cells, CutOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("CutAllCells")
+End Function
+
 Function YankCell(Optional ByVal g As String) As Boolean
     Call StopVisualMode
     Call KeyStroke(Ctrl_ + C_)
@@ -25,6 +115,62 @@ Function YankCell(Optional ByVal g As String) As Boolean
     If TypeName(Selection) = "Range" Then
         Set gVim.Vars.LastYanked = Selection
     End If
+End Function
+
+Function YankUsedRange(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.UsedRange, YankOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("YankUsedRange")
+End Function
+
+Function YankAllCells(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.Cells, YankOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("YankAllCells")
+End Function
+
+Function DeleteUsedRange(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.UsedRange, DeleteOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("DeleteUsedRange")
+End Function
+
+Function DeleteAllCells(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    If ActiveSheet.Type <> XlSheetType.xlWorksheet Then
+        Exit Function
+    End If
+
+    Call OperateCells(ActiveSheet.Cells, DeleteOp)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("DeleteAllCells")
 End Function
 
 Function YankFromUpCell(Optional ByVal g As String) As Boolean

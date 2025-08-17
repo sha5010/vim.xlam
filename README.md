@@ -170,8 +170,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Moving | `}` | `MoveToBottomOfCurrentRegion` | Move to the last row within the CurrentRegion | |
 | Moving | `W[cell]` | `MoveToSpecifiedCell` | Move to the specified `[cell]` | |
 | Moving | `:[num]` | `MoveToSpecifiedRow` | Move to the specified `[num]`-th row | |
-| Cell | `xx` | `CutCell` | Cut cell | |
-| Cell | `yy` | `YankCell` | Copy cell | |
+| Cell | `ga` | `SelectUsedRange` | Select the UsedRange | |
+| Cell | `gA` | `SelectAllCells` | Select all cells | |
 | Cell | `o` | `InsertCellsDown` | Insert cells below the selected cells | ✓ |
 | Cell | `O` | `InsertCellsUp` | Insert cells above the selected cells | ✓ |
 | Cell | `t` | `InsertCellsRight` | Insert cells to the right of the selected cells | ✓ |
@@ -321,6 +321,9 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Column | `cw` | `SetColumnsWidth` | Set the width of the current column to a custom value | ✓ |
 | Column | `cl` | `ApplyColumnsLock` | Locks to allow only specified columns to be selected | ✓ |
 | Column | `cL` | `ClearColumnsLock` | Remove locks applied by `ApplyColumnsLock` |   |
+| Yank | `yy` | `YankCell` | Copy cell | |
+| Yank | `yga` | `YankUsedRange` | Copy the UsedRange | |
+| Yank | `ygA` | `YankAllCells` | Copy all cells | |
 | Yank | `yr` | `YankRows` | Copy the current row | ✓ |
 | Yank | `yc` | `YankColumns` | Copy the current column | ✓ |
 | Yank | `ygg` | `YankRows` | Copy from the current row to the first row | |
@@ -341,7 +344,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Yank | `yl` | `YankFromRightCell` | Copy and paste the value from the cell to the right of the current cell | |
 | Yank | `Y` | `YankAsPlaintext` | Copy the selected cells as plaintext | |
 | Delete | `D`/`X` | `DeleteValue` | Delete the value in the cell | |
-| Delete | `dx` | `DeleteRows` | Delete the current row | ✓ |
+| Delete | `dga` | `DeleteUsedRange` | Delete the UsedRange | |
+| Delete | `dgA` | `DeleteAllCells` | Delete all cells | |
 | Delete | `dd`/`dr` | `DeleteRows` | Delete the current row | ✓ |
 | Delete | `dc` | `DeleteColumns` | Delete the current column | ✓ |
 | Delete | `dgg` | `DeleteRows` | Delete from the current row to the top row | |
@@ -360,6 +364,9 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Delete | `dj` | `DeleteToUp` | Delete the current cell and shift up | ✓ |
 | Delete | `dk` | `DeleteToUp` | Delete the current cell and shift up | ✓ |
 | Delete | `dl` | `DeleteToLeft` | Delete the current cell and shift left | ✓ |
+| Cut | `xx` | `CutCell` | Cut cell | |
+| Cut | `xga` | `CutUsedRange` | Cut the UsedRange | |
+| Cut | `xgA` | `CutAllCells` | Cut all cells | |
 | Cut | `xr` | `CutRows` | Cut the current row | ✓ |
 | Cut | `xc` | `CutColumns` | Cut the current column | ✓ |
 | Cut | `xgg` | `CutRows` | Cut from the current row to the first row | |
