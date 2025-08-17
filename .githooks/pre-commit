@@ -9,7 +9,7 @@
 FILES=$(
   git diff --cached --check |
     grep -E "trailing whitespace|new blank line" |
-    grep -iE "\.(bas|frm|cls)$" |
+    grep -iE "\.(bas|frm|cls):[0-9]+:" |
     sed -e 's/:[[:digit:]]*:.*$//' |
     sort | uniq
 )
