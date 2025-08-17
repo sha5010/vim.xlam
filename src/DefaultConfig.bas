@@ -452,6 +452,7 @@ Sub DefaultConfig()
         .Map "nmap w ActivateSheet"
 
         .Map "nmap <cmd>preview PrintPreviewOfActiveSheet"
+        .Map "nmap <cmd>print PrintPreviewAndPrint"
 
 
         'Workbook Function

@@ -471,6 +471,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Sheet | `we` | `ExportSheet` | Show the move or copy sheet dialog | |
 | Sheet | `w[num]` | `ActivateSheet` | Select the sheet at position `[num]` (only 1-9) | |
 | Sheet | `:preview` | `PrintPreviewOfActiveSheet` | Show the print preview of the active sheet | |
+| Sheet | `:print` | `PrintPreviewAndPrint` | Show the print preview and print screen | |
 | Workbook | `:e [path]` | `OpenWorkbook` | Open a workbook | |
 | Workbook | `:e!` | `ReopenActiveWorkbook` | Discard changes to the active workbook and reopen it | |
 | Workbook | `:w` | `SaveWorkbook` | Save the active workbook | |

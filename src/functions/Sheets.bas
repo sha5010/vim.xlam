@@ -355,3 +355,12 @@ Function PrintPreviewOfActiveSheet(Optional ByVal g As String) As Boolean
 Catch:
     Call ErrorHandler("PrintPreviewOfActiveSheet")
 End Function
+
+Function PrintPreviewAndPrint(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+    Application.CommandBars.ExecuteMso "PrintPreviewAndPrint"
+    Exit Function
+
+Catch:
+    Call ErrorHandler("PrintPreviewAndPrint")
+End Function
