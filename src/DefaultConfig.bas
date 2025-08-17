@@ -72,7 +72,8 @@ Sub DefaultConfig()
         .Map "nmap <C-S-K> MoveUp"
         .Map "nmap <C-S-L> MoveRight"
 
-        .Map "nmap gg MoveToTopRow"
+        .Map "nmap gg MoveToFirstRow"
+        .Map "nmap gG MoveToTopRow"
         .Map "nmap G MoveToLastRow"
         .Map "nmap <bar> MoveToNthColumn"
         .Map "nmap 0 MoveToFirstColumn"

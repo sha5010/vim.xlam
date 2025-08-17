@@ -158,7 +158,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Moving | `<C-S-J>` | `MoveDown` | Ctrl + Shift + ↓ | |
 | Moving | `<C-S-K>` | `MoveUp` | Ctrl + Shift + ↑ | |
 | Moving | `<C-S-L>` | `MoveRight` | Ctrl + Shift + → | |
-| Moving | `gg` | `MoveToTopRow` | Move to the 1st row or the `[count]`-th row | ✓ |
+| Moving | `gg` | `MoveToFirstRow` | Move to the 1st row or the `[count]`-th row | ✓ |
+| Moving | `gG` | `MoveToTopRow` | Move to the first row of UsedRange or the `[count]`-th row | ✓ |
 | Moving | `G` | `MoveToLastRow` | Move to the last row of UsedRange or the `[count]`-th row | ✓ |
 | Moving | `\|` | `MoveToNthColumn` | Move to the `[count]`-th column | ✓ |
 | Moving | `0` | `MoveToFirstColumn` | Move to the 1st column | |

@@ -156,8 +156,9 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Moving | `<C-S-J>` | `MoveDown` | Ctrl + Shift + ↓ | |
 | Moving | `<C-S-K>` | `MoveUp` | Ctrl + Shift + ↑ | |
 | Moving | `<C-S-L>` | `MoveRight` | Ctrl + Shift + → | |
-| Moving | `gg` | `MoveToTopRow` | 1行目 または `[count]` 行目へ移動 | ✓ |
-| Moving | `G` | `MoveToLastRow` | UsedRange の最終行 または `[count]` 行目へ移動 | ✓ |
+| Moving | `gg` | `MoveToFirstRow` | 1行目 または `[count]` 行目へ移動 | ✓ |
+| Moving | `gG` | `MoveToTopRow` | UsedRange の最初の行 または `[count]` 行目へ移動 | ✓ |
+| Moving | `G` | `MoveToLastRow` | UsedRange の最後の行 または `[count]` 行目へ移動 | ✓ |
 | Moving | `\|` | `MoveToNthColumn` | `[count]` 列目に移動 | ✓ |
 | Moving | `0` | `MoveToFirstColumn` | 1列目に移動 | |
 | Moving | `^` | `MoveToLeftEnd` | UsedRange の最初の列に移動 | |

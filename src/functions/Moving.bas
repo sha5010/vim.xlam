@@ -265,7 +265,7 @@ Function MoveRightWithShift()
     End If
 End Function
 
-Function MoveToTopRow(Optional ByVal g As String) As Boolean
+Function MoveToFirstRow(Optional ByVal g As String) As Boolean
     On Error GoTo Catch
 
     Call RecordToJumpList
@@ -273,6 +273,24 @@ Function MoveToTopRow(Optional ByVal g As String) As Boolean
     With ActiveWorkbook.ActiveSheet
         If gVim.Count = 0 Then
             .Cells(1, ActiveCell.Column).Select
+        Else
+            .Cells(gVim.Count1, ActiveCell.Column).Select
+        End If
+    End With
+    Exit Function
+
+Catch:
+    Call ErrorHandler("MoveToFirstRow")
+End Function
+
+Function MoveToTopRow(Optional ByVal g As String) As Boolean
+    On Error GoTo Catch
+
+    Call RecordToJumpList
+
+    With ActiveWorkbook.ActiveSheet
+        If gVim.Count = 0 Then
+            .Cells(.UsedRange.Item(1).Row, ActiveCell.Column).Select
         Else
             .Cells(gVim.Count1, ActiveCell.Column).Select
         End If
