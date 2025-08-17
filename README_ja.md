@@ -321,13 +321,17 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Yank | `yr` | `YankRows` | 現在行をコピー | ✓ |
 | Yank | `yc` | `YankColumns` | 現在列をコピー | ✓ |
 | Yank | `ygg` | `YankRows` | 現在行から1行目までをコピー | |
-| Yank | `yG` | `YankRows` | 現在行から UsedRange の最終行までをコピー | |
+| Yank | `ygG` | `YankRows` | 現在行から UsedRange の最初の行までをコピー | |
+| Yank | `yG` | `YankRows` | 現在行から UsedRange の最後の行までをコピー | |
 | Yank | `y{` | `YankRows` | 現在行から CurrentRegion の最初の行までをコピー | |
 | Yank | `y}` | `YankRows` | 現在行から CurrentRegion の最後の行までをコピー | |
-| Yank | `y0` | `YankColumns` | 現在列から UsedRange の最初の列までをコピー | |
+| Yank | `yar` | `YankRows` | UsedRange の行全体をコピー | |
+| Yank | `y0` | `YankColumns` | 現在列から1列目までをコピー | |
+| Yank | `y^` | `YankColumns` | 現在列から UsedRange の最初の列までをコピー | |
 | Yank | `y$` | `YankColumns` | 現在列から UsedRange の最後の列までをコピー | |
-| Yank | `y^` | `YankColumns` | 現在列から CurrentRegion  の最初の列までをコピー | |
+| Yank | `yg^` | `YankColumns` | 現在列から CurrentRegion の最初の列までをコピー | |
 | Yank | `yg$` | `YankColumns` | 現在列から CurrentRegion の最後の列までをコピー | |
+| Yank | `yac` | `YankColumns` | UsedRange の列全体をコピー | |
 | Yank | `yh` | `YankFromLeftCell` | 現在のセルの左の値をコピーして貼り付け | |
 | Yank | `yj` | `YankFromDownCell` | 現在のセルの下の値をコピーして貼り付け | |
 | Yank | `yk` | `YankFromUpCell` | 現在のセルの上の値をコピーして貼り付け | |
@@ -337,14 +341,18 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Delete | `dx` | `DeleteRows` | 現在行を削除 | ✓ |
 | Delete | `dd`/`dr` | `DeleteRows` | 現在行を削除 | ✓ |
 | Delete | `dc` | `DeleteColumns` | 現在列を削除 | ✓ |
-| Delete | `dgg` | `DeleteRows` | 現在行から先頭行までを削除 | |
-| Delete | `dG` | `DeleteRows` | 現在行から UsedRange の最終行までを削除 | |
+| Delete | `dgg` | `DeleteRows` | 現在行から1行目までを削除 | |
+| Delete | `dgG` | `DeleteRows` | 現在行から UsedRange の最初の行までを削除 | |
+| Delete | `dG` | `DeleteRows` | 現在行から UsedRange の最後の行までを削除 | |
 | Delete | `d{` | `DeleteRows` | 現在行から CurrentRegion の最初の行までを削除 | |
 | Delete | `d}` | `DeleteRows` | 現在行から CurrentRegion の最後の行までを削除 | |
-| Delete | `d0` | `DeleteColumns` | 現在列から UsedRange の最初の列までを削除 | |
+| Delete | `dar` | `DeleteRows` | UsedRange の行全体を削除 | |
+| Delete | `d0` | `DeleteColumns` | 現在列から1列目までを削除 | |
+| Delete | `d^` | `DeleteColumns` | 現在列から UsedRange の最初の列までを削除 | |
 | Delete | `d$` | `DeleteColumns` | 現在列から UsedRange の最後の列までを削除 | |
-| Delete | `d^` | `DeleteColumns` | 現在列から CurrentRegion  の最初の列までを削除 | |
+| Delete | `dg^` | `DeleteColumns` | 現在列から CurrentRegion の最初の列までを削除 | |
 | Delete | `dg$` | `DeleteColumns` | 現在列から CurrentRegion の最後の列までを削除 | |
+| Delete | `dac` | `DeleteColumns` | UsedRange の列全体を削除 | |
 | Delete | `dh` | `DeleteToLeft` | 現在のセルを削除し左方向へシフト | ✓ |
 | Delete | `dj` | `DeleteToUp` | 現在のセルを削除し上方向へシフト | ✓ |
 | Delete | `dk` | `DeleteToUp` | 現在のセルを削除し上方向へシフト | ✓ |
@@ -352,13 +360,17 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cut | `xr` | `CutRows` | 現在行を切り取り | ✓ |
 | Cut | `xc` | `CutColumns` | 現在列を切り取り | ✓ |
 | Cut | `xgg` | `CutRows` | 現在行から1行目までを切り取り | |
+| Cut | `xgG` | `CutRows` | 現在行から UsedRange の最初の行までを切り取り | |
 | Cut | `xG` | `CutRows` | 現在行から UsedRange の最後の行までを切り取り | |
-| Cut | `x{` | `CutRows` | 現在行から CurrentRegion  の最初の列までを切り取り | |
+| Cut | `x{` | `CutRows` | 現在行から CurrentRegion の最初の列までを切り取り | |
 | Cut | `x}` | `CutRows` | 現在行から CurrentRegion の最後の行までを切り取り | |
-| Cut | `x0` | `CutColumns` | 現在列から UsedRange の最初の列までを切り取り | |
+| Cut | `xar` | `CutRows` | UsedRange の行全体を切り取り | |
+| Cut | `x0` | `CutColumns` | 現在列から1列目までを切り取り | |
+| Cut | `x^` | `CutColumns` | 現在列から UsedRange の最初の列までを切り取り | |
 | Cut | `x$` | `CutColumns` | 現在列から UsedRange の最後の列までを切り取り | |
-| Cut | `x^` | `CutColumns` | 現在列から CurrentRegion  の最初の列までを切り取り | |
+| Cut | `xg^` | `CutColumns` | 現在列から CurrentRegion の最初の列までを切り取り | |
 | Cut | `xg$` | `CutColumns` | 現在列から CurrentRegion の最後の列までを切り取り | |
+| Cut | `xac` | `CutColumns` | UsedRange の列全体を切り取り | |
 | Paste | `p` | `PasteSmart` | 行や列がコピーされたときは後に追加。それ以外は `Ctrl + V` を送出 | ✓ |
 | Paste | `P` | `PasteSmart` | 行や列がコピーされたときは前に挿入。それ以外は `Ctrl + V` を送出 | ✓ |
 | Paste | `gp` | `PasteSpecial` | 形式を選択して貼り付けのダイアログを表示 | |

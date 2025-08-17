@@ -8,6 +8,8 @@ Enum eTargetRowType
     ToBottomRows
     ToTopOfCurrentRegionRows
     ToBottomOfCurrentRegionRows
+    ToFirstRows
+    UsedRangeRows
 End Enum
 
 Private Function GetTargetRows(ByVal TargetType As eTargetRowType) As Range
@@ -37,6 +39,11 @@ Private Function GetTargetRows(ByVal TargetType As eTargetRowType) As Range
                 endRow = .Row + gVim.Count1 - 1
             End If
         End With
+
+    'ToFirstRows
+    ElseIf TargetType = ToFirstRows Then
+        startRow = 1
+        endRow = ActiveCell.Row
 
     'ToTopRows
     ElseIf TargetType = ToTopRows Then
@@ -85,6 +92,11 @@ Private Function GetTargetRows(ByVal TargetType As eTargetRowType) As Range
             Set GetTargetRows = Nothing
             Exit Function
         End If
+
+    'UsedRangeRows
+    ElseIf TargetType = UsedRangeRows Then
+        Set GetTargetRows = ActiveSheet.UsedRange.EntireRow
+        Exit Function
 
     End If
 

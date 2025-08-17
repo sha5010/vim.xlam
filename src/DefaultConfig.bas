@@ -261,14 +261,18 @@ Sub DefaultConfig()
         'Yank
         .Map "nmap yr YankRows"
         .Map "nmap yc YankColumns"
-        .Map "nmap ygg YankRows 1"      ' eTargetRowType.ToTopRows
+        .Map "nmap ygg YankRows 5"      ' eTargetRowType.ToFirstRows
+        .Map "nmap ygG YankRows 1"      ' eTargetRowType.ToTopRows
         .Map "nmap yG YankRows 2"       ' eTargetRowType.ToBottomRows
         .Map "nmap y{ YankRows 3"       ' eTargetRowType.ToTopOfCurrentRegionRows
         .Map "nmap y} YankRows 4"       ' eTargetRowType.ToBottomOfCurrentRegionRows
-        .Map "nmap y0 YankColumns 1"    ' eTargetColumnType.ToLeftEndColumns
+        .Map "nmap yar YankRows 6"      ' eTargetRowType.UsedRangeRows
+        .Map "nmap y0 YankColumns 5"    ' eTargetColumnType.ToFirstColumns
+        .Map "nmap y^ YankColumns 1"    ' eTargetColumnType.ToLeftEndColumns
         .Map "nmap y$ YankColumns 2"    ' eTargetColumnType.ToRightEndColumns
-        .Map "nmap y^ YankColumns 3"    ' eTargetColumnType.ToLeftOfCurrentRegionColumns
+        .Map "nmap yg^ YankColumns 3"   ' eTargetColumnType.ToLeftOfCurrentRegionColumns
         .Map "nmap yg$ YankColumns 4"   ' eTargetColumnType.ToRightOfCurrentRegionColumns
+        .Map "nmap yac YankColumns 6"   ' eTargetColumnType.UsedRangeColumns
 
         .Map "nmap yh YankFromLeftCell"
         .Map "nmap yj YankFromDownCell"
@@ -283,14 +287,18 @@ Sub DefaultConfig()
         .Map "nmap dd DeleteRows"
         .Map "nmap dr DeleteRows"
         .Map "nmap dc DeleteColumns"
-        .Map "nmap dgg DeleteRows 1"    ' eTargetRowType.ToTopRows
+        .Map "nmap dgg DeleteRows 5"    ' eTargetRowType.ToFirstRows
+        .Map "nmap dgG DeleteRows 1"    ' eTargetRowType.ToTopRows
         .Map "nmap dG DeleteRows 2"     ' eTargetRowType.ToBottomRows
         .Map "nmap d{ DeleteRows 3"     ' eTargetRowType.ToTopOfCurrentRegionRows
         .Map "nmap d} DeleteRows 4"     ' eTargetRowType.ToBottomOfCurrentRegionRows
-        .Map "nmap d0 DeleteColumns 1"  ' eTargetColumnType.ToLeftEndColumns
+        .Map "nmap dar DeleteRows 6"    ' eTargetRowType.UsedRangeRows
+        .Map "nmap d0 DeleteColumns 5"  ' eTargetColumnType.ToFirstColumns
+        .Map "nmap d^ DeleteColumns 1"  ' eTargetColumnType.ToLeftEndColumns
         .Map "nmap d$ DeleteColumns 2"  ' eTargetColumnType.ToRightEndColumns
-        .Map "nmap d^ DeleteColumns 3"  ' eTargetColumnType.ToLeftOfCurrentRegionColumns
+        .Map "nmap dg^ DeleteColumns 3" ' eTargetColumnType.ToLeftOfCurrentRegionColumns
         .Map "nmap dg$ DeleteColumns 4" ' eTargetColumnType.ToRightOfCurrentRegionColumns
+        .Map "nmap dac DeleteColumns 6" ' eTargetColumnType.UsedRangeColumns
 
         .Map "nmap dh DeleteToLeft"
         .Map "nmap dj DeleteToUp"
@@ -301,14 +309,18 @@ Sub DefaultConfig()
         'Cut
         .Map "nmap xr CutRows"
         .Map "nmap xc CutColumns"
-        .Map "nmap xgg CutRows 1"       ' eTargetRowType.ToTopRows
+        .Map "nmap xgg CutRows 5"       ' eTargetRowType.ToFirstRows
+        .Map "nmap xgG CutRows 1"       ' eTargetRowType.ToTopRows
         .Map "nmap xG CutRows 2"        ' eTargetRowType.ToBottomRows
         .Map "nmap x{ CutRows 3"        ' eTargetRowType.ToTopOfCurrentRegionRows
         .Map "nmap x} CutRows 4"        ' eTargetRowType.ToBottomOfCurrentRegionRows
-        .Map "nmap x0 CutColumns 1"     ' eTargetColumnType.ToLeftEndColumns
+        .Map "nmap xar CutRows 6"       ' eTargetRowType.UsedRangeRows
+        .Map "nmap x0 CutColumns 5"     ' eTargetColumnType.ToFirstColumns
+        .Map "nmap x^ CutColumns 1"     ' eTargetColumnType.ToLeftEndColumns
         .Map "nmap x$ CutColumns 2"     ' eTargetColumnType.ToRightEndColumns
-        .Map "nmap x^ CutColumns 3"     ' eTargetColumnType.ToLeftOfCurrentRegionColumns
+        .Map "nmap xg^ CutColumns 3"    ' eTargetColumnType.ToLeftOfCurrentRegionColumns
         .Map "nmap xg$ CutColumns 4"    ' eTargetColumnType.ToRightOfCurrentRegionColumns
+        .Map "nmap xac CutColumns 6"    ' eTargetColumnType.UsedRangeColumns
 
 
         'Paste

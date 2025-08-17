@@ -8,6 +8,8 @@ Enum eTargetColumnType
     ToRightEndColumns
     ToLeftOfCurrentRegionColumns
     ToRightOfCurrentRegionColumns
+    ToFirstColumns
+    UsedRangeColumns
 End Enum
 
 Private Function GetTargetColumns(ByVal TargetType As eTargetColumnType) As Range
@@ -37,6 +39,11 @@ Private Function GetTargetColumns(ByVal TargetType As eTargetColumnType) As Rang
                 endColumn = .Column + gVim.Count1 - 1
             End If
         End With
+
+    'ToFirstColumn
+    ElseIf TargetType = ToFirstColumns Then
+        startColumn = 1
+        endColumn = ActiveCell.Column
 
     'ToLeftEndColumns
     ElseIf TargetType = ToLeftEndColumns Then
@@ -85,6 +92,11 @@ Private Function GetTargetColumns(ByVal TargetType As eTargetColumnType) As Rang
             Set GetTargetColumns = Nothing
             Exit Function
         End If
+
+    'UsedRangeColumns
+    ElseIf TargetType = UsedRangeColumns Then
+        Set GetTargetColumns = ActiveSheet.UsedRange.EntireColumn
+        Exit Function
 
     End If
 
