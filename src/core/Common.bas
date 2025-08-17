@@ -228,9 +228,16 @@ Catch:
 End Function
 
 Sub DisableIME()
+    Static lastExecuted As Double
+
     Select Case IMEStatus
         Case Is > 3, vbIMEHiragana
-            Call KeyStrokeWithoutKeyup(IME_On_)
+            Dim t As Double
+            t = Timer()
+            If t < lastExecuted Or t - lastExecuted > 0.2 Then
+                Call KeyStrokeWithoutKeyup(IME_On_)
+                lastExecuted = t
+            End If
     End Select
 End Sub
 
