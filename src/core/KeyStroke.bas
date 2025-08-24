@@ -40,54 +40,54 @@ Private Sub StrokeSingleKey(ByVal key As Long, Optional ByVal ignoreKeyUp As Boo
     ' Extracting the actual key code
     key = key And &HFF
 
-    ' Get current key status
-    pHoldShiftLeft = ((GetKeyState(ShiftLeft_) And &H8000) <> 0) And Not ignoreKeyUp
-    pHoldShiftRight = ((GetKeyState(ShiftRight_) And &H8000) <> 0) And Not ignoreKeyUp
-    pHoldCtrlLeft = ((GetKeyState(CtrlLeft_) And &H8000) <> 0) And Not ignoreKeyUp
-    pHoldCtrlRight = ((GetKeyState(CtrlRight_) And &H8000) <> 0) And Not ignoreKeyUp
-    pHoldAltLeft = ((GetKeyState(AltLeft_) And &H8000) <> 0) And Not ignoreKeyUp
-    pHoldAltRight = ((GetKeyState(AltRight_) And &H8000) <> 0) And Not ignoreKeyUp
+    If Not ignoreKeyUp Then
+        ' Get current key status
+        pHoldAltLeft = False
+        pHoldCtrlLeft = False
+        pHoldShiftLeft = False
 
-    ' Simulating keydown for modifier keys
-    If Alt Then
-        keybd_event AltLeft_, 0, 0, 0
-    ElseIf Not ignoreKeyUp Then
-        If pHoldAltRight Then keybd_event AltRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        pHoldAltRight = ((GetKeyState(AltRight_) And &H8000) <> 0) And Not ignoreKeyUp
+        pHoldShiftRight = ((GetKeyState(ShiftRight_) And &H8000) <> 0) And Not ignoreKeyUp
+        pHoldCtrlRight = ((GetKeyState(CtrlRight_) And &H8000) <> 0) And Not ignoreKeyUp
+
+        If Not Alt Then pHoldAltLeft = ((GetKeyState(AltLeft_) And &H8000) <> 0) And Not ignoreKeyUp
+        If Not Ctrl Then pHoldCtrlLeft = ((GetKeyState(CtrlLeft_) And &H8000) <> 0) And Not ignoreKeyUp
+        If Not Shift Then pHoldShiftLeft = ((GetKeyState(ShiftLeft_) And &H8000) <> 0) And Not ignoreKeyUp
+
+        ' Simulating keyup for modifier keys
+        If pHoldAltRight And Not Alt Then keybd_event AltRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        If pHoldCtrlRight And Not Ctrl Then keybd_event CtrlRight_, 0, EXTENDED_KEY Or KEYUP, 0
+        If pHoldShiftRight And Not Shift Then keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
         If pHoldAltLeft Then keybd_event AltLeft_, 0, KEYUP, 0
-    End If
-
-    If Ctrl Then
-        keybd_event CtrlLeft_, 0, 0, 0
-    ElseIf Not ignoreKeyUp Then
-        If pHoldCtrlRight Then keybd_event CtrlRight_, 0, EXTENDED_KEY Or KEYUP, 0
         If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, KEYUP, 0
-    End If
-
-    If Shift Then
-        keybd_event vbKeyShift, 0, EXTENDED_KEY, 0
-    ElseIf Not ignoreKeyUp Then
-        If pHoldShiftRight Then keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
         If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, KEYUP, 0
     End If
 
     ' Simulating key stroke for the specified key
-    keybd_event key, 0, 0, 0
-    keybd_event key, 0, KEYUP, 0
+    If Alt Then keybd_event AltRight_, 0, EXTENDED_KEY, 0
+    If Ctrl Then keybd_event CtrlRight_, 0, EXTENDED_KEY, 0
+    If Shift Then keybd_event ShiftRight_, 0, EXTENDED_KEY, 0
 
-    ' Simulating keyup for modifier keys
-    If pHoldAltLeft Then keybd_event AltLeft_, 0, 0, 0
-    If pHoldAltRight Then keybd_event AltRight_, 0, 0, 0
-    If Not pHoldAltLeft And Alt Then keybd_event AltLeft_, 0, KEYUP, 0
+    If key > 0 Then
+        keybd_event key, 0, 0, 0
+        keybd_event key, 0, KEYUP, 0
+    End If
+
+    ' Restore key states
+    If Shift And Not pHoldShiftRight Then keybd_event ShiftRight_, 0, EXTENDED_KEY Or KEYUP, 0
+    If Ctrl And Not pHoldCtrlRight Then keybd_event CtrlRight_, 0, EXTENDED_KEY Or KEYUP, 0
+    If Alt And Not pHoldAltRight Then keybd_event AltRight_, 0, EXTENDED_KEY Or KEYUP, 0
+
+    If ignoreKeyUp Then
+        Exit Sub
+    End If
 
     If pHoldShiftLeft Then keybd_event ShiftLeft_, 0, 0, 0
-    If pHoldShiftRight Then keybd_event ShiftRight_, 0, 0, 0
-    If Not pHoldShiftLeft And Shift Then keybd_event ShiftLeft_, 0, KEYUP, 0
-    If Not pHoldShiftRight And Shift Then keybd_event ShiftRight_, 0, KEYUP, 0
-
     If pHoldCtrlLeft Then keybd_event CtrlLeft_, 0, 0, 0
-    If pHoldCtrlRight Then keybd_event CtrlRight_, 0, 0, 0
-    If Not pHoldCtrlLeft And Ctrl Then keybd_event CtrlLeft_, 0, KEYUP, 0
-
+    If pHoldAltLeft Then keybd_event AltLeft_, 0, 0, 0
+    If pHoldShiftRight And Not Shift Then keybd_event ShiftRight_, 0, 0, 0
+    If pHoldCtrlRight And Not Ctrl Then keybd_event CtrlRight_, 0, 0, 0
+    If pHoldAltRight And Not Alt Then keybd_event AltRight_, 0, 0, 0
 End Sub
 
 '/*
