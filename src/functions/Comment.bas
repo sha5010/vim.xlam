@@ -16,7 +16,7 @@ Function DeleteCellComment(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
     If Not ActiveCell.Comment Is Nothing Then
-        Call KeyStroke(Alt_ + R_, D_)
+        Call KeyStroke(Alt_, R_, D_)
     End If
 End Function
 

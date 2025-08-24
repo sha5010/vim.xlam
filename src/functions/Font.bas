@@ -8,7 +8,7 @@ Function IncreaseFontSize(Optional ByVal g As String) As Boolean
 
     Dim i As Long
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_ + H_, F_, G_)
+        Call KeyStroke(Alt_, H_, F_, G_)
     Next i
 End Function
 
@@ -18,16 +18,16 @@ Function DecreaseFontSize(Optional ByVal g As String) As Boolean
 
     Dim i As Long
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_ + H_, F_, K_)
+        Call KeyStroke(Alt_, H_, F_, K_)
     Next i
 End Function
 
 Function ChangeFontName(Optional ByVal g As String) As Boolean
-    Call KeyStroke(Alt_ + H_, F_, F_)
+    Call KeyStroke(Alt_, H_, F_, F_)
 End Function
 
 Function ChangeFontSize(Optional ByVal g As String) As Boolean
-    Call KeyStroke(Alt_ + H_, F_, S_)
+    Call KeyStroke(Alt_, H_, F_, S_)
 End Function
 
 Function AlignLeft(Optional ByVal g As String) As Boolean
@@ -42,18 +42,18 @@ Function AlignLeft(Optional ByVal g As String) As Boolean
     End If
 
     'Default
-    Call KeyStroke(Alt_ + H_, A_, L_)
+    Call KeyStroke(Alt_, H_, A_, L_)
     Exit Function
 
 Excel2019:
     'Excel 2019 and earlier
-    Call KeyStroke(Alt_ + H_, L_, k1_)
+    Call KeyStroke(Alt_, H_, L_, k1_)
 End Function
 
 Function AlignCenter(Optional ByVal g As String) As Boolean
     Call RepeatRegister("AlignCenter")
     Call StopVisualMode
-    Call KeyStroke(Alt_ + H_, A_, C_)
+    Call KeyStroke(Alt_, H_, A_, C_)
 End Function
 
 Function AlignRight(Optional ByVal g As String) As Boolean
@@ -68,30 +68,30 @@ Function AlignRight(Optional ByVal g As String) As Boolean
     End If
 
     'Default
-    Call KeyStroke(Alt_ + H_, A_, R_)
+    Call KeyStroke(Alt_, H_, A_, R_)
     Exit Function
 
 Excel2019:
     'Excel 2019 and earlier
-    Call KeyStroke(Alt_ + H_, R_)
+    Call KeyStroke(Alt_, H_, R_)
 End Function
 
 Function AlignTop(Optional ByVal g As String) As Boolean
     Call RepeatRegister("AlignTop")
     Call StopVisualMode
-    Call KeyStroke(Alt_ + H_, A_, T_)
+    Call KeyStroke(Alt_, H_, A_, T_)
 End Function
 
 Function AlignMiddle(Optional ByVal g As String) As Boolean
     Call RepeatRegister("AlignMiddle")
     Call StopVisualMode
-    Call KeyStroke(Alt_ + H_, A_, M_)
+    Call KeyStroke(Alt_, H_, A_, M_)
 End Function
 
 Function AlignBottom(Optional ByVal g As String) As Boolean
     Call RepeatRegister("AlignBottom")
     Call StopVisualMode
-    Call KeyStroke(Alt_ + H_, A_, B_)
+    Call KeyStroke(Alt_, H_, A_, B_)
 End Function
 
 Function ToggleBold(Optional ByVal g As String) As Boolean
@@ -119,7 +119,7 @@ Function ToggleStrikethrough(Optional ByVal g As String) As Boolean
 End Function
 
 Function ChangeFormat(Optional ByVal g As String) As Boolean
-    Call KeyStroke(Alt_ + H_, N_, Down_, Down_)
+    Call KeyStroke(Alt_, H_, N_, Down_, Down_)
 End Function
 
 Function showFontDialog(Optional ByVal g As String) As Boolean

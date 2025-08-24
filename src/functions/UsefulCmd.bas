@@ -175,34 +175,34 @@ End Function
 Function SetPrintArea(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
-    'Send Alt + P, R, S
-    Call KeyStroke(Alt_ + P_, R_, S_)
+    'Send Alt, P, R, S
+    Call KeyStroke(Alt_, P_, R_, S_)
 End Function
 
 Function ClearPrintArea(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
-    'Send Alt + P, R, C
-    Call KeyStroke(Alt_ + P_, R_, C_)
+    'Send Alt, P, R, C
+    Call KeyStroke(Alt_, P_, R_, C_)
 End Function
 
 Function Sort(Optional ByVal sortOrder As XlSortOrder) As Boolean
     Call StopVisualMode
 
     If sortOrder = xlAscending Then
-        'Send Alt + A, S, A
-        Call KeyStroke(Alt_ + A_, S_, A_)
+        'Send Alt, A, S, A
+        Call KeyStroke(Alt_, A_, S_, A_)
     Else
-        'Send Alt + A, S, D
-        Call KeyStroke(Alt_ + A_, S_, D_)
+        'Send Alt, A, S, D
+        Call KeyStroke(Alt_, A_, S_, D_)
     End If
 End Function
 
 Function RemoveDuplicates(Optional ByVal g As String) As Boolean
     Call StopVisualMode
 
-    'Send Alt + A, M, Shift + Tab, Shift + Tab
-    Call KeyStroke(Alt_ + A_, M_, Shift_ + Tab_, Shift_ + Tab_)
+    'Send Alt, A, M, Shift + Tab, Shift + Tab
+    Call KeyStroke(Alt_, A_, M_, Shift_ + Tab_, Shift_ + Tab_)
 End Function
 
 Function OpenActiveBookDir(Optional ByVal g As String) As Boolean

@@ -175,22 +175,22 @@ End Function
 
 Function YankFromUpCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromUpCell")
-    Call KeyStroke(Alt_ + H_, F_, I_, D_)
+    Call KeyStroke(Alt_, H_, F_, I_, D_)
 End Function
 
 Function YankFromDownCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromDownCell")
-    Call KeyStroke(Alt_ + H_, F_, I_, U_)
+    Call KeyStroke(Alt_, H_, F_, I_, U_)
 End Function
 
 Function YankFromLeftCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromLeftCell")
-    Call KeyStroke(Alt_ + H_, F_, I_, R_)
+    Call KeyStroke(Alt_, H_, F_, I_, R_)
 End Function
 
 Function YankFromRightCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromRightCell")
-    Call KeyStroke(Alt_ + H_, F_, I_, L_)
+    Call KeyStroke(Alt_, H_, F_, I_, L_)
 End Function
 
 Function YankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab) As Boolean
@@ -297,7 +297,7 @@ Function IncrementText(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_ + H_, k6_)
+        Call KeyStroke(Alt_, H_, k6_)
     Next i
 End Function
 
@@ -308,7 +308,7 @@ Function DecrementText(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_ + H_, k5_)
+        Call KeyStroke(Alt_, H_, k5_)
     Next i
 End Function
 
@@ -319,7 +319,7 @@ Function IncreaseDecimal(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_ + H_, k0_)
+        Call KeyStroke(Alt_, H_, k0_)
     Next i
 End Function
 
@@ -330,7 +330,7 @@ Function DecreaseDecimal(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_ + H_, k9_)
+        Call KeyStroke(Alt_, H_, k9_)
     Next i
 End Function
 
@@ -627,7 +627,7 @@ End Function
 
 Function ToggleWrapText(Optional ByVal g As String) As Boolean
     Call StopVisualMode
-    Call KeyStroke(Alt_ + H_, W_)
+    Call KeyStroke(Alt_, H_, W_)
 End Function
 
 Function ToggleMergeCells(Optional ByVal g As String) As Boolean
@@ -640,9 +640,9 @@ Function ToggleMergeCells(Optional ByVal g As String) As Boolean
         End If
 
         If ActiveCell.MergeCells Then
-            Call KeyStroke(Alt_ + H_, M_, U_)
+            Call KeyStroke(Alt_, H_, M_, U_)
         Else
-            Call KeyStroke(Alt_ + H_, M_, M_)
+            Call KeyStroke(Alt_, H_, M_, M_)
         End If
     End If
 End Function
@@ -651,7 +651,7 @@ Function ApplyCommaStyle(Optional ByVal g As String) As Boolean
     Call RepeatRegister("ApplyCommaStyle")
     Call StopVisualMode
 
-    Call KeyStroke(Alt_ + H_, K_)
+    Call KeyStroke(Alt_, H_, K_)
 End Function
 
 Function ChangeInteriorColor(Optional ByVal resultColor As cls_FontColor) As Boolean
@@ -1043,7 +1043,7 @@ Private Function AutoSumInner(ByVal lastKey As Long)
         Exit Function
     End If
 
-    Call KeyStroke(Alt_ + M_, U_, lastKey)
+    Call KeyStroke(Alt_, M_, U_, lastKey)
 
     Exit Function
 Catch:

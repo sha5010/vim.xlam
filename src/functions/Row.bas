@@ -169,7 +169,7 @@ Function InsertRows(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(Alt_ + I_, R_)
+    Call KeyStroke(Alt_, I_, R_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -202,7 +202,7 @@ Function AppendRows(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(Alt_ + I_, R_)
+    Call KeyStroke(Alt_, I_, R_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -391,7 +391,7 @@ Function AdjustRowsHeight(Optional ByVal g As String) As Boolean
         Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call KeyStroke(Alt_ + H_, O_, A_)
+    Call KeyStroke(Alt_, H_, O_, A_)
     Exit Function
 
 Catch:
@@ -407,7 +407,7 @@ Function SetRowsHeight(Optional ByVal g As String) As Boolean
         Selection.Resize(gVim.Count1, Selection.Columns.Count).Select
     End If
 
-    Call KeyStroke(Alt_ + H_, O_, H_)
+    Call KeyStroke(Alt_, H_, O_, H_)
     Exit Function
 
 Catch:

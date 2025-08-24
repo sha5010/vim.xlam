@@ -169,7 +169,7 @@ Function InsertColumns(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(Alt_ + I_, C_)
+    Call KeyStroke(Alt_, I_, C_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -202,7 +202,7 @@ Function AppendColumns(Optional ByVal g As String) As Boolean
     Target.Select
     savedCell.Activate
 
-    Call KeyStroke(Alt_ + I_, C_)
+    Call KeyStroke(Alt_, I_, C_)
 
 Catch:
     Application.ScreenUpdating = True
@@ -298,7 +298,7 @@ Function UnhideColumns(Optional ByVal g As String) As Boolean
 
     'ref: https://excel.nj-clucker.com/ctrl-shift-0-not-working/
     'Call KeyStroke(Ctrl_ + Shift_ + k0_)
-    Call KeyStroke(Alt_ + H_, O_, U_, L_)
+    Call KeyStroke(Alt_, H_, O_, U_, L_)
     Exit Function
 
 Catch:
@@ -393,7 +393,7 @@ Function AdjustColumnsWidth(Optional ByVal g As String) As Boolean
         Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call KeyStroke(Alt_ + H_, O_, I_)
+    Call KeyStroke(Alt_, H_, O_, I_)
     Exit Function
 
 Catch:
@@ -409,7 +409,7 @@ Function SetColumnsWidth(Optional ByVal g As String) As Boolean
         Selection.Resize(Selection.Rows.Count, gVim.Count1).Select
     End If
 
-    Call KeyStroke(Alt_ + H_, O_, W_)
+    Call KeyStroke(Alt_, H_, O_, W_)
     Exit Function
 
 Catch:
