@@ -218,8 +218,14 @@ Private Sub UserForm_Initialize()
         Call PutText(i + 1, IDX_LIST1 - 2, Caption:=Mid(KEY_LIST1, i + 1, 1))
         Call PutColor(i + 1, IDX_LIST1, Color, BorderColor:=BORDER_COLOR)
 
+        Dim baseColor As Long
+        baseColor = Color.Color
+
         ' Put brightness variation of theme color
         For j = 1 To 5
+            Set Color = New cls_FontColor
+            Call Color.Setup(colorCode:=baseColor)
+
             Select Case themeColorLuminance
                 Case 51 To 203
                     Color.AddLuminance = lncDefault(j)
