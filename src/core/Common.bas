@@ -8,6 +8,8 @@ Option Private Module
     Private Declare PtrSafe Function GetDpiForWindow Lib "user32" (ByVal hWnd As LongPtr) As Long
     Private Declare PtrSafe Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
     Private Declare PtrSafe Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
+    Private Declare PtrSafe Function ImmGetDefaultIMEWnd Lib "imm32.dll" (ByVal hWnd As LongPtr) As LongPtr
+    Private Declare PtrSafe Function SendMessageW Lib "user32.dll" (ByVal hWnd As LongPtr, ByVal Msg As Long, ByVal wParam As LongPtr, ByVal lParam As LongPtr) As LongPtr
 
 #Else
     Private Declare Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
@@ -15,7 +17,14 @@ Option Private Module
     Private Declare Function GetDpiForWindow Lib "user32" (ByVal hWnd As Long) As Long
     Private Declare Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
     Private Declare Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
+    Private Declare Function ImmGetDefaultIMEWnd Lib "imm32.dll" (ByVal hWnd As LongPtr) As LongPtr
+    Private Declare Function SendMessageW Lib "user32.dll" (ByVal hWnd As LongPtr, ByVal Msg As Long, ByVal wParam As LongPtr, ByVal lParam As LongPtr) As LongPtr
+
 #End If
+
+Private Const WM_IME_CONTROL As Long = &H283    ' control message to IME window
+Private Const IMC_GETOPENSTATUS As Long = &H5   ' query open/close
+Private Const IMC_SETOPENSTATUS As Long = &H6   ' set   open/close
 
 Private Type RECT
     Left As Long
@@ -228,15 +237,12 @@ Catch:
 End Function
 
 Sub DisableIME()
-    Static lastExecuted As Double
-
     Select Case IMEStatus
         Case Is > 3, vbIMEHiragana
-            Dim t As Double
-            t = Timer()
-            If t < lastExecuted Or t - lastExecuted > 0.2 Then
-                Call KeyStrokeWithoutKeyup(IME_On_)
-                lastExecuted = t
+            Dim hIME As LongPtr
+            hIME = ImmGetDefaultIMEWnd(Application.hWnd)  ' Excel thread's IME window
+            If hIME <> 0 Then
+                Call SendMessageW(hIME, WM_IME_CONTROL, IMC_SETOPENSTATUS, 0) ' IME Off
             End If
     End Select
 End Sub
