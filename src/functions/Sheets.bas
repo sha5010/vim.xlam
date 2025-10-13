@@ -66,14 +66,19 @@ Catch:
     Call ErrorHandler("PreviousSheet")
 End Function
 
-Function RenameSheet(Optional ByVal g As String) As Boolean
-    On Error GoTo Catch
-
+Function RenameSheet(Optional ByVal sheetName As String) As Boolean
     Dim ret As String
     Dim beforeName As String
+    Dim targetSheet As Object
 
-    With ActiveWorkbook
-        beforeName = .ActiveSheet.Name
+    On Error GoTo Catch
+    Set targetSheet = ActiveWorkbook.ActiveSheet
+    On Error Resume Next
+    Set targetSheet = ActiveWorkbook.Sheets(sheetName)
+    On Error GoTo Catch
+
+    With targetSheet
+        beforeName = .Name
         ret = InputBox(gVim.Msg.EnterNewSheetName, gVim.Msg.RenameSheetTitle, beforeName)
         Call DisableIME
 
@@ -87,7 +92,7 @@ Function RenameSheet(Optional ByVal g As String) As Boolean
                 MsgBox gVim.Msg.SheetAlreadyExists(ret), vbExclamation
                 Exit Function
             End If
-            .Sheets(.ActiveSheet.Index).Name = ret
+            .Name = ret
 
             Call SetStatusBarTemporarily(gVim.Msg.ChangedSheetName & _
                 ": """ & beforeName & """ -> """ & ret & """", 3000)
@@ -99,7 +104,13 @@ Catch:
     Call ErrorHandler("RenameSheet")
 End Function
 
-Function MoveSheetForward(Optional ByVal g As String) As Boolean
+Function MoveSheetForward(Optional ByVal sheetName As String) As Boolean
+    Dim targetSheet As Object
+
+    On Error GoTo Catch
+    Set targetSheet = ActiveWorkbook.ActiveSheet
+    On Error Resume Next
+    Set targetSheet = ActiveWorkbook.Sheets(sheetName)
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -109,7 +120,7 @@ Function MoveSheetForward(Optional ByVal g As String) As Boolean
     Dim warpFlag As Boolean
 
     With ActiveWorkbook
-        idx = .ActiveSheet.Index
+        idx = targetSheet.Index
         cnt = gVim.Count1
         n = .Sheets.Count
         i = idx
@@ -141,7 +152,13 @@ Catch:
     Call ErrorHandler("MoveSheetBack")
 End Function
 
-Function MoveSheetBack(Optional ByVal g As String) As Boolean
+Function MoveSheetBack(Optional ByVal sheetName As String) As Boolean
+    Dim targetSheet As Object
+
+    On Error GoTo Catch
+    Set targetSheet = ActiveWorkbook.ActiveSheet
+    On Error Resume Next
+    Set targetSheet = ActiveWorkbook.Sheets(sheetName)
     On Error GoTo Catch
 
     Dim idx As Integer
@@ -151,7 +168,7 @@ Function MoveSheetBack(Optional ByVal g As String) As Boolean
     Dim warpFlag As Boolean
 
     With ActiveWorkbook
-        idx = .ActiveSheet.Index
+        idx = targetSheet.Index
         cnt = gVim.Count1
         n = .Sheets.Count
         i = idx
@@ -206,16 +223,22 @@ Catch:
     Call ErrorHandler("AppendWorksheet")
 End Function
 
-Function DeleteSheet(Optional ByVal g As String) As Boolean
+Function DeleteSheet(Optional ByVal sheetName As String) As Boolean
+    Dim targetSheet As Object
+
+    On Error GoTo Catch
+    Set targetSheet = ActiveWorkbook.ActiveSheet
+    On Error Resume Next
+    Set targetSheet = ActiveWorkbook.Sheets(sheetName)
     On Error GoTo Catch
 
     'error if target sheet is last visible one
-    If ActiveSheet.Visible = xlSheetVisible And GetVisibleSheetsCount() = 1 Then
+    If targetSheet.Visible = xlSheetVisible And GetVisibleSheetsCount() = 1 Then
         MsgBox gVim.Msg.DeleteOrHideAllSheets, vbExclamation
         Exit Function
     End If
 
-    ActiveSheet.Delete
+    targetSheet.Delete
     Exit Function
 
 Catch:
