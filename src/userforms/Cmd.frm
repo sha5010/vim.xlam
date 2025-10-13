@@ -28,7 +28,7 @@ Private cNumSeqFlag As Boolean
 ' *
 ' * @param {String} key - The pressed key.
 ' */
-Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String)
+Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String, src As Object)
     ' Process when a number is entered on the Numpad, if NumpadCount option is enabled
     If gVim.Config.NumpadCount And InStr(key, "{") = 1 Then
         Dim keyValue As String
@@ -244,7 +244,7 @@ End Function
 ' *
 ' * @param {String} str - The pressed key.
 ' */
-Private Sub cUserForm_KeyPressWithString(ByVal str As String)
+Private Sub cUserForm_KeyPressWithString(ByVal str As String, src As Object)
     If gVim.Config.NumpadCount And str Like "<k[0-9]>" Then
         Me.Label_Text = Me.Label_Text & Mid(str, 3, 1)
     Else
@@ -365,6 +365,6 @@ Private Sub LazySuggest(Optional ByVal cancelOnly As Boolean = False)
 End Sub
 
 Public Sub ReceiveKey(ByVal key As String)
-    Call cUserForm_KeyPressWithString(gVim.KeyMap.SendKeysToDisplayText(key))
-    Call cUserForm_KeyPressWithSendKeys(key)
+    Call cUserForm_KeyPressWithString(gVim.KeyMap.SendKeysToDisplayText(key), Nothing)
+    Call cUserForm_KeyPressWithSendKeys(key, Nothing)
 End Sub

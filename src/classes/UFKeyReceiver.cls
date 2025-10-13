@@ -16,10 +16,16 @@ Private WithEvents cUserForm As MSForms.UserForm
 Attribute cUserForm.VB_VarHelpID = -1
 Private WithEvents cTextBox As MSForms.TextBox
 Attribute cTextBox.VB_VarHelpID = -1
+Private WithEvents cListBox As MSForms.ListBox
+Attribute cListBox.VB_VarHelpID = -1
 
 ' Event declarations
-Public Event KeyPressWithSendKeys(ByVal key As String)
-Public Event KeyPressWithString(ByVal str As String)
+Public Event KeyPressWithSendKeys(ByVal key As String, src As Object)
+Public Event KeyPressWithString(ByVal str As String, src As Object)
+
+' Flag to disable keydown
+Public IsIgnoreKeydown As Boolean
+
 
 '/*
 ' * Handles the KeyDown event of the user form.
@@ -28,7 +34,10 @@ Public Event KeyPressWithString(ByVal str As String)
 ' * @param {Integer} Shift - The shift state during the key press.
 ' */
 Private Sub cUserForm_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
-    Call OnKeyDown(KeyCode, Shift)
+    Call OnKeyDown(KeyCode, Shift, cUserForm)
+    If IsIgnoreKeydown Then
+        KeyCode = 0
+    End If
 End Sub
 
 '/*
@@ -38,7 +47,23 @@ End Sub
 ' * @param {Integer} Shift - The shift state during the key press.
 ' */
 Private Sub cTextBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
-    Call OnKeyDown(KeyCode, Shift)
+    Call OnKeyDown(KeyCode, Shift, cTextBox)
+    If IsIgnoreKeydown Then
+        KeyCode = 0
+    End If
+End Sub
+
+'/*
+' * Handles the KeyDown event of the listbox.
+' *
+' * @param {MSForms.ReturnInteger} KeyCode - The key code of the pressed key.
+' * @param {Integer} Shift - The shift state during the key press.
+' */
+Private Sub cListBox_KeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+    Call OnKeyDown(KeyCode, Shift, cListBox)
+    If IsIgnoreKeydown Then
+        KeyCode = 0
+    End If
 End Sub
 
 '/*
@@ -46,16 +71,19 @@ End Sub
 ' *
 ' * @param {MSForms.ReturnInteger} KeyCode - The key code of the pressed key.
 ' * @param {Integer} Shift - The shift state during the key press.
+' * @param {Object} EventSource - The source object of the KeyDown event
 ' */
-Private Sub OnKeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer)
+Private Sub OnKeyDown(ByVal KeyCode As MSForms.ReturnInteger, ByVal Shift As Integer, ByRef EventSource As Object)
+    IsIgnoreKeydown = False
+
     ' Convert key code and shift state to SendKeys style
     Dim sendKeysStyle As String
     sendKeysStyle = gVim.KeyMap.KeycodeToSendKeys(KeyCode, Shift)
 
     ' If a valid SendKeys style is obtained, raise the events
     If sendKeysStyle <> "" Then
-        RaiseEvent KeyPressWithString(gVim.KeyMap.SendKeysToDisplayText(sendKeysStyle))
-        RaiseEvent KeyPressWithSendKeys(sendKeysStyle)
+        RaiseEvent KeyPressWithString(gVim.KeyMap.SendKeysToDisplayText(sendKeysStyle), EventSource)
+        RaiseEvent KeyPressWithSendKeys(sendKeysStyle, EventSource)
     End If
 End Sub
 
@@ -77,10 +105,38 @@ Public Property Get Form() As MSForms.UserForm
     Set Form = cUserForm
 End Property
 
+'/*
+' * Sets the textbox for which key press events are handled.
+' *
+' * @param {MSForms.TextBox} objTextBox - The textbox to set.
+' */
 Public Property Set TextBox(ByRef objTextBox As MSForms.TextBox)
     Set cTextBox = objTextBox
 End Property
 
+'/*
+' * Gets the textbox for which key press events are handled.
+' *
+' * @returns {MSForms.TextBox} - The textbox.
+' */
 Public Property Get TextBox() As MSForms.TextBox
     Set TextBox = cTextBox
+End Property
+
+'/*
+' * Sets the listbox for which key press events are handled.
+' *
+' * @param {MSForms.ListBox} objListBox - The listbox to set.
+' */
+Public Property Set ListBox(ByRef objListBox As MSForms.ListBox)
+    Set cListBox = objListBox
+End Property
+
+'/*
+' * Gets the listbox for which key press events are handled.
+' *
+' * @returns {MSForms.ListBox} - The listbox.
+' */
+Public Property Get ListBox() As MSForms.ListBox
+    Set ListBox = cListBox
 End Property

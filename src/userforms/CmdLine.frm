@@ -13,13 +13,14 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+
 Option Explicit
 
 Private WithEvents cUserForm As cls_UFKeyReceiver
 Attribute cUserForm.VB_VarHelpID = -1
 Private cReturn As String
 
-Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String)
+Private Sub cUserForm_KeyPressWithSendKeys(ByVal key As String, src As Object)
     If key Like "*{ENTER}" Then
         Me.Hide
         cReturn = Me.TextBox.Text
