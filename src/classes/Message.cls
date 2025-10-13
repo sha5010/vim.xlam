@@ -126,6 +126,12 @@ Public Property Get TooManyCells() As String
         "Too many cells selected.")
 End Property
 
+Public Property Get WontWorkOnMultipleCells() As String
+    WontWorkOnMultipleCells = IIf(Parent.IsJapanese, _
+        "この操作は複数の選択範囲に対しては機能しません。", _
+        "This action won't work on multiple selections.")
+End Property
+
 Public Property Get InitializedExtendedSelection() As String
     InitializedExtendedSelection = IIf(Parent.IsJapanese, _
         "異なるシートで拡張選択はできないため、選択範囲は初期化されました。", _

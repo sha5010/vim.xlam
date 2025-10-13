@@ -204,6 +204,10 @@ Function YankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab) As Bool
     If Selection.Count > 1048576 * 8 Then
         Call SetStatusBarTemporarily(gVim.Msg.TooManyCells, 3000)
         Exit Function
+    'Error if multiple non-contiguous range was selected
+    ElseIf Selection.Areas.Count > 1 Then
+        Call SetStatusBarTemporarily(gVim.Msg.WontWorkOnMultipleCells, 3000)
+        Exit Function
     End If
 
     Call StopVisualMode
@@ -225,39 +229,140 @@ Function YankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab) As Bool
     If Selection.Count = 1 Then
         resultText = Selection.Value
 
-    ElseIf Selection.Columns.Count = 1 Then
-        aryTarget = Selection
-        aryTarget = WorksheetFunction.Transpose(aryTarget)
-        resultText = Join(aryTarget, vbCrLf)
+    ElseIf Selection.Areas.Count = 1 Then
+        If Selection.Columns.Count = 1 Then
+            aryTarget = Selection
+            aryTarget = WorksheetFunction.Transpose(aryTarget)
+            resultText = Join(aryTarget, vbCrLf)
 
-    ElseIf Selection.Rows.Count = 1 Then
-        aryTarget = Selection
+        ElseIf Selection.Rows.Count = 1 Then
+            aryTarget = Selection
 
-        'Array dimensionality reduction
-        aryTarget = WorksheetFunction.Transpose(aryTarget)
-        aryTarget = WorksheetFunction.Transpose(aryTarget)
+            'Array dimensionality reduction
+            aryTarget = WorksheetFunction.Transpose(aryTarget)
+            aryTarget = WorksheetFunction.Transpose(aryTarget)
 
-        resultText = Join(aryTarget, ColumnSpliter)
-
+            resultText = Join(aryTarget, ColumnSpliter)
+        Else
+            GoTo fallback
+        End If
     Else
 fallback:
+        Dim visibleSelection As Range
+        Set visibleSelection = Selection.SpecialCells(xlCellTypeVisible)
+
+        Dim rowAreaCount As Long
+        Dim colAreaCount As Long
+        Dim areaMinRow As Long
+        Dim areaMinCol As Long
+        Dim totalVisibleRows As Long
+        Dim totalVisibleCols As Long
+        Dim currentArea As Range
+        Dim areaRows() As Long
+        Dim areaCols() As Long
+
+        ' Step 1: Determine the N x M grid of Areas
+        ' It's guaranteed that areas are ordered from top-left to bottom-right.
+        ' If Areas(1) and Areas(2) are in the same row, then N > 1.
+        ' If Areas(1) and Areas(4) are in the same column, then N=3 if total area is 3xM
+        If visibleSelection.Areas.Count > 1 Then
+            colAreaCount = 1 ' Initialize column count
+            ' Determine colAreaCount (N) by comparing column of first area with subsequent areas
+            For i = 2 To visibleSelection.Areas.Count
+                If visibleSelection.Areas(i).Column = visibleSelection.Areas(1).Column Then
+                    colAreaCount = i - 1
+                    Exit For
+                ElseIf i = visibleSelection.Areas.Count Then
+                    colAreaCount = visibleSelection.Areas.Count ' All areas are in a single row
+                End If
+            Next i
+
+            If colAreaCount = 0 Then colAreaCount = 1 ' Handle case where there's only one column of areas
+            rowAreaCount = visibleSelection.Areas.Count / colAreaCount
+        Else
+            rowAreaCount = 1
+            colAreaCount = 1
+        End If
+
+        ReDim areaRows(1 To rowAreaCount)
+        ReDim areaCols(1 To colAreaCount)
+
+        ' Step 2: Calculate total visible rows and columns
+        Dim currentRowIndex As Long
+        Dim currentColIndex As Long
+
+        For i = 1 To colAreaCount
+            Set currentArea = visibleSelection.Areas(i)
+            totalVisibleCols = totalVisibleCols + currentArea.Columns.Count
+        Next i
+
+        For i = 1 To visibleSelection.Areas.Count Step colAreaCount
+            Set currentArea = visibleSelection.Areas(i)
+            totalVisibleRows = totalVisibleRows + currentArea.Rows.Count
+        Next i
+
+
+        Dim outputArray() As String
+        ReDim outputArray(1 To totalVisibleRows, 1 To totalVisibleCols) As String
+
+        Dim areaValues As Variant
+        Dim r_area As Long, c_area As Long      ' Loop counters for within an area
+        Dim r_output As Long, c_output As Long  ' Indices for outputArray
+        Dim currentOutputRow As Long
+        Dim currentOutputCol As Long
+        Dim prevAreaCol As Long
+        Dim prevAreaRow As Long
+
         startTime = Timer
-        aryTarget = Selection
-        ReDim aryX(LBound(aryTarget, 1) To UBound(aryTarget, 1))
-        ReDim aryY(LBound(aryTarget, 2) To UBound(aryTarget, 2))
 
-        For i = LBound(aryX) To UBound(aryX)
-            For j = LBound(aryY) To UBound(aryY)
-                aryY(j) = aryTarget(i, j)
-            Next j
-            aryX(i) = Join(aryY, ColumnSpliter)
+        ' Populate outputArray from each area
+        currentOutputRow = 1
+        currentOutputCol = 1
 
-            'Avoid freeze
-            If (i And &HFFF) = 0 Then
-                'Show progress bar in status bar
+        For i = 1 To visibleSelection.Areas.Count
+            Set currentArea = visibleSelection.Areas(i)
+            areaValues = currentArea.Value
+
+            ' Calculate starting row and column for the current area in the outputArray
+            If i = 1 Then
+                ' First area always starts at 1,1
+                currentOutputRow = 1
+                currentOutputCol = 1
+                areaMinRow = currentArea.Row
+                areaMinCol = currentArea.Column
+            Else
+                ' Check if it's a new row of areas
+                If currentArea.Column = areaMinCol Then
+                    ' New row of areas, reset column and advance row
+                    currentOutputCol = 1
+                    currentOutputRow = currentOutputRow + visibleSelection.Areas(i - colAreaCount).Rows.Count
+                Else
+                    ' Same row of areas, advance column
+                    currentOutputCol = currentOutputCol + visibleSelection.Areas(i - 1).Columns.Count
+                End If
+            End If
+
+
+            If IsArray(areaValues) Then
+                ' Area is a multi-cell range, areaValues is a 2D array (1 To rows, 1 To cols)
+                For r_area = 1 To UBound(areaValues, 1)
+                    For c_area = 1 To UBound(areaValues, 2)
+                        r_output = currentOutputRow + r_area - 1
+                        c_output = currentOutputCol + c_area - 1
+                        outputArray(r_output, c_output) = CStr(areaValues(r_area, c_area))
+                    Next c_area
+                Next r_area
+            Else
+                ' Area is a single cell
+                r_output = currentOutputRow
+                c_output = currentOutputCol
+                outputArray(r_output, c_output) = CStr(areaValues)
+            End If
+
+            'Avoid freeze - use area.Row as a proxy for progress
+            If (currentArea.Row And &HFFF) = 0 Then
                 Call SetStatusBar(gVim.Msg.YankInProgress, _
-                                 currentCount:=i, maximumCount:=UBound(aryX), progressBar:=True)
-
+                                 currentCount:=i, maximumCount:=visibleSelection.Areas.Count, progressBar:=True)
                 currentTime = Timer
                 If currentTime < startTime Or currentTime - startTime > 2 Then
                     DoEvents
@@ -265,6 +370,18 @@ fallback:
                 End If
             End If
         Next i
+
+        ' Construct resultText from the populated outputArray
+        ReDim aryX(1 To totalVisibleRows) As String
+        ReDim aryY(1 To totalVisibleCols) As String ' Temporary buffer for joining columns
+
+        For r_output = 1 To totalVisibleRows
+            For c_output = 1 To totalVisibleCols
+                aryY(c_output) = outputArray(r_output, c_output)
+            Next c_output
+            aryX(r_output) = Join(aryY, ColumnSpliter)
+        Next r_output
+
         resultText = Join(aryX, vbCrLf)
         Call SetStatusBar
     End If
