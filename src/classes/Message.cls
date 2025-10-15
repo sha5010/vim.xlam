@@ -255,3 +255,9 @@ Public Property Get RemainingResults() As String
         " 個の結果は省略", _
         " results remaining")
 End Property
+
+Public Property Get WorkbookNotFound() As String
+    WorkbookNotFound = IIf(Parent.IsJapanese, _
+        "指定のワークブックが存在しません。", _
+        "Specified workbook is not found.")
+End Property

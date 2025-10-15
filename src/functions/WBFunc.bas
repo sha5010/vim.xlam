@@ -13,9 +13,29 @@ Catch:
     Call ErrorHandler("CheckAndQuitIfNoWorkbooks")
 End Sub
 
-Function CloseAskSaving(Optional ByVal g As String) As Boolean
+Private Function GetWorkbookByName(ByVal bookName As String) As Workbook
+    On Error Resume Next
+    If bookName = "" Then
+        Set GetWorkbookByName = ActiveWorkbook
+    Else
+        Set GetWorkbookByName = Workbooks(bookName)
+    End If
+    If Err.Number <> 0 Then
+        Set GetWorkbookByName = Nothing
+        Err.Clear
+    End If
+    On Error GoTo 0
+End Function
+
+Function CloseAskSaving(Optional ByVal bookName As String = "") As Boolean
     On Error GoTo Catch
-    ActiveWorkbook.Close
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
+        Exit Function
+    End If
+    targetWorkbook.Close
     Call CheckAndQuitIfNoWorkbooks
     Exit Function
 
@@ -23,9 +43,15 @@ Catch:
     Call ErrorHandler("CloseAskSaving")
 End Function
 
-Function CloseWithoutSaving(Optional ByVal g As String) As Boolean
+Function CloseWithoutSaving(Optional ByVal bookName As String = "") As Boolean
     On Error GoTo Catch
-    ActiveWorkbook.Close False
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
+        Exit Function
+    End If
+    targetWorkbook.Close False
     Call CheckAndQuitIfNoWorkbooks
     Exit Function
 
@@ -33,9 +59,15 @@ Catch:
     Call ErrorHandler("CloseWithoutSaving")
 End Function
 
-Function CloseWithSaving(Optional ByVal g As String) As Boolean
+Function CloseWithSaving(Optional ByVal bookName As String = "") As Boolean
     On Error GoTo Catch
-    ActiveWorkbook.Close True
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
+        Exit Function
+    End If
+    targetWorkbook.Close True
     Call CheckAndQuitIfNoWorkbooks
     Exit Function
 
@@ -43,15 +75,21 @@ Catch:
     Call ErrorHandler("CloseWithSaving")
 End Function
 
-Function SaveWorkbook(Optional ByVal g As String) As Boolean
+Function SaveWorkbook(Optional ByVal bookName As String = "") As Boolean
     On Error GoTo Catch
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
+        Exit Function
+    End If
 
-    If ActiveWorkbook.Path = "" Then
+    If targetWorkbook.Path = "" Then
         Application.CommandBars.ExecuteMso "FileSaveAs"
-    ElseIf ActiveWorkbook.ReadOnly Then
+    ElseIf targetWorkbook.ReadOnly Then
         Application.CommandBars.ExecuteMso "FileSaveAs"
     Else
-        ActiveWorkbook.Save
+        targetWorkbook.Save
     End If
     Exit Function
 
@@ -86,30 +124,37 @@ Catch:
     Call ErrorHandler("OpenWorkbook")
 End Function
 
-Function ReopenActiveWorkbook(Optional ByVal g As String) As Boolean
+Function ReopenActiveWorkbook(Optional ByVal bookName As String = "") As Boolean
     On Error GoTo Catch
+
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
+        Exit Function
+    End If
 
     Dim wbFullName As String
     Dim ret As VbMsgBoxResult
 
-    If InStr(ActiveWorkbook.FullName, "\") = 0 And InStr(ActiveWorkbook.FullName, "/") = 0 Then
+    If InStr(targetWorkbook.FullName, "\") = 0 And InStr(targetWorkbook.FullName, "/") = 0 Then
         Exit Function
     End If
 
-    If Not ActiveWorkbook.Saved Then
+    If Not targetWorkbook.Saved Then
         ret = MsgBox(gVim.Msg.ConfirmToSaveBeforeReopening, vbYesNoCancel + vbQuestion)
         If ret = vbCancel Then
             Exit Function
         ElseIf ret = vbNo Then
-            ActiveWorkbook.Saved = True
+            targetWorkbook.Saved = True
         ElseIf ret = vbYes Then
-            ActiveWorkbook.Save
+            targetWorkbook.Save
         End If
     End If
 
-    wbFullName = ActiveWorkbook.FullName
+    wbFullName = targetWorkbook.FullName
 
-    ActiveWorkbook.Close
+    targetWorkbook.Close
     Call Workbooks.Open(wbFullName)
     Exit Function
 
@@ -203,34 +248,77 @@ Catch:
     Call ErrorHandler("PreviousWorkbook")
 End Function
 
-Function ToggleReadOnly(Optional ByVal g As String) As Boolean
+Function ToggleReadOnly(Optional ByVal bookName As String = "") As Boolean
     On Error GoTo Catch
-
-    Dim ret As VbMsgBoxResult
-
-    If InStr(ActiveWorkbook.FullName, "\") = 0 And InStr(ActiveWorkbook.FullName, "/") = 0 Then
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
         Exit Function
     End If
 
-    If ActiveWorkbook.ReadOnly Then
-        ActiveWorkbook.Saved = True
-        Call ActiveWorkbook.ChangeFileAccess(xlReadWrite)
+    Dim ret As VbMsgBoxResult
+
+    If InStr(targetWorkbook.FullName, "\") = 0 And InStr(targetWorkbook.FullName, "/") = 0 Then
+        Exit Function
+    End If
+
+    If targetWorkbook.ReadOnly Then
+        targetWorkbook.Saved = True
+        Call targetWorkbook.ChangeFileAccess(xlReadWrite)
     Else
-        If Not ActiveWorkbook.Saved Then
+        If Not targetWorkbook.Saved Then
             ret = MsgBox(gVim.Msg.ConfirmToSaveBeforeSwitchReadonly, vbYesNoCancel + vbQuestion)
             If ret = vbCancel Then
                 Exit Function
             ElseIf ret = vbNo Then
-                ActiveWorkbook.Saved = True
+                targetWorkbook.Saved = True
             ElseIf ret = vbYes Then
-                ActiveWorkbook.Save
+                targetWorkbook.Save
             End If
         End If
 
-        Call ActiveWorkbook.ChangeFileAccess(xlReadOnly)
+        Call targetWorkbook.ChangeFileAccess(xlReadOnly)
     End If
     Exit Function
 
 Catch:
     Call ErrorHandler("ToggleReadOnly")
+End Function
+
+Function OpenWorkbookDir(Optional ByVal bookName As String = "") As Boolean
+    On Error GoTo Catch
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
+        Exit Function
+    End If
+    targetWorkbook.FollowHyperlink targetWorkbook.Path
+    Exit Function
+
+Catch:
+    Call ErrorHandler("OpenWorkbookDir")
+End Function
+
+Function YankWorkbookPath(Optional ByVal bookName As String = "") As Boolean
+    On Error GoTo Catch
+    Dim targetWorkbook As Workbook
+    Set targetWorkbook = GetWorkbookByName(bookName)
+    If targetWorkbook Is Nothing Then
+        Call SetStatusBarTemporarily(gVim.Msg.WorkbookNotFound & " (" & bookName & ")", 3000)
+        Exit Function
+    End If
+
+    'Set to clipboard
+    With New DataObject
+        .SetText targetWorkbook.FullName
+        .PutInClipboard
+    End With
+
+    Call SetStatusBarTemporarily(gVim.Msg.YankDone & " (" & targetWorkbook.FullName & ")", 3000)
+    Exit Function
+
+Catch:
+    Call ErrorHandler("YankWorkbookPath")
 End Function

@@ -473,6 +473,8 @@ Sub DefaultConfig()
         .Map "nmap ~ ToggleReadOnly"
         .Map "nmap ]b NextWorkbook"
         .Map "nmap [b PreviousWorkbook"
+        .Map "nmap <cmd>opendir OpenWorkbookDir"
+        .Map "nmap <cmd>fullpath YankWorkbookPath"
 
 
         'Useful Command
@@ -486,8 +488,6 @@ Sub DefaultConfig()
         .Map "nmap <cmd>sort Sort 1"    ' xlAscending
         .Map "nmap <cmd>sort! Sort 2"   ' xlDescending
         .Map "nmap <cmd>unique RemoveDuplicates"
-        .Map "nmap <cmd>opendir OpenActiveBookDir"
-        .Map "nmap <cmd>fullpath YankActiveBookPath"
 
         .Map "nmap <C-i> JumpNext"
         .Map "nmap <C-o> JumpPrev"

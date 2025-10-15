@@ -480,6 +480,8 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `]b`/`:bnext` | `NextWorkbook` | 次のワークブックを選択 | ✓ |
 | Workbook | `[b`/`:bprevious` | `PreviousWorkbook` | 前のワークブックを選択 | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | 読み取り専用を切り替える | |
+| Workbook | `:opendir` | `OpenWorkbookDir` | ファイルの保存場所を開く | |
+| Workbook | `:fullpath` | `YankWorkbookPath` | ファイルのフルパスをコピー | |
 | Other | `u` | `Undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) | |
 | Other | `<C-r>` | `RedoExecute` | やり直し | |
 | Other | `.` | `RepeatAction` | 以前の動作を繰り返す (`RepeatRegister` が呼ばれるコマンド限定) | |
@@ -490,8 +492,6 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Other | `:sort` | `Sort` | 昇順でソート | |
 | Other | `:sort!` | `Sort` | 降順でソート | |
 | Other | `:unique` | `RemoveDuplicates` | 重複する行をシートから削除 | |
-| Other | `:opendir` | `OpenActiveBookDir` | ファイルの保存場所を開く | |
-| Other | `:fullpath` | `YankActiveBookPath` | ファイルのフルパスをコピー | |
 | Other | `<C-i>` | `JumpNext` | ジャンプリストの次のセルへ移動 | ✓ |
 | Other | `<C-o>` | `JumpPrev` | ジャンプリストの前のセルへ移動 | ✓ |
 | Other | `:clearjumps` | `ClearJumps` | ジャンプリストをクリア | |

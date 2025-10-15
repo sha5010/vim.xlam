@@ -483,6 +483,8 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Workbook | `]b`/`:bnext` | `NextWorkbook` | Select the next workbook | ✓ |
 | Workbook | `[b`/`:bprevious` | `PreviousWorkbook` | Select the previous workbook | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | Toggle read-only mode | |
+| Workbook | `:opendir` | `OpenWorkbookDir` | Open file location | |
+| Workbook | `:fullpath` | `YankWorkbookPath` | Copy full path to clipboard | |
 | Other | `u` | `Undo_CtrlZ` | Undo (send `Ctrl + Z`) | |
 | Other | `<C-r>` | `RedoExecute` | Redo | |
 | Other | `.` | `RepeatAction` | Repeat the previous action (limited to commands where `repeatRegister` is called) | |
@@ -493,8 +495,6 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `:sort` | `Sort` | Sort in ascending order | |
 | Other | `:sort!` | `Sort` | Sort in descenging order | |
 | Other | `:unique` | `RemoveDuplicates` | Delete duplicates rows from sheet | |
-| Other | `:opendir` | `OpenActiveBookDir` | Open file location | |
-| Other | `:fullpath` | `YankActiveBookPath` | Copy full path to clipboard | |
 | Other | `<C-i>` | `JumpNext` | Move to the next cell in the jump list | ✓ |
 | Other | `<C-o>` | `JumpPrev` | Move to the previous cell in the jump list | ✓ |
 | Other | `:clearjumps` | `ClearJumps` | Clear the jump list | |
