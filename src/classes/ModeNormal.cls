@@ -33,7 +33,7 @@ Private Sub App_WorkbookActivate(ByVal Wb As Workbook)
         Unload UF_Cmd
         Unload UF_CmdLine
         Unload UF_ColorPicker
-        Unload UF_SheetPicker
+        Unload UF_Picker
 
         Load UF_Cmd
         Load UF_CmdLine

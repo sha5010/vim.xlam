@@ -327,7 +327,7 @@ Catch:
 End Function
 
 Function ShowSheetPicker(Optional ByVal g As String) As Boolean
-    UF_SheetPicker.Show
+    Call UF_Picker.Launch(New cls_SheetPicker, ShowLeft:=True)
 End Function
 
 Function ChangeSheetTabColor(Optional ByVal resultColor As cls_FontColor) As Boolean
