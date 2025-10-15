@@ -204,3 +204,7 @@ Function RemoveDuplicates(Optional ByVal g As String) As Boolean
     'Send Alt, A, M, Shift + Tab, Shift + Tab
     Call KeyStroke(Alt_, A_, M_, Shift_ + Tab_, Shift_ + Tab_)
 End Function
+
+Function ShowShapePicker(Optional ByVal g As String) As Boolean
+    Call UF_Picker.Launch(New cls_ShapePicker)
+End Function

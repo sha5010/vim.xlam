@@ -388,6 +388,7 @@ Private Sub InitJPDict()
             .Add "SetPrintArea", "選択セルを印刷範囲に設定"
             .Add "ClearPrintArea", "印刷範囲をクリア"
             .Add "ShowMacroDialog", "マクロダイアログを表示"
+            .Add "ShowShapePicker", "ShapePicker を起動"
             .Add "SwapVisualBase", "範囲指定の基準セルを入れ替える"
             .Add "ShowSuggest", "可能ならコマンドのサジェストを表示する"
             ' Automatically generated from README and DefaultConfig
@@ -752,6 +753,7 @@ Private Sub InitENDict()
             .Add "SetPrintArea", "Set the selected cells as the print area"
             .Add "ClearPrintArea", "Clear the print area"
             .Add "ShowMacroDialog", "Show the macro dialog"
+            .Add "ShowShapePicker", "Launch ShapePicker"
             .Add "SwapVisualBase", "Swap the base cell for a range selection"
             .Add "ShowSuggest", "Show command suggestions if possible"
             ' Automatically generated from README and DefaultConfig

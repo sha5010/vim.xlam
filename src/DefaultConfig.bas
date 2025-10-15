@@ -506,6 +506,7 @@ Sub DefaultConfig()
         .Map "nmap zp SetPrintArea"
         .Map "nmap zP ClearPrintArea"
         .Map "nmap @@ ShowMacroDialog"
+        .Map "nmap <cmd>shapes ShowShapePicker"
 
 
         'Count

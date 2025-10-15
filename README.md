@@ -509,6 +509,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Other | `zp` | `SetPrintArea` | Set the selected cells as the print area | |
 | Other | `zP` | `ClearPrintArea` | Clear the print area | |
 | Other | `@@` | `ShowMacroDialog` | Show the macro dialog | |
+| Other | `:shapes` | `ShowShapePicker` | Launch ShapePicker | |
 | Other | `1-9` | `ShowCmdForm` | Specify `[count]` (only works with features marked with ✓ in Count) | |
 | CmdLine | `<Tab>` | `ShowSuggest` | Show command suggestions if possible | |
 
