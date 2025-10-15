@@ -8,6 +8,7 @@ Option Private Module
     Private Declare PtrSafe Function GetDpiForWindow Lib "user32" (ByVal hWnd As LongPtr) As Long
     Private Declare PtrSafe Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
     Private Declare PtrSafe Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
+    Private Declare PtrSafe Function DwmGetWindowAttribute Lib "dwmapi.dll" (ByVal hWnd As LongPtr, ByVal dwAttribute As Long, pvAttribute As Any, ByVal cbAttribute As Long) As Long
     Private Declare PtrSafe Function ImmGetDefaultIMEWnd Lib "imm32.dll" (ByVal hWnd As LongPtr) As LongPtr
     Private Declare PtrSafe Function SendMessageW Lib "user32.dll" (ByVal hWnd As LongPtr, ByVal Msg As Long, ByVal wParam As LongPtr, ByVal lParam As LongPtr) As LongPtr
     Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
@@ -19,6 +20,7 @@ Option Private Module
     Private Declare Function GetDpiForWindow Lib "user32" (ByVal hWnd As Long) As Long
     Private Declare Function MonitorFromRect Lib "user32" (ByRef lpRect As RECT, ByVal dwFlags As Long) As LongPtr
     Private Declare Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
+    Private Declare Function DwmGetWindowAttribute Lib "dwmapi.dll" (ByVal hWnd As LongPtr, ByVal dwAttribute As Long, pvAttribute As Any, ByVal cbAttribute As Long) As Long
     Private Declare Function ImmGetDefaultIMEWnd Lib "imm32.dll" (ByVal hWnd As LongPtr) As LongPtr
     Private Declare Function SendMessageW Lib "user32.dll" (ByVal hWnd As LongPtr, ByVal Msg As Long, ByVal wParam As LongPtr, ByVal lParam As LongPtr) As LongPtr
     Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
@@ -29,6 +31,7 @@ Option Private Module
 Private Const WM_IME_CONTROL As Long = &H283    ' control message to IME window
 Private Const IMC_GETOPENSTATUS As Long = &H5   ' query open/close
 Private Const IMC_SETOPENSTATUS As Long = &H6   ' set   open/close
+Private Const DWMWA_EXTENDED_FRAME_BOUNDS As Long = 9
 
 Private Type RECT
     Left As Long
@@ -472,13 +475,32 @@ Sub ShowPopupMenu(ByRef popupMenu As CommandBar, ByVal winCaption As String)
         Exit Sub
     End If
 
-    ' Declare variable for window rectangle
+    ' Try to get extended frame bounds (physical pixels) using DwmGetWindowAttribute first
     Dim formRect As RECT
-    GetWindowRect hWnd, formRect
+    Dim lRet As Long
+    lRet = DwmGetWindowAttribute(hWnd, DWMWA_EXTENDED_FRAME_BOUNDS, formRect, Len(formRect))
+
+    If lRet <> 0 Then
+        ' If DwmGetWindowAttribute fails (e.g., on older OS or specific window types),
+        ' fall back to GetWindowRect. This is where you observed issues.
+        ' Consider adding error logging or message here if this fallback is often hit.
+        GetWindowRect hWnd, formRect
+        ' If formRect still contains extreme negative values here, it's a deeper DPI virtualization issue.
+        ' You might need to add a sanity check or further debugging.
+        'Debug.Print "Warning: DwmGetWindowAttribute failed for UserForm. Falling back to GetWindowRect."
+        'Debug.Print "UserForm Rect (GetWindowRect): Left=" & formRect.Left & ", Top=" & formRect.Top & _
+        '            ", Right=" & formRect.Right & ", Bottom=" & formRect.Bottom
+    Else
+        'Debug.Print "UserForm Rect (DwmGetWindowAttribute): Left=" & formRect.Left & ", Top=" & formRect.Top & _
+        '            ", Right=" & formRect.Right & ", Bottom=" & formRect.Bottom
+    End If
 
     ' Obtain the DPI scale factor for the window
     Dim dpi As Long
     dpi = GetDpiForWindow(hWnd)
+    If dpi = 0 Then
+        dpi = 96
+    End If
     Dim scaleFactor As Single
     scaleFactor = dpi / 96  ' Calculate scale factor based on 96 DPI
 
@@ -494,18 +516,8 @@ Sub ShowPopupMenu(ByRef popupMenu As CommandBar, ByVal winCaption As String)
     ' Calculate the adjusted position of the popup menu
     Dim adjustedLeft As Long
     Dim adjustedTop As Long
-    adjustedLeft = formRect.Left * scaleFactor
-    adjustedTop = (formRect.Top + (formRect.Bottom - formRect.Top) / 2) * scaleFactor - popupMenu.Height
-
-    ' Adjust top position if the popup is out of the monitor's bounds
-    If adjustedTop < monitorInfo.rcMonitor.Top Then
-        adjustedTop = monitorInfo.rcMonitor.Top  ' Adjust to the bottom if too high
-    End If
-
-    ' Adjust left position if the popup is out of the monitor's bounds
-    If adjustedLeft < monitorInfo.rcMonitor.Left Then
-        adjustedLeft = monitorInfo.rcMonitor.Left  ' Adjust to the right if too far left
-    End If
+    adjustedLeft = formRect.Left
+    adjustedTop = CLng(((formRect.Top + formRect.Bottom) / 2)) - popupMenu.Height
 
     ' Show the popup menu at the adjusted position
     popupMenu.ShowPopup adjustedLeft, adjustedTop
