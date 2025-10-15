@@ -350,6 +350,7 @@ Private Sub InitJPDict()
             .Add "ExportSheet", "シートの移動またはコピーダイアログを表示"
             .Add "ActivateSheet", "`[num]` 番目のシートを選択 (1-9 のみ)"
             .Add "PrintPreviewOfActiveSheet", "印刷プレビューを表示"
+            .Add "PrintPreviewAndPrint", "印刷プレビューと印刷"
             .Add "OpenWorkbook", "ブックを開く"
             .Add "ReopenActiveWorkbook", "アクティブなブックの変更を破棄し開き直す"
             .Add "SaveWorkbook", "アクティブブックを保存"
@@ -387,6 +388,7 @@ Private Sub InitJPDict()
             .Add "ShowMacroDialog", "マクロダイアログを表示"
             .Add "SwapVisualBase", "範囲指定の基準セルを入れ替える"
             .Add "ShowSuggest", "可能ならコマンドのサジェストを表示する"
+            ' Automatically generated from README and DefaultConfig
         End With
     End If
 End Sub
@@ -710,6 +712,7 @@ Private Sub InitENDict()
             .Add "ExportSheet", "Show the move or copy sheet dialog"
             .Add "ActivateSheet", "Select the sheet at position `[num]` (only 1-9)"
             .Add "PrintPreviewOfActiveSheet", "Show the print preview of the active sheet"
+            .Add "PrintPreviewAndPrint", "Show the print preview and print screen"
             .Add "OpenWorkbook", "Open a workbook"
             .Add "ReopenActiveWorkbook", "Discard changes to the active workbook and reopen it"
             .Add "SaveWorkbook", "Save the active workbook"
@@ -747,6 +750,7 @@ Private Sub InitENDict()
             .Add "ShowMacroDialog", "Show the macro dialog"
             .Add "SwapVisualBase", "Swap the base cell for a range selection"
             .Add "ShowSuggest", "Show command suggestions if possible"
+            ' Automatically generated from README and DefaultConfig
         End With
     End If
 End Sub
