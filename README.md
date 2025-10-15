@@ -193,6 +193,7 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Cell | `gf` | `FollowHyperlinkOfActiveCell` | Open the hyperlink in the cell | |
 | Cell | `FF`/`Ff` | `ApplyFlashFill` | Flash Fill (fallback to Auto Fill if not applicable) | |
 | Cell | `FA`/`Fa` | `ApplyAutoFill` | Auto Fill | |
+| Cell | `g/` | `ShowCellPicker` | Launch CellPicker | |
 | Cell | `=s` | `AutoSum` | Auto SUM | |
 | Cell | `=a` | `AutoAverage` | Auto SUM (average) | |
 | Cell | `=c` | `AutoCount` | Auto SUM (count) | |

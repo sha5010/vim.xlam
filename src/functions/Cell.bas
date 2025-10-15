@@ -1153,6 +1153,10 @@ Catch:
     Call ErrorHandler("InnerDataSearch")
 End Function
 
+Function ShowCellPicker(Optional ByVal g As String) As Boolean
+    Call UF_Picker.Launch(New cls_CellPicker)
+End Function
+
 Private Function AutoSumInner(ByVal lastKey As Long)
     On Error GoTo Catch
 

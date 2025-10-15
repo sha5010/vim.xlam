@@ -113,6 +113,7 @@ Sub DefaultConfig()
         .Map "nmap FF ApplyFlashFill"
         .Map "nmap Fa ApplyAutoFill"
         .Map "nmap FA ApplyAutoFill"
+        .Map "nmap g/ ShowCellPicker"
 
         .Map "nmap =s AutoSum"
         .Map "nmap =a AutoAverage"

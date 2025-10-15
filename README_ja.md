@@ -191,6 +191,7 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Cell | `gf` | `FollowHyperlinkOfActiveCell` | セルのハイパーリンクを開く | |
 | Cell | `FF`/`Ff` | `ApplyFlashFill` | フラッシュフィル(適用不可の際はオートフィル) | |
 | Cell | `FA`/`Fa` | `ApplyAutoFill` | オートフィル | |
+| Cell | `g/` | `ShowCellPicker` | CellPicker を起動 | |
 | Cell | `=s` | `AutoSum` | オートSUM (合計) | |
 | Cell | `=a` | `AutoAverage` | オートSUM (平均) | |
 | Cell | `=c` | `AutoCount` | オートSUM (数値の個数) | |
