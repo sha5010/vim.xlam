@@ -10,6 +10,8 @@ Option Private Module
     Private Declare PtrSafe Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
     Private Declare PtrSafe Function ImmGetDefaultIMEWnd Lib "imm32.dll" (ByVal hWnd As LongPtr) As LongPtr
     Private Declare PtrSafe Function SendMessageW Lib "user32.dll" (ByVal hWnd As LongPtr, ByVal Msg As Long, ByVal wParam As LongPtr, ByVal lParam As LongPtr) As LongPtr
+    Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+    Public Declare PtrSafe Function GetTickCount Lib "kernel32" () As Long
 
 #Else
     Private Declare Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
@@ -19,6 +21,8 @@ Option Private Module
     Private Declare Function GetMonitorInfo Lib "user32" Alias "GetMonitorInfoA" (ByVal hMonitor As LongPtr, ByRef lpmi As monitorInfo) As Long
     Private Declare Function ImmGetDefaultIMEWnd Lib "imm32.dll" (ByVal hWnd As LongPtr) As LongPtr
     Private Declare Function SendMessageW Lib "user32.dll" (ByVal hWnd As LongPtr, ByVal Msg As Long, ByVal wParam As LongPtr, ByVal lParam As LongPtr) As LongPtr
+    Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+    Public Declare Function GetTickCount Lib "kernel32" () As Long
 
 #End If
 
