@@ -479,12 +479,13 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | Close the active workbook without saving | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | Save and close the active workbook | |
 | Workbook | `:saveas` | `SaveAsNewWorkbook` | Save as a new workbook | |
-| Workbook | `:b [num]` | `ActivateWorkbook` | Select the workbook at position `[num]` | |
+| Workbook | `:b [num]` | `ActivateWorkbook` | Select the workbook at position `[num]` (launch BookPicker if no argument) | |
 | Workbook | `]b`/`:bnext` | `NextWorkbook` | Select the next workbook | ✓ |
 | Workbook | `[b`/`:bprevious` | `PreviousWorkbook` | Select the previous workbook | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | Toggle read-only mode | |
 | Workbook | `:opendir` | `OpenWorkbookDir` | Open file location | |
 | Workbook | `:fullpath` | `YankWorkbookPath` | Copy full path to clipboard | |
+| Workbook | `wb` | `ShowBookPicker` | Launch BookPicker | |
 | Other | `u` | `Undo_CtrlZ` | Undo (send `Ctrl + Z`) | |
 | Other | `<C-r>` | `RedoExecute` | Redo | |
 | Other | `.` | `RepeatAction` | Repeat the previous action (limited to commands where `repeatRegister` is called) | |

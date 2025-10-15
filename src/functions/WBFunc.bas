@@ -172,6 +172,7 @@ Function ActivateWorkbook(Optional ByVal arg As String) As Boolean
     arg = Replace(arg, "!", "")
 
     If Len(arg) = 0 Or arg Like "*[!0-9]*" Then
+        Call ShowBookPicker
         Exit Function
     End If
 
@@ -321,4 +322,8 @@ Function YankWorkbookPath(Optional ByVal bookName As String = "") As Boolean
 
 Catch:
     Call ErrorHandler("YankWorkbookPath")
+End Function
+
+Function ShowBookPicker(Optional ByVal g As String) As Boolean
+    Call UF_Picker.Launch(New cls_BookPicker)
 End Function

@@ -475,6 +475,7 @@ Sub DefaultConfig()
         .Map "nmap [b PreviousWorkbook"
         .Map "nmap <cmd>opendir OpenWorkbookDir"
         .Map "nmap <cmd>fullpath YankWorkbookPath"
+        .Map "nmap wb ShowBookPicker"
 
 
         'Useful Command

@@ -476,12 +476,13 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Workbook | `:q!`/`ZQ` | `CloseWithoutSaving` | アクティブブックを保存せずに閉じる | |
 | Workbook | `:wq`/`:x`/`ZZ` | `CloseWithSaving` | アクティブブックを保存して閉じる | |
 | Workbook | `:saveas` | `SaveAsNewWorkbook` | 新しいワークブックとして保存 | |
-| Workbook | `:b [num]` | `ActivateWorkbook` | `[num]` 番目のブックを選択 | |
+| Workbook | `:b [num]` | `ActivateWorkbook` | `[num]` 番目のブックを選択(引数なしの場合はBookPickerを起動) | |
 | Workbook | `]b`/`:bnext` | `NextWorkbook` | 次のワークブックを選択 | ✓ |
 | Workbook | `[b`/`:bprevious` | `PreviousWorkbook` | 前のワークブックを選択 | ✓ |
 | Workbook | `~` | `ToggleReadOnly` | 読み取り専用を切り替える | |
 | Workbook | `:opendir` | `OpenWorkbookDir` | ファイルの保存場所を開く | |
 | Workbook | `:fullpath` | `YankWorkbookPath` | ファイルのフルパスをコピー | |
+| Workbook | `wb` | `ShowBookPicker` | BookPicker を起動 | |
 | Other | `u` | `Undo_CtrlZ` | 元に戻す (`Ctrl + Z` を送出) | |
 | Other | `<C-r>` | `RedoExecute` | やり直し | |
 | Other | `.` | `RepeatAction` | 以前の動作を繰り返す (`RepeatRegister` が呼ばれるコマンド限定) | |
