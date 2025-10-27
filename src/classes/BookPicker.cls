@@ -43,6 +43,8 @@ Private Enum BookAction
     SaveBook
     SaveBookAs
     ToggleReadOnlyMode
+    CopyPath
+    OpenPath
 End Enum
 
 '/*
@@ -68,6 +70,8 @@ Private Sub Class_Initialize()
     Call Super.DeclareAction(Func, "W", "名前を付けて保存", "Save the workbook as", BookAction.SaveBookAs)
     Call Super.DeclareAction(Func, "R", "読み取り専用切替", "Toggle read-only mode", BookAction.ToggleReadOnlyMode)
     Call Super.DeclareAction(Func, "l", "ブックをプレビュー", "Preview the workbook", BookAction.PreviewBook)
+    Call Super.DeclareAction(Func, "Y", "ブックのパスをコピー", "Copy workbook path", BookAction.CopyPath)
+    Call Super.DeclareAction(Func, "O", "ブックのパスを開く", "Open workbook directory", BookAction.OpenPath)
 End Sub
 
 '/*
@@ -161,6 +165,10 @@ Public Function cls_IPicker_HandleAction(ByVal selectedKey As String, ByVal Acti
             Call F_WBFunc.SaveAsNewWorkbook(selectedKey)
         Case BookAction.ToggleReadOnlyMode
             Call F_WBFunc.ToggleReadOnly(selectedKey)
+        Case BookAction.CopyPath
+            Call F_WBFunc.YankWorkbookPath(selectedKey)
+        Case BookAction.OpenPath
+            Call F_WBFunc.OpenWorkbookDir(selectedKey)
 
         Case Else
             ' If the executed action is not defined here, return False to pass to the default implementation.
