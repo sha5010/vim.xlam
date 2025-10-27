@@ -28,6 +28,9 @@ Private Const PICKER_NAME As String = "CellPicker"
 '/* The width of the key column in the picker. Specify 0 to hide the key column. */
 Private Const KEY_COLUMN_WIDTH As Double = 72
 
+'/* The preferred width of the picker form. Specify 0 to use the default width based on KeyWidth. */
+Private Const PICKER_FORM_WIDTH As Double = 0
+
 '/* Maximum number of cells to process to avoid performance issues. */
 Private Const MAX_CELLS_COUNT As Long = 1048576
 
@@ -138,6 +141,16 @@ End Property
 ' */
 Public Property Get cls_IPicker_KeyWidth() As Double
     cls_IPicker_KeyWidth = KEY_COLUMN_WIDTH
+End Property
+
+'/*
+' * Returns the preferred width of the picker form.
+' * Specify 0 to use the default width based on KeyWidth.
+' *
+' * @returns {Double} - The preferred width of the picker form. Specify 0 to use the default width based on KeyWidth.
+' */
+Public Property Get cls_IPicker_PickerFormWidth() As Double
+    cls_IPicker_PickerFormWidth = PICKER_FORM_WIDTH
 End Property
 
 '/*

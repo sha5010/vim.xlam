@@ -51,6 +51,15 @@ Public Property Get KeyWidth() As Double
 End Property
 
 '/*
+' * Returns the preferred width of the picker form.
+' * Specify 0 if you want to use the default width based on KeyWidth.
+' *
+' * @returns {Double} The preferred width of the picker form.
+' */
+Public Property Get PickerFormWidth() As Double
+End Property
+
+'/*
 ' * Handles the event when an item is entered (selected).
 ' *
 ' * @param {String} selectedKey The key of the selected item.

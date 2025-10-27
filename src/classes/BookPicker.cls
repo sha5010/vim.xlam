@@ -28,6 +28,9 @@ Private Const PICKER_NAME As String = "BookPicker"
 '/* The width of the key column in the picker. Specify 0 to hide the key column. */
 Private Const KEY_COLUMN_WIDTH As Double = 0
 
+'/* The preferred width of the picker form. Specify 0 to use the default width based on KeyWidth. */
+Private Const PICKER_FORM_WIDTH As Double = 0
+
 '/*
 ' * Flag to indicate if the picker is in preview mode.
 ' * When true, selecting a workbook in the listbox will activate it.
@@ -106,6 +109,16 @@ End Property
 ' */
 Public Property Get cls_IPicker_KeyWidth() As Double
     cls_IPicker_KeyWidth = KEY_COLUMN_WIDTH
+End Property
+
+'/*
+' * Returns the preferred width of the picker form.
+' * Specify 0 to use the default width based on KeyWidth.
+' *
+' * @returns {Double} - The preferred width of the picker form. Specify 0 to use the default width based on KeyWidth.
+' */
+Public Property Get cls_IPicker_PickerFormWidth() As Double
+    cls_IPicker_PickerFormWidth = PICKER_FORM_WIDTH
 End Property
 
 '/*

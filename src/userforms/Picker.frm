@@ -369,10 +369,13 @@ Public Sub Launch(ByRef pickerSource As cls_IPicker, Optional ByVal ShowLeft As 
     With Me
         ' Adjust listbox column widths to accommodate the picker source's key width.
         .ListBox_Result.ColumnWidths = "18; " & mPickerSource.KeyWidth
-        ' Adjust the form's width based on the picker source's key width.
-        .Width = .Width + mPickerSource.KeyWidth
-        ' Set a proportional height for the form.
-        .Height = .Width * 1.612
+        ' Adjust the form's width based on the picker source's explicit form width or key width.
+        If mPickerSource.PickerFormWidth > 0 Then
+            .Width = mPickerSource.PickerFormWidth
+        Else
+            .Width = .Width + mPickerSource.KeyWidth    ' Original logic if no explicit form width or 0 is returned
+            .Height = .Width * 1.612                    ' Set a proportional height for the form.
+        End If
          ' Position at the bottom of the Excel window.
         .Top = Application.Top + Application.Height - .Height - 45
 
