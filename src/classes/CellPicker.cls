@@ -37,6 +37,17 @@ Private Const MAX_CELLS_COUNT As Long = 1048576
 ' */
 Private mPreviewMode As Boolean
 
+Private Type OriginalState
+    WorkbookName As String
+    sheetName As String
+    SelectionAddress As String
+    ActiveCellAddress As String
+    ScrollColumn As Long
+    ScrollRow As Long
+End Type
+Private mOriginalState As OriginalState
+Private mIsConfirmed As Boolean ' Flag to indicate if the picker was confirmed
+
 '/*
 ' * Defines custom actions specific to this cell picker.
 ' */
@@ -69,8 +80,36 @@ End Sub
 
 '/*
 ' * Cleans up object references when the class is terminated.
+' * Also restores the original selection if the picker was cancelled.
 ' */
 Private Sub Class_Terminate()
+    ' Only restore if the picker was cancelled (not confirmed) and original info is available
+    If Not mIsConfirmed And mOriginalState.WorkbookName <> "" And mOriginalState.sheetName <> "" And mOriginalState.SelectionAddress <> "" Then
+        On Error Resume Next ' Handle potential errors during restoration
+        Dim Wb As Workbook
+        Set Wb = Workbooks(mOriginalState.WorkbookName)
+        Wb.Activate
+
+        Dim ws As Worksheet
+        Set ws = Wb.Worksheets(mOriginalState.sheetName)
+        ws.Activate
+
+        ' Restore selection
+        ws.Range(mOriginalState.SelectionAddress).Select
+
+        ' Restore ActiveCell
+        If mOriginalState.ActiveCellAddress <> "" Then
+            ws.Range(mOriginalState.ActiveCellAddress).Activate
+        End If
+
+        ' Restore scroll position
+        With ActiveWindow
+            .ScrollColumn = mOriginalState.ScrollColumn
+            .ScrollRow = mOriginalState.ScrollRow
+        End With
+        On Error GoTo 0 ' Reset error handling
+    End If
+
     Set Super = Nothing
 End Sub
 
@@ -111,6 +150,31 @@ End Property
 ' */
 Public Sub cls_IPicker_Attach(ByRef objUserForm As MSForms.UserForm, ByRef objListBox As MSForms.ListBox, ByRef objTextBox As MSForms.TextBox, ByRef objLabel As MSForms.Label)
     Call Super.Attach(objUserForm, objListBox, objTextBox, objLabel)
+
+    ' Record the initial selection information
+    If Not ActiveWorkbook Is Nothing Then
+        mOriginalState.WorkbookName = ActiveWorkbook.Name
+        If Not ActiveSheet Is Nothing Then
+            mOriginalState.sheetName = ActiveSheet.Name
+
+            ' Record Selection address
+            If Not Selection Is Nothing Then
+                mOriginalState.SelectionAddress = Selection.Address(External:=False)
+            End If
+
+            ' Record ActiveCell address
+            If Not ActiveCell Is Nothing Then
+                mOriginalState.ActiveCellAddress = ActiveCell.Address(External:=False)
+            End If
+
+            ' Record scroll position
+            With ActiveWindow
+                mOriginalState.ScrollColumn = .ScrollColumn
+                mOriginalState.ScrollRow = .ScrollRow
+            End With
+        End If
+    End If
+    mIsConfirmed = False ' Initialize as not confirmed
 End Sub
 
 '/*
@@ -218,7 +282,20 @@ End Sub
 ' * @param {String} selectedKey - The key (cell address) of the confirmed item.
 ' */
 Public Sub cls_IPicker_OnEnter(ByVal selectedKey As String)
+    ' Record the original position to the JumpList before activating the new cell.
+    ' Use mOriginalState.SelectionAddress to account for possible ActiveCell changes in preview mode.
+    If mOriginalState.SelectionAddress <> "" Then
+        Dim originalRange As Range
+        On Error Resume Next ' Handle potential errors if the original range is invalid
+        Set originalRange = ActiveSheet.Range(mOriginalState.SelectionAddress)
+        On Error GoTo 0 ' Reset error handling
+        If Not originalRange Is Nothing Then
+            Call RecordToJumpList(Target:=originalRange)
+        End If
+    End If
+
     Call ShowCell(selectedKey)
+    mIsConfirmed = True ' Set flag to confirmed
 End Sub
 
 '/*
