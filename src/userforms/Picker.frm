@@ -340,6 +340,12 @@ End Sub
 ' * It ensures that all object references are released to prevent memory leaks.
 ' */
 Private Sub UserForm_Terminate()
+    ' Notify the picker source that the form is closing to break circular references.
+    If Not mPickerSource Is Nothing Then
+        ' Assuming IPicker implementations will delegate this to their PickerBase instance
+        Call mPickerSource.OnPickerClose
+    End If
+
     Set mPickerSource = Nothing
     Set mItems = Nothing
 End Sub

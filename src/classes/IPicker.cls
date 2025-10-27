@@ -95,3 +95,10 @@ End Sub
 ' */
 Public Function HandleAction(ByVal selectedKey As String, ByVal ActionType As Long) As Boolean
 End Function
+
+'/*
+' * Handles the event when the picker UserForm is closed.
+' * Implement cleanup logic here to release references and prevent memory leaks.
+' */
+Public Sub OnPickerClose()
+End Sub

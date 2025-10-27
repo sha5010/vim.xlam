@@ -329,6 +329,16 @@ Private Function GetColumnCode(ByVal ColumnIndex As Long) As String
     Wend
 End Function
 
+'/*
+' * Called when the picker UserForm is closed.
+' * This is used to notify the base class to release references.
+' */
+Public Sub cls_IPicker_OnPickerClose()
+    If Not Super Is Nothing Then
+        Call Super.NotifyFormClosed
+    End If
+End Sub
+
 '----- Define custom actions and helper functions below this line -----
 
 '/*

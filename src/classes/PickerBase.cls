@@ -150,6 +150,17 @@ Private Sub KeymapTextbox(ByVal lhs As String, ByVal registerAction As TextboxAc
 End Sub
 
 '/*
+' * Notifies the base class that the associated UserForm has been closed.
+' * This method is called from the UserForm_Terminate event of UF_Picker.
+' * It is used to release the strong reference to mOwner, breaking the circular dependency.
+' */
+Public Sub NotifyFormClosed()
+    If Not mOwner Is Nothing Then
+        Set mOwner = Nothing ' Release the reference to the owner to break the circular dependency.
+    End If
+End Sub
+
+'/*
 ' * Releases object references when the class is terminated.
 ' */
 Private Sub Class_Terminate()
