@@ -31,6 +31,8 @@ Private Const KEY_COLUMN_WIDTH As Double = 100
 '/* Flag to indicate if the picker is in preview mode. */
 Private mPreviewMode As Boolean
 
+Private mShapes As Dictionary ' Holds SheetName!ShapeID as key and Shape object as item
+
 '/*
 ' * Defines custom actions specific to this shape picker.
 ' */
@@ -48,6 +50,9 @@ Private Sub Class_Initialize()
     Set Super = New cls_PickerBase
     Call Super.Init(Me)
 
+    ' Initialize the dictionary to hold shapes
+    Set mShapes = New Dictionary
+
     ' Add custom functionalities here
     Call Super.DeclareAction(Func, "P", "プレビューモードを切り替える", "Toggle preview mode", ShapeAction.TogglePreviewMode)
     Call Super.DeclareAction(Func, "l", "シェイプをアクティブにする", "Activate shape", ShapeAction.PreviewShape)
@@ -57,6 +62,7 @@ End Sub
 ' * Cleans up object references when the class is terminated.
 ' */
 Private Sub Class_Terminate()
+    Set mShapes = Nothing
     Set Super = Nothing
 End Sub
 
@@ -105,7 +111,18 @@ End Sub
 ' * @returns {String} - The default selected item's key.
 ' */
 Private Property Get cls_IPicker_Default() As String
-    cls_IPicker_Default = "" ' No default selected item for shapes initially
+    On Error Resume Next
+    Dim selectedShape As Shape
+
+    ' Check if shapes are selected
+    If Application.Selection.Type = xlShape Then
+        Set selectedShape = Selection.ShapeRange(1)
+        cls_IPicker_Default = selectedShape.Parent.Name & "!" & CStr(selectedShape.ID)
+        Exit Property
+    End If
+
+    cls_IPicker_Default = "" ' No default selected item found
+    On Error GoTo 0
 End Property
 
 '/*
@@ -116,6 +133,7 @@ End Property
 ' */
 Public Property Get cls_IPicker_Item() As Dictionary
     Set cls_IPicker_Item = New Dictionary
+    Set mShapes = New Dictionary ' Clear previous shapes on refresh
 
     Dim ws As Worksheet
     If ActiveWorkbook Is Nothing Then Exit Property
@@ -172,28 +190,18 @@ End Sub
 '----- Define custom actions and helper functions below this line -----
 
 '/*
-' * Selects the shape with the given name.
+' * Selects the shape with the given ID.
 ' *
-' * @param {String} shapeName - The name of the shape to select.
+' * @param {Long} shapeID - The ID of the shape to select.
 ' */
-Private Sub ShowShape(ByVal shapeName As String)
+Private Sub ShowShape(ByVal shapeKey As String)
     On Error Resume Next
-    Dim parts() As String
-    Dim sheetName As String
-    Dim actualShapeName As String
+    Dim Sh As Shape
 
-    On Error Resume Next
-    parts = Split(shapeName, "!")
-    If UBound(parts) = 1 Then
-        sheetName = parts(0)
-        actualShapeName = parts(1)
-
-        If ActiveWorkbook Is Nothing Then Exit Sub
-
-        With ActiveWorkbook
-            .Sheets(sheetName).Activate
-            .Sheets(sheetName).Shapes(actualShapeName).Select Replace:=True
-        End With
+    If mShapes.Exists(shapeKey) Then
+        Set Sh = mShapes.Item(shapeKey)
+        Sh.Parent.Activate
+        Sh.Select Replace:=True
     End If
     On Error GoTo 0
 End Sub
@@ -231,11 +239,14 @@ End Function
 ' *
 ' * @param {Object} shapesCollection - The collection of shapes to process (can be Shapes or GroupItems).
 ' * @param {String} currentSheetName - The name of the sheet the shapes belong to.
+' * @param {Dictionary} outDict - The dictionary to add picker items to (key: Shape.ID, item: display string).
 ' */
 Private Sub AddShapesRecursively(ByVal shapesCollection As Object, ByVal currentSheetName As String, ByRef outDict As Dictionary)
     Dim Sh As Shape
     Dim shapeKey As String
     Dim shapeValue As String
+    Dim shapeText As String
+    Dim shapeDesc As String
 
     For Each Sh In shapesCollection
         If Sh.Type = msoGroup Then
@@ -243,14 +254,27 @@ Private Sub AddShapesRecursively(ByVal shapesCollection As Object, ByVal current
             Call AddShapesRecursively(Sh.GroupItems, currentSheetName, outDict)
         Else
             ' Add individual shape to the dictionary
-            shapeKey = currentSheetName & "!" & Sh.Name
-            shapeValue = GetShapeValue(Sh)
+            shapeKey = currentSheetName & "!" & CStr(Sh.ID)
+            Dim displayString As String
+            displayString = ""
 
-            If Len(shapeValue) = 0 Then
-                shapeValue = GetShapeDescription(Sh)
+            shapeText = GetShapeValue(Sh)
+            shapeDesc = GetShapeDescription(Sh)
+
+            If Len(shapeText) > 0 Then
+                displayString = shapeText
+            ElseIf Len(shapeDesc) > 0 Then
+                displayString = shapeDesc
             End If
 
-            If Len(shapeKey) > 0 Then
+            If Len(displayString) > 0 Then
+                shapeValue = displayString & " " & ChrW(&H2502) & " " & currentSheetName & "!" & Sh.Name
+            Else
+                shapeValue = currentSheetName & "!" & Sh.Name
+            End If
+
+            If Not mShapes.Exists(shapeKey) Then
+                mShapes.Add shapeKey, Sh
                 outDict.Add shapeKey, shapeValue
             End If
         End If
