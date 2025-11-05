@@ -389,6 +389,7 @@ Private Sub InitJPDict()
             .Add "ClearPrintArea", "印刷範囲をクリア"
             .Add "ShowMacroDialog", "マクロダイアログを表示"
             .Add "ShowShapePicker", "ShapePicker を起動"
+            .Add "OpenRecentFilePicker", "最近使ったファイルを開くPickerを起動"
             .Add "SwapVisualBase", "範囲指定の基準セルを入れ替える"
             .Add "ShowSuggest", "可能ならコマンドのサジェストを表示する"
             ' Automatically generated from README and DefaultConfig
@@ -754,6 +755,7 @@ Private Sub InitENDict()
             .Add "ClearPrintArea", "Clear the print area"
             .Add "ShowMacroDialog", "Show the macro dialog"
             .Add "ShowShapePicker", "Launch ShapePicker"
+            .Add "OpenRecentFilePicker", "Launch a picker to open recently used files"
             .Add "SwapVisualBase", "Swap the base cell for a range selection"
             .Add "ShowSuggest", "Show command suggestions if possible"
             ' Automatically generated from README and DefaultConfig

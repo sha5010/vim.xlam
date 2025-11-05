@@ -261,3 +261,15 @@ Public Property Get WorkbookNotFound() As String
         "指定のワークブックが存在しません。", _
         "Specified workbook is not found.")
 End Property
+
+Public Property Get RecentFilesTitle() As String
+    RecentFilesTitle = IIf(Parent.IsJapanese, _
+        "最近使ったファイル", _
+        "Recent Files")
+End Property
+
+Public Property Get FileNotFound() As String
+    FileNotFound = IIf(Parent.IsJapanese, _
+        "ファイルが見つかりませんでした: ", _
+        "File not found: ")
+End Property

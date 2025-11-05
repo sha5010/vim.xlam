@@ -507,6 +507,7 @@ Sub DefaultConfig()
         .Map "nmap zP ClearPrintArea"
         .Map "nmap @@ ShowMacroDialog"
         .Map "nmap <cmd>shapes ShowShapePicker"
+        .Map "nmap <cmd>erecent OpenRecentFilePicker"
 
 
         'Count

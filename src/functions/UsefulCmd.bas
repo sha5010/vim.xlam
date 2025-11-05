@@ -208,3 +208,48 @@ End Function
 Function ShowShapePicker(Optional ByVal g As String) As Boolean
     Call UF_Picker.Launch(New cls_ShapePicker)
 End Function
+
+Function OpenRecentFilePicker(Optional ByVal g As String) As Boolean
+    Dim picker As New cls_GeneralPicker
+    Dim itemsDict As New Dictionary
+    Dim i As Long
+    Dim selectedFile As String
+    Dim maxByteLength As Long
+
+    ' Populate the dictionary with recent files
+    For i = 1 To Application.RecentFiles.Count
+        Dim filePath As String
+        filePath = Application.RecentFiles.Item(i).Path
+        If Len(filePath) > 0 Then
+            itemsDict.Add filePath, Mid(filePath, InStrRev(Replace(filePath, "/", "\"), "\") + 1)
+        End If
+    Next i
+
+    With picker
+        .Caption = gVim.Msg.RecentFilesTitle
+        .KeyColumnWidth = 400
+        .PickerFormWidth = 600 ' Set the calculated optimal width
+        Set .Items = itemsDict
+        ' Optionally set a default selected item if itemsDict is not empty
+        If itemsDict.Count > 0 Then
+            .Default = itemsDict.Keys(0)
+        End If
+    End With
+
+    ' Launch the picker
+    Call UF_Picker.Launch(picker)
+
+    ' Get the selected file from the picker instance
+    selectedFile = picker.SelectedValue
+
+    If Len(selectedFile) = 0 Then
+        ' User cancelled the picker or no selection made
+        Exit Function ' Early return
+    End If
+
+    If Dir(selectedFile, vbDirectory) <> "" Or Dir(selectedFile) <> "" Then
+        Workbooks.Open selectedFile
+    Else
+        Call SetStatusBarTemporarily(gVim.Msg.FileNotFound & selectedFile, 3000)
+    End If
+End Function
