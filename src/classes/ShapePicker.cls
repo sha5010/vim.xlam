@@ -36,6 +36,16 @@ Private mPreviewMode As Boolean
 
 Private mShapes As Dictionary ' Holds SheetName!ShapeID as key and Shape object as item
 
+Private Type OriginalState
+    WorkbookName As String
+    sheetName As String
+    ScrollColumn As Long
+    ScrollRow As Long
+    OriginalSelection As Variant ' To store the original selection (can be Range or ShapeRange)
+End Type
+Private mOriginalState As OriginalState
+Private mIsConfirmed As Boolean ' Flag to indicate if the picker was confirmed
+
 '/*
 ' * Defines custom actions specific to this shape picker.
 ' */
@@ -65,6 +75,31 @@ End Sub
 ' * Cleans up object references when the class is terminated.
 ' */
 Private Sub Class_Terminate()
+    ' Only restore if the picker was cancelled (not confirmed) and original info is available
+    If Not mIsConfirmed And mOriginalState.WorkbookName <> "" And mOriginalState.sheetName <> "" Then
+        On Error Resume Next ' Handle potential errors during restoration
+        Dim Wb As Workbook
+        Set Wb = Workbooks(mOriginalState.WorkbookName)
+        Wb.Activate
+
+        Dim ws As Worksheet
+        Set ws = Wb.Worksheets(mOriginalState.sheetName)
+        ws.Activate
+
+        ' Restore original selection if it exists and is valid
+        If Not mOriginalState.OriginalSelection Is Nothing Then
+            mOriginalState.OriginalSelection.Select
+        End If
+
+        ' Restore scroll position
+        With ActiveWindow
+            .ScrollColumn = mOriginalState.ScrollColumn
+            .ScrollRow = mOriginalState.ScrollRow
+        End With
+
+        On Error GoTo 0 ' Reset error handling
+    End If
+
     Set mShapes = Nothing
     Set Super = Nothing
 End Sub
@@ -116,6 +151,26 @@ End Property
 ' */
 Public Sub cls_IPicker_Attach(ByRef objUserForm As MSForms.UserForm, ByRef objListBox As MSForms.ListBox, ByRef objTextBox As MSForms.TextBox, ByRef objLabel As MSForms.Label)
     Call Super.Attach(objUserForm, objListBox, objTextBox, objLabel)
+
+    ' Record the initial selection information
+    If Not ActiveWorkbook Is Nothing Then
+        mOriginalState.WorkbookName = ActiveWorkbook.Name
+        If Not ActiveSheet Is Nothing Then
+            mOriginalState.sheetName = ActiveSheet.Name
+            ' Record scroll position
+            With ActiveWindow
+                mOriginalState.ScrollColumn = .ScrollColumn
+                mOriginalState.ScrollRow = .ScrollRow
+            End With
+            ' Record the original selection
+            On Error Resume Next ' In case Selection is not supported (e.g., chart sheet)
+            If Not Application.Selection Is Nothing Then
+                Set mOriginalState.OriginalSelection = Application.Selection
+            End If
+            On Error GoTo 0
+        End If
+    End If
+    mIsConfirmed = False ' Initialize as not confirmed
 End Sub
 
 '/*
@@ -198,6 +253,7 @@ End Sub
 ' */
 Public Sub cls_IPicker_OnEnter(ByVal selectedKey As String)
     Call ShowShape(selectedKey)
+    mIsConfirmed = True ' Set flag to confirmed
 End Sub
 
 '/*
@@ -223,7 +279,27 @@ Private Sub ShowShape(ByVal shapeKey As String)
 
     If mShapes.Exists(shapeKey) Then
         Set Sh = mShapes.Item(shapeKey)
+
+        ' Activate the parent sheet of the shape
         Sh.Parent.Activate
+
+        ' Scroll to make the shape visible and centered
+        Dim targetRow As Long
+        Dim targetCol As Long
+        Dim targetCell As Range
+        Dim uh As Double
+        Dim uw As Double
+
+        targetRow = Sh.TopLeftCell.Row + (Sh.BottomRightCell.Row - Sh.TopLeftCell.Row + 1) / 2
+        targetCol = Sh.TopLeftCell.Column + (Sh.BottomRightCell.Column - Sh.TopLeftCell.Column + 1) / 2
+        uw = GetRealUsableWidth()
+        uh = GetRealUsableHeight()
+        Set targetCell = Sh.Parent.Cells(targetRow, targetCol)
+
+        ActiveWindow.ScrollRow = PointToRow(targetCell.Top + targetCell.Height / 2 - GetLengthWithZoomConsidered(uh) / 2, eRowSearchMode.ModeMiddle)
+        ActiveWindow.ScrollColumn = PointToColumn(targetCell.Left + targetCell.Width / 2 - GetLengthWithZoomConsidered(uw) / 2, eColumnSearchMode.ModeCenter)
+
+        ' Select the shape
         Sh.Select Replace:=True
     End If
     On Error GoTo 0

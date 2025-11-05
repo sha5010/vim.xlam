@@ -12,6 +12,18 @@ Option Private Module
     Private Declare Function GetKeyboardLayoutName Lib "user32" Alias "GetKeyboardLayoutNameA" (ByVal pwszKLID As String) As Long
 #End If
 
+Public Enum eRowSearchMode
+    ModeTop = -1
+    ModeMiddle = 0
+    ModeBottom = 1
+End Enum
+
+Public Enum eColumnSearchMode
+    ModeLeft = -1
+    ModeCenter = 0
+    ModeRight = 1
+End Enum
+
 Private Ctr1 As Currency
 Private Ctr2 As Currency
 Private Freq As Currency
@@ -613,6 +625,330 @@ Function IsJISKeyboardLayout() As Boolean
 
     keyboardLayout = Left(keyboardLayout, InStr(keyboardLayout, Chr(0)) - 1)
     IsJISKeyboardLayout = EndsWith(keyboardLayout, JIS_KEYBOARD_ID)
+End Function
+
+'/**
+' * Converts a vertical screen coordinate point to a row number based on a specified search mode.
+' * It first estimates the row using the average height of visible rows, then refines the search
+' * using an expanding range and binary search. The final row is determined by the search mode.
+' *
+' * @param {Double} point - The vertical screen coordinate to convert.
+' * @param {eRowSearchMode} searchMode - The mode to determine the final row (e.g., top, middle, bottom alignment).
+' * @returns {Long} - The calculated row number.
+' */
+Function PointToRow(ByVal point As Double, ByVal searchMode As eRowSearchMode) As Long
+    On Error GoTo Catch
+
+    Dim avg As Double
+    Dim pred As Long
+    Dim diff As Double
+    Dim predTop As Double
+    Dim i As Integer
+    Dim l As Long
+    Dim m As Long
+    Dim h As Long
+    Dim tmp As Long
+
+    ' Handle out-of-range cases
+    If point > Rows(Rows.Count).Top Then
+        PointToRow = Rows.Count
+        Exit Function
+    ElseIf point <= 0 Then
+        PointToRow = 1
+        Exit Function
+    End If
+
+    ' Calculate the average row height from the visible range
+    avg = ActiveWindow.VisibleRange.Height / ActiveWindow.VisibleRange.Rows.Count
+
+    ' Estimate the row based on the average height
+    pred = CLng(point / avg) + 1
+    If pred > Rows.Count Then
+        pred = Rows.Count
+    ElseIf pred < 1 Then
+        pred = 1
+    End If
+    predTop = Rows(pred).Top
+
+    ' Get the difference from the predicted row's top
+    diff = point - predTop
+
+    ' Determine the range containing the row by expanding the search
+    i = 0
+    l = pred
+    h = pred
+    Do Until diff = 0
+        tmp = CLng(diff / avg + 0.5) * 2 ^ i
+        If tmp = 0 Then
+            tmp = Sgn(diff) * 2 ^ i
+        End If
+
+        If tmp > Rows.Count Then
+            tmp = Rows.Count
+        Else
+            tmp = pred + tmp
+        End If
+
+        If diff < 0 Then
+            h = l
+            If tmp < 1 Then
+                l = 1
+            Else
+                l = tmp
+            End If
+        Else
+            l = h
+            If tmp > Rows.Count Then
+                h = Rows.Count
+            Else
+                h = tmp
+            End If
+        End If
+
+        If Rows(l).Top <= point And point < Rows(h).Top Then
+            Exit Do
+        End If
+
+        i = i + 1
+    Loop
+
+    ' Use binary search to pinpoint the row
+    Do
+        m = Round(l + (h - l) / 2 - 0.25)
+        If h - l < 2 Then
+            Exit Do
+        End If
+
+        predTop = Rows(m).Top
+        If point < predTop Then
+            h = m
+        Else
+            l = m
+        End If
+    Loop
+
+    ' Branch processing based on the search mode
+    Select Case searchMode
+        ' Center alignment
+        Case ModeMiddle
+            ' Choose the row whose absolute difference to the point is closer
+            If (point - Rows(m).Top) >= Rows(m).Height / 2 Then
+                PointToRow = m + 1
+            Else
+                PointToRow = m
+            End If
+
+        ' Top alignment
+        Case ModeTop
+            ' Add one row if the point is not exactly at the top of the row
+            If point > Rows(m).Top Then
+                PointToRow = m + 1
+            Else
+                PointToRow = m
+            End If
+
+        ' Bottom alignment
+        Case ModeBottom
+            ' Add one row if the point is not within the gVim.Config.ScrollOffset range
+            If point - gVim.Config.ScrollOffset > Rows(m).Top Then
+                PointToRow = m + 1
+            Else
+                PointToRow = m
+            End If
+
+        ' Exception case
+        Case Else
+            PointToRow = m
+
+    End Select
+    Exit Function
+
+Catch:
+    Call ErrorHandler("pointToRow")
+End Function
+
+'/**
+' * Converts a horizontal screen coordinate point to a column number based on a specified search mode.
+' * It first estimates the column using the average width of visible columns, then refines the search
+' * using an expanding range and binary search. The final column is determined by the search mode.
+' *
+' * @param {Double} point - The horizontal screen coordinate to convert.
+' * @param {eColumnSearchMode} searchMode - The mode to determine the final column (e.g., left, center, right alignment).
+' * @returns {Long} - The calculated column number.
+' */
+Function PointToColumn(ByVal point As Double, ByVal searchMode As eColumnSearchMode) As Long
+    On Error GoTo Catch
+
+    Dim avg As Double
+    Dim pred As Long
+    Dim diff As Double
+    Dim predLeft As Double
+    Dim i As Integer
+    Dim l As Long
+    Dim m As Long
+    Dim h As Long
+    Dim tmp As Long
+
+    ' Handle out-of-range cases
+    If point > Columns(Columns.Count).Left Then
+        PointToColumn = Columns.Count
+        Exit Function
+    ElseIf point <= 0 Then
+        PointToColumn = 1
+        Exit Function
+    End If
+
+    ' Calculate the average column width from the visible range
+    avg = ActiveWindow.VisibleRange.Width / ActiveWindow.VisibleRange.Columns.Count
+
+    ' Estimate the column based on the average width
+    pred = CLng(point / avg) + 1
+    If pred > Columns.Count Then
+        pred = Columns.Count
+    ElseIf pred < 1 Then
+        pred = 1
+    End If
+    predLeft = Columns(pred).Left
+
+    ' Get the difference from the predicted column's left
+    diff = point - predLeft
+
+    ' Determine the range containing the column by expanding the search
+    i = 0
+    l = pred
+    h = pred
+    Do Until diff = 0
+        tmp = CLng(diff / avg + 0.5) * 2 ^ i
+        If tmp = 0 Then
+            tmp = Sgn(diff) * 2 ^ i
+        End If
+
+        If tmp > Columns.Count Then
+            tmp = Columns.Count
+        Else
+            tmp = pred + tmp
+        End If
+
+        If diff < 0 Then
+            h = l
+            If tmp < 1 Then
+                l = 1
+            Else
+                l = tmp
+            End If
+        Else
+            l = h
+            If tmp > Columns.Count Then
+                h = Columns.Count
+            Else
+                h = tmp
+            End If
+        End If
+
+        If Columns(l).Left <= point And point < Columns(h).Left Then
+            Exit Do
+        End If
+
+        i = i + 1
+    Loop
+
+    ' Use binary search to pinpoint the column
+    Do
+        m = Round(l + (h - l) / 2 - 0.25)
+        If h - l < 2 Then
+            Exit Do
+        End If
+
+        predLeft = Columns(m).Left
+        If point < predLeft Then
+            h = m
+        Else
+            l = m
+        End If
+    Loop
+
+    ' Branch processing based on the search mode
+    Select Case searchMode
+        ' Center alignment
+        Case ModeCenter
+            ' Choose the column whose absolute difference to the point is closer
+            If (point - Columns(m).Left) >= Columns(m).Width / 2 Then
+                PointToColumn = m + 1
+            Else
+                PointToColumn = m
+            End If
+
+        ' Left alignment, Right alignment
+        Case ModeLeft, ModeRight
+            ' Add one column if the point is not exactly at the left of the column
+            If point > Columns(m).Left Then
+                PointToColumn = m + 1
+            Else
+                PointToColumn = m
+            End If
+
+        ' Exception case
+        Case Else
+            PointToColumn = m
+    End Select
+    Exit Function
+
+Catch:
+    Call ErrorHandler("pointToColumn")
+End Function
+
+'/**
+' * Calculates the length adjusted for the current zoom level of the active window.
+' *
+' * @param {Double} Length - The original length to be adjusted.
+' * @returns {Double} - The length adjusted for zoom.
+' */
+Function GetLengthWithZoomConsidered(ByVal Length As Double) As Double
+    Dim rate As Double
+
+    If 90 < ActiveWindow.Zoom And ActiveWindow.Zoom < 110 Then
+        rate = 1
+    Else
+        rate = 103.32 / ActiveWindow.Zoom - 0.05
+    End If
+    GetLengthWithZoomConsidered = Length * rate
+End Function
+
+'/**
+' * Retrieves the real usable height of the active window, considering whether row headings are displayed.
+' *
+' * @returns {Double} - The usable height of the active window.
+' */
+Function GetRealUsableHeight() As Double
+    If ActiveWindow.DisplayHeadings Then
+        GetRealUsableHeight = ActiveWindow.UsableHeight - ActiveSheet.StandardHeight
+    Else
+        GetRealUsableHeight = ActiveWindow.UsableHeight
+    End If
+End Function
+
+'/**
+' * Retrieves the real usable width of the active window, considering whether column headings are displayed.
+' * The width of the column headings is adjusted based on the maximum visible row number for better accuracy.
+' *
+' * @returns {Double} - The usable width of the active window.
+' */
+Function GetRealUsableWidth() As Double
+    Dim maxVisibleRow As Long
+    Dim headingWidth As Double
+
+    If ActiveWindow.DisplayHeadings Then
+        maxVisibleRow = ActiveWindow.VisibleRange.Item(ActiveWindow.VisibleRange.Count).Row
+        headingWidth = 25
+
+        If maxVisibleRow >= 1000 Then
+            headingWidth = headingWidth + 6.75 * (Len(CStr(maxVisibleRow)) - 3)
+        End If
+
+        GetRealUsableWidth = ActiveWindow.UsableWidth - headingWidth
+    Else
+        GetRealUsableWidth = ActiveWindow.UsableWidth
+    End If
 End Function
 
 
