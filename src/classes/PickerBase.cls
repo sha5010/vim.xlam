@@ -101,6 +101,8 @@ Public Sub Init(ByRef owner As cls_IPicker)
     '/* Textbox keymapping */
     Call KeymapTextbox("<C-j>", TextboxAction.MoveDown)
     Call KeymapTextbox("<C-k>", TextboxAction.MoveUp)
+    Call KeymapTextbox("<Down>", TextboxAction.MoveDown)
+    Call KeymapTextbox("<Up>", TextboxAction.MoveUp)
     Call KeymapTextbox("<C-f>", TextboxAction.ScrollDown)
     Call KeymapTextbox("<C-b>", TextboxAction.ScrollUp)
     Call KeymapTextbox("<C-w>", TextboxAction.DeleteWord)
