@@ -25,6 +25,8 @@ Option Explicit
 Private Const KEYLIST_MASTER As String = "abcdefghijklmnopqrstuvwxyz1234567890"
 ' Maximum number of items to display in the listbox to prevent performance issues.
 Private Const MAX_SHOW_ITEMS As Long = 2000
+' Maximum number of characters to display in the listbox item to prevent performance issues.
+Private Const MAX_DISPLAY_CHARS As Long = 150
 
 Private mPickerSource       As cls_IPicker    ' Reference to the IPicker implementation that provides data and handles actions.
 Private mItems              As Dictionary     ' Dictionary holding the items to be displayed in the picker.
@@ -200,8 +202,12 @@ Private Sub UpdateList()
                         Exit Do ' Key assigned, exit inner loop.
                     End If
                 Loop
-                ListBox_Result.List(mResultCount - 1, 1) = listKey    ' Store item key in column 1.
-                ListBox_Result.List(mResultCount - 1, 2) = listItem ' Store item display text in column 2.
+
+                ' Store item key in column 1.
+                ListBox_Result.List(mResultCount - 1, 1) = listKey
+
+                ' Store item display text in column 2.
+                ListBox_Result.List(mResultCount - 1, 2) = Left$(listItem, MAX_DISPLAY_CHARS)
 
                 ' Restore previous selection if this item matches.
                 If listKey = mLastSelected Then
