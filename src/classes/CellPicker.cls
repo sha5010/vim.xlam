@@ -29,7 +29,7 @@ Private Const PICKER_NAME As String = "CellPicker"
 Private Const KEY_COLUMN_WIDTH As Double = 72
 
 '/* The preferred width of the picker form. Specify 0 to use the default width based on KeyWidth. */
-Private Const PICKER_FORM_WIDTH As Double = 0
+Private Const PICKER_FORM_WIDTH As Double = 500
 
 '/* Maximum number of cells to process to avoid performance issues. */
 Private Const MAX_CELLS_COUNT As Long = 1048576

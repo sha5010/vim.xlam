@@ -29,7 +29,7 @@ Private Const PICKER_NAME As String = "BookPicker"
 Private Const KEY_COLUMN_WIDTH As Double = 0
 
 '/* The preferred width of the picker form. Specify 0 to use the default width based on KeyWidth. */
-Private Const PICKER_FORM_WIDTH As Double = 0
+Private Const PICKER_FORM_WIDTH As Double = 400
 
 '/*
 ' * Flag to indicate if the picker is in preview mode.
