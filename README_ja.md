@@ -436,6 +436,34 @@ vim.xlam は vim のような使用感で Excel 上でもキーボード主体�
 | Find & Replace | `[v` | `PrevSpecialCells` | 前の入力規則があるセルを選択 | ✓ |
 | Find & Replace | `]s` | `NextShape` | 次の図形を選択 | ✓ |
 | Find & Replace | `[s` | `PrevShape` | 前の図形を選択 | ✓ |
+| Filter | `qq` | `ToggleAutoFilter` | オートフィルターの切り替え | |
+| Filter | `qd` | `ClearCurrentColumnFilter` | 現在列のフィルターをクリア | |
+| Filter | `qD` | `ClearAllFilters` | 全てのフィルターをクリア | |
+| Filter | `q*` | `FilterByActiveCellValue` | 現在セルの値でフィルター | |
+| Filter | `qb`/`q<Space>` | `FilterByBlanks` | 空白セルをフィルター | |
+| Filter | `qB`/`q<S-Space>` | `FilterByNonBlanks` | 空白以外のセルをフィルター | |
+| Filter | `q/` | `ShowFilterDialog` | フィルターダイアログを表示 | |
+| Filter | `qo` | `FilterByAboveAverage` | 平均より上の値をフィルター | |
+| Filter | `qu` | `FilterByBelowAverage` | 平均より下の値をフィルター | |
+| Filter | `q==`/`qe` | `FilterByInputEquals` | 入力値と等しい値をフィルター | |
+| Filter | `q!=`/`qn` | `FilterByInputNotEquals` | 入力値と等しくない値をフィルター | |
+| Filter | `q<<`/`qlt` | `FilterByInputLessThan` | 入力値より小さい値をフィルター | |
+| Filter | `q>>`/`qgt` | `FilterByInputGreaterThan` | 入力値より大きい値をフィルター | |
+| Filter | `q<=`/`q=<`/`qle` | `FilterByInputLessEqual` | 入力値以下の値をフィルター | |
+| Filter | `q>=`/`q=>`/`qge` | `FilterByInputGreaterEqual` | 入力値以上の値をフィルター | |
+| Filter | `q^`/`qS` | `FilterByInputBeginsWith` | 入力値で始まる値をフィルター | |
+| Filter | `q$`/`qE` | `FilterByInputEndsWith` | 入力値で終わる値をフィルター | |
+| Filter | `q!^`/`q!S` | `FilterByInputNotBeginsWith` | 入力値で始まらない値をフィルター | |
+| Filter | `q!$`/`q!E` | `FilterByInputNotEndsWith` | 入力値で終わらない値をフィルター | |
+| Filter | `qi` | `FilterByInputContains` | 入力値を含む値をフィルター | |
+| Filter | `qI` | `FilterByInputNotContains` | 入力値を含まない値をフィルター | |
+| Filter | `qt` | `FilterByTopNItems` | 上位N項目をフィルター | |
+| Filter | `qw` | `FilterByBottomNItems` | 下位N項目をフィルター | |
+| Filter | `q%t` | `FilterByTopNPercent` | 上位N%をフィルター | |
+| Filter | `q%w` | `FilterByBottomNPercent` | 下位N%をフィルター | |
+| Filter | `qsa` | `SortAscending` | 昇順でソート | |
+| Filter | `qsd` | `SortDescending` | 降順でソート | |
+| Filter | `qsc` | `SortColor` | 色でソート | |
 | Scrolling | `<C-u>` | `ScrollUpHalf` | 半ページ上スクロール | ✓ |
 | Scrolling | `<C-d>` | `ScrollDownHalf` | 半ページ下スクロール | ✓ |
 | Scrolling | `<C-b>` | `ScrollUp` | 1ページ上スクロール | ✓ |

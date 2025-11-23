@@ -1286,6 +1286,8 @@ Public Function SendKeysToDisplayText(ByVal key As String) As String
         char = Mid(key, 3, 1)
         If 97 <= Asc(char) And Asc(char) <= 122 Then  'a-z
             SendKeysToDisplayText = UCase(char)
+        ElseIf char = " " Then
+            SendKeysToDisplayText = "<S-Space>"
         Else
             Debug.Print "Unexpected case:", char
         End If

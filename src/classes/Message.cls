@@ -273,3 +273,112 @@ Public Property Get FileNotFound() As String
         "ファイルが見つかりませんでした: ", _
         "File not found: ")
 End Property
+
+
+Public Property Get AutoFilterOn() As String
+    AutoFilterOn = IIf(Parent.IsJapanese, _
+        "オートフィルターを有効にしました。", _
+        "AutoFilter enabled.")
+End Property
+
+Public Property Get AutoFilterOff() As String
+    AutoFilterOff = IIf(Parent.IsJapanese, _
+        "オートフィルターを無効にしました。", _
+        "AutoFilter disabled.")
+End Property
+
+Public Property Get AutoFilterRequiresData() As String
+    AutoFilterRequiresData = IIf(Parent.IsJapanese, _
+        "オートフィルターはデータがある範囲にのみ適用できます。", _
+        "AutoFilter requires data in the range.")
+End Property
+
+Public Property Get NoFilterApplied() As String
+    NoFilterApplied = IIf(Parent.IsJapanese, _
+        "フィルターは適用されていません。", _
+        "No filter applied.")
+End Property
+
+Public Property Get FiltersCleared() As String
+    FiltersCleared = IIf(Parent.IsJapanese, _
+        "フィルターを解除しました。", _
+        "Filters cleared.")
+End Property
+
+Public Property Get NotWorksheet() As String
+    NotWorksheet = IIf(Parent.IsJapanese, _
+        "ワークシートがアクティブではありません。", _
+        "Active sheet is not a worksheet.")
+End Property
+
+Public Property Get ErrorOccurred() As String
+    ErrorOccurred = IIf(Parent.IsJapanese, _
+        "エラーが発生しました: ", _
+        "An error occurred: ")
+End Property
+
+Public Property Get FilterByActiveCellValueNotFound() As String
+    FilterByActiveCellValueNotFound = IIf(Parent.IsJapanese, _
+        "選択セルの値に一致するデータが見つかりませんでした。", _
+        "No matching data found for active cell value.")
+End Property
+
+Public Property Get InputFilterValuePrompt() As String
+    InputFilterValuePrompt = IIf(Parent.IsJapanese, _
+        "フィルターする値を入力してください。", _
+        "Please enter the value to filter by.")
+End Property
+
+Public Property Get FilterByInputNotFound() As String
+    FilterByInputNotFound = IIf(Parent.IsJapanese, _
+        "入力値に一致するデータが見つかりませんでした。", _
+        "No matching data found for input value.")
+End Property
+
+Public Property Get InputTopNPrompt() As String
+    InputTopNPrompt = IIf(Parent.IsJapanese, _
+        "上位Nの値を入力してください。", _
+        "Please enter the top N value.")
+End Property
+
+Public Property Get InputBottomNPrompt() As String
+    InputBottomNPrompt = IIf(Parent.IsJapanese, _
+        "下位Nの値を入力してください。", _
+        "Please enter the bottom N value.")
+End Property
+
+Public Property Get InputTopNPercentPrompt() As String
+    InputTopNPercentPrompt = IIf(Parent.IsJapanese, _
+        "上位N%の値を入力してください。", _
+        "Please enter the top N percent value.")
+End Property
+
+Public Property Get InputBottomNPercentPrompt() As String
+    InputBottomNPercentPrompt = IIf(Parent.IsJapanese, _
+        "下位N%の値を入力してください。", _
+        "Please enter the bottom N percent value.")
+End Property
+
+Public Property Get InvalidNumberInput() As String
+    InvalidNumberInput = IIf(Parent.IsJapanese, _
+        "入力された値は数値ではありません。", _
+        "Invalid number input.")
+End Property
+
+Public Property Get NoFilterAppliedToColumn() As String
+    NoFilterAppliedToColumn = IIf(Parent.IsJapanese, _
+        "現在の列にはフィルタが適用されていません。", _
+        "No filter applied to the current column.")
+End Property
+
+Public Property Get FilterClearedForColumn() As String
+    FilterClearedForColumn = IIf(Parent.IsJapanese, _
+        "現在の列のフィルタをクリアしました。", _
+        "Filter cleared for the current column.")
+End Property
+
+Public Property Get NoColorInActiveCell() As String
+    NoColorInActiveCell = IIf(Parent.IsJapanese, _
+        "アクティブセルに背景色が設定されていません。", _
+        "The active cell has no fill color.")
+End Property

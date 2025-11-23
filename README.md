@@ -438,6 +438,34 @@ By default, the `/` key cannot be recognized by vim.xlam. You can enable it by f
 | Find & Replace | `[v` | `PrevSpecialCells` | Select the previous cell with data validation | ✓ |
 | Find & Replace | `]s` | `NextShape` | Select the next shape | ✓ |
 | Find & Replace | `[s` | `PrevShape` | Select the previous shape | ✓ |
+| Filter | `qq` | `ToggleAutoFilter` | Toggle AutoFilter | |
+| Filter | `qd` | `ClearCurrentColumnFilter` | Clear filter for current column | |
+| Filter | `qD` | `ClearAllFilters` | Clear all filters | |
+| Filter | `q*` | `FilterByActiveCellValue` | Filter by active cell value | |
+| Filter | `qb`/`q<Space>` | `FilterByBlanks` | Filter by blanks | |
+| Filter | `qB`/`q<S-Space>` | `FilterByNonBlanks` | Filter by non-blanks | |
+| Filter | `q/` | `ShowFilterDialog` | Show filter dialog | |
+| Filter | `qo` | `FilterByAboveAverage` | Filter by above average | |
+| Filter | `qu` | `FilterByBelowAverage` | Filter by below average | |
+| Filter | `q==`/`qe` | `FilterByInputEquals` | Filter by input equals | |
+| Filter | `q!=`/`qn` | `FilterByInputNotEquals` | Filter by input not equals | |
+| Filter | `q<<`/`qlt` | `FilterByInputLessThan` | Filter by input less than | |
+| Filter | `q>>`/`qgt` | `FilterByInputGreaterThan` | Filter by input greater than | |
+| Filter | `q<=`/`q=<`/`qle` | `FilterByInputLessEqual` | Filter by input less or equal | |
+| Filter | `q>=`/`q=>`/`qge` | `FilterByInputGreaterEqual` | Filter by input greater or equal | |
+| Filter | `q^`/`qS` | `FilterByInputBeginsWith` | Filter by input begins with | |
+| Filter | `q$`/`qE` | `FilterByInputEndsWith` | Filter by input ends with | |
+| Filter | `q!^`/`q!S` | `FilterByInputNotBeginsWith` | Filter by input not begins with | |
+| Filter | `q!$`/`q!E` | `FilterByInputNotEndsWith` | Filter by input not ends with | |
+| Filter | `qi` | `FilterByInputContains` | Filter by input contains | |
+| Filter | `qI` | `FilterByInputNotContains` | Filter by input not contains | |
+| Filter | `qt` | `FilterByTopNItems` | Filter by top N items | |
+| Filter | `qw` | `FilterByBottomNItems` | Filter by bottom N items | |
+| Filter | `q%t` | `FilterByTopNPercent` | Filter by top N percent | |
+| Filter | `q%w` | `FilterByBottomNPercent` | Filter by bottom N percent | |
+| Filter | `qsa` | `SortAscending` | Sort ascending | |
+| Filter | `qsd` | `SortDescending` | Sort descending | |
+| Filter | `qsc` | `SortColor` | Sort by color | |
 | Scrolling | `<C-u>` | `ScrollUpHalf` | Scroll up by half a page | ✓ |
 | Scrolling | `<C-d>` | `ScrollDownHalf` | Scroll down by half a page | ✓ |
 | Scrolling | `<C-b>` | `ScrollUp` | Scroll up by one page | ✓ |
