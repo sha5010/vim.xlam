@@ -211,6 +211,8 @@ End Function
 Function RecordToJumpList(Optional Target As Range, Optional ByVal CurrentToLatest As Boolean = True) As Boolean
     On Error GoTo Catch
 
+    Const MAX_CELL_COUNT = 16384
+
     ' Verify if the jump list is available
     If gVim.JumpList Is Nothing Then
         Exit Function
@@ -219,7 +221,7 @@ Function RecordToJumpList(Optional Target As Range, Optional ByVal CurrentToLate
     ' If Target is not specified, use the current selection or active cell
     If Target Is Nothing Then
         If TypeName(Selection) = "Range" Then
-            If Selection.Count < 16384 Then
+            If Selection.Count < MAX_CELL_COUNT Then
                 Set Target = Selection
             ElseIf Not ActiveCell Is Nothing Then
                 Set Target = ActiveCell
@@ -231,6 +233,8 @@ Function RecordToJumpList(Optional Target As Range, Optional ByVal CurrentToLate
         Else
             Exit Function
         End If
+    ElseIf Target.Count > MAX_CELL_COUNT Then
+        Set Target = Target.Item(1)
     End If
 
     ' Add the target range to the jump list
