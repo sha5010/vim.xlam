@@ -312,10 +312,7 @@ Function YankWorkbookPath(Optional ByVal bookName As String = "") As Boolean
     End If
 
     'Set to clipboard
-    With New DataObject
-        .SetText targetWorkbook.FullName
-        .PutInClipboard
-    End With
+    Call SetClipboardText(targetWorkbook.FullName)
 
     Call SetStatusBarTemporarily(gVim.Msg.YankDone & " (" & targetWorkbook.FullName & ")", 3000)
     Exit Function

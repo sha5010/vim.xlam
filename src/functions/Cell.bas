@@ -387,10 +387,7 @@ fallback:
     End If
 
     'Set to clipboard
-    With New DataObject
-        .SetText resultText
-        .PutInClipboard
-    End With
+    Call SetClipboardText(resultText)
 
     Call SetStatusBarTemporarily(gVim.Msg.YankDone & "(" & _
                                  LenB(StrConv(resultText, vbFromUnicode)) & " Bytes)", 3000)

@@ -14,6 +14,16 @@ Option Private Module
     Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
     Public Declare PtrSafe Function GetTickCount Lib "kernel32" () As Long
 
+    Private Declare PtrSafe Function OpenClipboard Lib "user32" (ByVal hWnd As LongPtr) As Long
+    Private Declare PtrSafe Function CloseClipboard Lib "user32" () As Long
+    Private Declare PtrSafe Function EmptyClipboard Lib "user32" () As Long
+    Private Declare PtrSafe Function SetClipboardData Lib "user32" (ByVal wFormat As Long, ByVal hMem As LongPtr) As LongPtr
+    Private Declare PtrSafe Function GlobalAlloc Lib "kernel32" (ByVal wFlags As Long, ByVal dwBytes As LongPtr) As LongPtr
+    Private Declare PtrSafe Function GlobalLock Lib "kernel32" (ByVal hMem As LongPtr) As LongPtr
+    Private Declare PtrSafe Function GlobalUnlock Lib "kernel32" (ByVal hMem As LongPtr) As Long
+    Private Declare PtrSafe Function GlobalFree Lib "kernel32" (ByVal hMem As LongPtr) As LongPtr
+    Private Declare PtrSafe Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal Destination As LongPtr, ByVal Source As LongPtr, ByVal Length As LongPtr)
+
 #Else
     Private Declare Function FindWindowA Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
     Private Declare Function GetWindowRect Lib "user32" (ByVal hWnd As Long, lpRect As RECT) As Long
@@ -26,12 +36,25 @@ Option Private Module
     Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
     Public Declare Function GetTickCount Lib "kernel32" () As Long
 
+    Private Declare Function OpenClipboard Lib "user32" (ByVal hWnd As Long) As Long
+    Private Declare Function CloseClipboard Lib "user32" () As Long
+    Private Declare Function EmptyClipboard Lib "user32" () As Long
+    Private Declare Function SetClipboardData Lib "user32" (ByVal wFormat As Long, ByVal hMem As Long) As Long
+    Private Declare Function GlobalAlloc Lib "kernel32" (ByVal wFlags As Long, ByVal dwBytes As Long) As Long
+    Private Declare Function GlobalLock Lib "kernel32" (ByVal hMem As Long) As Long
+    Private Declare Function GlobalUnlock Lib "kernel32" (ByVal hMem As Long) As Long
+    Private Declare Function GlobalFree Lib "kernel32" (ByVal hMem As Long) As Long
+    Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (ByVal Destination As Long, ByVal Source As Long, ByVal Length As Long)
+
 #End If
 
 Private Const WM_IME_CONTROL As Long = &H283    ' control message to IME window
 Private Const IMC_GETOPENSTATUS As Long = &H5   ' query open/close
 Private Const IMC_SETOPENSTATUS As Long = &H6   ' set   open/close
 Private Const DWMWA_EXTENDED_FRAME_BOUNDS As Long = 9
+Private Const CF_UNICODETEXT As Long = 13
+Private Const GMEM_MOVEABLE As Long = &H2
+Private Const GMEM_ZEROINIT As Long = &H40
 
 Private Type RECT
     Left As Long
@@ -544,3 +567,69 @@ Sub CompleteSuggest(ByVal key As String)
         UF_CmdLine.TextBox.Text = key
     End If
 End Sub
+'/*
+' * Sets the specified text to the clipboard using Windows API.
+' *
+' * @param {String} text - The text to be copied to the clipboard.
+' * @returns {Boolean} - True if successful, False otherwise.
+' */
+Function SetClipboardText(ByVal text As String) As Boolean
+    On Error GoTo Catch
+
+    Dim hGlobal As LongPtr
+    Dim lpGlobal As LongPtr
+    Dim size As Long
+    Dim result As Long
+
+    ' Calculate the size of the memory needed (Unicode characters are 2 bytes + null terminator)
+    size = LenB(text) + 2
+
+    ' Allocate global memory
+    hGlobal = GlobalAlloc(GMEM_MOVEABLE Or GMEM_ZEROINIT, size)
+    If hGlobal = 0 Then
+        SetClipboardText = False
+        Exit Function
+    End If
+
+    ' Lock the memory
+    lpGlobal = GlobalLock(hGlobal)
+    If lpGlobal = 0 Then
+        Call GlobalFree(hGlobal)
+        SetClipboardText = False
+        Exit Function
+    End If
+
+    ' Copy the string to the global memory
+    Call CopyMemory(lpGlobal, StrPtr(text), size)
+
+    ' Unlock the memory
+    Call GlobalUnlock(hGlobal)
+
+    ' Open the clipboard
+    If OpenClipboard(0) = 0 Then
+        Call GlobalFree(hGlobal)
+        SetClipboardText = False
+        Exit Function
+    End If
+
+    ' Empty the clipboard
+    Call EmptyClipboard
+
+    ' Set the clipboard data
+    If SetClipboardData(CF_UNICODETEXT, hGlobal) = 0 Then
+        Call GlobalFree(hGlobal)
+        Call CloseClipboard
+        SetClipboardText = False
+        Exit Function
+    End If
+
+    ' Close the clipboard
+    Call CloseClipboard
+
+    SetClipboardText = True
+    Exit Function
+
+Catch:
+    Call ErrorHandler("SetClipboardText")
+    SetClipboardText = False
+End Function
