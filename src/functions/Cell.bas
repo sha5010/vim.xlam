@@ -175,22 +175,22 @@ End Function
 
 Function YankFromUpCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromUpCell")
-    Call KeyStroke(Alt_, H_, F_, I_, D_)
+    Selection.FillDown
 End Function
 
 Function YankFromDownCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromDownCell")
-    Call KeyStroke(Alt_, H_, F_, I_, U_)
+    Selection.FillUp
 End Function
 
 Function YankFromLeftCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromLeftCell")
-    Call KeyStroke(Alt_, H_, F_, I_, R_)
+    Selection.FillRight
 End Function
 
 Function YankFromRightCell(Optional ByVal g As String) As Boolean
     Call RepeatRegister("YankFromRightCell")
-    Call KeyStroke(Alt_, H_, F_, I_, L_)
+    Selection.FillLeft
 End Function
 
 Function YankAsPlaintext(Optional ByVal ColumnSpliter As String = vbTab) As Boolean
@@ -411,7 +411,7 @@ Function IncrementText(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_, H_, k6_)
+        Application.CommandBars.ExecuteMso "IndentIncrease"
     Next i
 End Function
 
@@ -422,7 +422,7 @@ Function DecrementText(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_, H_, k5_)
+        Application.CommandBars.ExecuteMso "IndentDecrease"
     Next i
 End Function
 
@@ -433,7 +433,7 @@ Function IncreaseDecimal(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_, H_, k0_)
+        Application.CommandBars.ExecuteMso "DecimalsIncrease"
     Next i
 End Function
 
@@ -444,7 +444,7 @@ Function DecreaseDecimal(Optional ByVal g As String) As Boolean
     Dim i As Integer
 
     For i = 1 To gVim.Count1
-        Call KeyStroke(Alt_, H_, k9_)
+        Application.CommandBars.ExecuteMso "DecimalsDecrease"
     Next i
 End Function
 
@@ -741,7 +741,9 @@ End Function
 
 Function ToggleWrapText(Optional ByVal g As String) As Boolean
     Call StopVisualMode
-    Call KeyStroke(Alt_, H_, W_)
+    If TypeName(Selection) = "Range" Then
+        Selection.WrapText = Not Selection.WrapText
+    End If
 End Function
 
 Function ToggleMergeCells(Optional ByVal g As String) As Boolean
@@ -754,9 +756,9 @@ Function ToggleMergeCells(Optional ByVal g As String) As Boolean
         End If
 
         If ActiveCell.MergeCells Then
-            Call KeyStroke(Alt_, H_, M_, U_)
+            Selection.UnMerge
         Else
-            Call KeyStroke(Alt_, H_, M_, M_)
+            Application.CommandBars.ExecuteMso "MergeCenter"
         End If
     End If
 End Function
@@ -765,7 +767,7 @@ Function ApplyCommaStyle(Optional ByVal g As String) As Boolean
     Call RepeatRegister("ApplyCommaStyle")
     Call StopVisualMode
 
-    Call KeyStroke(Alt_, H_, K_)
+    Application.CommandBars.ExecuteMso "CommaStyle"
 End Function
 
 Function ChangeInteriorColor(Optional ByVal resultColor As cls_FontColor) As Boolean
@@ -1154,14 +1156,14 @@ Function ShowCellPicker(Optional ByVal g As String) As Boolean
     Call UF_Picker.Launch(New cls_CellPicker)
 End Function
 
-Private Function AutoSumInner(ByVal lastKey As Long)
+Private Function AutoSumInner(ByVal msoId As String)
     On Error GoTo Catch
 
     If TypeName(Selection) <> "Range" Then
         Exit Function
     End If
 
-    Call KeyStroke(Alt_, M_, U_, lastKey)
+    Application.CommandBars.ExecuteMso msoId
 
     Exit Function
 Catch:
@@ -1169,23 +1171,23 @@ Catch:
 End Function
 
 Function AutoSum(Optional ByVal g As String) As Boolean
-    Call AutoSumInner(S_)
+    Call AutoSumInner("AutoSum")
 End Function
 
 Function AutoAverage(Optional ByVal g As String) As Boolean
-    Call AutoSumInner(A_)
+    Call AutoSumInner("AutoSumAverage")
 End Function
 
 Function AutoCount(Optional ByVal g As String) As Boolean
-    Call AutoSumInner(C_)
+    Call AutoSumInner("AutoSumCount")
 End Function
 
 Function AutoMax(Optional ByVal g As String) As Boolean
-    Call AutoSumInner(M_)
+    Call AutoSumInner("AutoSumMax")
 End Function
 
 Function AutoMin(Optional ByVal g As String) As Boolean
-    Call AutoSumInner(I_)
+    Call AutoSumInner("AutoSumMin")
 End Function
 
 Function InsertFunction(Optional ByVal g As String) As Boolean

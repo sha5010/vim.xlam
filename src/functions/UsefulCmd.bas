@@ -174,35 +174,27 @@ End Function
 
 Function SetPrintArea(Optional ByVal g As String) As Boolean
     Call StopVisualMode
-
-    'Send Alt, P, R, S
-    Call KeyStroke(Alt_, P_, R_, S_)
+    Application.CommandBars.ExecuteMso "PrintAreaSet"
 End Function
 
 Function ClearPrintArea(Optional ByVal g As String) As Boolean
     Call StopVisualMode
-
-    'Send Alt, P, R, C
-    Call KeyStroke(Alt_, P_, R_, C_)
+    Application.CommandBars.ExecuteMso "PrintAreaClear"
 End Function
 
 Function Sort(Optional ByVal sortOrder As XlSortOrder) As Boolean
     Call StopVisualMode
 
     If sortOrder = xlAscending Then
-        'Send Alt, A, S, A
-        Call KeyStroke(Alt_, A_, S_, A_)
+        Application.CommandBars.ExecuteMso "SortAscendingExcel"
     Else
-        'Send Alt, A, S, D
-        Call KeyStroke(Alt_, A_, S_, D_)
+        Application.CommandBars.ExecuteMso "SortDescendingExcel"
     End If
 End Function
 
 Function RemoveDuplicates(Optional ByVal g As String) As Boolean
     Call StopVisualMode
-
-    'Send Alt, A, M, Shift + Tab, Shift + Tab
-    Call KeyStroke(Alt_, A_, M_, Shift_ + Tab_, Shift_ + Tab_)
+    Application.CommandBars.ExecuteMso "RemoveDuplicates"
 End Function
 
 Function ShowShapePicker(Optional ByVal g As String) As Boolean
