@@ -99,18 +99,27 @@ Function ToggleAutoFilter(Optional ByVal g As String) As Boolean
 
     If Not lo Is Nothing Then
         ' Table context
-        Call KeyStroke(Alt_ + J_, T_, B_)
+        lo.ShowAutoFilterDropDown = Not lo.ShowAutoFilterDropDown
 
         If lo.ShowAutoFilterDropDown Then
-            Call SetStatusBarTemporarily(gVim.Msg.AutoFilterOff, 2000)
-        Else
             Call SetStatusBarTemporarily(gVim.Msg.AutoFilterOn, 2000)
+        Else
+            Call SetStatusBarTemporarily(gVim.Msg.AutoFilterOff, 2000)
         End If
     Else
         ' Worksheet context
-        Call KeyStroke(Alt_ + A_, T_)
+        Dim wasOn As Boolean
+        wasOn = ws.AutoFilterMode
 
-        If ws.AutoFilterMode Then
+        If wasOn Then
+            ws.AutoFilterMode = False
+        Else
+            If ws.UsedRange.Count > 0 Then
+                ws.UsedRange.AutoFilter
+            End If
+        End If
+
+        If wasOn Then
             Call SetStatusBarTemporarily(gVim.Msg.AutoFilterOff, 2000)
         Else
             Call SetStatusBarTemporarily(gVim.Msg.AutoFilterOn, 2000)
@@ -145,17 +154,16 @@ Function ClearAllFilters(Optional ByVal g As String) As Boolean
 
     If Not lo Is Nothing Then
         If lo.ShowAutoFilter Then
-            ' Check if any filter is applied
             If Not lo.AutoFilter Is Nothing Then
                 If lo.AutoFilter.FilterMode Then
-                    Call KeyStroke(Alt_ + A_, C_)
+                    lo.AutoFilter.ShowAllData
                     cleared = True
                 End If
             End If
         End If
     Else
         If ws.FilterMode Then
-            Call KeyStroke(Alt_ + A_, C_)
+            ws.ShowAllData
             cleared = True
         End If
     End If
@@ -255,9 +263,9 @@ Private Function ApplyAutoFilter(ByVal Field As Long, ByVal Criteria1 As Variant
     Set ws = ActiveSheet
 
     If Not IsAutoFilterOn(ws) Then
-        ' If AutoFilter is not active, apply it to the current region.
-        ' This assumes the active cell is within the data range.
-        Call KeyStroke(Alt_ + A_, T_)
+        If ws.UsedRange.Count > 0 Then
+            ws.UsedRange.AutoFilter
+        End If
         Call SetStatusBarTemporarily(gVim.Msg.AutoFilterOn, 2000)
     End If
 
